@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDN Security — Visual Diagrams</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --panel: #111827;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #7c3aed;
+    --green: #10b981;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --card: #151f2e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    margin-bottom: 3rem;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .tab {
+    padding: 0.6rem 1.4rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    transition: all 0.2s;
+  }
+
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 700;
+  }
+
+  .diagram { display: none; animation: fadeIn 0.3s ease; }
+  .diagram.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .diagram-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--accent);
+  }
+
+  .diagram-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── SVG DIAGRAMS ─── */
+  .svg-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+  }
+
+  svg { display: block; margin: 0 auto; }
+
+  /* ─── LEGEND ─── */
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ─── COMPARISON CARDS ─── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 640px) { .compare { grid-template-columns: 1fr; } }
+
+  .compare-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .compare-card.bad { border-color: #ef444440; }
+  .compare-card.good { border-color: #10b98140; }
+
+  .compare-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .compare-card.bad h3 { color: var(--red); }
+  .compare-card.good h3 { color: var(--green); }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .step-num {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: var(--text);
+  }
+
+  /* ─── EXAM BOX ─── */
+  .exam-box {
+    background: linear-gradient(135deg, #1a1040, #0f1a2e);
+    border: 1px solid var(--accent3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .exam-box h3 {
+    color: var(--accent3);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .exam-item {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .exam-key { color: var(--accent); flex-shrink: 0; }
+
+  /* animated pulse */
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .pulse { animation: pulse 2s ease-in-out infinite; }
+
+  @keyframes flow {
+    0% { stroke-dashoffset: 20; }
+    100% { stroke-dashoffset: 0; }
+  }
+
+  .flow-line {
+    stroke-dasharray: 6 4;
+    animation: flow 0.8s linear infinite;
+  }
+
+  @keyframes flowReverse {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: 20; }
+  }
+
+  .flow-line-rev {
+    stroke-dasharray: 6 4;
+    animation: flowReverse 0.8s linear infinite;
+  }
+</style>
+</head>
+<body>
+
+<h1>SDN Security</h1>
+<p class="subtitle">// Software Defined Networking — Visual Study Guide for CompTIA Security+</p>
+
+<div class="tabs">
+  <div class="tab active" onclick="showDiagram('d1', this)">1. Traditional vs SDN</div>
+  <div class="tab" onclick="showDiagram('d2', this)">2. How SDN Works</div>
+  <div class="tab" onclick="showDiagram('d3', this)">3. Professor Messer Diagram</div>
+  <div class="tab" onclick="showDiagram('d4', this)">4. Hospital Example</div>
+  <div class="tab" onclick="showDiagram('d5', this)">5. Attack Response</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- DIAGRAM 1: Traditional vs SDN             -->
+<!-- ══════════════════════════════════════════ -->
+<div class="diagram active" id="d1">
+  <div class="diagram-title">Diagram 1 — Traditional Networking vs SDN</div>
+  <div class="diagram-desc">// The core difference — where does the "brain" live?</div>
+
+  <div class="compare">
+    <div class="compare-card bad">
+      <h3>❌ Traditional Networking</h3>
+      <div class="step"><div class="step-num">1</div><span>Each router/switch has its OWN brain (control plane)</span></div>
+      <div class="step"><div class="step-num">2</div><span>Admin must log into EACH device separately</span></div>
+      <div class="step"><div class="step-num">3</div><span>Change one rule = update every device manually</span></div>
+      <div class="step"><div class="step-num">4</div><span>Inconsistent configs, human errors, slow response</span></div>
+    </div>
+    <div class="compare-card good">
+      <h3>✅ SDN (Software Defined)</h3>
+      <div class="step"><div class="step-num">1</div><span>ONE central controller is the ONLY brain</span></div>
+      <div class="step"><div class="step-num">2</div><span>Devices just FORWARD packets — no decisions</span></div>
+      <div class="step"><div class="step-num">3</div><span>Change one rule = instantly updates ALL devices</span></div>
+      <div class="step"><div class="step-num">4</div><span>Consistent, fast, automated security response</span></div>
+    </div>
+  </div>
+
+  <div class="svg-wrap">
+    <svg width="760" height="340" viewBox="0 0 760 340">
+      <!-- LEFT SIDE: Traditional -->
+      <text x="150" y="22" fill="#ef4444" font-family="JetBrains Mono" font-size="13" font-weight="700" text-anchor="middle">TRADITIONAL</text>
+
+      <!-- 3 routers with brains inside -->
+      <!-- Router 1 -->
+      <rect x="20" y="40" width="100" height="70" rx="8" fill="#1e1e2e" stroke="#ef4444" stroke-width="1.5"/>
+      <text x="70" y="60" fill="#ef4444" font-family="JetBrains Mono" font-size="9" text-anchor="middle">ROUTER 1</text>
+      <rect x="30" y="66" width="80" height="18" rx="4" fill="#2d1a1a"/>
+      <text x="70" y="79" fill="#f87171" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Control Plane 🧠</text>
+      <rect x="30" y="88" width="80" height="14" rx="4" fill="#1a2030"/>
+      <text x="70" y="99" fill="#64748b" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane</text>
+
+      <!-- Router 2 -->
+      <rect x="20" y="130" width="100" height="70" rx="8" fill="#1e1e2e" stroke="#ef4444" stroke-width="1.5"/>
+      <text x="70" y="150" fill="#ef4444" font-family="JetBrains Mono" font-size="9" text-anchor="middle">ROUTER 2</text>
+      <rect x="30" y="156" width="80" height="18" rx="4" fill="#2d1a1a"/>
+      <text x="70" y="169" fill="#f87171" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Control Plane 🧠</text>
+      <rect x="30" y="178" width="80" height="14" rx="4" fill="#1a2030"/>
+      <text x="70" y="189" fill="#64748b" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane</text>
+
+      <!-- Router 3 -->
+      <rect x="20" y="220" width="100" height="70" rx="8" fill="#1e1e2e" stroke="#ef4444" stroke-width="1.5"/>
+      <text x="70" y="240" fill="#ef4444" font-family="JetBrains Mono" font-size="9" text-anchor="middle">ROUTER 3</text>
+      <rect x="30" y="246" width="80" height="18" rx="4" fill="#2d1a1a"/>
+      <text x="70" y="259" fill="#f87171" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Control Plane 🧠</text>
+      <rect x="30" y="268" width="80" height="14" rx="4" fill="#1a2030"/>
+      <text x="70" y="279" fill="#64748b" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane</text>
+
+      <!-- Admin arrows -->
+      <text x="70" y="320" fill="#ef4444" font-family="JetBrains Mono" font-size="9" text-anchor="middle">Admin configures</text>
+      <text x="70" y="333" fill="#ef4444" font-family="JetBrains Mono" font-size="9" text-anchor="middle">each one manually ❌</text>
+
+      <!-- DIVIDER -->
+      <line x1="380" y1="10" x2="380" y2="330" stroke="#1e2d45" stroke-width="2" stroke-dasharray="6,4"/>
+      <text x="380" y="175" fill="#334155" font-family="JetBrains Mono" font-size="11" text-anchor="middle" transform="rotate(-90, 380, 175)">VS</text>
+
+      <!-- RIGHT SIDE: SDN -->
+      <text x="590" y="22" fill="#10b981" font-family="JetBrains Mono" font-size="13" font-weight="700" text-anchor="middle">SDN</text>
+
+      <!-- SDN Controller (the brain) -->
+      <rect x="490" y="30" width="200" height="70" rx="10" fill="#0f2a1a" stroke="#10b981" stroke-width="2"/>
+      <text x="590" y="52" fill="#10b981" font-family="JetBrains Mono" font-size="11" font-weight="700" text-anchor="middle">SDN CONTROLLER</text>
+      <text x="590" y="68" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9" text-anchor="middle">🧠 Single Brain for</text>
+      <text x="590" y="82" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9" text-anchor="middle">entire network</text>
+
+      <!-- Control plane arrows down -->
+      <line x1="530" y1="100" x2="510" y2="150" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowG)"/>
+      <line x1="590" y1="100" x2="590" y2="150" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowG)"/>
+      <line x1="650" y1="100" x2="670" y2="150" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrowG)"/>
+
+      <!-- 3 SDN routers (data plane only) -->
+      <rect x="460" y="150" width="80" height="50" rx="8" fill="#1e1e2e" stroke="#10b981" stroke-width="1.5"/>
+      <text x="500" y="170" fill="#10b981" font-family="JetBrains Mono" font-size="9" text-anchor="middle">SWITCH 1</text>
+      <rect x="467" y="175" width="66" height="14" rx="4" fill="#1a2030"/>
+      <text x="500" y="186" fill="#64748b" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane only</text>
+
+      <rect x="550" y="150" width="80" height="50" rx="8" fill="#1e1e2e" stroke="#10b981" stroke-width="1.5"/>
+      <text x="590" y="170" fill="#10b981" font-family="JetBrains Mono" font-size="9" text-anchor="middle">SWITCH 2</text>
+      <rect x="557" y="175" width="66" height="14" rx="4" fill="#1a2030"/>
+      <text x="590" y="186" fill="#64748b" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane only</text>
+
+      <rect x="640" y="150" width="80" height="50" rx="8" fill="#1e1e2e" stroke="#10b981" stroke-width="1.5"/>
+      <text x="680" y="170" fill="#10b981" font-family="JetBrains Mono" font-size="9" text-anchor="middle">SWITCH 3</text>
+      <rect x="647" y="175" width="66" height="14" rx="4" fill="#1a2030"/>
+      <text x="680" y="186" fill="#64748b" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane only</text>
+
+      <text x="590" y="230" fill="#10b981" font-family="JetBrains Mono" font-size="9" text-anchor="middle">Devices just forward packets</text>
+      <text x="590" y="243" fill="#10b981" font-family="JetBrains Mono" font-size="9" text-anchor="middle">Controller makes all decisions ✅</text>
+
+      <!-- Admin single arrow -->
+      <text x="590" y="270" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9" text-anchor="middle">Admin configures</text>
+      <text x="590" y="283" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9" text-anchor="middle">ONE controller only ✅</text>
+
+      <!-- Labels -->
+      <text x="165" y="90" fill="#ef4444" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Each device</text>
+      <text x="165" y="101" fill="#ef4444" font-family="JetBrains Mono" font-size="8" text-anchor="middle">has own brain</text>
+      <line x1="160" y1="75" x2="130" y2="78" stroke="#ef4444" stroke-width="1"/>
+
+      <!-- Arrow markers -->
+      <defs>
+        <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#10b981"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="exam-box">
+    <h3>// EXAM KEYWORDS</h3>
+    <div class="exam-item"><span class="exam-key">Control Plane →</span><span>The DECISION maker — where to send traffic (SDN removes this from devices)</span></div>
+    <div class="exam-item"><span class="exam-key">Data Plane →</span><span>The FORWARDER — actually moves packets (stays in devices)</span></div>
+    <div class="exam-item"><span class="exam-key">SDN Controller →</span><span>Centralized brain — manages all network devices from one place</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- DIAGRAM 2: How SDN Works (3 Layers)       -->
+<!-- ══════════════════════════════════════════ -->
+<div class="diagram" id="d2">
+  <div class="diagram-title">Diagram 2 — SDN Three-Layer Architecture</div>
+  <div class="diagram-desc">// Applications talk to controller, controller talks to devices</div>
+
+  <div class="svg-wrap">
+    <svg width="700" height="420" viewBox="0 0 700 420">
+      <!-- Layer 3: Application Layer -->
+      <rect x="50" y="20" width="600" height="90" rx="12" fill="#1a1040" stroke="#7c3aed" stroke-width="2"/>
+      <text x="350" y="45" fill="#a78bfa" font-family="JetBrains Mono" font-size="12" font-weight="700" text-anchor="middle">APPLICATION LAYER (Top)</text>
+      <text x="350" y="62" fill="#6d5da8" font-family="JetBrains Mono" font-size="10" text-anchor="middle">Security apps that define WHAT the network should do</text>
+
+      <!-- App boxes -->
+      <rect x="80" y="68" width="100" height="28" rx="6" fill="#2d1f60" stroke="#7c3aed" stroke-width="1"/>
+      <text x="130" y="87" fill="#c4b5fd" font-family="JetBrains Mono" font-size="9" text-anchor="middle">🔥 Firewall App</text>
+
+      <rect x="200" y="68" width="100" height="28" rx="6" fill="#2d1f60" stroke="#7c3aed" stroke-width="1"/>
+      <text x="250" y="87" fill="#c4b5fd" font-family="JetBrains Mono" font-size="9" text-anchor="middle">⚖️ Load Balancer</text>
+
+      <rect x="320" y="68" width="100" height="28" rx="6" fill="#2d1f60" stroke="#7c3aed" stroke-width="1"/>
+      <text x="370" y="87" fill="#c4b5fd" font-family="JetBrains Mono" font-size="9" text-anchor="middle">🛡️ IDS/IPS App</text>
+
+      <rect x="440" y="68" width="100" height="28" rx="6" fill="#2d1f60" stroke="#7c3aed" stroke-width="1"/>
+      <text x="490" y="87" fill="#c4b5fd" font-family="JetBrains Mono" font-size="9" text-anchor="middle">📊 Monitor App</text>
+
+      <!-- Northbound API label -->
+      <text x="350" y="130" fill="#f59e0b" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">↕ Northbound API</text>
+      <!-- Animated arrows -->
+      <line x1="350" y1="112" x2="350" y2="148" stroke="#f59e0b" stroke-width="2" class="flow-line"/>
+
+      <!-- Layer 2: Control Layer -->
+      <rect x="50" y="150" width="600" height="90" rx="12" fill="#0f2a1a" stroke="#10b981" stroke-width="2.5"/>
+      <text x="350" y="175" fill="#10b981" font-family="JetBrains Mono" font-size="13" font-weight="700" text-anchor="middle">CONTROL LAYER — SDN CONTROLLER 🧠</text>
+      <text x="350" y="193" fill="#6ee7b7" font-family="JetBrains Mono" font-size="10" text-anchor="middle">The BRAIN — makes all routing and security decisions</text>
+      <text x="350" y="210" fill="#6ee7b7" font-family="JetBrains Mono" font-size="10" text-anchor="middle">Examples: OpenDaylight, Cisco ACI, VMware NSX</text>
+      <rect x="120" y="218" width="460" height="14" rx="4" fill="#10b98120"/>
+      <text x="350" y="229" fill="#34d399" font-family="JetBrains Mono" font-size="9" text-anchor="middle">Has a GLOBAL VIEW of the entire network at all times</text>
+
+      <!-- Southbound API label -->
+      <text x="350" y="260" fill="#f59e0b" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">↕ Southbound API (OpenFlow protocol)</text>
+      <line x1="350" y1="242" x2="350" y2="278" stroke="#f59e0b" stroke-width="2" class="flow-line"/>
+
+      <!-- Layer 1: Infrastructure Layer -->
+      <rect x="50" y="280" width="600" height="100" rx="12" fill="#0f1a2e" stroke="#00d4ff" stroke-width="2"/>
+      <text x="350" y="303" fill="#00d4ff" font-family="JetBrains Mono" font-size="12" font-weight="700" text-anchor="middle">INFRASTRUCTURE LAYER (Bottom)</text>
+      <text x="350" y="320" fill="#7dd3fc" font-family="JetBrains Mono" font-size="10" text-anchor="middle">Physical/virtual devices — just FORWARD packets as instructed</text>
+
+      <!-- Device boxes -->
+      <rect x="80" y="328" width="80" height="38" rx="6" fill="#1a2a3a" stroke="#00d4ff" stroke-width="1"/>
+      <text x="120" y="345" fill="#7dd3fc" font-family="JetBrains Mono" font-size="9" text-anchor="middle">🔀 Switch 1</text>
+      <text x="120" y="358" fill="#475569" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane</text>
+
+      <rect x="190" y="328" width="80" height="38" rx="6" fill="#1a2a3a" stroke="#00d4ff" stroke-width="1"/>
+      <text x="230" y="345" fill="#7dd3fc" font-family="JetBrains Mono" font-size="9" text-anchor="middle">🔀 Switch 2</text>
+      <text x="230" y="358" fill="#475569" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane</text>
+
+      <rect x="300" y="328" width="80" height="38" rx="6" fill="#1a2a3a" stroke="#00d4ff" stroke-width="1"/>
+      <text x="340" y="345" fill="#7dd3fc" font-family="JetBrains Mono" font-size="9" text-anchor="middle">🌐 Router</text>
+      <text x="340" y="358" fill="#475569" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane</text>
+
+      <rect x="410" y="328" width="80" height="38" rx="6" fill="#1a2a3a" stroke="#00d4ff" stroke-width="1"/>
+      <text x="450" y="345" fill="#7dd3fc" font-family="JetBrains Mono" font-size="9" text-anchor="middle">🔥 Firewall</text>
+      <text x="450" y="358" fill="#475569" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane</text>
+
+      <rect x="520" y="328" width="100" height="38" rx="6" fill="#1a2a3a" stroke="#00d4ff" stroke-width="1"/>
+      <text x="570" y="345" fill="#7dd3fc" font-family="JetBrains Mono" font-size="9" text-anchor="middle">📡 Access Point</text>
+      <text x="570" y="358" fill="#475569" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Data Plane</text>
+
+      <!-- API label -->
+      <text x="620" y="130" fill="#f59e0b" font-family="JetBrains Mono" font-size="9" text-anchor="end">API =</text>
+      <text x="620" y="142" fill="#f59e0b" font-family="JetBrains Mono" font-size="9" text-anchor="end">Communication</text>
+      <text x="620" y="154" fill="#f59e0b" font-family="JetBrains Mono" font-size="9" text-anchor="end">channel</text>
+
+      <!-- Bottom label -->
+      <text x="350" y="405" fill="#475569" font-family="JetBrains Mono" font-size="9" text-anchor="middle">Physical network — routers, switches, firewalls — all just forward as told</text>
+    </svg>
+  </div>
+
+  <div class="exam-box">
+    <h3>// THREE LAYERS — EXAM READY</h3>
+    <div class="exam-item"><span class="exam-key">Application Layer →</span><span>Security apps, firewall rules, load balancer logic — defines POLICY</span></div>
+    <div class="exam-item"><span class="exam-key">Control Layer →</span><span>SDN Controller — the brain — translates policy to network rules</span></div>
+    <div class="exam-item"><span class="exam-key">Infrastructure Layer →</span><span>Physical devices — just forward packets — no decisions</span></div>
+    <div class="exam-item"><span class="exam-key">Northbound API →</span><span>Apps talk to Controller (what to do)</span></div>
+    <div class="exam-item"><span class="exam-key">Southbound API →</span><span>Controller talks to devices (how to do it) — OpenFlow protocol</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- DIAGRAM 3: Professor Messer Diagram       -->
+<!-- ══════════════════════════════════════════ -->
+<div class="diagram" id="d3">
+  <div class="diagram-title">Diagram 3 — Professor Messer's Diagram Explained</div>
+  <div class="diagram-desc">// The SDN controller is invisible — managing everything you see</div>
+
+  <div class="svg-wrap">
+    <svg width="720" height="380" viewBox="0 0 720 380">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#00d4ff"/>
+        </marker>
+        <marker id="arrR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+        </marker>
+        <marker id="arrG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#10b981"/>
+        </marker>
+      </defs>
+
+      <!-- SDN Controller (hidden/invisible) -->
+      <rect x="260" y="10" width="200" height="55" rx="10" fill="#1a1040" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6,3"/>
+      <text x="360" y="32" fill="#a78bfa" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">SDN CONTROLLER</text>
+      <text x="360" y="48" fill="#6d5da8" font-family="JetBrains Mono" font-size="9" text-anchor="middle">👻 Invisible — manages everything</text>
+
+      <!-- Controller lines to devices -->
+      <line x1="360" y1="65" x2="150" y2="130" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+      <line x1="360" y1="65" x2="360" y2="130" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+      <line x1="360" y1="65" x2="510" y2="130" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+      <line x1="360" y1="65" x2="600" y2="130" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+
+      <!-- Web Server A -->
+      <rect x="60" y="130" width="120" height="55" rx="8" fill="#1a2a3a" stroke="#00d4ff" stroke-width="1.5"/>
+      <text x="120" y="152" fill="#00d4ff" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">WEB SERVER A</text>
+      <text x="120" y="167" fill="#7dd3fc" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Handles user requests</text>
+      <text x="120" y="178" fill="#475569" font-family="JetBrains Mono" font-size="8" text-anchor="middle">+ High Availability</text>
+
+      <!-- Web Server B -->
+      <rect x="60" y="215" width="120" height="55" rx="8" fill="#1a2a3a" stroke="#00d4ff" stroke-width="1.5"/>
+      <text x="120" y="237" fill="#00d4ff" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">WEB SERVER B</text>
+      <text x="120" y="252" fill="#7dd3fc" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Backup / Load share</text>
+      <text x="120" y="263" fill="#475569" font-family="JetBrains Mono" font-size="8" text-anchor="middle">+ Redundancy</text>
+
+      <!-- Database Server -->
+      <rect x="60" y="300" width="120" height="55" rx="8" fill="#2a1a1a" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="120" y="322" fill="#f59e0b" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">DATABASE</text>
+      <text x="120" y="337" fill="#fcd34d" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Most sensitive data</text>
+      <text x="120" y="348" fill="#475569" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Deepest = most protected</text>
+
+      <!-- Load Balancer -->
+      <rect x="290" y="142" width="140" height="44" rx="8" fill="#0f2a1a" stroke="#10b981" stroke-width="1.5"/>
+      <text x="360" y="160" fill="#10b981" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">LOAD BALANCER</text>
+      <text x="360" y="176" fill="#6ee7b7" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Splits traffic A/B, no single point of failure</text>
+
+      <!-- Internal Firewall -->
+      <rect x="290" y="280" width="140" height="44" rx="8" fill="#2a1a0f" stroke="#ff6b35" stroke-width="1.5"/>
+      <text x="360" y="298" fill="#ff6b35" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">INTERNAL FW</text>
+      <text x="360" y="314" fill="#fdba74" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Layer 2 defense — protects DB</text>
+
+      <!-- Outer Firewall/IPS -->
+      <rect x="490" y="142" width="130" height="44" rx="8" fill="#2a0f0f" stroke="#ef4444" stroke-width="2"/>
+      <text x="555" y="160" fill="#ef4444" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">FIREWALL/IPS</text>
+      <text x="555" y="176" fill="#fca5a5" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Perimeter — filters internet traffic</text>
+
+      <!-- Internet -->
+      <ellipse cx="660" cy="270" rx="45" ry="35" fill="#0a1520" stroke="#334155" stroke-width="1.5"/>
+      <text x="660" y="268" fill="#475569" font-family="JetBrains Mono" font-size="10" text-anchor="middle">THE</text>
+      <text x="660" y="281" fill="#475569" font-family="JetBrains Mono" font-size="10" text-anchor="middle">INTERNET</text>
+
+      <!-- Traffic flow lines -->
+      <!-- Web servers to Load Balancer -->
+      <line x1="180" y1="157" x2="290" y2="160" stroke="#00d4ff" stroke-width="1.5" class="flow-line" marker-end="url(#arr)"/>
+      <line x1="180" y1="242" x2="290" y2="162" stroke="#00d4ff" stroke-width="1.5" class="flow-line" marker-end="url(#arr)"/>
+
+      <!-- Load Balancer to Outer FW -->
+      <line x1="430" y1="164" x2="490" y2="164" stroke="#10b981" stroke-width="1.5" class="flow-line" marker-end="url(#arrG)"/>
+
+      <!-- Outer FW to Internet -->
+      <line x1="620" y1="175" x2="640" y2="238" stroke="#ef4444" stroke-width="1.5" class="flow-line" marker-end="url(#arrR)"/>
+
+      <!-- DB to Internal FW -->
+      <line x1="180" y1="327" x2="290" y2="302" stroke="#f59e0b" stroke-width="1.5" class="flow-line" marker-end="url(#arr)"/>
+
+      <!-- Web servers to Internal FW -->
+      <line x1="120" y1="185" x2="295" y2="283" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+      <line x1="120" y1="270" x2="295" y2="290" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+
+      <!-- Annotations -->
+      <text x="360" y="240" fill="#7c3aed" font-family="JetBrains Mono" font-size="8" text-anchor="middle" opacity="0.7">SDN manages</text>
+      <text x="360" y="251" fill="#7c3aed" font-family="JetBrains Mono" font-size="8" text-anchor="middle" opacity="0.7">all of these</text>
+      <text x="360" y="262" fill="#7c3aed" font-family="JetBrains Mono" font-size="8" text-anchor="middle" opacity="0.7">centrally ↑↓</text>
+    </svg>
+  </div>
+
+  <div class="compare">
+    <div class="compare-card good">
+      <h3>✅ Traffic Flow (Normal User)</h3>
+      <div class="step"><div class="step-num">1</div><span>User request hits Internet</span></div>
+      <div class="step"><div class="step-num">2</div><span>Outer Firewall/IPS checks it — legitimate ✅</span></div>
+      <div class="step"><div class="step-num">3</div><span>Load Balancer routes to Web Server A or B</span></div>
+      <div class="step"><div class="step-num">4</div><span>Web Server needs data → Internal Firewall checks</span></div>
+      <div class="step"><div class="step-num">5</div><span>Database returns data → Response sent to user</span></div>
+    </div>
+    <div class="compare-card bad">
+      <h3>❌ Attack Attempt</h3>
+      <div class="step"><div class="step-num">1</div><span>Attacker sends malicious request</span></div>
+      <div class="step"><div class="step-num">2</div><span>Outer Firewall/IPS detects attack signature ❌ BLOCKED</span></div>
+      <div class="step"><div class="step-num">3</div><span>If bypassed → gets to web server</span></div>
+      <div class="step"><div class="step-num">4</div><span>Tries to reach database → Internal Firewall BLOCKS ❌</span></div>
+      <div class="step"><div class="step-num">5</div><span>Database never reachable from internet — safe ✅</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- DIAGRAM 4: Hospital Example               -->
+<!-- ══════════════════════════════════════════ -->
+<div class="diagram" id="d4">
+  <div class="diagram-title">Diagram 4 — Hospital SDN Example</div>
+  <div class="diagram-desc">// SDN dynamically assigns devices to correct security zones</div>
+
+  <div class="svg-wrap">
+    <svg width="700" height="400" viewBox="0 0 700 400">
+      <defs>
+        <marker id="arrB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#7c3aed"/>
+        </marker>
+      </defs>
+
+      <!-- SDN Controller at top -->
+      <rect x="230" y="10" width="240" height="55" rx="10" fill="#1a1040" stroke="#7c3aed" stroke-width="2"/>
+      <text x="350" y="32" fill="#a78bfa" font-family="JetBrains Mono" font-size="11" font-weight="700" text-anchor="middle">SDN CONTROLLER</text>
+      <text x="350" y="48" fill="#6d5da8" font-family="JetBrains Mono" font-size="9" text-anchor="middle">Assigns devices to zones automatically</text>
+
+      <!-- Zone 1: Medical Devices -->
+      <rect x="20" y="100" width="160" height="200" rx="10" fill="#1a2a1a" stroke="#10b981" stroke-width="2"/>
+      <text x="100" y="122" fill="#10b981" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">MEDICAL ZONE</text>
+      <rect x="35" y="130" width="130" height="28" rx="5" fill="#0f2a1a" stroke="#10b981" stroke-width="1"/>
+      <text x="100" y="149" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9" text-anchor="middle">💉 Patient Monitor</text>
+      <rect x="35" y="165" width="130" height="28" rx="5" fill="#0f2a1a" stroke="#10b981" stroke-width="1"/>
+      <text x="100" y="184" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9" text-anchor="middle">🫀 Pacemaker Device</text>
+      <rect x="35" y="200" width="130" height="28" rx="5" fill="#0f2a1a" stroke="#10b981" stroke-width="1"/>
+      <text x="100" y="219" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9" text-anchor="middle">🏥 MRI Machine</text>
+      <rect x="35" y="240" width="130" height="28" rx="5" fill="#0f2a1a" stroke="#10b981" stroke-width="1"/>
+      <text x="100" y="259" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9" text-anchor="middle">💊 Infusion Pump</text>
+      <text x="100" y="290" fill="#34d399" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Can ONLY talk to</text>
+      <text x="100" y="302" fill="#34d399" font-family="JetBrains Mono" font-size="8" text-anchor="middle">nursing station</text>
+
+      <!-- Zone 2: Corporate -->
+      <rect x="200" y="100" width="160" height="200" rx="10" fill="#1a1a2a" stroke="#00d4ff" stroke-width="2"/>
+      <text x="280" y="122" fill="#00d4ff" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">STAFF ZONE</text>
+      <rect x="215" y="130" width="130" height="28" rx="5" fill="#0f1a2e" stroke="#00d4ff" stroke-width="1"/>
+      <text x="280" y="149" fill="#7dd3fc" font-family="JetBrains Mono" font-size="9" text-anchor="middle">👨‍⚕️ Doctor Laptop</text>
+      <rect x="215" y="165" width="130" height="28" rx="5" fill="#0f1a2e" stroke="#00d4ff" stroke-width="1"/>
+      <text x="280" y="184" fill="#7dd3fc" font-family="JetBrains Mono" font-size="9" text-anchor="middle">👩‍⚕️ Nurse Tablet</text>
+      <rect x="215" y="200" width="130" height="28" rx="5" fill="#0f1a2e" stroke="#00d4ff" stroke-width="1"/>
+      <text x="280" y="219" fill="#7dd3fc" font-family="JetBrains Mono" font-size="9" text-anchor="middle">🖥️ Admin PC</text>
+      <text x="280" y="290" fill="#7dd3fc" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Can access medical</text>
+      <text x="280" y="302" fill="#7dd3fc" font-family="JetBrains Mono" font-size="8" text-anchor="middle">records system</text>
+
+      <!-- Zone 3: Guest -->
+      <rect x="380" y="100" width="160" height="200" rx="10" fill="#2a1a1a" stroke="#ff6b35" stroke-width="2"/>
+      <text x="460" y="122" fill="#ff6b35" font-family="JetBrains Mono" font-size="10" font-weight="700" text-anchor="middle">GUEST ZONE</text>
+      <rect x="395" y="130" width="130" height="28" rx="5" fill="#2a1010" stroke="#ff6b35" stroke-width="1"/>
+      <text x="460" y="149" fill="#fdba74" font-family="JetBrains Mono" font-size="9" text-anchor="middle">📱 Patient Phone</text>
+      <rect x="395" y="165" width="130" height="28" rx="5" fill="#2a1010" stroke="#ff6b35" stroke-width="1"/>
+      <text x="460" y="184" fill="#fdba74" font-family="JetBrains Mono" font-size="9" text-anchor="middle">💻 Visitor Laptop</text>
+      <text x="460" y="270" fill="#fdba74" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Internet access</text>
+      <text x="460" y="282" fill="#fdba74" font-family="JetBrains Mono" font-size="8" text-anchor="middle">ONLY</text>
+      <text x="460" y="294" fill="#ef4444" font-family="JetBrains Mono" font-size="8" text-anchor="middle">CANNOT reach</text>
+      <text x="460" y="306" fill="#ef4444" font-family="JetBrains Mono" font-size="8" text-anchor="middle">medical devices!</text>
+
+      <!-- Isolation walls -->
+      <line x1="192" y1="100" x2="192" y2="300" stroke="#ef4444" stroke-width="3"/>
+      <text x="196" y="200" fill="#ef4444" font-family="JetBrains Mono" font-size="9" text-anchor="middle" transform="rotate(90, 196, 200)">FIREWALL</text>
+      <line x1="373" y1="100" x2="373" y2="300" stroke="#ef4444" stroke-width="3"/>
+      <text x="377" y="200" fill="#ef4444" font-family="JetBrains Mono" font-size="9" text-anchor="middle" transform="rotate(90, 377, 200)">FIREWALL</text>
+
+      <!-- Controller connections -->
+      <line x1="350" y1="65" x2="100" y2="100" stroke="#7c3aed" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrB)" opacity="0.7"/>
+      <line x1="350" y1="65" x2="280" y2="100" stroke="#7c3aed" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrB)" opacity="0.7"/>
+      <line x1="350" y1="65" x2="460" y2="100" stroke="#7c3aed" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrB)" opacity="0.7"/>
+
+      <!-- Internet -->
+      <rect x="560" y="100" width="120" height="200" rx="10" fill="#0a0e1a" stroke="#334155" stroke-width="1.5"/>
+      <text x="620" y="130" fill="#475569" font-family="JetBrains Mono" font-size="10" text-anchor="middle">THE</text>
+      <text x="620" y="145" fill="#475569" font-family="JetBrains Mono" font-size="10" text-anchor="middle">INTERNET</text>
+      <line x1="540" y1="200" x2="562" y2="200" stroke="#ff6b35" stroke-width="1.5" class="flow-line"/>
+      <text x="551" y="195" fill="#ff6b35" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Guest</text>
+      <line x1="540" y1="170" x2="562" y2="180" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="549" y="165" fill="#475569" font-family="JetBrains Mono" font-size="7" text-anchor="middle">Staff</text>
+
+      <!-- Bottom label -->
+      <text x="350" y="370" fill="#7c3aed" font-family="JetBrains Mono" font-size="10" text-anchor="middle" font-weight="700">SDN Controller enforces these zone boundaries automatically</text>
+      <text x="350" y="385" fill="#475569" font-family="JetBrains Mono" font-size="9" text-anchor="middle">Device plugs in → SDN identifies it → assigns correct zone instantly</text>
+    </svg>
+  </div>
+
+  <div class="exam-box">
+    <h3>// KEY SECURITY PRINCIPLE</h3>
+    <div class="exam-item"><span class="exam-key">Medical Zone →</span><span>Life-critical devices — isolated, cannot be reached from guest network</span></div>
+    <div class="exam-item"><span class="exam-key">Staff Zone →</span><span>Employees — access medical records but not guest internet</span></div>
+    <div class="exam-item"><span class="exam-key">Guest Zone →</span><span>Internet only — ZERO access to medical devices or staff systems</span></div>
+    <div class="exam-item"><span class="exam-key">SDN Benefit →</span><span>All zone rules enforced automatically — no manual switch config per device</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- DIAGRAM 5: Attack Response                -->
+<!-- ══════════════════════════════════════════ -->
+<div class="diagram" id="d5">
+  <div class="diagram-title">Diagram 5 — SDN Attack Response</div>
+  <div class="diagram-desc">// How SDN responds to an attack — traditional vs SDN</div>
+
+  <div class="compare">
+    <div class="compare-card bad">
+      <h3>❌ Traditional — Attack Response</h3>
+      <div class="step"><div class="step-num">1</div><span>Attack detected at 3:00 AM</span></div>
+      <div class="step"><div class="step-num">2</div><span>Alert triggers — admin woken up</span></div>
+      <div class="step"><div class="step-num">3</div><span>Admin logs into Firewall 1 manually</span></div>
+      <div class="step"><div class="step-num">4</div><span>Adds block rule to Firewall 1</span></div>
+      <div class="step"><div class="step-num">5</div><span>Logs into Switch 1... then Switch 2...</span></div>
+      <div class="step"><div class="step-num">6</div><span>Logs into Firewall 2... Router 1...</span></div>
+      <div class="step"><div class="step-num">7</div><span>45 minutes later — all devices updated</span></div>
+      <div class="step"><div class="step-num">8</div><span>Attacker was active for 45 minutes ❌</span></div>
+    </div>
+    <div class="compare-card good">
+      <h3>✅ SDN — Attack Response</h3>
+      <div class="step"><div class="step-num">1</div><span>Attack detected at 3:00 AM</span></div>
+      <div class="step"><div class="step-num">2</div><span>SDN Controller sees anomaly automatically</span></div>
+      <div class="step"><div class="step-num">3</div><span>Controller pushes block rule to ALL devices</span></div>
+      <div class="step"><div class="step-num">4</div><span>All firewalls, switches, routers updated</span></div>
+      <div class="step"><div class="step-num">5</div><span>Takes 3-5 SECONDS total</span></div>
+      <div class="step"><div class="step-num">6</div><span>Attacker quarantined to isolated VLAN</span></div>
+      <div class="step"><div class="step-num">7</div><span>Alert sent to admin with full details</span></div>
+      <div class="step"><div class="step-num">8</div><span>Attacker contained in seconds ✅</span></div>
+    </div>
+  </div>
+
+  <div class="svg-wrap">
+    <svg width="700" height="300" viewBox="0 0 700 300">
+      <defs>
+        <marker id="arrRed" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#ef4444"/>
+        </marker>
+        <marker id="arrGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#10b981"/>
+        </marker>
+      </defs>
+
+      <!-- Timeline header -->
+      <text x="350" y="22" fill="#a78bfa" font-family="JetBrains Mono" font-size="12" font-weight="700" text-anchor="middle">ATTACK TIMELINE — TRADITIONAL vs SDN</text>
+
+      <!-- Timeline line -->
+      <line x1="50" y1="80" x2="660" y2="80" stroke="#1e2d45" stroke-width="2"/>
+
+      <!-- Time markers -->
+      <line x1="100" y1="72" x2="100" y2="88" stroke="#475569" stroke-width="1.5"/>
+      <text x="100" y="102" fill="#475569" font-family="JetBrains Mono" font-size="9" text-anchor="middle">0s</text>
+      <text x="100" y="113" fill="#ef4444" font-family="JetBrains Mono" font-size="8" text-anchor="middle">Attack</text>
+      <text x="100" y="124" fill="#ef4444" font-family="JetBrains Mono" font-size="8" text-anchor="middle">detected</text>
+
+      <line x1="200" y1="72" x2="200" y2="88" stroke="#475569" stroke-width="1.5"/>
+      <text x="200" y="102" fill="#475569" font-family="JetBrains Mono" font-size="9" text-anchor="middle">5s</text>
+
+      <line x1="350" y1="72" x2="350" y2="88" stroke="#475569" stroke-width="1.5"/>
+      <text x="350" y="102" fill="#475569" font-family="JetBrains Mono" font-size="9" text-anchor="middle">5 min</text>
+
+      <line x1="500" y1="72" x2="500" y2="88" stroke="#475569" stroke-width="1.5"/>
+      <text x="500" y="102" fill="#475569" font-family="JetBrains Mono" font-size="9" text-anchor="middle">30 min</text>
+
+      <line x1="620" y1="72" x2="620" y2="88" stroke="#475569" stroke-width="1.5"/>
+      <text x="620" y="102" fill="#475569" font-family="JetBrains Mono" font-size="9" text-anchor="middle">45 min</text>
+
+      <!-- Traditional timeline (red — slow) -->
+      <rect x="100" y="130" width="520" height="30" rx="5" fill="#2a1010" stroke="#ef4444" stroke-width="1.5"/>
+      <text x="115" y="149" fill="#ef4444" font-family="JetBrains Mono" font-size="9" font-weight="700">TRADITIONAL:</text>
+      <text x="250" y="149" fill="#fca5a5" font-family="JetBrains Mono" font-size="9">Attacker active for 45 minutes while admin manually updates each device</text>
+
+      <!-- SDN timeline (green — fast) -->
+      <rect x="100" y="170" width="110" height="30" rx="5" fill="#0f2a1a" stroke="#10b981" stroke-width="1.5"/>
+      <text x="115" y="183" fill="#10b981" font-family="JetBrains Mono" font-size="9" font-weight="700">SDN:</text>
+      <text x="155" y="183" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9">5 sec</text>
+      <text x="155" y="195" fill="#6ee7b7" font-family="JetBrains Mono" font-size="8">contained</text>
+
+      <!-- SDN arrow showing fast containment -->
+      <line x1="210" y1="185" x2="620" y2="185" stroke="#334155" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="400" y="200" fill="#475569" font-family="JetBrains Mono" font-size="9" text-anchor="middle">← rest of time: attacker already quarantined, analyst investigates</text>
+
+      <!-- Verdict box -->
+      <rect x="150" y="230" width="400" height="50" rx="8" fill="#0f2a1a" stroke="#10b981" stroke-width="1.5"/>
+      <text x="350" y="252" fill="#10b981" font-family="JetBrains Mono" font-size="11" font-weight="700" text-anchor="middle">SDN = Faster Detection + Faster Response</text>
+      <text x="350" y="270" fill="#6ee7b7" font-family="JetBrains Mono" font-size="9" text-anchor="middle">Centralized control → push rules to ALL devices simultaneously in seconds</text>
+    </svg>
+  </div>
+
+  <div class="exam-box">
+    <h3>// EXAM TIPS — SDN SECURITY</h3>
+    <div class="exam-item"><span class="exam-key">SDN benefit →</span><span>Centralized management, dynamic security policies, faster threat response</span></div>
+    <div class="exam-item"><span class="exam-key">SDN risk →</span><span>Controller = single point of failure AND single point of attack</span></div>
+    <div class="exam-item"><span class="exam-key">Control Plane →</span><span>Separated from devices — lives in SDN Controller only</span></div>
+    <div class="exam-item"><span class="exam-key">Data Plane →</span><span>Stays in devices — just forwards packets as told</span></div>
+    <div class="exam-item"><span class="exam-key">Micro-segmentation →</span><span>SDN enables this easily — granular security between workloads</span></div>
+    <div class="exam-item"><span class="exam-key">OpenFlow →</span><span>Protocol SDN controller uses to talk to network devices</span></div>
+  </div>
+</div>
+
+<script>
+  function showDiagram(id, tab) {
+    document.querySelectorAll('.diagram').forEach(d => d.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    tab.classList.add('active');
+  }
+</script>
+</body>
+</html>

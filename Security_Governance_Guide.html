@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Governance — Security+ Domain 5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg:#faf9f6;
+  --s1:#ffffff;
+  --s2:#f2f0ea;
+  --s3:#e8e5dc;
+  --border:#d8d5c8;
+  --text:#1c1a10;
+  --muted:#6a6858;
+  --blue:#1448c0;
+  --green:#0f6a38;
+  --red:#b01818;
+  --orange:#b54808;
+  --purple:#6010a8;
+  --teal:#0a6a64;
+  --yellow:#7a5e08;
+  --indigo:#2a18b8;
+  --gold:#8a6810;
+  --rose:#a01450;
+  --sky:#0850b0;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Work Sans',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+/* MASTHEAD */
+.mast{
+  text-align:center;
+  margin-bottom:2.5rem;
+  padding-bottom:2rem;
+  border-bottom:3px double var(--text);
+}
+.mast-domain{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.62rem;
+  letter-spacing:0.22em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:0.5rem;
+}
+.mast-title{
+  font-family:'Playfair Display',serif;
+  font-size:2.8rem;
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-0.01em;
+  margin-bottom:0.3rem;
+  color:var(--text);
+}
+.mast-title .em{font-style:italic;color:var(--indigo);}
+.mast-sub{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.65rem;
+  color:var(--muted);
+  letter-spacing:0.05em;
+}
+.mast-badge{
+  display:inline-block;
+  margin-top:0.6rem;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.6rem;
+  padding:0.2rem 0.8rem;
+  border:1.5px solid var(--indigo);
+  border-radius:3px;
+  color:var(--indigo);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.42rem 0.9rem;
+  border-radius:4px;
+  border:1.5px solid var(--border);
+  background:var(--s1);
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.63rem;
+  font-weight:500;
+  transition:all 0.14s;
+  letter-spacing:0.02em;
+}
+.tab:hover{border-color:var(--indigo);color:var(--indigo);}
+.tab.active{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+
+/* SECTIONS */
+.sec{display:none;}
+.sec.on{display:block;animation:rise 0.2s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* CARD */
+.card{
+  background:var(--s1);
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  margin-bottom:1.5rem;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+.card-hd{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:1rem 1.4rem;
+  border-bottom:1.5px solid var(--border);
+  background:var(--s2);
+}
+.card-num{
+  font-family:'IBM Plex Mono',monospace;font-size:0.58rem;
+  color:var(--muted);background:var(--s1);border:1px solid var(--border);
+  border-radius:3px;padding:0.12rem 0.38rem;
+}
+.card-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem;font-weight:700;letter-spacing:-0.01em;
+}
+.bdg{
+  margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:0.58rem;
+  padding:0.15rem 0.55rem;border-radius:3px;white-space:nowrap;font-weight:600;
+  letter-spacing:0.02em;
+}
+.bdg-blue{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.bdg-green{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.bdg-orange{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.bdg-red{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.bdg-purple{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.bdg-teal{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.bdg-indigo{background:#e0e7ff;color:#3730a3;border:1px solid #a5b4fc;}
+.bdg-gold{background:#fef9c3;color:#713f12;border:1px solid #fde047;}
+.bdg-lime{background:#ecfccb;color:#3f6212;border:1px solid #bef264;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.86rem;margin-bottom:0.8rem;line-height:1.7;}
+h3{
+  font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;
+  color:var(--text);margin:1.2rem 0 0.6rem;
+  padding-left:0.75rem;border-left:3px solid var(--indigo);
+}
+
+/* CODE */
+.code{
+  background:var(--text);color:#eae8d8;border-radius:6px;
+  padding:1rem 1.2rem;font-family:'IBM Plex Mono',monospace;
+  font-size:0.68rem;line-height:1.9;overflow-x:auto;margin:0.8rem 0;
+}
+.cg{color:#86efac;} .cr{color:#fca5a5;} .cb{color:#93c5fd;}
+.co{color:#fde047;} .cp{color:#d8b4fe;} .cm{color:#6a6858;}
+.ct{color:#5eead4;} .ci{color:#a5b4fc;} .cy{color:#fef08a;}
+.cl{color:#bef264;} .cg2{color:#6ee7b7;}
+
+/* SCENE */
+.scene{
+  background:#fffbeb;border-left:3px solid var(--orange);
+  border-radius:0 6px 6px 0;padding:1rem 1.2rem;margin:1rem 0;
+}
+.scene-lbl{
+  font-family:'IBM Plex Mono',monospace;font-size:0.58rem;
+  color:var(--orange);margin-bottom:0.4rem;letter-spacing:0.12em;
+  font-weight:700;text-transform:uppercase;
+}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{background:var(--s2);border:1.5px solid var(--border);border-radius:7px;padding:1rem;}
+.gc h4{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{
+  background:#f0eeff;border:1.5px solid #c4b5fd;
+  border-radius:7px;padding:1rem 1.2rem;margin-top:1rem;
+}
+.exam h4{
+  font-family:'IBM Plex Mono',monospace;font-size:0.58rem;
+  color:var(--purple);margin-bottom:0.6rem;letter-spacing:0.12em;
+  font-weight:700;text-transform:uppercase;
+}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'IBM Plex Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{
+  background:var(--s2);padding:0.52rem 0.8rem;text-align:left;
+  color:var(--muted);border-bottom:1.5px solid var(--border);
+  font-size:0.64rem;font-weight:700;
+  font-family:'IBM Plex Mono',monospace;letter-spacing:0.05em;text-transform:uppercase;
+}
+td{padding:0.52rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.08rem 0.42rem;border-radius:3px;font-size:0.6rem;font-family:'IBM Plex Mono',monospace;font-weight:700;}
+.tg{background:#dcfce7;color:#166534;}
+.tr{background:#fee2e2;color:#991b1b;}
+.tb{background:#dbeafe;color:#1e40af;}
+.to{background:#ffedd5;color:#9a3412;}
+.tp{background:#f3e8ff;color:#6b21a8;}
+.tt{background:#ccfbf1;color:#115e59;}
+.ti{background:#e0e7ff;color:#3730a3;}
+.ty{background:#fef9c3;color:#713f12;}
+.tl{background:#ecfccb;color:#3f6212;}
+
+/* HIERARCHY */
+.hier{margin:1rem 0;}
+.hier-row{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.6rem 0.9rem;border-radius:6px;
+  margin-bottom:0.35rem;border:1.5px solid;
+  font-size:0.8rem;
+}
+.hier-icon{font-size:1rem;flex-shrink:0;}
+.hier-label{font-weight:700;min-width:120px;flex-shrink:0;}
+.hier-desc{font-size:0.74rem;color:var(--muted);flex:1;}
+.hier-scope{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;white-space:nowrap;}
+
+/* POLICY DOC CARD */
+.doc-card{
+  background:var(--s1);border:1.5px solid var(--border);
+  border-radius:7px;padding:1.1rem;margin-bottom:0.7rem;
+  border-left:4px solid;
+}
+.doc-hd{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.4rem;}
+.doc-icon{font-size:1.1rem;}
+.doc-name{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;}
+.doc-type{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;color:var(--muted);background:var(--s2);padding:0.12rem 0.4rem;border-radius:3px;margin-left:auto;}
+.doc-body{font-size:0.78rem;color:var(--muted);}
+
+/* INFO ROW */
+.info-row{
+  display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;
+  background:var(--s2);border:1.5px solid var(--border);border-radius:7px;margin-bottom:0.5rem;
+}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Playfair Display',serif;font-size:0.92rem;font-weight:700;margin-bottom:0.12rem;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* ROLE CARDS */
+.role-card{
+  background:var(--s2);border:1.5px solid var(--border);
+  border-radius:7px;padding:1rem;
+  border-top:3px solid;
+}
+.role-title{font-family:'Playfair Display',serif;font-size:0.92rem;font-weight:700;margin-bottom:0.3rem;}
+.role-desc{font-size:0.76rem;color:var(--muted);margin-bottom:0.4rem;}
+.role-resp{font-size:0.74rem;}
+.role-resp li{color:var(--muted);margin-bottom:0.2rem;padding-left:1rem;}
+
+/* EXTERNAL FACTORS */
+.ext-row{
+  display:flex;align-items:flex-start;gap:0.8rem;
+  padding:0.7rem 0.9rem;background:var(--s2);
+  border:1.5px solid var(--border);border-radius:7px;margin-bottom:0.4rem;
+}
+.ext-flag{font-size:1.1rem;flex-shrink:0;}
+.ext-label{font-size:0.82rem;font-weight:700;min-width:140px;flex-shrink:0;}
+.ext-detail{font-size:0.76rem;color:var(--muted);}
+
+/* PYRAMID */
+.pyramid-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;margin:1.5rem auto;max-width:500px;}
+.pyr-row{
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:0.6rem 1rem;
+  font-size:0.78rem;font-weight:600;
+  transition:width 0.3s;
+}
+
+/* FLOW */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.flow-box{
+  border-radius:5px;padding:0.5rem 0.75rem;font-family:'IBM Plex Mono',monospace;
+  font-size:0.63rem;font-weight:600;border:1.5px solid;text-align:center;min-width:80px;
+}
+.flow-arr{color:var(--muted);font-size:0.9rem;}
+</style>
+</head>
+<body>
+
+<div class="mast">
+  <div class="mast-domain">CompTIA Security+ SY0-701 — Domain 5 · Security Program Management & Oversight · 20%</div>
+  <div class="mast-title">Security <span class="em">Governance</span></div>
+  <div class="mast-rule" style="width:60px;height:3px;background:var(--text);margin:0.5rem auto;"></div>
+  <div class="mast-sub">// Guidelines · Policies · Standards · Procedures · External Considerations · Monitoring · Governance Structures · Roles</div>
+  <div class="mast-badge">Subtopic 1 of Domain 5</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Policy Hierarchy</button>
+  <button class="tab" onclick="go('s3',this)">3. Policies</button>
+  <button class="tab" onclick="go('s4',this)">4. Standards & Procedures</button>
+  <button class="tab" onclick="go('s5',this)">5. External Considerations</button>
+  <button class="tab" onclick="go('s6',this)">6. Governance Structures</button>
+  <button class="tab" onclick="go('s7',this)">7. Roles & Responsibilities</button>
+  <button class="tab" onclick="go('s8',this)">8. Monitoring & Review</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 1. OVERVIEW             -->
+<!-- ════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Security Governance Overview</span><span class="bdg bdg-indigo">Domain 5 — 20% of Exam</span></div>
+  <div class="card-bd">
+    <p>Security governance is the <strong style="color:var(--text)">framework of rules, responsibilities, and processes that directs and controls how an organization manages its security program</strong>. It answers: Who decides security priorities? What rules must everyone follow? How do we prove we're compliant? How do we know controls are working?</p>
+
+    <h3>Why Governance Matters</h3>
+    <div class="code">
+<span class="cm"># Without governance — security chaos:</span>
+Each team: sets their own security rules
+No consistency: IT does one thing, Dev does another
+No accountability: "who owns this security decision?"
+No audit trail: "prove you had controls in place"
+Regulators arrive: <span class="cr">no policies, no documentation, massive fines</span>
+Breach occurs: <span class="cr">no policies = no legal defense = full liability</span>
+
+<span class="cg"># With governance — security structure:</span>
+Policies: clear, documented, approved by leadership
+Standards: everyone uses same security requirements
+Procedures: step-by-step guides — nothing improvised
+Roles: everyone knows their security responsibility
+Accountability: violations have consequences
+Audit: documentation proves compliance
+Continuity: security doesn't leave when people do
+    </div>
+
+    <h3>The Governance Document Hierarchy</h3>
+    <div class="pyramid-wrap">
+      <div class="pyr-row" style="width:30%;background:#e0e7ff;border:1.5px solid #a5b4fc;color:#3730a3">
+        Mission & Vision
+      </div>
+      <div class="pyr-row" style="width:48%;background:#dbeafe;border:1.5px solid #93c5fd;color:#1e40af">
+        Policies — "What must be done"
+      </div>
+      <div class="pyr-row" style="width:62%;background:#dcfce7;border:1.5px solid #86efac;color:#166534">
+        Standards — "The specific requirements"
+      </div>
+      <div class="pyr-row" style="width:76%;background:#ffedd5;border:1.5px solid #fdba74;color:#9a3412">
+        Guidelines — "Best practice recommendations"
+      </div>
+      <div class="pyr-row" style="width:90%;background:#f3e8ff;border:1.5px solid #d8b4fe;color:#6b21a8">
+        Procedures — "Step-by-step instructions"
+      </div>
+      <div class="pyr-row" style="width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--muted)">
+        Baselines — "Minimum acceptable config"
+      </div>
+    </div>
+
+    <h3>Governance vs Management — Know the Difference</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#a5b4fc">
+        <h4 style="color:var(--indigo)">Governance — The "What and Why"</h4>
+        <p>Sets direction and objectives. Board and executive level. Defines what security must achieve. Allocates resources and accountability. Ensures alignment with business strategy. Answers: "Are we doing the right things?"</p>
+      </div>
+      <div class="gc" style="border-color:#86efac">
+        <h4 style="color:var(--green)">Management — The "How"</h4>
+        <p>Implements governance decisions. CISO and security team level. Executes policies and controls. Day-to-day security operations. Answers: "Are we doing things right?"</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Governance →</span><span>Framework directing and controlling security — who decides, what rules, how we prove compliance</span></div>
+      <div class="er"><span class="ek">Policy →</span><span>High-level "what must be done" — management approved — mandatory</span></div>
+      <div class="er"><span class="ek">Standard →</span><span>Specific measurable requirements — how to meet policy</span></div>
+      <div class="er"><span class="ek">Guideline →</span><span>Recommended best practices — NOT mandatory</span></div>
+      <div class="er"><span class="ek">Procedure →</span><span>Step-by-step instructions — how to do something specific</span></div>
+      <div class="er"><span class="ek">Baseline →</span><span>Minimum acceptable security configuration</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 2. POLICY HIERARCHY     -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">The Document Hierarchy Explained</span><span class="bdg bdg-blue">Policy · Standard · Guideline · Procedure</span></div>
+  <div class="card-bd">
+    <p>Each level of the governance hierarchy has a <strong style="color:var(--text)">distinct purpose, audience, and authority level</strong>. Understanding the differences between policy, standard, guideline, and procedure is one of the most commonly tested concepts in Domain 5.</p>
+
+    <div class="hier">
+      <div class="hier-row" style="background:#e0e7ff;border-color:#a5b4fc">
+        <span class="hier-icon">📋</span>
+        <span class="hier-label" style="color:var(--indigo)">POLICY</span>
+        <span class="hier-desc">High-level statement of management intent and direction. Mandatory — must be followed. Approved by senior leadership (CEO/Board). Does not specify technical details. Written for all employees.</span>
+        <span class="hier-scope" style="color:var(--indigo)">Mandatory</span>
+      </div>
+      <div class="hier-row" style="background:#dcfce7;border-color:#86efac">
+        <span class="hier-icon">📐</span>
+        <span class="hier-label" style="color:var(--green)">STANDARD</span>
+        <span class="hier-desc">Specific, measurable requirements supporting a policy. Mandatory within its defined scope. Technical in nature — defines exact requirements. Owned by security team or IT.</span>
+        <span class="hier-scope" style="color:var(--green)">Mandatory</span>
+      </div>
+      <div class="hier-row" style="background:#ffedd5;border-color:#fdba74">
+        <span class="hier-icon">💡</span>
+        <span class="hier-label" style="color:var(--orange)">GUIDELINE</span>
+        <span class="hier-desc">Recommended best practices and suggested approaches. NOT mandatory — advisory only. Provides flexibility for different situations. "Should" language vs "shall/must" in policies.</span>
+        <span class="hier-scope" style="color:var(--orange)">Recommended</span>
+      </div>
+      <div class="hier-row" style="background:#f3e8ff;border-color:#d8b4fe">
+        <span class="hier-icon">📝</span>
+        <span class="hier-label" style="color:var(--purple)">PROCEDURE</span>
+        <span class="hier-desc">Step-by-step instructions for accomplishing a specific task. Operational level — for practitioners. Highly specific — tells exactly what to do and in what order. Should match policies and standards.</span>
+        <span class="hier-scope" style="color:var(--purple)">Instructional</span>
+      </div>
+      <div class="hier-row" style="background:var(--s2);border-color:var(--border)">
+        <span class="hier-icon">⚙️</span>
+        <span class="hier-label" style="color:var(--muted)">BASELINE</span>
+        <span class="hier-desc">Minimum acceptable security configuration for a system or platform. Defines the secure starting point. CIS Benchmarks, STIG — external baselines. Internal baselines for specific systems.</span>
+        <span class="hier-scope" style="color:var(--muted)">Minimum config</span>
+      </div>
+    </div>
+
+    <h3>Concrete Example — Password Security Hierarchy</h3>
+    <div class="code">
+<span class="cb">Policy (high-level mandatory directive):</span>
+  "All users must authenticate with strong credentials to access
+   company systems. Passwords must meet complexity requirements
+   as defined in the Password Standard."
+  Approved by: CEO | Applies to: All employees
+
+<span class="cg">Standard (specific measurable requirements):</span>
+  Password requirements:
+    Minimum length: 12 characters
+    Complexity: upper, lower, number, special char
+    History: cannot reuse last 12 passwords
+    Expiry: 90 days for standard accounts
+    MFA: required for all remote access
+    Service accounts: 20+ char, vault managed
+
+<span class="co">Guideline (recommended best practice):</span>
+  "Users SHOULD consider using a password manager to generate
+   and store complex unique passwords. Passphrases of 4+ random
+   words are recommended where possible."
+  Note: Cannot be enforced — advisory only
+
+<span class="cp">Procedure (step-by-step instructions):</span>
+  How to reset your Active Directory password:
+  Step 1: Press Ctrl+Alt+Delete on your workstation
+  Step 2: Click "Change a password"
+  Step 3: Enter current password in first field
+  Step 4: Enter new password meeting requirements (see Standard)
+  Step 5: Confirm new password in third field
+  Step 6: Click the arrow to confirm change
+  Step 7: Log off and log on with new password to confirm
+    </div>
+
+    <h3>Policy vs Standard vs Guideline — Quick Test</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Document</th><th>Mandatory?</th><th>Language</th><th>Author</th><th>Audience</th></tr>
+      <tr><td><span class="tag ti">Policy</span></td><td><span class="tag tg">Yes</span></td><td>"Shall" / "Must"</td><td>Executive/Board</td><td>All employees</td></tr>
+      <tr><td><span class="tag tg">Standard</span></td><td><span class="tag tg">Yes (in scope)</span></td><td>"Must" / "Required"</td><td>Security team</td><td>Technical staff</td></tr>
+      <tr><td><span class="tag to">Guideline</span></td><td><span class="tag tr">No</span></td><td>"Should" / "Recommended"</td><td>Security team</td><td>All staff</td></tr>
+      <tr><td><span class="tag tp">Procedure</span></td><td><span class="tag tg">When applicable</span></td><td>"Step 1, Step 2..."</td><td>Operations team</td><td>Practitioners</td></tr>
+      <tr><td><span class="tag ty">Baseline</span></td><td><span class="tag tg">Yes (for that system)</span></td><td>Configuration values</td><td>Security/IT</td><td>Admins</td></tr>
+    </table>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Auditor Asks for Your Documents</div>
+      <div class="code">
+<span class="cm"># PCI-DSS auditor arrives. What they ask for:</span>
+
+Auditor: "Show me your Acceptable Use Policy"
+You provide: <span class="cb">Policy document</span> — high-level, CEO-signed, dated
+Auditor: "Show me your password requirements"
+You provide: <span class="cg">Password Standard</span> — 12 chars, complexity, MFA
+Auditor: "How do users actually change passwords?"
+You provide: <span class="cp">Password Reset Procedure</span> — step-by-step
+Auditor: "What's the minimum config for your servers?"
+You provide: <span class="co">Server Security Baseline</span> — CIS Level 1
+
+<span class="cg">All four levels together = comprehensive governance evidence ✓</span>
+<span class="cr">Missing any one level = audit finding = remediation required</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">"Should" language →</span><span>Guideline — recommended but NOT mandatory</span></div>
+      <div class="er"><span class="ek">"Shall/Must" language →</span><span>Policy or Standard — mandatory compliance required</span></div>
+      <div class="er"><span class="ek">Step-by-step instructions →</span><span>Procedure — operational level for practitioners</span></div>
+      <div class="er"><span class="ek">Minimum configuration →</span><span>Baseline — CIS Benchmarks, STIG examples</span></div>
+      <div class="er"><span class="ek">CEO/Board approved →</span><span>Policy level — highest authority in hierarchy</span></div>
+      <div class="er"><span class="ek">Advisory only →</span><span>Guideline — cannot be enforced — flexible</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 3. POLICIES             -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">Security Policies — Types & Content</span><span class="bdg bdg-green">AUP · BYOD · Data · IR · Remote</span></div>
+  <div class="card-bd">
+    <p>Policies are the <strong style="color:var(--text)">foundation of a security program</strong>. Every control, procedure, and security activity should trace back to a policy. Without policies, there is no basis for enforcement, no defense in legal proceedings, and no consistent security posture.</p>
+
+    <h3>Key Policy Types — Security+ Must Know</h3>
+
+    <div class="doc-card" style="border-left-color:var(--blue)">
+      <div class="doc-hd"><span class="doc-icon">📄</span><span class="doc-name" style="color:var(--blue)">Acceptable Use Policy (AUP)</span><span class="doc-type">All employees</span></div>
+      <div class="doc-body">Defines acceptable and unacceptable use of company systems, networks, and data. Employees sign on hire. Covers: personal use limits, prohibited activities, monitoring notice, consequences for violations. Foundation for disciplinary action when violated. Often the first policy employees encounter.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+AUP typically covers:
+  ✓ Permitted: work-related internet use, limited personal use
+  ✗ Prohibited: downloading pirated content, illegal activities
+  ✗ Prohibited: installing unauthorized software
+  ✗ Prohibited: sharing credentials
+  ⚠ Notice: "Company systems are monitored. Users have no
+     expectation of privacy on company equipment."
+  Enforcement: violations subject to disciplinary action
+      </div>
+    </div>
+
+    <div class="doc-card" style="border-left-color:var(--green)">
+      <div class="doc-hd"><span class="doc-icon">📱</span><span class="doc-name" style="color:var(--green)">BYOD / Mobile Device Policy</span><span class="doc-type">Employees with personal devices</span></div>
+      <div class="doc-body">Governs use of personal devices for work. Defines: what MDM controls apply to personal devices, what company can remotely wipe, data separation requirements, prohibited device configurations (jailbreaking). Must balance employee privacy with organizational security. Employees must explicitly consent before MDM enrollment.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+BYOD policy elements:
+  Enrollment: MDM required before accessing corporate email
+  Privacy: company cannot access personal apps or photos
+  Wipe: company can selectively wipe work data
+         (personal data preserved on personal devices)
+  Jailbreaking: prohibited — MDM will detect and block access
+  Lost device: report within 24 hours for remote wipe
+      </div>
+    </div>
+
+    <div class="doc-card" style="border-left-color:var(--orange)">
+      <div class="doc-hd"><span class="doc-icon">📊</span><span class="doc-name" style="color:var(--orange)">Data Classification and Handling Policy</span><span class="doc-type">All employees</span></div>
+      <div class="doc-body">Defines how data is classified (Public, Internal, Confidential, Restricted) and how each classification must be handled, stored, transmitted, and disposed of. Ensures sensitive data gets appropriate protection and employees know what to do with different types of data.</div>
+    </div>
+
+    <div class="doc-card" style="border-left-color:var(--red)">
+      <div class="doc-hd"><span class="doc-icon">🚨</span><span class="doc-name" style="color:var(--red)">Incident Response Policy</span><span class="doc-type">Security team + all staff</span></div>
+      <div class="doc-body">Mandates that security incidents must be reported and defines the response framework. Establishes: incident reporting obligations, response team authority, communication requirements, management escalation thresholds. Without this policy, employees don't know they must report incidents.</div>
+    </div>
+
+    <div class="doc-card" style="border-left-color:var(--purple)">
+      <div class="doc-hd"><span class="doc-icon">🏠</span><span class="doc-name" style="color:var(--purple)">Remote Access / Telework Policy</span><span class="doc-type">Remote and hybrid employees</span></div>
+      <div class="doc-body">Defines requirements for working outside the office. Covers: VPN requirements, home network security expectations, device requirements, public Wi-Fi usage, physical security of company equipment. Became critical after COVID-19 normalized remote work.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+Remote access requirements:
+  VPN: required for access to internal resources
+  Home network: WPA2 minimum, no default router password
+  Device: corporate laptop or BYOD meeting MDM requirements
+  Public Wi-Fi: VPN mandatory, no sensitive work on free Wi-Fi
+  Physical: lock screen when unattended, clean desk
+  Guests: do not allow others to view corporate work
+      </div>
+    </div>
+
+    <div class="doc-card" style="border-left-color:var(--teal)">
+      <div class="doc-hd"><span class="doc-icon">🔐</span><span class="doc-name" style="color:var(--teal)">Password / Credential Policy</span><span class="doc-type">All users</span></div>
+      <div class="doc-body">Sets requirements for password complexity, length, history, rotation, and MFA. References the Password Standard for specific technical requirements. Also covers: no password sharing, no writing down passwords, service account credential management.</div>
+    </div>
+
+    <div class="doc-card" style="border-left-color:var(--gold)">
+      <div class="doc-hd"><span class="doc-icon">🤝</span><span class="doc-name" style="color:var(--gold)">Vendor / Third-Party Security Policy</span><span class="doc-type">Procurement + IT + Legal</span></div>
+      <div class="doc-body">Defines security requirements for vendors and third parties who access company systems or handle company data. Requires: security questionnaires, right-to-audit clauses, data handling agreements, breach notification requirements. SolarWinds supply chain attack demonstrated why vendor policy matters.</div>
+    </div>
+
+    <h3>Policy Lifecycle</h3>
+    <div class="flow">
+      <div class="flow-box" style="background:#dbeafe;border-color:#93c5fd;color:#1e40af">Draft</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#dcfce7;border-color:#86efac;color:#166534">Review</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#f3e8ff;border-color:#d8b4fe;color:#6b21a8">Approve</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#ffedd5;border-color:#fdba74;color:#9a3412">Publish</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#ccfbf1;border-color:#5eead4;color:#115e59">Communicate</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#fef9c3;border-color:#fde047;color:#713f12">Enforce</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#ecfccb;border-color:#bef264;color:#3f6212">Review/Update</div>
+    </div>
+    <p style="font-size:0.78rem">Policies must be: formally approved (signed by appropriate authority), communicated (employees aware and trained), enforced (violations have consequences), and reviewed regularly (annually minimum — regulations and threats change).</p>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">AUP →</span><span>Acceptable Use Policy — employees sign at hire — defines permitted/prohibited use — monitoring notice</span></div>
+      <div class="er"><span class="ek">BYOD policy →</span><span>Governs personal device for work — MDM, privacy, selective wipe consent</span></div>
+      <div class="er"><span class="ek">Data classification policy →</span><span>Defines classification levels and handling requirements for each</span></div>
+      <div class="er"><span class="ek">IR policy →</span><span>Mandates incident reporting — establishes response authority</span></div>
+      <div class="er"><span class="ek">Policy review →</span><span>Must be reviewed regularly (annually minimum) — kept current with threats and regulations</span></div>
+      <div class="er"><span class="ek">Policy enforcement →</span><span>Violations must have defined consequences — policy without enforcement is meaningless</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 4. STANDARDS & PROCS   -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Standards, Procedures & Frameworks</span><span class="bdg bdg-teal">Technical Requirements · Step-by-Step</span></div>
+  <div class="card-bd">
+    <p>While policies state <em>what</em> must be done, standards and procedures tell <strong style="color:var(--text)"><em>how</em> specifically it must be done</strong>. Standards set measurable requirements; procedures provide the operational instructions.</p>
+
+    <h3>Internal Standards — What They Define</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Encryption Standard</h4>
+        <p>Specific algorithms and key lengths required. Not just "encrypt data" — exactly which algorithm and how.</p>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+Data at rest:    AES-256 minimum
+Data in transit: TLS 1.2+ minimum, TLS 1.3 preferred
+Prohibited:      SSL, TLS 1.0, TLS 1.1, DES, RC4, MD5
+Key management:  HSM for critical keys
+Certificates:    SHA-256 minimum, 2048-bit RSA min
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Password Standard</h4>
+        <p>Exact technical requirements for passwords. Supports the Password Policy with measurable specifics.</p>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+Standard users:  12 chars, complexity, 90-day expiry
+Admins:          16+ chars, 60-day expiry, MFA required
+Service accts:   20+ chars, vault-managed, no expiry
+Hash algorithm:  bcrypt/Argon2 for stored passwords
+Lockout:         5 attempts → 15-minute lockout
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Patching Standard</h4>
+        <p>Defines exactly how fast vulnerabilities must be patched based on severity.</p>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+Critical CVE: 48 hours to patch
+High CVE:     7 days
+Medium CVE:   30 days
+Low CVE:      90 days
+Emergency:    CISO approval required for exceptions
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Configuration / Baseline Standard</h4>
+        <p>Minimum security configuration for each platform and system type. References external standards where appropriate.</p>
+        <ul>
+          <li>Windows servers: CIS Benchmark Level 1</li>
+          <li>Linux servers: CIS Benchmark Level 1</li>
+          <li>Network devices: DISA STIG or vendor hardening</li>
+          <li>Cloud: CIS Cloud Benchmark, provider security best practices</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>External Standards & Frameworks</h3>
+
+    <div class="info-row">
+      <div class="info-icon">🏛️</div>
+      <div>
+        <div class="info-title">NIST Cybersecurity Framework (CSF)</div>
+        <div class="info-desc">Voluntary US framework for managing cybersecurity risk. Five core functions: Identify → Protect → Detect → Respond → Recover. Widely used across industries. Non-prescriptive — tells you WHAT categories of activities, not HOW. CSF 2.0 (2024) added "Govern" function. Used as baseline for many organizational security programs.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">📋</div>
+      <div>
+        <div class="info-title">ISO/IEC 27001 — Information Security Management System (ISMS)</div>
+        <div class="info-desc">International standard for information security management. Certifiable — third-party auditors verify compliance. 93 controls in Annex A across 4 themes: Organizational, People, Physical, Technological. Requires documented ISMS with defined scope. ISO 27002 = implementation guidance for controls. Recognized globally — required by many enterprise contracts.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">💳</div>
+      <div>
+        <div class="info-title">PCI-DSS — Payment Card Industry Data Security Standard</div>
+        <div class="info-desc">Mandatory for any organization handling credit card data. 12 requirements covering network security, access control, monitoring, vulnerability management. Quarterly external scans by ASV required. Annual assessment — QSA for large merchants, SAQ for smaller. Non-compliance = fines + loss of ability to process cards.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🏥</div>
+      <div>
+        <div class="info-title">HIPAA — Health Insurance Portability and Accountability Act</div>
+        <div class="info-desc">US law protecting patient health information (PHI). Administrative, Physical, and Technical Safeguards required. Security Rule + Privacy Rule + Breach Notification Rule. Annual risk assessments required. Business Associate Agreements (BAA) with all vendors handling PHI. OCR (HHS) enforces — fines up to $1.9M per violation category per year.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">📊</div>
+      <div>
+        <div class="info-title">SOC Reports — Service Organization Controls</div>
+        <div class="info-desc">AICPA audit reports for service organizations. SOC 1: financial reporting controls. SOC 2: security, availability, processing integrity, confidentiality, privacy (Trust Services Criteria). SOC 2 Type I: point-in-time / SOC 2 Type II: 6-12 month period. Type II much stronger evidence. Used by cloud providers and SaaS companies to demonstrate security posture to customers.</div>
+      </div>
+    </div>
+
+    <h3>Procedures — Operational Documents</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Onboarding Procedure</h4>
+        <p>Step-by-step guide: create AD account, provision role-based access, enroll MFA, install required software, provide security training, sign required policies. Every new employee processed identically.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Incident Response Procedure</h4>
+        <p>Specific steps for common incident types. Ransomware playbook, phishing response procedure, data breach procedure. Used by analysts under pressure — no improvisation needed.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Change Management Procedure</h4>
+        <p>How to submit, review, approve, implement, and validate changes to production systems. Change Advisory Board (CAB) process. Rollback procedures included. Prevents unauthorized changes.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Backup and Recovery Procedure</h4>
+        <p>Exact steps to perform backups, verify integrity, store offsite, and restore from backup. Tested regularly. When disaster hits — no guessing what to do.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Patch Management Procedure</h4>
+        <p>How patches are tested, approved, scheduled, deployed, and verified. Emergency patch process. Exception handling when patch can't be applied. Closes the loop between vulnerability discovery and remediation.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Offboarding Procedure</h4>
+        <p>Checklist: disable all accounts, collect devices, revoke certificates, transfer files, legal hold check, exit interview. Ensures no lingering access after departure.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">NIST CSF →</span><span>Identify, Protect, Detect, Respond, Recover (+ Govern in 2.0) — voluntary framework</span></div>
+      <div class="er"><span class="ek">ISO 27001 →</span><span>Certifiable ISMS — international standard — 93 controls — requires ISMS documentation</span></div>
+      <div class="er"><span class="ek">PCI-DSS →</span><span>Mandatory for card data — 12 requirements — quarterly ASV scans</span></div>
+      <div class="er"><span class="ek">HIPAA →</span><span>US health data law — PHI protection — Technical/Physical/Administrative safeguards</span></div>
+      <div class="er"><span class="ek">SOC 2 Type II →</span><span>6-12 month period audit — strongest evidence of consistent security controls</span></div>
+      <div class="er"><span class="ek">Standard vs Procedure →</span><span>Standard = what is required / Procedure = how to do it step by step</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 5. EXTERNAL FACTORS     -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">External Considerations</span><span class="bdg bdg-orange">Legal · Regulatory · Industry · Geopolitical</span></div>
+  <div class="card-bd">
+    <p>Security governance doesn't exist in isolation — it must account for <strong style="color:var(--text)">external requirements imposed by law, regulation, industry standards, contracts, and the geopolitical environment</strong>. Ignoring these can result in fines, lawsuits, loss of business, and criminal liability.</p>
+
+    <h3>Legal and Regulatory Environment</h3>
+
+    <div class="ext-row">
+      <span class="ext-flag">⚖️</span>
+      <span class="ext-label" style="color:var(--red)">Data Privacy Laws</span>
+      <span class="ext-detail">GDPR (EU) — 72-hour breach notification, right to erasure, data minimization. CCPA (California) — consumer data rights, opt-out of data sale. PIPEDA (Canada) — private sector data protection. Organizations must comply with laws where their CUSTOMERS are, not just where the company is based. Operating globally = multiple overlapping laws.</span>
+    </div>
+    <div class="ext-row">
+      <span class="ext-flag">🏥</span>
+      <span class="ext-label" style="color:var(--blue)">Healthcare Regulations</span>
+      <span class="ext-detail">HIPAA (US) — PHI protection, BAAs with vendors, breach notification. HITECH Act — strengthened HIPAA enforcement, increased fines. State health privacy laws may be stricter than federal HIPAA. Governs: covered entities (hospitals, insurers) and business associates (IT vendors handling PHI).</span>
+    </div>
+    <div class="ext-row">
+      <span class="ext-flag">💳</span>
+      <span class="ext-label" style="color:var(--green)">Financial Regulations</span>
+      <span class="ext-detail">PCI-DSS — card data. SOX — publicly traded companies, financial reporting integrity, IT general controls. GLBA (Gramm-Leach-Bliley) — financial institutions, customer financial data. FINRA — broker-dealers. Basel III — banks. Each adds security requirements for covered entities.</span>
+    </div>
+    <div class="ext-row">
+      <span class="ext-flag">🏛️</span>
+      <span class="ext-label" style="color:var(--purple)">Government Requirements</span>
+      <span class="ext-detail">FISMA — US federal agencies, NIST-based security controls, annual assessments. FedRAMP — cloud services to federal agencies, rigorous authorization process. DFARS/CMMC — defense contractors, NIST SP 800-171 controls required. State and local government regulations vary widely.</span>
+    </div>
+    <div class="ext-row">
+      <span class="ext-flag">🌍</span>
+      <span class="ext-label" style="color:var(--gold)">International & Cross-Border</span>
+      <span class="ext-detail">Data localization laws — some countries require data stored within their borders (Russia, China). Cross-border transfer restrictions — GDPR SCCs for transfers outside EU. Export controls (ITAR, EAR) — certain security technologies restricted from export. Jurisdictional complexity — which country's laws apply?</span>
+    </div>
+
+    <h3>Industry-Specific Standards</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--teal)">Energy / Critical Infrastructure</h4>
+        <p>NERC CIP — North American Electric Reliability Corporation Critical Infrastructure Protection. Mandatory for bulk electric system operators. Covers: physical security, electronic security perimeters, incident reporting, supply chain risk.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Defense / Government</h4>
+        <p>CMMC — Cybersecurity Maturity Model Certification. Defense contractors must achieve level 1, 2, or 3 based on contract sensitivity. Level 2 requires third-party assessment. Based on NIST SP 800-171 controls.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Automotive</h4>
+        <p>TISAX — automotive industry information security standard (Germany/Europe). UN Regulation R155 — vehicle cybersecurity management. Increasingly relevant as vehicles become connected computers.</p>
+      </div>
+    </div>
+
+    <h3>Contractual Obligations</h3>
+    <div class="code">
+<span class="cm"># External obligations from contracts:</span>
+
+<span class="cb">Customer contracts:</span>
+  Enterprise customers may require: ISO 27001 cert, SOC 2 Type II,
+  specific security controls, right-to-audit clauses,
+  security questionnaire responses, pen test results
+
+<span class="cb">Vendor/Partner agreements:</span>
+  SLAs: uptime guarantees, incident notification timelines
+  Security Addendums: specific controls required of vendor
+  BAAs: HIPAA Business Associate Agreements
+  DPAs: GDPR Data Processing Agreements
+
+<span class="cb">Cyber insurance requirements:</span>
+  Insurers increasingly require before coverage:
+    MFA on all admin accounts
+    Offline/immutable backups
+    EDR on all endpoints
+    Security awareness training
+    Vulnerability scanning program
+  Failure to maintain = policy void + claim denied!
+
+<span class="cb">Cloud provider agreements:</span>
+  Shared responsibility model defined in ToS
+  Data processing terms define your and their obligations
+  Right to receive security logs and notifications
+    </div>
+
+    <h3>Geopolitical and Supply Chain Considerations</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--red)">Geopolitical Risk</h4>
+        <p>Some vendors banned or restricted by government: Huawei and ZTE restricted in US federal networks. TikTok restrictions in government devices. Russian software restrictions following sanctions. Chinese equipment concerns in critical infrastructure. Organizations must assess vendor country-of-origin risk.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Supply Chain Security</h4>
+        <p>Vendors have access to your systems — their security = your risk. SolarWinds: malicious update from trusted vendor. Security questionnaires for all vendors. SBOM (Software Bill of Materials) requirements. Fourth-party risk — vendors' vendors. Right-to-audit clauses in contracts.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">GDPR →</span><span>EU data privacy — 72-hour breach notification — applies where customers are located</span></div>
+      <div class="er"><span class="ek">HIPAA →</span><span>US health data — PHI protection — covered entities + business associates</span></div>
+      <div class="er"><span class="ek">SOX →</span><span>Financial reporting integrity for public companies — IT general controls</span></div>
+      <div class="er"><span class="ek">FISMA →</span><span>US federal agencies — NIST-based security controls</span></div>
+      <div class="er"><span class="ek">CMMC →</span><span>Defense contractors — 3 levels — based on NIST SP 800-171</span></div>
+      <div class="er"><span class="ek">Cyber insurance →</span><span>Increasingly requires MFA, EDR, backups — failure to maintain = claim denied</span></div>
+      <div class="er"><span class="ek">Data localization →</span><span>Some countries require data stored within their borders — governance complexity</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 6. GOVERNANCE STRUCTURE -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Governance Structures</span><span class="bdg bdg-indigo">Committees · Boards · Centralized vs Decentralized</span></div>
+  <div class="card-bd">
+    <p>Governance structures define <strong style="color:var(--text)">how security decisions are made, who has authority, and how accountability is maintained</strong>. The right structure ensures security gets visibility at the right levels and decisions are made by the right people.</p>
+
+    <h3>Governance Models</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#a5b4fc">
+        <h4 style="color:var(--indigo)">Centralized Governance</h4>
+        <p>Single central security team sets policy for entire organization. Consistent standards everywhere. One approval authority. Easier to audit and demonstrate compliance.</p>
+        <ul>
+          <li>+ Consistent security posture</li>
+          <li>+ Clear accountability</li>
+          <li>+ Easier compliance demonstration</li>
+          <li>− May not fit all business unit needs</li>
+          <li>− Central team can become bottleneck</li>
+          <li>Best for: regulated industries, smaller organizations</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#86efac">
+        <h4 style="color:var(--green)">Decentralized Governance</h4>
+        <p>Business units have own security teams and policies. More flexibility. Faster local decisions. Risk: inconsistency, gaps, conflicting policies.</p>
+        <ul>
+          <li>+ Faster decisions at business unit level</li>
+          <li>+ Better fit for diverse business needs</li>
+          <li>− Inconsistent security standards</li>
+          <li>− Harder to prove enterprise-wide compliance</li>
+          <li>− Duplication of security effort and cost</li>
+          <li>Best for: large conglomerates, highly diverse orgs</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#fdba74">
+        <h4 style="color:var(--orange)">Hybrid / Federated Governance</h4>
+        <p>Central team sets minimum standards — business units have flexibility within them. "Comply or explain" model. Most common in large enterprises. Balance of consistency and agility.</p>
+        <ul>
+          <li>+ Core standards enforced centrally</li>
+          <li>+ Flexibility for unique business needs</li>
+          <li>+ Scalable across diverse units</li>
+          <li>− More complex to manage</li>
+          <li>− Requires strong coordination</li>
+          <li>Best for: large enterprises, multinationals</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Governance Bodies — Who Makes Decisions</h3>
+
+    <div class="info-row">
+      <div class="info-icon">🏛️</div>
+      <div>
+        <div class="info-title">Board of Directors</div>
+        <div class="info-desc">Ultimate governance authority. Sets risk appetite and tolerance. Receives periodic security briefings (quarterly minimum for public companies). Approves major security investments and policies. Board-level cybersecurity committee increasingly common. SEC requires public companies to disclose board cybersecurity expertise. Approves the overall information security program.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">👔</div>
+      <div>
+        <div class="info-title">Executive Leadership / C-Suite</div>
+        <div class="info-desc">CEO owns overall accountability. CISO manages security program — reports to CEO, CTO, or Board depending on org. CFO approves security budget. CTO/CIO owns technology risk. COO handles operational continuity. CLO (Legal) handles regulatory compliance. All have security responsibilities in their domain.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🔒</div>
+      <div>
+        <div class="info-title">Security Steering Committee</div>
+        <div class="info-desc">Cross-functional committee making security program decisions. Membership: CISO, CTO, CIO, Legal, HR, Business unit heads, Audit. Responsibilities: review and approve security policies, prioritize security investments, review compliance status, escalation point for major security decisions. Meets monthly or quarterly. Bridges security team and business.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🔄</div>
+      <div>
+        <div class="info-title">Change Advisory Board (CAB)</div>
+        <div class="info-desc">Reviews and approves changes to production systems. Security represented on CAB to evaluate security impact of changes. Emergency CAB process for critical patches. Prevents unauthorized or risky changes. Documents rationale for all production changes — compliance evidence.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🔍</div>
+      <div>
+        <div class="info-title">Internal Audit Committee</div>
+        <div class="info-desc">Independent review of security controls effectiveness. Reports to Board — not management (independence is critical). Conducts security audits, assesses policy compliance, reviews security incidents for lessons learned. Provides assurance to Board and external regulators. Should have no operational security responsibilities — pure oversight role.</div>
+      </div>
+    </div>
+
+    <h3>Risk Appetite and Risk Tolerance</h3>
+    <div class="code">
+<span class="cm"># Board establishes risk appetite — everything flows from this:</span>
+
+<span class="cb">Risk Appetite:</span>
+  The AMOUNT and TYPE of risk an organization is willing to ACCEPT
+  Set by Board — applies to entire organization
+  
+  Example: "We will not accept risk of customer PII exposure
+           above a 1-in-1000 probability of breach per year"
+
+<span class="ct">Risk Tolerance:</span>
+  Acceptable VARIATION from risk appetite — the wiggle room
+  More operational — "how far can we deviate before escalating?"
+  
+  Example: "CVSS Critical vulnerabilities: tolerance = 0
+            All must be patched within 48 hours — no exceptions"
+
+<span class="co">Risk Threshold:</span>
+  The level at which risk triggers ESCALATION or ACTION
+  Breach of threshold = escalate to governance body
+  
+  Example: "If > 3 critical vulnerabilities unpatched after 48hrs
+            = CISO notified + Board security committee briefed"
+
+<span class="cm"># How it flows down:</span>
+Board: sets risk appetite (high level)
+CISO: translates to security risk tolerance
+Security team: implements controls to stay within tolerance
+Audit: verifies organization operating within appetite
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Centralized governance →</span><span>Single security team sets policy — consistent — easier compliance — may be bottleneck</span></div>
+      <div class="er"><span class="ek">Decentralized →</span><span>Business units own security — flexible — risk of inconsistency and gaps</span></div>
+      <div class="er"><span class="ek">Steering committee →</span><span>Cross-functional — CISO + business heads — approves policies + investments</span></div>
+      <div class="er"><span class="ek">Internal audit →</span><span>Independent review — reports to Board NOT management — provides assurance</span></div>
+      <div class="er"><span class="ek">Risk appetite →</span><span>How much risk organization willing to accept — set by Board</span></div>
+      <div class="er"><span class="ek">Risk tolerance →</span><span>Acceptable variation from risk appetite — operational threshold</span></div>
+      <div class="er"><span class="ek">CAB →</span><span>Change Advisory Board — approves production changes — security represented</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 7. ROLES               -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Roles & Responsibilities</span><span class="bdg bdg-purple">CISO · DPO · ISSO · All Staff</span></div>
+  <div class="card-bd">
+    <p>Security is <strong style="color:var(--text)">everyone's responsibility</strong> — but different roles carry different specific obligations. Clear role definition prevents gaps ("I thought they were doing that") and overlaps ("three teams all doing the same thing inefficiently").</p>
+
+    <h3>Executive Security Roles</h3>
+    <div class="g2">
+      <div class="role-card" style="border-top-color:var(--indigo)">
+        <div class="role-title" style="color:var(--indigo)">CISO — Chief Information Security Officer</div>
+        <div class="role-desc">Owns the information security program. Strategic and operational security leadership.</div>
+        <ul class="role-resp">
+          <li>Develop and maintain security strategy and program</li>
+          <li>Report to Board/CEO on security posture</li>
+          <li>Own security policies and standards</li>
+          <li>Manage security budget and team</li>
+          <li>Lead incident response at executive level</li>
+          <li>Interface with regulators and auditors</li>
+          <li>Translate security risk into business risk</li>
+          <li>Decision authority on major security investments</li>
+        </ul>
+      </div>
+      <div class="role-card" style="border-top-color:var(--blue)">
+        <div class="role-title" style="color:var(--blue)">CTO / CIO — Technology Leadership</div>
+        <div class="role-desc">Owns technology infrastructure — security must be embedded in technology decisions.</div>
+        <ul class="role-resp">
+          <li>Ensure security in technology architecture decisions</li>
+          <li>Approve major technology changes (security impact)</li>
+          <li>Own disaster recovery and business continuity</li>
+          <li>Resource security team appropriately</li>
+          <li>Balance security with operational agility</li>
+        </ul>
+      </div>
+      <div class="role-card" style="border-top-color:var(--green)">
+        <div class="role-title" style="color:var(--green)">DPO — Data Protection Officer</div>
+        <div class="role-desc">Required by GDPR for certain organizations. Independent role — cannot have conflicting duties.</div>
+        <ul class="role-resp">
+          <li>Monitor GDPR compliance</li>
+          <li>Advise on data protection impact assessments</li>
+          <li>Interface with data protection authority</li>
+          <li>Train staff on GDPR obligations</li>
+          <li>First point of contact for data subjects</li>
+          <li>Must be independent — cannot be fired for performing role</li>
+        </ul>
+      </div>
+      <div class="role-card" style="border-top-color:var(--orange)">
+        <div class="role-title" style="color:var(--orange)">Privacy Officer</div>
+        <div class="role-desc">Manages privacy program — may overlap with DPO in GDPR organizations.</div>
+        <ul class="role-resp">
+          <li>Develop and maintain privacy policies</li>
+          <li>Manage privacy impact assessments</li>
+          <li>Handle individual privacy rights requests</li>
+          <li>Interface with privacy regulators</li>
+          <li>Train staff on privacy obligations</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Data Roles — Ownership and Stewardship</h3>
+    <div class="code">
+<span class="cb">Data Owner:</span>
+  WHO: Senior business executive (not IT!)
+  EXAMPLE: CFO owns financial data, CMO owns marketing data
+  RESPONSIBILITIES:
+    Decide data classification level
+    Determine who has access
+    Accept risk on behalf of organization
+    Accountable for regulatory compliance
+    Authorize data sharing with third parties
+
+<span class="cg">Data Custodian (Data Steward):</span>
+  WHO: IT staff / database administrators
+  EXAMPLE: DBA, sysadmin
+  RESPONSIBILITIES:
+    Implement owner's classification decisions
+    Apply technical controls (encryption, access)
+    Perform backups and ensure availability
+    Technical implementation only — no policy decisions
+    Follows directions from Data Owner
+
+<span class="co">Data Processor:</span>
+  WHO: Third party processing data on your behalf
+  EXAMPLE: Payroll vendor, cloud provider
+  GDPR TERM: organization processing data for controller
+  REQUIRES: Data Processing Agreement (DPA)
+
+<span class="cp">Data Controller:</span>
+  WHO: Your organization (determines purposes of processing)
+  GDPR TERM: entity deciding WHY and HOW data is processed
+  RESPONSIBLE: For processor's actions with your data
+  MUST HAVE: DPA with every processor
+
+<span class="cm"># Critical distinction for exam:</span>
+Data Owner ≠ Data Custodian
+Owner: business decision maker — not necessarily technical
+Custodian: technical implementer — no policy authority
+    </div>
+
+    <h3>Operational Security Roles</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Security Analyst (SOC)</h4>
+        <p>Monitor alerts, investigate incidents, triage security events, execute playbooks, escalate confirmed threats. Tier 1/2/3 levels with increasing complexity. Eyes on glass — first responders to security events.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Security Architect</h4>
+        <p>Design secure systems and networks. Create security reference architectures. Review designs for security flaws before build. Ensure security requirements translated into technical designs. Bridge between policy and implementation.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Vulnerability Manager</h4>
+        <p>Own vulnerability management program. Run scanning tools, prioritize findings, track remediation, report on patch compliance. Liaison between security team and IT operations for patching.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">ISSO — Information Systems Security Officer</h4>
+        <p>Government/federal term. Owns security posture for a specific system. Maintains system security plan. Ensures ATO (Authorization to Operate) maintained. Primary security liaison for that system.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Compliance Manager</h4>
+        <p>Manage regulatory compliance program. Coordinate audits, maintain evidence, track compliance status, manage remediation of findings. Interface with regulators and external auditors.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Incident Commander</h4>
+        <p>Coordinates response during security incidents. Clear decision authority under pressure. Manages communication to stakeholders. Not necessarily most technical — must be decisive leader. Defined in IRP before incident occurs.</p>
+      </div>
+    </div>
+
+    <h3>All Employees — Security Responsibilities</h3>
+    <div class="code">
+<span class="cm"># Security is not just IT's job — everyone has obligations:</span>
+
+All employees MUST:
+  ✓ Complete annual security awareness training
+  ✓ Report suspected security incidents promptly
+  ✓ Follow Acceptable Use Policy
+  ✓ Protect their credentials — never share
+  ✓ Report lost or stolen devices immediately
+  ✓ Lock workstation when leaving desk
+  ✓ Not click suspicious links or open unexpected attachments
+  ✓ Follow data classification and handling requirements
+  ✓ Complete mandatory compliance training (HIPAA, PCI, etc.)
+
+Managers ADDITIONALLY:
+  ✓ Ensure direct reports complete training
+  ✓ Certify access during access recertification campaigns
+  ✓ Report suspicious employee behavior (insider threat)
+  ✓ Understand security policies applicable to their team
+  ✓ Participate in business impact analysis for their function
+
+<span class="cm"># "Security is everyone's responsibility" is not just a slogan</span>
+<span class="cm"># It has legal implications — employees can be held liable</span>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">CISO →</span><span>Owns security program — reports to Board/CEO — strategic + operational security</span></div>
+      <div class="er"><span class="ek">DPO →</span><span>Required by GDPR — independent role — monitors compliance — cannot be conflicted</span></div>
+      <div class="er"><span class="ek">Data owner →</span><span>Business executive — decides classification + access — NOT IT</span></div>
+      <div class="er"><span class="ek">Data custodian →</span><span>IT staff — implements technical controls — follows owner's decisions</span></div>
+      <div class="er"><span class="ek">Data controller vs processor →</span><span>Controller = decides why/how data used / Processor = processes on controller's behalf</span></div>
+      <div class="er"><span class="ek">ISSO →</span><span>Government/federal — owns security for specific system — maintains ATO</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 8. MONITORING & REVIEW  -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Governance Monitoring & Review</span><span class="bdg bdg-lime">Metrics · Audits · KPIs · Continuous</span></div>
+  <div class="card-bd">
+    <p>Governance without monitoring is just documentation. <strong style="color:var(--text)">Effective governance requires continuous measurement</strong> of whether policies are being followed, controls are working, and the security program is achieving its objectives.</p>
+
+    <h3>Security Metrics and KPIs</h3>
+    <div class="code">
+<span class="cm"># Key governance metrics — what gets measured:</span>
+
+<span class="cb">Compliance metrics:</span>
+  Policy acknowledgment rate:    target 100% annually
+  Security training completion:  target 100% by deadline
+  Patch compliance rate:         Critical: 100% in 48hrs
+  Access recertification:        100% completed quarterly
+  Exception count:               track open exceptions
+
+<span class="cg">Security operations metrics:</span>
+  Mean Time to Detect (MTTD):    how fast breaches found
+  Mean Time to Respond (MTTR):   how fast breaches contained
+  Vulnerability scan coverage:   % of assets scanned
+  Vulnerability remediation rate: % fixed within SLA
+  Open critical vulns:           target = 0
+
+<span class="co">Risk metrics:</span>
+  Risk register items:           count by severity
+  Residual risk trend:           improving over time?
+  Security incidents:            by type, severity, source
+  Control effectiveness:         audit findings trend
+
+<span class="cp">Program metrics:</span>
+  Security budget utilization:   planned vs actual
+  Training effectiveness:        phishing simulation click rates
+  Vendor risk assessments:       completed vs due
+  Policy review cadence:         all policies reviewed annually?
+    </div>
+
+    <h3>Audit Types</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Internal Audit</h4>
+        <p>Conducted by internal audit team — independent from security operations. Reviews: policy compliance, control effectiveness, regulatory adherence. Reports to Audit Committee/Board. Continuous audit model — not just annual. Provides management assurance.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">External Audit</h4>
+        <p>Conducted by independent third party. Most credible — no conflict of interest. Required for: SOC 2 Type II, ISO 27001 certification, PCI-DSS QSA assessments. More expensive but required for many certifications and customer contracts.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Regulatory Examination</h4>
+        <p>Conducted by regulator — OCR for HIPAA, OCC for banks, SEC for public companies. Not voluntary. Regulator has subpoena power. Findings can result in fines, consent decrees, business restrictions. Preparation is ongoing — not just before exam.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Penetration Test</h4>
+        <p>Authorized simulated attack to verify control effectiveness. Technical audit of security controls. Required by: PCI-DSS (annual), many cyber insurance policies. Findings become action items with remediation deadlines. Different from vulnerability scanning — tests real exploitability.</p>
+      </div>
+    </div>
+
+    <h3>Continuous Monitoring Program</h3>
+    <div class="info-row">
+      <div class="info-icon">📊</div>
+      <div>
+        <div class="info-title">What Continuous Monitoring Covers</div>
+        <div class="info-desc">Technical monitoring (SIEM, EDR, vulnerability scanning), compliance monitoring (policy adherence, patch status, configuration drift), risk monitoring (risk register changes, new threats), vendor monitoring (third-party risk changes), and regulatory monitoring (new regulations and requirements that affect the organization). Results feed into governance reports and trigger policy/standard updates when gaps are found.</div>
+      </div>
+    </div>
+
+    <h3>Policy Review and Update Cycle</h3>
+    <div class="code">
+<span class="cm"># When policies should be reviewed and updated:</span>
+
+<span class="cb">Scheduled reviews (minimum annually):</span>
+  Every policy reviewed for currency
+  Regulatory changes incorporated
+  New threats/vulnerabilities addressed
+  Lessons learned from incidents applied
+
+<span class="co">Triggered reviews (event-based):</span>
+  Major security incident ← review related policies
+  New regulation published ← immediate review
+  Significant technology change ← affected standards
+  Merger/acquisition ← harmonize policy frameworks
+  New business line ← extend policy scope
+  Audit finding ← immediate remediation
+  Key personnel change ← ensure continuity
+
+<span class="cg">Policy review process:</span>
+  Policy owner: initiates review
+  SME review: technical accuracy
+  Legal review: regulatory compliance
+  Stakeholder review: operational feasibility
+  Approval: appropriate authority (CEO for company policy)
+  Communication: all affected parties notified
+  Training: if significant change — retrain employees
+    </div>
+
+    <h3>Reporting Up — Governance Communication</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Audience</th><th>Content</th><th>Frequency</th><th>Format</th></tr>
+      <tr><td><strong>Board</strong></td><td>Risk posture, major incidents, regulatory status, program investment</td><td>Quarterly</td><td>Executive dashboard, 15-min briefing</td></tr>
+      <tr><td><strong>CEO/C-Suite</strong></td><td>Security posture trend, compliance status, resource needs, incidents</td><td>Monthly</td><td>1-2 page report + metrics dashboard</td></tr>
+      <tr><td><strong>Audit Committee</strong></td><td>Audit findings, remediation status, control effectiveness</td><td>Quarterly</td><td>Detailed report with evidence</td></tr>
+      <tr><td><strong>Business Units</strong></td><td>Risks relevant to their operations, compliance deadlines, action items</td><td>Monthly</td><td>Email + dashboard</td></tr>
+      <tr><td><strong>Security Team</strong></td><td>Operational metrics, incidents, vulnerability status, priorities</td><td>Weekly</td><td>Operational dashboard, standup</td></tr>
+    </table>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Governance Review Prevents Compliance Gap</div>
+      <div class="code">
+<span class="cm"># Annual policy review process catches critical gap:</span>
+
+January: Annual governance review cycle begins
+Policy Owner (CISO): reviews all 23 security policies
+
+During review:
+  New regulation: SEC cybersecurity disclosure rules (2023)
+  Requirement: material incidents must be disclosed within 4 days
+  Current policy: "notify Board within 7 days of major incident"
+
+<span class="cr">GAP: Current 7-day policy violates new SEC 4-day requirement</span>
+
+Actions:
+  1. CISO initiates emergency policy update
+  2. Legal review: confirms SEC interpretation
+  3. Updated policy: "notify CISO within 1 hour, Board within 24hr,
+     SEC disclosure assessment within 72 hours"
+  4. CEO approves updated policy
+  5. All executives trained on new requirement
+  6. IR playbooks updated to include SEC notification step
+  7. External counsel pre-briefed on process
+
+Result: <span class="cg">compliant before SEC audit ✓</span>
+<span class="cm">Without annual review: discovered during SEC investigation = fine</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">MTTD →</span><span>Mean Time to Detect — how fast breaches found — key security operations KPI</span></div>
+      <div class="er"><span class="ek">MTTR →</span><span>Mean Time to Respond — how fast breaches contained — incident response KPI</span></div>
+      <div class="er"><span class="ek">Internal audit →</span><span>Independent from operations — reports to Board — provides assurance</span></div>
+      <div class="er"><span class="ek">External audit →</span><span>Third party — most credible — required for SOC 2, ISO 27001, PCI QSA</span></div>
+      <div class="er"><span class="ek">Policy review →</span><span>Annually minimum PLUS event-triggered — incidents, new regulations, tech changes</span></div>
+      <div class="er"><span class="ek">Continuous monitoring →</span><span>Technical + compliance + risk + vendor monitoring — ongoing, not periodic</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 9. SUMMARY             -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-indigo">All Topics</span></div>
+  <div class="card-bd">
+
+    <h3>Document Hierarchy Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Document</th><th>Purpose</th><th>Mandatory?</th><th>Language</th><th>Author</th></tr>
+      <tr><td><span class="tag ti">Policy</span></td><td>Management intent — high-level direction</td><td><span class="tag tg">Yes</span></td><td>Shall/Must</td><td>Executive/Board</td></tr>
+      <tr><td><span class="tag tg">Standard</span></td><td>Specific measurable requirements</td><td><span class="tag tg">Yes (in scope)</span></td><td>Must/Required</td><td>Security team</td></tr>
+      <tr><td><span class="tag to">Guideline</span></td><td>Recommended best practices</td><td><span class="tag tr">No</span></td><td>Should/Recommended</td><td>Security team</td></tr>
+      <tr><td><span class="tag tp">Procedure</span></td><td>Step-by-step instructions</td><td><span class="tag ty">When applicable</span></td><td>Step 1, Step 2</td><td>Operations</td></tr>
+      <tr><td><span class="tag ty">Baseline</span></td><td>Minimum security configuration</td><td><span class="tag tg">Yes (for system)</span></td><td>Configuration values</td><td>Security/IT</td></tr>
+    </table>
+    </div>
+
+    <h3>Key Roles Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Role</th><th>Primary Responsibility</th><th>Key Detail</th></tr>
+      <tr><td><span class="tag ti">CISO</span></td><td>Own security program</td><td>Reports to CEO/Board — strategic + operational</td></tr>
+      <tr><td><span class="tag tg">DPO</span></td><td>GDPR compliance</td><td>Required by GDPR — independent — cannot have conflicting duties</td></tr>
+      <tr><td><span class="tag tb">Data Owner</span></td><td>Classify and control data</td><td>Business executive — NOT IT — decides access</td></tr>
+      <tr><td><span class="tag tp">Data Custodian</span></td><td>Implement data controls</td><td>IT staff — implements owner's decisions</td></tr>
+      <tr><td><span class="tag to">Privacy Officer</span></td><td>Privacy program management</td><td>Handles PIAs, rights requests, regulators</td></tr>
+      <tr><td><span class="tag ty">ISSO</span></td><td>System security posture</td><td>Government/federal — owns specific system ATO</td></tr>
+      <tr><td><span class="tag tt">Internal Audit</span></td><td>Independent assurance</td><td>Reports to Board — NOT management — independence critical</td></tr>
+    </table>
+    </div>
+
+    <h3>External Frameworks Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Framework</th><th>Voluntary?</th><th>Sector</th><th>Key Feature</th></tr>
+      <tr><td><span class="tag ti">NIST CSF</span></td><td><span class="tag tg">Voluntary</span></td><td>All</td><td>5 functions: Identify/Protect/Detect/Respond/Recover</td></tr>
+      <tr><td><span class="tag tg">ISO 27001</span></td><td><span class="tag tg">Voluntary</span></td><td>All</td><td>Certifiable ISMS — 93 controls — international</td></tr>
+      <tr><td><span class="tag to">PCI-DSS</span></td><td><span class="tag tr">Mandatory</span></td><td>Card payments</td><td>12 requirements — quarterly ASV scans</td></tr>
+      <tr><td><span class="tag tb">HIPAA</span></td><td><span class="tag tr">Mandatory</span></td><td>Healthcare (US)</td><td>PHI protection — Technical/Physical/Admin safeguards</td></tr>
+      <tr><td><span class="tag tp">GDPR</span></td><td><span class="tag tr">Mandatory</span></td><td>EU + EU customers</td><td>72-hr breach notice — DPO required for some orgs</td></tr>
+      <tr><td><span class="tag ty">SOX</span></td><td><span class="tag tr">Mandatory</span></td><td>Public companies</td><td>Financial reporting + IT general controls</td></tr>
+      <tr><td><span class="tag ti">CMMC</span></td><td><span class="tag tr">Mandatory</span></td><td>Defense contractors</td><td>3 levels — based on NIST SP 800-171</td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"High-level mandatory directive from management"</span><span>→ Policy — uses "shall/must" — approved by executive/Board</span></div>
+      <div class="er"><span class="ek">"Specific measurable technical requirements"</span><span>→ Standard — mandatory within scope — more detailed than policy</span></div>
+      <div class="er"><span class="ek">"Recommended but not required best practice"</span><span>→ Guideline — "should" language — advisory only — flexible</span></div>
+      <div class="er"><span class="ek">"Step-by-step instructions for IT staff"</span><span>→ Procedure — operational level — specific steps in order</span></div>
+      <div class="er"><span class="ek">"Minimum acceptable security configuration"</span><span>→ Baseline — CIS Benchmarks, STIG examples</span></div>
+      <div class="er"><span class="ek">"Document employees sign on first day"</span><span>→ Acceptable Use Policy (AUP)</span></div>
+      <div class="er"><span class="ek">"Policy governing personal devices for work"</span><span>→ BYOD Policy — MDM requirements, privacy, selective wipe</span></div>
+      <div class="er"><span class="ek">"Framework for all-sector security: Identify, Protect, Detect..."</span><span>→ NIST Cybersecurity Framework (CSF)</span></div>
+      <div class="er"><span class="ek">"International certifiable security management standard"</span><span>→ ISO/IEC 27001 — ISMS — 93 controls</span></div>
+      <div class="er"><span class="ek">"Mandatory for organizations handling credit card data"</span><span>→ PCI-DSS — 12 requirements — quarterly external scans</span></div>
+      <div class="er"><span class="ek">"EU regulation — 72-hour breach notification"</span><span>→ GDPR — also requires DPO for many orgs</span></div>
+      <div class="er"><span class="ek">"US law protecting patient health information"</span><span>→ HIPAA — Technical/Physical/Administrative safeguards</span></div>
+      <div class="er"><span class="ek">"Required for defense contractors — 3 levels"</span><span>→ CMMC — Cybersecurity Maturity Model Certification</span></div>
+      <div class="er"><span class="ek">"Financial reporting integrity for public companies"</span><span>→ SOX — Sarbanes-Oxley — IT general controls required</span></div>
+      <div class="er"><span class="ek">"Audit report type showing 6-12 month period of controls"</span><span>→ SOC 2 Type II — most credible for service organizations</span></div>
+      <div class="er"><span class="ek">"Who owns security program at highest level?"</span><span>→ CISO — reports to Board/CEO — strategic and operational security</span></div>
+      <div class="er"><span class="ek">"Business executive deciding who can access data"</span><span>→ Data Owner — NOT IT — business accountability</span></div>
+      <div class="er"><span class="ek">"IT staff implementing encryption as directed"</span><span>→ Data Custodian — implements technical controls for Data Owner</span></div>
+      <div class="er"><span class="ek">"Required by GDPR — must be independent"</span><span>→ Data Protection Officer (DPO)</span></div>
+      <div class="er"><span class="ek">"Government role owning security for specific system"</span><span>→ ISSO (Information Systems Security Officer)</span></div>
+      <div class="er"><span class="ek">"Review security policy — when must it be done?"</span><span>→ Annually minimum PLUS event-triggered (incidents, new regs)</span></div>
+      <div class="er"><span class="ek">"Audit that reports to Board — not management"</span><span>→ Internal Audit — independence is critical — cannot report to CISO</span></div>
+      <div class="er"><span class="ek">"Amount of risk organization willing to accept"</span><span>→ Risk appetite — set by Board</span></div>
+      <div class="er"><span class="ek">"Cross-functional group approving security policies"</span><span>→ Security Steering Committee — CISO + business heads</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

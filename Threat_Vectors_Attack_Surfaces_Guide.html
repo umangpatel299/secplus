@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threat Vectors & Attack Surfaces — Security+ Domain 2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,400&family=Share+Tech+Mono&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+
+:root{
+  --bg:#08090e;
+  --s1:#0c0e16;
+  --s2:#121420;
+  --s3:#181a28;
+  --bd:#222438;
+  --tx:#cdd0f0;
+  --mu:#5258a0;
+  /* vector accent colours */
+  --msg:#ff4060;   /* message-based: red */
+  --net:#ff9030;   /* unsecure networks: orange */
+  --soc:#f0c000;   /* social engineering: gold */
+  --fil:#40d080;   /* file-based: green */
+  --vce:#30c8f0;   /* voice: cyan */
+  --sup:#c060ff;   /* supply chain: purple */
+  --sw:#ff6030;    /* vulnerable software: vermillion */
+  --hw:#40a8ff;    /* hardware: blue */
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:'Lato',sans-serif;font-size:14px;line-height:1.65;padding:2rem 1.5rem;overflow-x:hidden;}
+
+/* ── HEADER ── */
+.hdr{text-align:center;margin-bottom:2.5rem;position:relative;padding:2.5rem 1rem 2rem;}
+.hdr-grid{
+  display:grid;grid-template-columns:repeat(8,1fr);
+  gap:2px;position:absolute;inset:0;opacity:0.04;pointer-events:none;
+}
+.hdr-grid-cell{border:1px solid #fff;}
+.hdr-badge{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;color:var(--mu);text-transform:uppercase;margin-bottom:0.7rem;background:var(--s2);border:1px solid var(--bd);padding:0.2rem 0.6rem;}
+.hdr-title{font-family:'Exo 2',sans-serif;font-size:3.2rem;font-weight:900;line-height:0.88;letter-spacing:-0.03em;margin-bottom:0.5rem;}
+.hdr-title .t1{color:var(--msg);}
+.hdr-title .t2{color:var(--tx);}
+.hdr-title .t3{color:var(--soc);}
+.hdr-sub{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--mu);letter-spacing:0.05em;}
+
+/* ── VECTOR NAV ── */
+.vnav{
+  display:grid;grid-template-columns:repeat(8,1fr);
+  gap:0.3rem;margin-bottom:2rem;
+}
+@media(max-width:700px){.vnav{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:380px){.vnav{grid-template-columns:repeat(2,1fr);}}
+.vbtn{
+  padding:0.7rem 0.3rem;text-align:center;
+  border:1px solid var(--bd);background:var(--s1);
+  cursor:pointer;border-radius:6px;transition:all 0.14s;
+  display:flex;flex-direction:column;align-items:center;gap:0.25rem;
+}
+.vbtn-ico{font-size:1.4rem;line-height:1;}
+.vbtn-lbl{font-family:'Share Tech Mono',monospace;font-size:0.54rem;font-weight:700;color:var(--mu);transition:color 0.14s;letter-spacing:0.02em;}
+.vbtn:hover{transform:translateY(-2px);}
+.vbtn[data-v="msg"]:hover,.vbtn[data-v="msg"].on{border-color:var(--msg);background:rgba(255,64,96,0.07);}
+.vbtn[data-v="msg"].on .vbtn-lbl,.vbtn[data-v="msg"]:hover .vbtn-lbl{color:var(--msg);}
+.vbtn[data-v="net"]:hover,.vbtn[data-v="net"].on{border-color:var(--net);background:rgba(255,144,48,0.07);}
+.vbtn[data-v="net"].on .vbtn-lbl,.vbtn[data-v="net"]:hover .vbtn-lbl{color:var(--net);}
+.vbtn[data-v="soc"]:hover,.vbtn[data-v="soc"].on{border-color:var(--soc);background:rgba(240,192,0,0.07);}
+.vbtn[data-v="soc"].on .vbtn-lbl,.vbtn[data-v="soc"]:hover .vbtn-lbl{color:var(--soc);}
+.vbtn[data-v="fil"]:hover,.vbtn[data-v="fil"].on{border-color:var(--fil);background:rgba(64,208,128,0.07);}
+.vbtn[data-v="fil"].on .vbtn-lbl,.vbtn[data-v="fil"]:hover .vbtn-lbl{color:var(--fil);}
+.vbtn[data-v="vce"]:hover,.vbtn[data-v="vce"].on{border-color:var(--vce);background:rgba(48,200,240,0.07);}
+.vbtn[data-v="vce"].on .vbtn-lbl,.vbtn[data-v="vce"]:hover .vbtn-lbl{color:var(--vce);}
+.vbtn[data-v="sup"]:hover,.vbtn[data-v="sup"].on{border-color:var(--sup);background:rgba(192,96,255,0.07);}
+.vbtn[data-v="sup"].on .vbtn-lbl,.vbtn[data-v="sup"]:hover .vbtn-lbl{color:var(--sup);}
+.vbtn[data-v="sw"]:hover,.vbtn[data-v="sw"].on{border-color:var(--sw);background:rgba(255,96,48,0.07);}
+.vbtn[data-v="sw"].on .vbtn-lbl,.vbtn[data-v="sw"]:hover .vbtn-lbl{color:var(--sw);}
+.vbtn[data-v="sum"]:hover,.vbtn[data-v="sum"].on{border-color:var(--mu);background:rgba(82,88,160,0.12);}
+.vbtn[data-v="sum"].on .vbtn-lbl,.vbtn[data-v="sum"]:hover .vbtn-lbl{color:var(--tx);}
+
+/* ── INNER TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:1.8rem;}
+.tab{padding:0.38rem 0.85rem;border-radius:5px;border:1px solid var(--bd);background:var(--s1);color:var(--mu);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:0.62rem;font-weight:700;transition:all 0.13s;letter-spacing:0.02em;}
+.tab:hover,.tab.active{color:#fff;}
+
+/* ── MODEL / SECTION ── */
+.model{display:none;}
+.model.on{display:block;animation:rise 0.18s ease;}
+.sec{display:none;}
+.sec.on{display:block;}
+@keyframes rise{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* ── CARD ── */
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:10px;margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:0.95rem 1.4rem;border-bottom:1px solid var(--bd);background:var(--s2);}
+.card-num{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--mu);background:var(--s3);border:1px solid var(--bd);border-radius:3px;padding:0.1rem 0.35rem;}
+.card-title{font-family:'Exo 2',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.01em;}
+.bdg{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:0.57rem;padding:0.14rem 0.55rem;border-radius:999px;white-space:nowrap;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.card-bd{padding:1.4rem;}
+p{color:var(--mu);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.75;}
+h3{font-family:'Exo 2',sans-serif;font-size:0.92rem;font-weight:700;color:var(--tx);margin:1.3rem 0 0.55rem;padding-left:0.75rem;border-left:3px solid;letter-spacing:-0.01em;}
+
+/* ── CODE ── */
+.code{background:#040507;border:1px solid var(--bd);border-radius:7px;padding:1rem 1.2rem;font-family:'Share Tech Mono',monospace;font-size:0.68rem;line-height:1.95;overflow-x:auto;margin:0.8rem 0;color:var(--tx);}
+.cg{color:#40d080;}.cr{color:#ff4060;}.cb{color:#40a8ff;}.co{color:#ff9030;}.cp{color:#c060ff;}.cm{color:var(--mu);}.ct{color:#30c8f0;}.ci{color:#a0b8ff;}.cs{color:#f0c000;}.cgd{color:#ffa040;}
+
+/* ── SCENE ── */
+.scene{background:#100800;border-left:3px solid var(--soc);border-radius:0 7px 7px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--soc);margin-bottom:0.4rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+
+/* ── EXAM ── */
+.exam{background:#0c0820;border:1px solid #281850;border-radius:8px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--sup);margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--sup);font-family:'Share Tech Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.gc{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1rem;}
+.gc h4{font-family:'Exo 2',sans-serif;font-size:0.88rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--mu);margin-bottom:0.25rem;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.5rem 0.8rem;text-align:left;color:var(--mu);border-bottom:1px solid var(--bd);font-size:0.62rem;font-weight:700;font-family:'Share Tech Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--bd);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.1rem 0.48rem;border-radius:4px;font-size:0.6rem;font-family:'Share Tech Mono',monospace;font-weight:700;}
+.tg{background:#072814;color:#40d080;border:1px solid #0e4020;}
+.tr{background:#280810;color:#ff4060;border:1px solid #401018;}
+.tb{background:#071828;color:#40a8ff;border:1px solid #0e2840;}
+.to{background:#281000;color:#ff9030;border:1px solid #402000;}
+.tp{background:#1e0830;color:#c060ff;border:1px solid #300d48;}
+.tt{background:#071e1c;color:#30c8f0;border:1px solid #0e3030;}
+.ty{background:#1e1400;color:#f0c000;border:1px solid #303000;}
+.ts{background:#181828;color:#a0a8c8;border:1px solid #252538;}
+.tsw{background:#201000;color:#ff6030;border:1px solid #401810;}
+
+/* ── INFO ROW ── */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s2);border:1px solid var(--bd);border-radius:7px;margin-bottom:0.5rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Exo 2',sans-serif;font-size:0.88rem;font-weight:700;margin-bottom:0.12rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--mu);}
+
+/* ── ATTACK STRIP ── */
+.atk-row{display:flex;align-items:flex-start;gap:1rem;padding:0.75rem 0;border-bottom:1px solid var(--bd);}
+.atk-row:last-child{border-bottom:none;}
+.atk-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.1rem;}
+.atk-name{font-family:'Exo 2',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:0.15rem;letter-spacing:-0.01em;}
+.atk-body{font-size:0.76rem;color:var(--mu);}
+
+/* ── VECTOR HEADER BANNER ── */
+.vec-banner{
+  display:flex;align-items:center;gap:1.2rem;
+  padding:1.5rem 1.4rem;
+  border-radius:10px 10px 0 0;
+  border:1px solid var(--bd);
+  border-bottom:none;
+  margin-bottom:0;
+}
+.vec-icon-big{font-size:2.5rem;line-height:1;}
+.vec-title-big{font-family:'Exo 2',sans-serif;font-size:2rem;font-weight:900;letter-spacing:-0.03em;line-height:0.95;}
+.vec-subtitle{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--mu);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.2rem;}
+.vec-stats{display:flex;gap:1.5rem;margin-left:auto;flex-wrap:wrap;}
+.vstat{text-align:center;}
+.vstat-val{font-family:'Exo 2',sans-serif;font-size:1.2rem;font-weight:800;line-height:1;}
+.vstat-label{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--mu);letter-spacing:0.08em;text-transform:uppercase;}
+
+/* ── FLOW ── */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.flow-box{border-radius:5px;padding:0.5rem 0.8rem;font-family:'Share Tech Mono',monospace;font-size:0.64rem;font-weight:700;border:1px solid;text-align:center;min-width:80px;letter-spacing:0.02em;}
+.flow-arr{color:var(--mu);font-size:0.9rem;}
+
+/* ── SE TACTIC CARD ── */
+.se-card{border:1px solid var(--bd);border-radius:8px;padding:1rem 1.1rem;margin-bottom:0.6rem;border-left:4px solid;}
+.se-name{font-family:'Exo 2',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:0.2rem;letter-spacing:-0.01em;}
+.se-body{font-size:0.78rem;color:var(--mu);}
+
+/* ── MITIGATION TABLE ── */
+.mit-row{display:flex;align-items:center;gap:1rem;padding:0.55rem 0.9rem;background:var(--s2);border:1px solid var(--bd);border-radius:5px;margin-bottom:0.35rem;}
+.mit-threat{font-family:'Share Tech Mono',monospace;font-size:0.65rem;font-weight:700;min-width:160px;flex-shrink:0;}
+.mit-fix{font-size:0.76rem;color:var(--mu);flex:1;}
+
+/* ── PHISHING ANATOMY ── */
+.phish-sample{
+  background:#040507;border:1px solid var(--bd);border-radius:8px;
+  overflow:hidden;margin:1rem 0;font-family:'Share Tech Mono',monospace;font-size:0.67rem;
+}
+.phish-header{background:var(--s3);padding:0.6rem 1rem;border-bottom:1px solid var(--bd);}
+.phish-field{display:flex;gap:0.5rem;padding:0.2rem 0;font-size:0.64rem;}
+.phish-label{color:var(--mu);min-width:60px;}
+.phish-val{color:var(--tx);flex:1;}
+.phish-anno{color:var(--cr);font-size:0.6rem;}
+.phish-body-area{padding:0.8rem 1rem;line-height:1.7;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-grid" aria-hidden="true">
+    <script>for(let i=0;i<64;i++)document.write('<div class="hdr-grid-cell"></div>')</script>
+  </div>
+  <div class="hdr-badge">Security+ SY0-701 · Domain 2 · Threats, Vulnerabilities &amp; Mitigations · 22%</div>
+  <div class="hdr-title">
+    <span class="t1">THREAT</span> <span class="t2">VECTORS</span><br>
+    <span class="t3">&amp; ATTACK</span> <span class="t2">SURFACES</span>
+  </div>
+  <div class="hdr-sub">// Message · Networks · Social Engineering · Files · Voice · Supply Chain · Software</div>
+</div>
+
+<!-- VECTOR NAV -->
+<div class="vnav">
+  <div class="vbtn on" data-v="msg" onclick="showVec('msg',this)"><span class="vbtn-ico">📧</span><span class="vbtn-lbl">Message</span></div>
+  <div class="vbtn" data-v="net" onclick="showVec('net',this)"><span class="vbtn-ico">📶</span><span class="vbtn-lbl">Networks</span></div>
+  <div class="vbtn" data-v="soc" onclick="showVec('soc',this)"><span class="vbtn-ico">🎭</span><span class="vbtn-lbl">Social Eng.</span></div>
+  <div class="vbtn" data-v="fil" onclick="showVec('fil',this)"><span class="vbtn-ico">📄</span><span class="vbtn-lbl">File-Based</span></div>
+  <div class="vbtn" data-v="vce" onclick="showVec('vce',this)"><span class="vbtn-ico">📞</span><span class="vbtn-lbl">Voice</span></div>
+  <div class="vbtn" data-v="sup" onclick="showVec('sup',this)"><span class="vbtn-ico">⛓️</span><span class="vbtn-lbl">Supply Chain</span></div>
+  <div class="vbtn" data-v="sw" onclick="showVec('sw',this)"><span class="vbtn-ico">🐛</span><span class="vbtn-lbl">Vuln. Software</span></div>
+  <div class="vbtn" data-v="sum" onclick="showVec('sum',this)"><span class="vbtn-ico">📊</span><span class="vbtn-lbl">Summary</span></div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- MESSAGE-BASED VECTOR               -->
+<!-- ══════════════════════════════════ -->
+<div class="model on" id="v-msg">
+  <div class="vec-banner" style="background:linear-gradient(135deg,rgba(255,64,96,0.08),rgba(8,9,14,0));">
+    <span class="vec-icon-big">📧</span>
+    <div>
+      <div class="vec-title-big" style="color:var(--msg)">Message-Based</div>
+      <div class="vec-subtitle">Email · SMS · Instant Messaging · Malicious Links</div>
+    </div>
+    <div class="vec-stats">
+      <div class="vstat"><div class="vstat-val" style="color:var(--msg)">82%</div><div class="vstat-label">Breaches involve human</div></div>
+      <div class="vstat"><div class="vstat-val" style="color:var(--msg)">#1</div><div class="vstat-label">Initial access vector</div></div>
+    </div>
+  </div>
+
+  <div class="tabs" id="t-msg">
+    <button class="tab active" onclick="goTab('msg','m1',this)">Overview</button>
+    <button class="tab" onclick="goTab('msg','m2',this)">Email Attacks</button>
+    <button class="tab" onclick="goTab('msg','m3',this)">Phishing Anatomy</button>
+    <button class="tab" onclick="goTab('msg','m4',this)">SMS &amp; IM</button>
+    <button class="tab" onclick="goTab('msg','m5',this)">Defenses</button>
+  </div>
+
+  <div class="sec on" id="m1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">MSG</span><span class="card-title" style="color:var(--msg)">Message-Based Attack Overview</span><span class="bdg" style="background:#280810;color:var(--msg);border:1px solid #401018">Most Common Vector</span></div>
+    <div class="card-bd">
+      <p>Message-based attacks exploit the communication channels people use daily — <strong style="color:var(--tx)">email, SMS, instant messaging, and collaboration tools</strong>. Since messages arrive in a trusted inbox and users must interact with them to do their jobs, they are the most effective initial access vector.</p>
+      <h3 style="border-left-color:var(--msg)">Why Messages Are So Effective</h3>
+      <div class="code">
+<span class="cm"># Why messages work where technical attacks fail:</span>
+Firewall:       blocks network attacks ← cannot block email
+AV:             detects malware ← clean link bypasses AV
+EDR:            detects exploitation ← clicking a link = user action
+Patch mgmt:     fixes known CVEs ← user action not a CVE
+
+Email arrives:  looks legitimate → user clicks → credential stolen
+Security tools: saw nothing wrong → no alerts → no blocks
+
+<span class="cm"># Message attack kills: trust + urgency + familiarity</span>
+Trust:    "From your bank" / "From IT department" / "From your boss"
+Urgency:  "Your account will be closed" / "Respond immediately"
+Familiar: looks exactly like a real email from the real service
+
+<span class="cg"># #1 initial access vector for APTs, ransomware, BEC, all major attack types</span>
+<span class="cg"># Defending against it = combination of technical + human controls</span>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Message-based vector →</span><span>#1 initial access method — email, SMS, IM — exploits human trust</span></div>
+        <div class="er"><span class="ek">Why effective →</span><span>Bypasses technical controls — relies on human action — trust + urgency + familiarity</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="m2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">MSG</span><span class="card-title" style="color:var(--msg)">Email Attack Types</span><span class="bdg" style="background:#280810;color:var(--msg);border:1px solid #401018">Phishing · Spear · Whaling · BEC</span></div>
+    <div class="card-bd">
+      <div class="atk-row">
+        <div class="atk-icon">🎣</div>
+        <div>
+          <div class="atk-name" style="color:var(--msg)">Phishing — Mass Email Campaign</div>
+          <div class="atk-body">Generic emails sent to millions of recipients. No personalization — designed for volume. "Your PayPal account has been suspended." High quantity, low success rate per email, but the math works at scale. Modern phishing kits: free on dark web — anyone can run a campaign. Contains: malicious link (fake login page), malicious attachment, or both.</div>
+        </div>
+      </div>
+      <div class="atk-row">
+        <div class="atk-icon">🏹</div>
+        <div>
+          <div class="atk-name" style="color:var(--msg)">Spear Phishing — Targeted Attack</div>
+          <div class="atk-body">Personalized email targeting specific individual using OSINT. References real details: manager's name, current project, company events. "Hi Sarah — following up on the Q4 forecast you discussed with David yesterday." Much higher success rate — harder to spot. Primary initial access method for APTs and sophisticated ransomware groups.</div>
+        </div>
+      </div>
+      <div class="atk-row">
+        <div class="atk-icon">🐋</div>
+        <div>
+          <div class="atk-name" style="color:var(--msg)">Whaling — Executive Targeting</div>
+          <div class="atk-body">Spear phishing targeting CEO, CFO, CISO, or other senior executives. High-value target — executive credentials open everything. Tactics: impersonate board member, attorney, regulator. Exec targeted with highly professional email relevant to their role. Also: attackers impersonate executives to target subordinates (BEC variant).</div>
+        </div>
+      </div>
+      <div class="atk-row">
+        <div class="atk-icon">💼</div>
+        <div>
+          <div class="atk-name" style="color:var(--msg)">Business Email Compromise (BEC)</div>
+          <div class="atk-body">Attacker compromises or spoofs executive email to request fraudulent wire transfers or gift cards. "From: CEO" to CFO: "I need you to wire $250K urgently for a confidential acquisition — don't discuss with anyone." FBI: $2.7B losses in 2022. Defense: dual-approval for all transfers + out-of-band verification + no "secrecy" bypass of process.</div>
+        </div>
+      </div>
+      <div class="atk-row">
+        <div class="atk-icon">📦</div>
+        <div>
+          <div class="atk-name" style="color:var(--msg)">Malicious Attachments</div>
+          <div class="atk-body">Office documents with macros (Word, Excel), PDFs with embedded JavaScript, ZIP/RAR files containing executables, LNK files (Windows shortcuts) that execute PowerShell. Modern defenses block .exe — attackers use: .docm, .xlsm, .iso, .lnk, .html smuggling. Email sandbox detonates attachments before delivery.</div>
+        </div>
+      </div>
+      <div class="atk-row">
+        <div class="atk-icon">🔗</div>
+        <div>
+          <div class="atk-name" style="color:var(--msg)">Malicious Links — URL Manipulation</div>
+          <div class="atk-body">Links that look legitimate but lead to attacker-controlled sites. Techniques: typosquatting (paypa1.com), homograph attacks (рaypal.com with Cyrillic р), URL shorteners (hide real destination), open redirects (legitimate site redirects to malicious one), subdomain tricks (paypal.attacker.com). Always hover before clicking — check the actual URL in status bar.</div>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Phishing →</span><span>Mass generic email — high volume — free phishing kits — link or attachment</span></div>
+        <div class="er"><span class="ek">Spear phishing →</span><span>Personalized targeted — OSINT + real details — APT primary vector</span></div>
+        <div class="er"><span class="ek">Whaling →</span><span>Executive targeting — CEO/CFO — high-value access</span></div>
+        <div class="er"><span class="ek">BEC →</span><span>Business Email Compromise — wire transfer fraud — $2.7B annual losses</span></div>
+        <div class="er"><span class="ek">URL manipulation →</span><span>Typosquatting, homograph, open redirect, subdomain tricks — look before you click</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="m3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">MSG</span><span class="card-title" style="color:var(--msg)">Phishing Email Anatomy</span><span class="bdg" style="background:#280810;color:var(--msg);border:1px solid #401018">Spotting Indicators</span></div>
+    <div class="card-bd">
+      <h3 style="border-left-color:var(--msg)">Annotated Phishing Sample</h3>
+      <div class="phish-sample">
+        <div class="phish-header">
+          <div style="font-size:0.62rem;color:var(--mu);margin-bottom:0.4rem">SIMULATED PHISHING EMAIL — TRAINING ONLY</div>
+          <div class="phish-field"><span class="phish-label">From:</span><span class="phish-val">Microsoft Security &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4437212731362d303d04292d27362b372b2222306925282136306a272b29">[email&#160;protected]</a>&gt; <span class="phish-anno">← typosquatting: double-f</span></span></div>
+          <div class="phish-field"><span class="phish-label">To:</span><span class="phish-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f3809281929bdd999c9b9d809c9db3909c9e83929d8add909c9e">[email&#160;protected]</a></span></div>
+          <div class="phish-field"><span class="phish-label">Subject:</span><span class="phish-val">URGENT: Unusual sign-in activity detected — account at risk <span class="phish-anno">← artificial urgency</span></span></div>
+          <div class="phish-field"><span class="phish-label">Date:</span><span class="phish-val">Monday 03:14 AM <span class="phish-anno">← unusual time</span></span></div>
+        </div>
+        <div class="phish-body-area">
+          <div style="color:var(--tx);margin-bottom:0.5rem">Dear Microsoft Account User, <span style="color:var(--cr);font-size:0.62rem">← generic greeting, not your name</span></div>
+          <div style="color:var(--tx);margin-bottom:0.5rem">We detected sign-in from Russia (Moscow) on your account. Your account will be <span style="color:var(--cs);font-weight:700">SUSPENDED WITHIN 24 HOURS</span> unless you verify now. <span style="color:var(--cr);font-size:0.62rem">← fear + urgency</span></div>
+          <div style="color:var(--tx);margin-bottom:0.5rem">Click to verify: <span style="color:var(--cb)">https://microsoft-security-verify.com/login</span> <span style="color:var(--cr);font-size:0.62rem">← fake domain — not microsoft.com</span></div>
+          <div style="color:var(--tx);">Microsoft Security Team</div>
+          <div style="color:var(--mu);font-size:0.62rem;margin-top:0.3rem">© 2024 Microsoft Corporation, One Microsoft Way, Redmond <span style="color:var(--cr)">← fake legitimacy footer</span></div>
+        </div>
+      </div>
+      <h3 style="border-left-color:var(--msg)">SLAM — Detection Method</h3>
+      <div class="g4">
+        <div class="gc" style="border-color:#401018"><h4 style="color:var(--msg)">S — Sender</h4><p>Check full email address — not just display name. Display name can be anything. Domain: microsofft vs microsoft. Hover to see real sending domain.</p></div>
+        <div class="gc"><h4 style="color:var(--sw)">L — Links</h4><p>Hover before clicking — see real destination in status bar. Does URL match claimed site? Is it a URL shortener hiding the destination?</p></div>
+        <div class="gc"><h4 style="color:var(--fil)">A — Attachments</h4><p>Expecting this file? Is file type suspicious (.docm, .xlsm, .iso, .lnk)? When in doubt: don't open — report to IT.</p></div>
+        <div class="gc"><h4 style="color:var(--soc)">M — Message</h4><p>Urgency without time to think? Threatening consequences? Request for unusual action (wire transfer, gift cards)? Secrecy request?</p></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">SLAM method →</span><span>Sender, Links, Attachments, Message — email phishing checklist</span></div>
+        <div class="er"><span class="ek">Typosquatting →</span><span>Domain name mimics legitimate one with slight typo — paypa1.com, googIe.com</span></div>
+        <div class="er"><span class="ek">Homograph attack →</span><span>Use lookalike Unicode characters — Cyrillic а vs Latin a — appears identical visually</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="m4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">MSG</span><span class="card-title" style="color:var(--msg)">SMS, IM &amp; Collaboration Platform Attacks</span><span class="bdg" style="background:#280810;color:var(--msg);border:1px solid #401018">Smishing · Teams · Slack</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#401018">
+          <h4 style="color:var(--msg)">Smishing — SMS Phishing</h4>
+          <p>Phishing via text message. "USPS: Your package requires confirmation — click here." Mobile users click links more readily — harder to verify URLs on small screen. Phone number spoofing makes sender appear legitimate. Rising vector — MFA bypass: "Your verification code is... text STOP to receive no more texts" — trick users into providing codes. Defense: don't click unexpected SMS links, verify via official app.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--soc)">Collaboration Platform Attacks</h4>
+          <p>Microsoft Teams, Slack, Zoom: increasingly targeted. External user sends malicious file or link via Teams. Attacker compromises one account → messages all contacts with malicious link (appears to come from trusted colleague). "Hey [name] — can you review this quickly?" + malicious link. Often lower security scrutiny than email — employees trust IM more. Defense: same scrutiny as email for unexpected links/files.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--fil)">QR Code Phishing (Quishing)</h4>
+          <p>Malicious QR codes in emails, flyers, or physical stickers placed over legitimate codes. Email scanners check links — cannot scan QR code destination. User scans with phone → lands on phishing site → phone has weaker defenses. Physical: sticker over payment terminal QR code → attacker's page. Defense: scan QR codes with URL preview enabled, verify destination before proceeding.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--vce)">Email Header Spoofing</h4>
+          <p>Send email with forged From: header appearing to be from legitimate domain. Basic spoofing: email "from" <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ee8d8b81ae8d81839e8f8097c08d8183">[email&#160;protected]</a> when actually from attacker. Technical defenses: SPF (specifies authorized sending servers), DKIM (cryptographically signs email), DMARC (policy for failing SPF/DKIM). Without these: easy to spoof any domain. With all three: spoofing much harder.</p>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Smishing →</span><span>SMS phishing — USPS/bank lure — mobile users click more readily</span></div>
+        <div class="er"><span class="ek">Quishing →</span><span>QR code phishing — bypasses email link scanners — used in physical and email attacks</span></div>
+        <div class="er"><span class="ek">SPF →</span><span>Specifies authorized email senders for domain — anti-spoofing</span></div>
+        <div class="er"><span class="ek">DKIM →</span><span>Cryptographic signature on email — verifies not modified — anti-spoofing</span></div>
+        <div class="er"><span class="ek">DMARC →</span><span>Policy for SPF/DKIM failures — reject/quarantine — requires both SPF and DKIM</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="m5">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">MSG</span><span class="card-title" style="color:var(--msg)">Message Attack Defenses</span><span class="bdg" style="background:#280810;color:var(--msg);border:1px solid #401018">Technical + Human</span></div>
+    <div class="card-bd">
+      <div class="mit-row"><span class="mit-threat" style="color:var(--msg)">Email spoofing</span><span class="mit-fix">SPF + DKIM + DMARC on all domains — rejects spoofed emails at the mail server</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--msg)">Malicious attachments</span><span class="mit-fix">Email sandbox (detonates attachments in isolated environment before delivery) — Microsoft Defender for O365, Proofpoint</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--msg)">Malicious links</span><span class="mit-fix">Safe Links (rewrite URLs — check at click time) — URL reputation filtering — proxy inspection</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--msg)">Phishing credential theft</span><span class="mit-fix">MFA on all accounts — phishing-resistant FIDO2 ideally — even captured credentials unusable without second factor</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--msg)">BEC / wire fraud</span><span class="mit-fix">Dual approval for all wire transfers — out-of-band verbal verification — no "secrecy" bypass of process</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--msg)">Human clicking</span><span class="mit-fix">Phishing simulation + just-in-time training — report button (Phish Alert Button) — report rate target &gt;70%</span></div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Email sandbox →</span><span>Detonates attachments in isolated environment before delivery — catches zero-days</span></div>
+        <div class="er"><span class="ek">Safe Links →</span><span>Rewrite URLs at delivery — check at click-time — blocks newly-bad URLs</span></div>
+        <div class="er"><span class="ek">MFA →</span><span>Even if credentials stolen — attacker can't log in without second factor</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end msg -->
+
+<!-- ══════════════════════════════════ -->
+<!-- UNSECURE NETWORKS                  -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="v-net">
+  <div class="vec-banner" style="background:linear-gradient(135deg,rgba(255,144,48,0.08),rgba(8,9,14,0));">
+    <span class="vec-icon-big">📶</span>
+    <div>
+      <div class="vec-title-big" style="color:var(--net)">Unsecure Networks</div>
+      <div class="vec-subtitle">Open WiFi · Rogue AP · Bluetooth · On-path Attacks</div>
+    </div>
+  </div>
+  <div class="tabs" id="t-net">
+    <button class="tab active" onclick="goTab('net','n1',this)">Overview</button>
+    <button class="tab" onclick="goTab('net','n2',this)">Wireless Attacks</button>
+    <button class="tab" onclick="goTab('net','n3',this)">Bluetooth &amp; NFC</button>
+    <button class="tab" onclick="goTab('net','n4',this)">On-Path Attacks</button>
+    <button class="tab" onclick="goTab('net','n5',this)">Defenses</button>
+  </div>
+
+  <div class="sec on" id="n1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">NET</span><span class="card-title" style="color:var(--net)">Unsecure Network Overview</span><span class="bdg" style="background:#281000;color:var(--net);border:1px solid #402000">WiFi · MITM · Eavesdrop</span></div>
+    <div class="card-bd">
+      <p>Unsecure networks allow attackers to <strong style="color:var(--tx)">intercept, modify, or inject traffic between victims and legitimate services</strong>. Any network where traffic travels unencrypted or where authentication of the network itself is weak becomes an attack surface.</p>
+      <h3 style="border-left-color:var(--net)">Why Unsecure Networks Are Dangerous</h3>
+      <div class="code">
+<span class="cm"># The coffee shop scenario:</span>
+Employee connects to: "Starbucks_WiFi" (free, open, no password)
+Attacker on same network: passive sniffing
+
+Unencrypted traffic:
+  HTTP sites: attacker reads everything → credentials in plaintext
+  Unencrypted email (SMTP port 25): attacker reads emails
+  DNS queries: attacker sees every domain you visit
+  HTTPS: encrypted → attacker can't read → but sees domains (SNI)
+
+<span class="co"># Even "secure" network can be compromised:</span>
+Rogue AP: attacker creates "Starbucks_WiFi" with better signal
+          victim connects to attacker's network
+          all traffic flows through attacker → MITM
+          even HTTPS: attacker can attempt SSL strip
+
+<span class="cg"># Defense: always use VPN on untrusted networks</span>
+<span class="cg"># Even better: ZTNA — verify every session regardless of network</span>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Unsecure network risk →</span><span>Eavesdropping on unencrypted traffic, MITM attacks, rogue access points</span></div>
+        <div class="er"><span class="ek">Open WiFi →</span><span>No authentication — any attacker on same network can sniff traffic</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="n2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">NET</span><span class="card-title" style="color:var(--net)">Wireless Attack Types</span><span class="bdg" style="background:#281000;color:var(--net);border:1px solid #402000">Evil Twin · Deauth · WPS</span></div>
+    <div class="card-bd">
+      <div class="atk-row">
+        <div class="atk-icon">👿</div>
+        <div>
+          <div class="atk-name" style="color:var(--net)">Evil Twin / Rogue Access Point</div>
+          <div class="atk-body">Attacker creates a WiFi access point with the same SSID as a legitimate one (or better signal). Victims connect to the evil twin instead of the real AP. All traffic flows through the attacker. Can be combined with SSL stripping to downgrade HTTPS to HTTP. Detection: network monitoring for duplicate SSIDs, 802.1X with certificate validation prevents unauthorized APs.</div>
+        </div>
+      </div>
+      <div class="atk-row">
+        <div class="atk-icon">🚫</div>
+        <div>
+          <div class="atk-name" style="color:var(--net)">Deauthentication (Deauth) Attack</div>
+          <div class="atk-body">WiFi 802.11 management frames (including deauth) are not authenticated in WPA2. Attacker sends spoofed deauth frames to disconnect victims from legitimate AP. Purpose: force client to reconnect — capture WPA2 4-way handshake for offline brute force attack. Also: denial of service against wireless networks. Defense: WPA3 (SAE/PMF protects management frames), 802.11w Management Frame Protection.</div>
+        </div>
+      </div>
+      <div class="atk-row">
+        <div class="atk-icon">📡</div>
+        <div>
+          <div class="atk-name" style="color:var(--net)">WPS Attack</div>
+          <div class="atk-body">Wi-Fi Protected Setup (WPS) PIN feature has a design flaw: PIN verified in two halves = only 10^4 + 10^3 = 11,000 combinations. Reaver tool brute forces WPS PIN in hours → reveals WPA2 passphrase. Defense: disable WPS on all access points — there is no patch for this design flaw.</div>
+        </div>
+      </div>
+      <div class="atk-row">
+        <div class="atk-icon">🔓</div>
+        <div>
+          <div class="atk-name" style="color:var(--net)">Downgrade Attacks</div>
+          <div class="atk-body">Force connection to use weaker security than available. SSL stripping: downgrade HTTPS to HTTP by intercepting redirect. KRACK (WPA2 Key Reinstallation Attack): replay attack on WPA2 handshake. Protocol downgrade: force TLS 1.0 instead of TLS 1.3. Defense: HSTS (HTTP Strict Transport Security) prevents SSL stripping — browser refuses HTTP. Minimum TLS version policy.</div>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Evil twin →</span><span>Rogue AP with same SSID — victims connect — all traffic via attacker</span></div>
+        <div class="er"><span class="ek">Deauth attack →</span><span>Spoofed management frames disconnect clients — capture handshake for cracking — WPA3/PMF defends</span></div>
+        <div class="er"><span class="ek">WPS attack →</span><span>PIN design flaw — brute forceable — disable WPS entirely</span></div>
+        <div class="er"><span class="ek">HSTS →</span><span>HTTP Strict Transport Security — browser refuses HTTP — prevents SSL stripping</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="n3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">NET</span><span class="card-title" style="color:var(--net)">Bluetooth, NFC &amp; RF Attacks</span><span class="bdg" style="background:#281000;color:var(--net);border:1px solid #402000">Bluesnarfing · Bluejacking · NFC</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#402000">
+          <h4 style="color:var(--net)">Bluesnarfing</h4>
+          <p>Unauthorized access to data on a Bluetooth device — contacts, calendar, messages, files. Exploits Bluetooth vulnerabilities before pairing is required. Range: typically up to 10m (class 2), extended with directional antenna. Defense: turn off Bluetooth when not needed, keep firmware updated, use Bluetooth 5.0+ with improved security.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--soc)">Bluejacking</h4>
+          <p>Sending unsolicited messages to Bluetooth devices. Less dangerous than bluesnarfing — no data theft, just unwanted messages. Can be used for social engineering (sending urgent messages to nearby devices). More nuisance than serious attack. Defense: don't accept unexpected Bluetooth connections/messages.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--vce)">NFC Attacks</h4>
+          <p>Near Field Communication — payment terminals, access cards, contactless transactions. Skimming: read NFC card data without victim knowing (range: a few cm, but specialized hardware extends range). Relay attack: capture and replay NFC transaction at distance. Defense: RFID-blocking wallets/sleeves, transaction limits, tokenization of card data.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--fil)">RF (Radio Frequency) Attacks</h4>
+          <p>Jamming: flood frequency with noise → disrupts communication (GPS jamming, WiFi jamming, cellular jamming). Replay: capture and replay legitimate RF signal (car key fobs, garage doors). Defense: frequency hopping, rolling codes (car fobs — each signal unique), encrypted RF protocols.</p>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Bluesnarfing →</span><span>Unauthorized Bluetooth data theft — contacts, messages — exploit BT vulnerabilities</span></div>
+        <div class="er"><span class="ek">Bluejacking →</span><span>Unsolicited Bluetooth messages — less dangerous — social engineering potential</span></div>
+        <div class="er"><span class="ek">NFC skimming →</span><span>Read contactless card data — RFID-blocking wallet defends — payment tokenization</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="n4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">NET</span><span class="card-title" style="color:var(--net)">On-Path (Man-in-the-Middle) Attacks</span><span class="bdg" style="background:#281000;color:var(--net);border:1px solid #402000">MITM · ARP Poison · DNS Spoof</span></div>
+    <div class="card-bd">
+      <div class="code">
+<span class="cm"># On-path (MITM) attack — attacker positions between victim and server:</span>
+
+Normal:   Victim ←────────────────────→ Server
+MITM:     Victim ←──→ [ATTACKER] ←──→ Server
+
+Attacker can:
+  READ: all traffic flowing through them
+  MODIFY: change data in transit (integrity attack)
+  INJECT: add malicious content to legitimate pages
+  BLOCK: prevent communication (DoS)
+
+<span class="cm"># How attacker gets in the middle:</span>
+ARP poisoning:  spoof ARP responses → victim sends traffic to attacker's MAC
+DNS spoofing:   fake DNS responses → victim goes to attacker's IP
+SSL stripping:  downgrade HTTPS to HTTP → read plaintext
+Evil twin AP:   victim connects to attacker's network
+BGP hijacking:  (advanced) advertise false routes → redirect internet traffic
+
+<span class="cm"># ARP Poisoning:</span>
+ARP is stateless: any device can claim any IP → MAC mapping
+Attacker: sends gratuitous ARP "I am 10.0.0.1 (the gateway)"
+Victim: updates ARP table → sends traffic to attacker
+Defense: Dynamic ARP Inspection (DAI) on switches
+
+<span class="cm"># DNS Spoofing:</span>
+Attacker provides false DNS record → victim resolves google.com to attacker IP
+Cache poisoning: poison DNS resolver → affects all clients
+Defense: DNSSEC validates DNS records cryptographically
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">On-path / MITM →</span><span>Attacker intercepts traffic between victim and server — read, modify, inject</span></div>
+        <div class="er"><span class="ek">ARP poisoning →</span><span>Spoof MAC address mapping — redirect traffic through attacker — DAI defends</span></div>
+        <div class="er"><span class="ek">DNS spoofing →</span><span>False DNS responses — victim goes to wrong IP — DNSSEC defends</span></div>
+        <div class="er"><span class="ek">SSL stripping →</span><span>Downgrade HTTPS to HTTP — HSTS prevents — browser refuses HTTP connection</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="n5">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">NET</span><span class="card-title" style="color:var(--net)">Network Vector Defenses</span><span class="bdg" style="background:#281000;color:var(--net);border:1px solid #402000">VPN · WPA3 · Segmentation</span></div>
+    <div class="card-bd">
+      <div class="mit-row"><span class="mit-threat" style="color:var(--net)">Open / evil twin WiFi</span><span class="mit-fix">VPN on all untrusted networks — encrypts all traffic regardless of network — ZTNA even better</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--net)">WPA2 deauth / KRACK</span><span class="mit-fix">WPA3 with SAE + 802.11w Management Frame Protection — prevents management frame spoofing</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--net)">ARP poisoning</span><span class="mit-fix">Dynamic ARP Inspection (DAI) on switches — validates ARP packets against DHCP snooping table</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--net)">DNS spoofing</span><span class="mit-fix">DNSSEC on authoritative servers — validates DNS records cryptographically — DoH/DoT encrypts queries</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--net)">SSL stripping</span><span class="mit-fix">HSTS (HTTP Strict Transport Security) — browser refuses HTTP — HSTS preload list</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--net)">WPS brute force</span><span class="mit-fix">Disable WPS — no patch exists for design flaw</span></div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">VPN on untrusted networks →</span><span>Encrypts all traffic — evil twin sees encrypted tunnel not plaintext</span></div>
+        <div class="er"><span class="ek">WPA3 →</span><span>SAE key exchange + 802.11w management frame protection — current WiFi standard</span></div>
+        <div class="er"><span class="ek">DAI →</span><span>Dynamic ARP Inspection — prevents ARP poisoning — validates against DHCP snooping table</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end net -->
+
+<!-- ══════════════════════════════════ -->
+<!-- SOCIAL ENGINEERING                 -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="v-soc">
+  <div class="vec-banner" style="background:linear-gradient(135deg,rgba(240,192,0,0.08),rgba(8,9,14,0));">
+    <span class="vec-icon-big">🎭</span>
+    <div>
+      <div class="vec-title-big" style="color:var(--soc)">Social Engineering</div>
+      <div class="vec-subtitle">Manipulate People · Pretexting · Physical · Psychological Principles</div>
+    </div>
+  </div>
+  <div class="tabs" id="t-soc">
+    <button class="tab active" onclick="goTab('soc','se1',this)">Overview &amp; Principles</button>
+    <button class="tab" onclick="goTab('soc','se2',this)">Attack Techniques</button>
+    <button class="tab" onclick="goTab('soc','se3',this)">Physical SE</button>
+    <button class="tab" onclick="goTab('soc','se4',this)">Defenses</button>
+  </div>
+
+  <div class="sec on" id="se1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SOC</span><span class="card-title" style="color:var(--soc)">Social Engineering &amp; Psychological Principles</span><span class="bdg" style="background:#1e1400;color:var(--soc);border:1px solid #303000">Human Exploitation</span></div>
+    <div class="card-bd">
+      <p>Social engineering exploits <strong style="color:var(--tx)">human psychology rather than technical vulnerabilities</strong>. It is often easier to trick a person than to exploit software. Understanding the psychological principles used helps defenders train employees to recognize manipulation.</p>
+      <h3 style="border-left-color:var(--soc)">Six Psychological Principles Attackers Exploit</h3>
+      <div class="g3">
+        <div class="gc" style="border-color:#303000"><h4 style="color:var(--soc)">Authority</h4><p>"This is IT support calling — I need your credentials urgently." People comply with authority figures. Attackers impersonate: IT, management, CEO, government, police. Defense: verify identity out-of-band — call back to known number.</p></div>
+        <div class="gc"><h4 style="color:var(--msg)">Urgency / Scarcity</h4><p>"Act now or your account will be closed." "Limited time." Time pressure prevents careful thinking. Creates panic — victim acts without verifying. Defense: slow down — legitimate requests don't expire in minutes.</p></div>
+        <div class="gc"><h4 style="color:var(--fil)">Social Proof</h4><p>"Everyone else has already updated their credentials." "Your colleagues have all verified." People conform to what others do. Fake consensus creates pressure. Defense: be independently skeptical of claimed consensus.</p></div>
+        <div class="gc"><h4 style="color:var(--vce)">Familiarity / Liking</h4><p>"Hi, this is Sarah from accounting — we met at the conference." Build rapport before making the request. People help people they like. Defense: verify identity regardless of how friendly they are.</p></div>
+        <div class="gc"><h4 style="color:var(--sup)">Intimidation / Fear</h4><p>"You will be audited / arrested / fired if you don't cooperate." Fear of negative consequence overrides judgment. Defense: verify threat legitimacy — real authorities follow formal processes.</p></div>
+        <div class="gc"><h4 style="color:var(--net)">Reciprocity</h4><p>"I just helped you with that issue — now I need you to help me." People feel obligated to return favors. Attacker does something helpful first → victim feels debt. Defense: recognize obligation feelings as manipulation triggers.</p></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Social engineering →</span><span>Manipulates human psychology — often easier than technical attacks</span></div>
+        <div class="er"><span class="ek">Authority →</span><span>Impersonate IT/exec/government — people comply — verify out-of-band</span></div>
+        <div class="er"><span class="ek">Urgency →</span><span>Time pressure prevents careful thought — "act now or account closed"</span></div>
+        <div class="er"><span class="ek">Intimidation →</span><span>Fear of negative consequence — "you'll be fired/arrested" — real authorities use formal processes</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="se2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SOC</span><span class="card-title" style="color:var(--soc)">Social Engineering Techniques</span><span class="bdg" style="background:#1e1400;color:var(--soc);border:1px solid #303000">Pretexting · Baiting · Quid Pro Quo</span></div>
+    <div class="card-bd">
+      <div class="se-card" style="border-left-color:var(--soc);background:rgba(240,192,0,0.04)">
+        <div class="se-name" style="color:var(--soc)">Pretexting</div>
+        <div class="se-body">Fabricating a convincing backstory to manipulate a target. "I'm calling from your bank's fraud department — we need to verify some transactions." The pretext creates legitimacy. Used to: extract information, gain physical access, get credentials reset. Often combines multiple principles (authority + urgency). Defense: call back to official number — don't use number they provide.</div>
+      </div>
+      <div class="se-card" style="border-left-color:var(--sw);background:rgba(255,96,48,0.04)">
+        <div class="se-name" style="color:var(--sw)">Baiting</div>
+        <div class="se-body">Enticing victim with something desirable to trigger a security compromise. USB drop attack: leave USB labeled "Q4 Salaries" in company parking lot — curious employee plugs it in → malware. Online baiting: "Free Netflix account" link → credential phishing or malware. Relies on curiosity and greed. Defense: policy + training against unknown USB devices, endpoint controls blocking unauthorized USB.</div>
+      </div>
+      <div class="se-card" style="border-left-color:var(--vce);background:rgba(48,200,240,0.04)">
+        <div class="se-name" style="color:var(--vce)">Quid Pro Quo</div>
+        <div class="se-body">Offer something in exchange for information or access. "If you give me your credentials, I'll fix your computer remotely." Fake tech support: "Call us and we'll fix your slow computer" — then ask for remote access. Uses reciprocity principle. Defense: only work with verified IT support — initiate contact yourself via official channels.</div>
+      </div>
+      <div class="se-card" style="border-left-color:var(--fil);background:rgba(64,208,128,0.04)">
+        <div class="se-name" style="color:var(--fil)">Watering Hole Attack</div>
+        <div class="se-body">Compromise a website that the target population regularly visits. Target group: security researchers → compromise popular security blog → all visitors get drive-by malware. Harder to defend than targeted phishing — victim visits legitimate (but compromised) site. Defense: web filtering, keep browsers patched, EDR behavioral detection, network monitoring.</div>
+      </div>
+      <div class="se-card" style="border-left-color:var(--msg);background:rgba(255,64,96,0.04)">
+        <div class="se-name" style="color:var(--msg)">Vishing — Voice Phishing</div>
+        <div class="se-body">Social engineering via phone call. "IT support calling — we detected malware on your computer." Caller ID spoofing makes number appear legitimate. AI voice cloning: deepfake voice of known person. Rising attack: AI CEO voice clone calls CFO → requests urgent wire transfer. Defense: verbal challenge code, call back to known number, no credentials over phone.</div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Pretexting →</span><span>Fabricated scenario to manipulate — fake bank fraud agent — uses authority + urgency</span></div>
+        <div class="er"><span class="ek">Baiting →</span><span>Entice with something desirable — USB drop, free Netflix — exploits curiosity/greed</span></div>
+        <div class="er"><span class="ek">Quid pro quo →</span><span>Offer help in exchange for access — fake tech support — reciprocity exploitation</span></div>
+        <div class="er"><span class="ek">Watering hole →</span><span>Compromise website targets visit — drive-by infection — targets specific group</span></div>
+        <div class="er"><span class="ek">Vishing →</span><span>Voice phishing — IT/bank impersonation — AI voice cloning emerging threat</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="se3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SOC</span><span class="card-title" style="color:var(--soc)">Physical Social Engineering</span><span class="bdg" style="background:#1e1400;color:var(--soc);border:1px solid #303000">Tailgating · Shoulder Surfing</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#303000">
+          <h4 style="color:var(--soc)">Tailgating / Piggybacking</h4>
+          <p>Following an authorized person through a secure door without scanning own badge. Tailgating: person ahead holds door — "thanks" social pressure. Piggybacking: with victim's knowledge — "I forgot my badge." Mantrap/airlock physically prevents — one person at a time. Policy: challenge unknown persons — "If you see something, say something." Cameras at entrances.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--soc)">Shoulder Surfing</h4>
+          <p>Physically observing someone enter credentials, PIN, or sensitive information. Coffee shop: watching someone type password. ATM: watching PIN entry. Defense: privacy screens, positioning awareness, shield keyboard when entering PIN. Modern risk: recording with smartphone from distance. Biometric login reduces password shoulder surfing risk.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--soc)">Dumpster Diving</h4>
+          <p>Searching through physical or digital trash for useful information. Physical: printed documents with account numbers, org charts, network diagrams, access codes written on paper. Digital: deleted files not securely wiped. Defense: cross-cut shredding policy, secure document destruction for all sensitive paper, NIST 800-88 media sanitization for digital.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--soc)">Impersonation</h4>
+          <p>Physically pretending to be someone else — delivery driver, contractor, IT technician, fire inspector. Wear a uniform, carry a clipboard, act confident. "Hi, I'm here to fix the server room air conditioning." Gains physical access past receptionist. Defense: verify ID against vendor list, escort all visitors, challenge anyone without visible badge.</p>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Tailgating →</span><span>Follow through secure door — mantrap physically prevents — challenge policy needed</span></div>
+        <div class="er"><span class="ek">Shoulder surfing →</span><span>Watch credential entry — privacy screens + positioning awareness defend</span></div>
+        <div class="er"><span class="ek">Dumpster diving →</span><span>Physical trash for intel — cross-cut shredding + secure disposal policy defends</span></div>
+        <div class="er"><span class="ek">Impersonation →</span><span>Physically pretend to be vendor/contractor — verify ID + escort all visitors</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="se4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SOC</span><span class="card-title" style="color:var(--soc)">Social Engineering Defenses</span><span class="bdg" style="background:#1e1400;color:var(--soc);border:1px solid #303000">Training · Culture · Process</span></div>
+    <div class="card-bd">
+      <div class="mit-row"><span class="mit-threat" style="color:var(--soc)">Phishing / Vishing / Smishing</span><span class="mit-fix">Security awareness training + phishing simulations — teach to recognize and report — MFA even if credentials stolen</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--soc)">Pretexting / impersonation</span><span class="mit-fix">Verify caller identity via out-of-band callback to known number — never trust caller-provided contact info</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--soc)">Tailgating</span><span class="mit-fix">Mantrap/airlock — challenge culture — "If you see someone without a badge, stop them"</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--soc)">Baiting (USB drop)</span><span class="mit-fix">Policy + awareness + endpoint controls blocking unauthorized USB devices</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--soc)">Dumpster diving</span><span class="mit-fix">Cross-cut shredding policy — secure document disposal — no sensitive data in trash</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--soc)">BEC / wire fraud</span><span class="mit-fix">Process controls — dual-approval for transfers — no "urgent secrecy" exception to process</span></div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Best SE defense →</span><span>Security awareness training + phishing simulation + psychological safety to report</span></div>
+        <div class="er"><span class="ek">Process > individual →</span><span>Processes that don't have bypass options defeat social engineering — dual approval can't be "urgently" bypassed</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end soc -->
+
+<!-- ══════════════════════════════════ -->
+<!-- FILE-BASED VECTOR                  -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="v-fil">
+  <div class="vec-banner" style="background:linear-gradient(135deg,rgba(64,208,128,0.08),rgba(8,9,14,0));">
+    <span class="vec-icon-big">📄</span>
+    <div>
+      <div class="vec-title-big" style="color:var(--fil)">File-Based Vectors</div>
+      <div class="vec-subtitle">Malicious Documents · Executables · Archive Files · File Format Exploits</div>
+    </div>
+  </div>
+  <div class="tabs" id="t-fil">
+    <button class="tab active" onclick="goTab('fil','f1',this)">File Types &amp; Risks</button>
+    <button class="tab" onclick="goTab('fil','f2',this)">Macro &amp; Script Attacks</button>
+    <button class="tab" onclick="goTab('fil','f3',this)">Defenses</button>
+  </div>
+
+  <div class="sec on" id="f1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">FIL</span><span class="card-title" style="color:var(--fil)">Malicious File Types</span><span class="bdg" style="background:#072814;color:var(--fil);border:1px solid #0e4020">Documents · Archives · Executables</span></div>
+    <div class="card-bd">
+      <p>Files are trusted objects in most workflows — employees regularly open documents, review PDFs, and extract archives. <strong style="color:var(--tx)">Attackers hide malicious payloads within apparently legitimate file types</strong> that users would normally open without suspicion.</p>
+      <h3 style="border-left-color:var(--fil)">High-Risk File Types and Attack Methods</h3>
+      <div style="overflow-x:auto;margin:1rem 0">
+      <table>
+        <tr><th>File Type</th><th>Attack Method</th><th>Risk Level</th><th>Defense</th></tr>
+        <tr><td><span class="tag ty">.docm / .xlsm</span></td><td>VBA macros execute code on open</td><td><span class="tag to">High</span></td><td>Disable macros by default — macro signing policy</td></tr>
+        <tr><td><span class="tag ty">.pdf</span></td><td>JavaScript, embedded links, format exploits</td><td><span class="tag to">High</span></td><td>Update Acrobat — disable JS in PDF reader</td></tr>
+        <tr><td><span class="tag tr">.exe / .dll</span></td><td>Direct execution of malicious code</td><td><span class="tag tr">Critical</span></td><td>Application allow listing — block execution</td></tr>
+        <tr><td><span class="tag ty">.iso / .img</span></td><td>Mount → auto-run or extract .exe</td><td><span class="tag to">High</span></td><td>Block mounting of ISO files via policy</td></tr>
+        <tr><td><span class="tag ty">.lnk</span></td><td>Windows shortcut executes PowerShell command</td><td><span class="tag tr">Critical</span></td><td>Block .lnk from internet, email filtering</td></tr>
+        <tr><td><span class="tag ty">.zip / .rar</span></td><td>Contains malicious file — bypass attachment scans</td><td><span class="tag to">High</span></td><td>Decompress and scan contents before delivery</td></tr>
+        <tr><td><span class="tag ty">.html</span></td><td>HTML smuggling — reassemble payload in browser</td><td><span class="tag to">High</span></td><td>Disable JavaScript execution from email HTML</td></tr>
+        <tr><td><span class="tag ts">.jpg / .png</span></td><td>Steganography or image parsing vulnerabilities</td><td><span class="tag tg">Low-Med</span></td><td>Patch image parsers — steganalysis for DLP</td></tr>
+      </table>
+      </div>
+      <h3 style="border-left-color:var(--fil)">HTML Smuggling</h3>
+      <div class="info-row">
+        <div class="info-icon">🚢</div>
+        <div>
+          <div class="info-title" style="color:var(--fil)">HTML Smuggling — Bypassing Email Gateways</div>
+          <div class="info-desc">Attacker embeds encoded payload in an HTML file as Base64 or JavaScript Blob. When victim opens the HTML in browser, JavaScript decodes and assembles the malicious file client-side — AFTER the email gateway has already delivered it. Email gateway: scanned the HTML file, found no executable — OK. Browser: reconstructs malicious .exe or .zip from encoded data. Defense: block HTML email attachments, disable JavaScript from email HTML, email sandboxing that fully renders HTML.</div>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">File-based vector →</span><span>Malicious code hidden in documents, archives, executables — delivered via email or web</span></div>
+        <div class="er"><span class="ek">Macro attack →</span><span>VBA macros in .docm/.xlsm execute code — disable macros by default</span></div>
+        <div class="er"><span class="ek">HTML smuggling →</span><span>Payload encoded in HTML — assembled in browser after gateway delivery — bypasses email scanning</span></div>
+        <div class="er"><span class="ek">.lnk files →</span><span>Windows shortcuts that execute PowerShell — high risk from email</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="f2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">FIL</span><span class="card-title" style="color:var(--fil)">Macro &amp; Script-Based Attacks</span><span class="bdg" style="background:#072814;color:var(--fil);border:1px solid #0e4020">VBA · PowerShell · Living Off the Land</span></div>
+    <div class="card-bd">
+      <div class="code">
+<span class="cm"># Why macros and scripts are so dangerous:</span>
+.exe blocked by email gateway ← attacker knows this
+.docm with macro: "Enable Content to view this document"
+User enables → VBA macro runs → PowerShell spawns → payload downloads
+
+<span class="cm"># PowerShell living-off-the-land attack chain:</span>
+<span class="co">1.</span> Word document → user enables macro
+<span class="co">2.</span> VBA: <span class="cb">Shell "powershell -WindowStyle Hidden -EncodedCommand ..."</span>
+<span class="co">3.</span> PowerShell: encoded command downloads payload from internet
+<span class="co">4.</span> Payload: Cobalt Strike beacon or Meterpreter
+<span class="co">5.</span> EDR: may not alert (PowerShell is legitimate tool)
+
+Why hard to detect:
+  Macro: Office document — user action enables it
+  PowerShell: legitimate Windows tool — not malware signature
+  Download: HTTPS — encrypted — hard to inspect
+  EDR: behavioral detection needed (not signature-based)
+
+<span class="cm"># Defenses:</span>
+<span class="cg">Macro policy:</span>     disable by default — only allow signed macros
+<span class="cg">PowerShell:</span>       Constrained Language Mode — script block logging
+<span class="cg">Application control:</span> AppLocker/WDAC — only approved scripts run
+<span class="cg">AMSI:</span>              Antimalware Scan Interface — scans scripts at runtime
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Living off the land →</span><span>Use legitimate OS tools (PowerShell, WMI) to avoid detection — no custom malware needed</span></div>
+        <div class="er"><span class="ek">AMSI →</span><span>Antimalware Scan Interface — scans scripts at runtime — catches obfuscated scripts</span></div>
+        <div class="er"><span class="ek">Script block logging →</span><span>Logs all PowerShell code that executes — forensic value + detection</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="f3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">FIL</span><span class="card-title" style="color:var(--fil)">File-Based Vector Defenses</span><span class="bdg" style="background:#072814;color:var(--fil);border:1px solid #0e4020">Sandbox · AV · Allow List</span></div>
+    <div class="card-bd">
+      <div class="mit-row"><span class="mit-threat" style="color:var(--fil)">Malicious Office macros</span><span class="mit-fix">Disable macros by default — only allow digitally signed macros from trusted publishers — Group Policy</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--fil)">Malicious executables</span><span class="mit-fix">Application allow listing (AppLocker/WDAC) — only approved signed apps execute</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--fil)">Email attachments</span><span class="mit-fix">Email sandbox (detonate before delivery) — strip dangerous file types (.exe, .lnk, .iso) from email</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--fil)">HTML smuggling</span><span class="mit-fix">Block HTML attachments in email — sandbox that fully renders HTML — disable JS from email</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--fil)">Script-based attacks</span><span class="mit-fix">AMSI + script block logging — PowerShell Constrained Language Mode — execution policy</span></div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Email sandbox →</span><span>Detonate attachments in isolated environment before delivery — catches zero-days</span></div>
+        <div class="er"><span class="ek">Application allow listing →</span><span>Only approved apps/scripts run — AppLocker/WDAC — blocks unknown malware</span></div>
+        <div class="er"><span class="ek">Strip dangerous types →</span><span>Block .exe, .lnk, .iso, .docm from email — remove attack vector entirely</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end fil -->
+
+<!-- ══════════════════════════════════ -->
+<!-- VOICE CALL VECTOR                  -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="v-vce">
+<div class="card">
+  <div class="card-hd"><span class="card-num">VCE</span><span class="card-title" style="color:var(--vce)">Voice Call Vectors</span><span class="bdg" style="background:#071e1c;color:var(--vce);border:1px solid #0e3030">Vishing · Spoofing · AI Voice Cloning</span></div>
+  <div class="card-bd">
+    <p>Voice calls exploit <strong style="color:var(--tx)">the trust people place in telephone communications</strong> — particularly when caller ID appears to show a known number. The rise of AI voice cloning has dramatically increased the effectiveness and danger of voice-based attacks.</p>
+
+    <h3 style="border-left-color:var(--vce)">Voice Attack Types</h3>
+    <div class="atk-row">
+      <div class="atk-icon">📞</div>
+      <div>
+        <div class="atk-name" style="color:var(--vce)">Vishing — Voice Phishing</div>
+        <div class="atk-body">Social engineering via phone call. Classic: "IT Support calling — we detected a virus on your computer — I need your credentials to fix it remotely." Or: "Bank fraud department — suspicious transactions — verify your account number and PIN." Caller ID spoofing makes call appear to come from a legitimate number. Highly effective — people trust voices more than email. Defense: never provide credentials over unsolicited call — call back to official number.</div>
+      </div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-icon">🤖</div>
+      <div>
+        <div class="atk-name" style="color:var(--vce)">AI Voice Cloning — Deepfake Audio</div>
+        <div class="atk-body">AI tools can clone a person's voice from as little as 30 seconds of audio sample. Attackers use publicly available audio (YouTube videos, podcasts, earnings calls) to clone executive voices. Scenario: cloned CEO voice calls CFO — "I need you to urgently wire $500K for a confidential acquisition — don't discuss with anyone." British energy company lost £200K in 2019 to AI voice clone. Defense: verbal authentication code (secret word unknown to AI), callback policy, dual-approval regardless of voice instruction.</div>
+      </div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-icon">🔢</div>
+      <div>
+        <div class="atk-name" style="color:var(--vce)">Caller ID Spoofing</div>
+        <div class="atk-body">Caller ID can show any number the attacker wants — not the real originating number. STIR/SHAKEN: emerging standard to verify caller ID authenticity in VoIP calls. Defense: can't trust caller ID alone — verify via callback to known number or out-of-band method. Spoofed government/police numbers especially effective — people don't expect "the IRS" to be fake.</div>
+      </div>
+    </div>
+    <div class="atk-row">
+      <div class="atk-icon">📱</div>
+      <div>
+        <div class="atk-name" style="color:var(--vce)">SIM Swapping</div>
+        <div class="atk-body">Social engineer mobile carrier into transferring victim's phone number to attacker's SIM. Attack: call carrier, pretend to be victim, claim lost phone → "transfer my number to new SIM." Once attacker has victim's number: receive all SMS — including SMS MFA codes. Used to bypass MFA and account recovery. High-profile victims: Twitter CEO Jack Dorsey, multiple crypto executives. Defense: use authenticator app (not SMS) for MFA — set carrier PIN — carrier-level SIM lock.</div>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--vce)">Voice Attack Defenses</h3>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--vce)">Vishing</span><span class="mit-fix">Never provide credentials over unsolicited calls — call back to official number — verbal challenge codes</span></div>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--vce)">AI voice cloning</span><span class="mit-fix">Secret word/code for financial requests — dual-approval regardless of voice instruction — no exceptions</span></div>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--vce)">SIM swapping</span><span class="mit-fix">Use TOTP app not SMS for MFA — carrier-level SIM lock — account PIN at carrier</span></div>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--vce)">Caller ID spoofing</span><span class="mit-fix">Don't trust caller ID — STIR/SHAKEN emerging standard — callback policy</span></div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Vishing →</span><span>Voice phishing — IT/bank impersonation — never give credentials over unsolicited call</span></div>
+      <div class="er"><span class="ek">AI voice cloning →</span><span>Deepfake audio from public samples — clone exec voice for BEC-style fraud — verbal challenge code defends</span></div>
+      <div class="er"><span class="ek">SIM swapping →</span><span>Social engineer carrier to transfer number — receive SMS MFA codes — use TOTP app not SMS</span></div>
+      <div class="er"><span class="ek">Caller ID spoofing →</span><span>Any caller ID can be faked — cannot trust — always verify via callback</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end vce -->
+
+<!-- ══════════════════════════════════ -->
+<!-- SUPPLY CHAIN VECTOR                -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="v-sup">
+<div class="card">
+  <div class="card-hd"><span class="card-num">SUP</span><span class="card-title" style="color:var(--sup)">Supply Chain Vectors</span><span class="bdg" style="background:#1e0830;color:var(--sup);border:1px solid #300d48">Vendors · Software · Hardware · MSP</span></div>
+  <div class="card-bd">
+    <p>Supply chain attacks compromise <strong style="color:var(--tx)">a target organization by attacking a trusted vendor, supplier, or component in the chain that delivers products or services to that organization</strong>. One compromised vendor can affect thousands of downstream customers simultaneously.</p>
+
+    <h3 style="border-left-color:var(--sup)">Why Supply Chain Is So Dangerous</h3>
+    <div class="code">
+<span class="cm"># The trust exploitation:</span>
+Organization: "We trust our vendors — they're vetted."
+               "Software update from SolarWinds? Install it."
+               "Kaseya manages our endpoints — it's secure."
+               
+Attacker: compromise the vendor → ride the trust relationship
+          18,000 organizations install → 18,000 backdoors installed
+
+<span class="cr">SolarWinds 2020:</span>
+  Attacker: compromised SolarWinds build pipeline
+  Malicious code: inserted into legitimate Orion updates
+  Signed with: valid SolarWinds certificate → trusted
+  Deployed to: 18,000+ organizations (US govt, Fortune 500)
+  Dwell time: 9 months before detection
+  
+<span class="cr">Kaseya VSA 2021:</span>
+  Kaseya: RMM tool used by MSPs to manage customer endpoints
+  Attacker: exploited Kaseya zero-day → pushed ransomware to all MSP customers
+  Affected: 1,500+ businesses in 17 countries
+  Ransom: $70M demanded
+
+<span class="cr">3CX Supply Chain (2023):</span>
+  3CX desktop app: communications software
+  Compromised: malicious code in 3CX's own app
+  Signed: with 3CX's own valid code signing certificate
+  Vector: itself a supply chain attack (compromised via another vendor)
+    </div>
+
+    <h3 style="border-left-color:var(--sup)">Supply Chain Attack Types</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#300d48">
+        <h4 style="color:var(--sup)">Software Supply Chain</h4>
+        <p>Compromise software before it reaches you. Build pipeline attack: malicious code inserted during compilation. Dependency confusion: publish malicious package with same name as internal package — package manager installs attacker's version. Typosquatting in npm/PyPI: "reqeusts" vs "requests" — attacker publishes before victim can typo-check.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--hw)">Hardware Supply Chain</h4>
+        <p>Hardware modified before delivery. Counterfeit hardware: fake chips with backdoors. Firmware pre-installed: malicious BIOS/firmware on new devices. Modified in transit: interdiction (intelligence agencies). Defense: trusted suppliers, tamper-evident packaging, hardware attestation, firmware verification.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--fil)">Managed Service Provider (MSP)</h4>
+        <p>MSPs have admin access to many client environments. Compromise one MSP → access to all their clients. Kaseya model: attack MSP's management tool → affect all clients. MSPs are Tier 1 critical vendors — must be assessed stringently. Defense: least privilege for MSP access, monitor MSP access logs, incident response plan if MSP is compromised.</p>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--sup)">Supply Chain Defenses</h3>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--sup)">Software supply chain</span><span class="mit-fix">SBOM (Software Bill of Materials) — know what's in your software. Code signing. Verify update signatures before installing.</span></div>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--sup)">Dependency confusion</span><span class="mit-fix">Private package registry — only allow packages from approved sources — dependency scanning (Snyk, Dependabot)</span></div>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--sup)">Hardware tampering</span><span class="mit-fix">Trusted supplier list — tamper-evident packaging — hardware attestation (TPM) — firmware verification</span></div>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--sup)">MSP compromise</span><span class="mit-fix">Least privilege for MSP access — monitor access logs — isolate MSP access — have "MSP compromised" incident plan</span></div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Supply chain attack →</span><span>Compromise vendor to attack customers — trusted relationship exploited — SolarWinds model</span></div>
+      <div class="er"><span class="ek">SolarWinds →</span><span>Build pipeline compromise — 18,000 orgs — 9-month dwell — valid signed update</span></div>
+      <div class="er"><span class="ek">SBOM →</span><span>Software Bill of Materials — inventory of all software components — enables rapid CVE response</span></div>
+      <div class="er"><span class="ek">Dependency confusion →</span><span>Malicious package same name as internal package — package manager installs attacker version</span></div>
+      <div class="er"><span class="ek">MSP risk →</span><span>Admin access to many clients — compromise one MSP = access to all clients (Kaseya model)</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end sup -->
+
+<!-- ══════════════════════════════════ -->
+<!-- VULNERABLE SOFTWARE                -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="v-sw">
+  <div class="vec-banner" style="background:linear-gradient(135deg,rgba(255,96,48,0.08),rgba(8,9,14,0));">
+    <span class="vec-icon-big">🐛</span>
+    <div>
+      <div class="vec-title-big" style="color:var(--sw)">Vulnerable Software</div>
+      <div class="vec-subtitle">CVEs · Zero-Days · Unpatched Systems · Application Vulnerabilities</div>
+    </div>
+  </div>
+  <div class="tabs" id="t-sw">
+    <button class="tab active" onclick="goTab('sw','sw1',this)">Overview</button>
+    <button class="tab" onclick="goTab('sw','sw2',this)">Vulnerability Types</button>
+    <button class="tab" onclick="goTab('sw','sw3',this)">Zero-Days</button>
+    <button class="tab" onclick="goTab('sw','sw4',this)">Defenses</button>
+  </div>
+
+  <div class="sec on" id="sw1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SW</span><span class="card-title" style="color:var(--sw)">Vulnerable Software Overview</span><span class="bdg" style="background:#201000;color:var(--sw);border:1px solid #401810">CVE · Patch · Exploit</span></div>
+    <div class="card-bd">
+      <p>Software vulnerabilities are <strong style="color:var(--tx)">flaws in application code, configuration, or design that allow attackers to cause unintended behavior</strong> — from unauthorized access to remote code execution. Every unpatched system is an open door.</p>
+      <h3 style="border-left-color:var(--sw)">The Vulnerability Lifecycle</h3>
+      <div class="flow">
+        <div class="flow-box" style="background:rgba(255,96,48,0.1);border-color:var(--sw);color:var(--sw)">Vulnerability<br>Discovered</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:rgba(192,96,255,0.1);border-color:var(--sup);color:var(--sup)">CVE Assigned<br>(if reported)</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:rgba(240,192,0,0.1);border-color:var(--soc);color:var(--soc)">Vendor Patches<br>Developed</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:rgba(64,208,128,0.1);border-color:var(--fil);color:var(--fil)">Patch Released<br>&amp; Deployed</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:rgba(48,200,240,0.1);border-color:var(--vce);color:var(--vce)">Verified Fixed<br>in Prod</div>
+      </div>
+      <div class="code">
+<span class="cm"># The window of exposure:</span>
+
+Day 0:      Vulnerability discovered (may be secret for months)
+Day X:      CVE assigned — public knowledge if disclosed
+Day X+1:    Exploit code published on GitHub/dark web
+Day X+1 to: attackers scanning and exploiting worldwide
+Day X+14:   Most organizations still haven't patched (survey data)
+Day X+30:   Many orgs still unpatched — active ransomware campaigns
+
+<span class="cm"># CISA KEV (Known Exploited Vulnerabilities):</span>
+CISA maintains list of CVEs actively exploited in the wild
+If on KEV list: <span class="cr">patch within 14 days (federal) / immediately (best practice)</span>
+If not on KEV: patch per normal SLA (30-90 days based on severity)
+
+<span class="cm"># CVSS Score vs actual risk:</span>
+CVSS 9.8 on internal-only dev server: lower priority
+CVSS 7.0 on internet-facing server + KEV listed: HIGHEST priority
+Context matters more than raw CVSS score
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">CVE →</span><span>Common Vulnerabilities and Exposures — unique identifier for known vulnerabilities</span></div>
+        <div class="er"><span class="ek">CVSS →</span><span>Common Vulnerability Scoring System — 0-10 severity — not sufficient alone for prioritization</span></div>
+        <div class="er"><span class="ek">CISA KEV →</span><span>Known Exploited Vulnerabilities — actively exploited in wild — patch IMMEDIATELY</span></div>
+        <div class="er"><span class="ek">Patch window →</span><span>Time between patch release and widespread attack — often only days</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="sw2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SW</span><span class="card-title" style="color:var(--sw)">Common Vulnerability Types</span><span class="bdg" style="background:#201000;color:var(--sw);border:1px solid #401810">SQLi · BOF · RCE · IDOR</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#401810">
+          <h4 style="color:var(--sw)">SQL Injection (SQLi)</h4>
+          <p>Attacker inserts SQL commands into input fields. Application builds SQL query with attacker's input → executes malicious SQL. Can: read all database data, modify/delete records, bypass authentication. Classic: username = "' OR '1'='1" → login bypass. Defense: parameterized queries (prepared statements) — input validation — WAF.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--msg)">Buffer Overflow</h4>
+          <p>Write more data into a buffer than it can hold → overwrite adjacent memory → control execution flow. Classic vulnerability in C/C++ applications. Can achieve: RCE (Remote Code Execution). Defense: memory-safe languages (Rust, Go), compiler protections (ASLR, DEP/NX, stack canaries), code analysis.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--sup)">Cross-Site Scripting (XSS)</h4>
+          <p>Inject malicious JavaScript into web pages viewed by other users. Stored XSS: script saved in database → executes for all viewers. Reflected XSS: script in URL → victim clicks malicious link. DOM-based XSS: modifies page DOM. Can: steal session cookies, redirect to phishing, keylog. Defense: output encoding, Content Security Policy (CSP), input validation.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--fil)">IDOR — Insecure Direct Object Reference</h4>
+          <p>Access control flaw — user can access another user's objects by guessing/modifying an ID. Example: /account?id=1234 → change to 1235 → see another user's account. Defense: server-side authorization check on every request — not just at login. "Does this user own object 1235?" check.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--net)">Race Condition (TOCTOU)</h4>
+          <p>Time-of-Check to Time-of-Use — gap between checking a condition and using a resource is exploited. Check: "does user have permission?" → (attacker changes state) → Use: "use the resource." Classic in file access and privilege operations. Defense: atomic operations, locking, careful concurrency design.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--vce)">Privilege Escalation</h4>
+          <p>Gain higher privileges than authorized. Vertical: user → admin/root. Horizontal: access another user's account at same level. Methods: exploit kernel/OS vulnerabilities, misconfigured SUID binaries, weak file permissions, token manipulation. Defense: least privilege, patch OS/kernel, regular privilege audits.</p>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">SQL injection →</span><span>Malicious SQL in input — parameterized queries / prepared statements prevent it</span></div>
+        <div class="er"><span class="ek">Buffer overflow →</span><span>Overwrite memory — RCE possible — memory-safe languages + ASLR/DEP defend</span></div>
+        <div class="er"><span class="ek">XSS →</span><span>Inject JavaScript into web pages — steal sessions — CSP + output encoding defend</span></div>
+        <div class="er"><span class="ek">IDOR →</span><span>Access other users' data by changing ID — server-side authz check defends</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="sw3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SW</span><span class="card-title" style="color:var(--sw)">Zero-Day Vulnerabilities</span><span class="bdg" style="background:#201000;color:var(--sw);border:1px solid #401810">Unknown · No Patch · Critical</span></div>
+    <div class="card-bd">
+      <p>A <strong style="color:var(--tx)">zero-day is a vulnerability that is unknown to the vendor and has no available patch</strong>. Name comes from "zero days of patch availability." These are the most valuable and dangerous vulnerabilities — they work against fully patched systems.</p>
+      <div class="code">
+<span class="cm"># Zero-day timeline:</span>
+Day -N:   Researcher or attacker discovers vulnerability in software
+          Vendor: unaware — no patch exists
+          
+"Zero-Day" window: vulnerability is unknown to defender
+          Any attack during this window: undefendable via patching
+          
+Day 0:    Disclosure (responsible or not)
+Day 1+:   Vendor develops patch (may take days to months)
+Day X:    Patch released → zero-day becomes "N-day" vulnerability
+          
+<span class="cm"># Zero-day markets:</span>
+Nation-states: develop or purchase zero-days (millions of $)
+Bug bounties:  responsible disclosure — vendor pays researcher
+Dark web:      criminal markets for 0-days
+Exploit brokers: Zerodium pays up to $2.5M for iOS zero-day
+
+<span class="cm"># Defending against zero-days:</span>
+<span class="cg">Virtual patching:</span>  WAF/IPS rule blocks exploit pattern before patch exists
+<span class="cg">Defense in depth:</span>  even if exploited — what can attacker reach?
+<span class="cg">Behavioral detection:</span> EDR detects exploit behavior not signature
+<span class="cg">Attack surface reduction:</span> less software = fewer zero-days to exploit
+<span class="cg">Sandboxing:</span>  isolate vulnerable apps — limit blast radius
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Zero-day →</span><span>Unknown to vendor — no patch available — works on fully-patched systems</span></div>
+        <div class="er"><span class="ek">Zero-day defense →</span><span>Virtual patching (WAF/IPS) + behavioral EDR + defense in depth + attack surface reduction</span></div>
+        <div class="er"><span class="ek">N-day →</span><span>Known vulnerability with patch available but not yet deployed — patch management closes this</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="sw4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SW</span><span class="card-title" style="color:var(--sw)">Vulnerable Software Defenses</span><span class="bdg" style="background:#201000;color:var(--sw);border:1px solid #401810">Patch · WAF · SAST · AppSec</span></div>
+    <div class="card-bd">
+      <div class="mit-row"><span class="mit-threat" style="color:var(--sw)">Known CVEs (N-days)</span><span class="mit-fix">Patch management — Critical within 7-14 days — CISA KEV within 48-72 hours — automated patching where possible</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--sw)">Zero-days</span><span class="mit-fix">Virtual patching via WAF/IPS + behavioral EDR + defense in depth + attack surface reduction</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--sw)">Web application vulnerabilities</span><span class="mit-fix">WAF (Web Application Firewall) — blocks SQLi, XSS, OWASP Top 10. SAST/DAST in SDLC — find before prod.</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--sw)">Vulnerable dependencies</span><span class="mit-fix">SCA (Software Composition Analysis) — Snyk, Dependabot — alert on CVEs in dependencies</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--sw)">EOL software</span><span class="mit-fix">Upgrade or replace — if impossible: network isolation + virtual patching + enhanced monitoring</span></div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">WAF →</span><span>Web Application Firewall — HTTP-aware — blocks SQLi, XSS, OWASP Top 10</span></div>
+        <div class="er"><span class="ek">SAST →</span><span>Static Application Security Testing — analyze code before compilation — find bugs early</span></div>
+        <div class="er"><span class="ek">DAST →</span><span>Dynamic Application Security Testing — test running app — find runtime vulnerabilities</span></div>
+        <div class="er"><span class="ek">SCA →</span><span>Software Composition Analysis — scan dependencies for known CVEs — Snyk, Dependabot</span></div>
+        <div class="er"><span class="ek">Virtual patching →</span><span>WAF/IPS rule blocks exploit — used when real patch can't be applied yet</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end sw -->
+
+<!-- ══════════════════════════════════ -->
+<!-- SUMMARY                            -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="v-sum">
+<div class="card">
+  <div class="card-hd"><span class="card-num">ALL</span><span class="card-title">Complete Exam Cheat Sheet</span><span class="bdg" style="background:#181828;color:var(--mu);border:1px solid var(--bd)">Domain 2 · Threat Vectors &amp; Attack Surfaces</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--msg)">Vector Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Vector</th><th>Primary Attacks</th><th>Key Defenses</th><th>Exam Term</th></tr>
+      <tr><td><span class="tag tr">Message-Based</span></td><td>Phishing, spear phishing, BEC, smishing, quishing</td><td>SPF+DKIM+DMARC, sandbox, MFA, SLAM</td><td>#1 initial access vector</td></tr>
+      <tr><td><span class="tag to">Unsecure Networks</span></td><td>Evil twin, ARP poison, MITM, deauth, WPS</td><td>VPN, WPA3, DAI, DNSSEC, HSTS</td><td>Eavesdropping + MITM</td></tr>
+      <tr><td><span class="tag ty">Social Engineering</span></td><td>Pretexting, baiting, tailgating, vishing, watering hole</td><td>Training, MFA, mantrap, shredding, dual-approval</td><td>Exploits human psychology</td></tr>
+      <tr><td><span class="tag tg">File-Based</span></td><td>Macro attacks, HTML smuggling, .lnk, ISO files</td><td>Email sandbox, AppLocker, disable macros, AMSI</td><td>Hides payload in trusted files</td></tr>
+      <tr><td><span class="tag tt">Voice Call</span></td><td>Vishing, AI voice clone, SIM swapping, caller ID spoof</td><td>Callback policy, TOTP not SMS, verbal challenge code</td><td>AI cloning is emerging threat</td></tr>
+      <tr><td><span class="tag tp">Supply Chain</span></td><td>SolarWinds model, dependency confusion, MSP attack</td><td>SBOM, code signing, vendor assessment, TPRM</td><td>Trust relationship exploited</td></tr>
+      <tr><td><span class="tag tsw">Vulnerable Software</span></td><td>CVE exploitation, zero-day, SQLi, XSS, buffer overflow</td><td>Patch management, WAF, SAST/DAST, virtual patching</td><td>CISA KEV = patch NOW</td></tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--soc)">Master Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// 40 Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"#1 initial access vector — exploits human trust"</span><span>→ Message-based (phishing email)</span></div>
+      <div class="er"><span class="ek">"Personalized email using OSINT — references real manager name"</span><span>→ Spear phishing</span></div>
+      <div class="er"><span class="ek">"CEO impersonation requesting urgent wire transfer"</span><span>→ BEC (Business Email Compromise) + whaling</span></div>
+      <div class="er"><span class="ek">"Prevent email spoofing — specify authorized senders"</span><span>→ SPF (Sender Policy Framework)</span></div>
+      <div class="er"><span class="ek">"Cryptographic email signature — verify not modified"</span><span>→ DKIM</span></div>
+      <div class="er"><span class="ek">"Policy for failing SPF/DKIM — reject/quarantine"</span><span>→ DMARC</span></div>
+      <div class="er"><span class="ek">"Detonate attachments in isolated env before delivery"</span><span>→ Email sandbox</span></div>
+      <div class="er"><span class="ek">"Check URLs at click-time not delivery-time"</span><span>→ Safe Links / URL rewriting</span></div>
+      <div class="er"><span class="ek">"SMS phishing — USPS delivery notification"</span><span>→ Smishing</span></div>
+      <div class="er"><span class="ek">"QR code in email — payload assembled after gateway scans"</span><span>→ Quishing (QR phishing)</span></div>
+      <div class="er"><span class="ek">"Free WiFi — attacker creates identical SSID with better signal"</span><span>→ Evil twin / rogue access point</span></div>
+      <div class="er"><span class="ek">"Spoof ARP to redirect traffic through attacker"</span><span>→ ARP poisoning — defended by DAI (Dynamic ARP Inspection)</span></div>
+      <div class="er"><span class="ek">"Force victim to reconnect — capture WPA2 handshake"</span><span>→ Deauthentication attack — WPA3/802.11w defends</span></div>
+      <div class="er"><span class="ek">"WiFi PIN brute-forceable — disable this feature"</span><span>→ WPS attack — disable WPS, no patch exists</span></div>
+      <div class="er"><span class="ek">"Attacker between victim and server — reads/modifies traffic"</span><span>→ On-path / Man-in-the-middle (MITM) attack</span></div>
+      <div class="er"><span class="ek">"Downgrade HTTPS to HTTP — prevented by browser policy"</span><span>→ SSL stripping — HSTS prevents</span></div>
+      <div class="er"><span class="ek">"Unauthorized Bluetooth data access"</span><span>→ Bluesnarfing</span></div>
+      <div class="er"><span class="ek">"Social engineering using fake authority + urgency"</span><span>→ Pretexting — combined psychological principles</span></div>
+      <div class="er"><span class="ek">"USB labeled 'Salaries' left in parking lot"</span><span>→ Baiting attack — USB drop</span></div>
+      <div class="er"><span class="ek">"Compromise website that target group regularly visits"</span><span>→ Watering hole attack</span></div>
+      <div class="er"><span class="ek">"Follow authorized person through secure door"</span><span>→ Tailgating — mantrap physically prevents</span></div>
+      <div class="er"><span class="ek">"Watch someone type credentials from behind"</span><span>→ Shoulder surfing — privacy screen defends</span></div>
+      <div class="er"><span class="ek">"Search company trash for useful information"</span><span>→ Dumpster diving — cross-cut shredding defends</span></div>
+      <div class="er"><span class="ek">"Offer help in exchange for credentials/access"</span><span>→ Quid pro quo social engineering</span></div>
+      <div class="er"><span class="ek">"IT: I'll fix your computer — give me credentials"</span><span>→ Vishing + quid pro quo — never give credentials over phone</span></div>
+      <div class="er"><span class="ek">"AI clones CEO voice — CFO tricked into wire transfer"</span><span>→ AI voice cloning / deepfake audio — verbal challenge code defends</span></div>
+      <div class="er"><span class="ek">"Social engineer carrier to get victim's phone number"</span><span>→ SIM swapping — use TOTP app not SMS MFA</span></div>
+      <div class="er"><span class="ek">"VBA macro in Word document executes PowerShell"</span><span>→ Macro-based file attack — disable macros + AppLocker + AMSI</span></div>
+      <div class="er"><span class="ek">"Payload encoded in HTML — assembled in browser after email scan"</span><span>→ HTML smuggling — block HTML attachments + full-render sandbox</span></div>
+      <div class="er"><span class="ek">"Use legitimate Windows tools — no custom malware needed"</span><span>→ Living off the land — PowerShell/WMI/PSExec</span></div>
+      <div class="er"><span class="ek">"Software update from legitimate vendor installs backdoor"</span><span>→ Supply chain attack — SolarWinds model</span></div>
+      <div class="er"><span class="ek">"Inventory of all components in a software product"</span><span>→ SBOM (Software Bill of Materials)</span></div>
+      <div class="er"><span class="ek">"Attacker publishes malicious package with same name as internal one"</span><span>→ Dependency confusion attack</span></div>
+      <div class="er"><span class="ek">"MSP tool exploited — ransomware pushed to all clients"</span><span>→ Supply chain via MSP — Kaseya model</span></div>
+      <div class="er"><span class="ek">"Vulnerability unknown to vendor — no patch exists"</span><span>→ Zero-day vulnerability</span></div>
+      <div class="er"><span class="ek">"Actively exploited in the wild — patch immediately"</span><span>→ CISA KEV (Known Exploited Vulnerabilities)</span></div>
+      <div class="er"><span class="ek">"WAF/IPS rule blocks exploit while awaiting real patch"</span><span>→ Virtual patching</span></div>
+      <div class="er"><span class="ek">"Malicious SQL inserted into input field — read all data"</span><span>→ SQL injection — parameterized queries defend</span></div>
+      <div class="er"><span class="ek">"Inject JavaScript into web pages seen by other users"</span><span>→ Cross-site scripting (XSS) — CSP + output encoding defend</span></div>
+      <div class="er"><span class="ek">"Analyze source code before compilation for security flaws"</span><span>→ SAST (Static Application Security Testing)</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end sum -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const VC={msg:'var(--msg)',net:'var(--net)',soc:'var(--soc)',fil:'var(--fil)',vce:'var(--vce)',sup:'var(--sup)',sw:'var(--sw)',sum:'var(--mu)'};
+
+function showVec(id,el){
+  document.querySelectorAll('.model').forEach(m=>m.classList.remove('on'));
+  document.querySelectorAll('.vbtn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('v-'+id).classList.add('on');
+  el.classList.add('on');
+  const c=VC[id];
+  const tabs=document.getElementById('t-'+id);
+  if(tabs){
+    tabs.querySelectorAll('.tab').forEach(t=>{
+      t.onmouseover=()=>{if(!t.classList.contains('active')){t.style.borderColor=c;t.style.color=c;}};
+      t.onmouseout=()=>{if(!t.classList.contains('active')){t.style.borderColor='';t.style.color='';}};
+    });
+    const a=tabs.querySelector('.tab.active');
+    if(a){a.style.background=c;a.style.borderColor=c;a.style.color='#08090e';}
+  }
+  window.scrollTo(0,0);
+}
+
+function goTab(vec,secId,btn){
+  const m=document.getElementById('v-'+vec);
+  const tabs=document.getElementById('t-'+vec);
+  if(!m||!tabs)return;
+  m.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  tabs.querySelectorAll('.tab').forEach(t=>{
+    t.classList.remove('active');t.style.background='';t.st

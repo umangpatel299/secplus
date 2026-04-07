@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vulnerabilities — Security+ Domain 2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Archivo+Narrow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#fdfcf8;
+  --p:#ffffff;
+  --s:#f5f3ed;
+  --t:#ece9e1;
+  --bd:#d4d0c4;
+  --tx:#1a1810;
+  --mu:#726e5c;
+  /* category colours */
+  --app:#c02828; --app-bg:#fff5f5;
+  --hw:#884400; --hw-bg:#fff8f0;
+  --mob:#007058; --mob-bg:#f0fdf8;
+  --virt:#6020b0; --virt-bg:#f8f0ff;
+  --os:#1850b0; --os-bg:#f0f6ff;
+  --cld:#0070a0; --cld-bg:#f0faff;
+  --web:#c04800; --web-bg:#fff6f0;
+  --sc:#306020; --sc-bg:#f2fff0;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:'Archivo',sans-serif;font-size:14px;line-height:1.65;padding:2rem 1.5rem;}
+
+/* ── HEADER: bold typographic grid ── */
+.hdr{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border:2px solid var(--tx);
+  margin-bottom:2.5rem;
+  overflow:hidden;
+}
+@media(max-width:580px){.hdr{grid-template-columns:1fr;}}
+.hdr-left{
+  background:var(--tx);color:var(--bg);
+  padding:2rem 1.8rem;
+  position:relative;overflow:hidden;
+}
+.hdr-left::after{
+  content:'⚠';position:absolute;
+  right:-0.5rem;bottom:-1.5rem;
+  font-size:8rem;opacity:0.04;
+  line-height:1;
+}
+.hdr-kicker{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;opacity:0.5;text-transform:uppercase;margin-bottom:0.5rem;}
+.hdr-title{font-family:'Archivo',sans-serif;font-size:3.4rem;font-weight:900;line-height:0.88;letter-spacing:-0.04em;margin-bottom:0.5rem;}
+.hdr-rule{height:2px;background:rgba(255,255,255,0.3);margin:0.7rem 0;}
+.hdr-desc{font-family:'Archivo Narrow',sans-serif;font-size:0.82rem;opacity:0.7;line-height:1.6;}
+.hdr-right{padding:1.5rem 1.6rem;display:flex;flex-direction:column;justify-content:space-between;}
+.hdr-cats{display:flex;flex-direction:column;gap:0.3rem;}
+.hdr-cat{display:flex;align-items:center;gap:0.5rem;font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--mu);}
+.hdr-cat-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.hdr-bottom{display:flex;gap:1.5rem;padding-top:1rem;border-top:1px solid var(--bd);}
+.hdr-stat-val{font-family:'Archivo',sans-serif;font-size:1.4rem;font-weight:900;color:var(--tx);line-height:1;}
+.hdr-stat-lbl{font-family:'IBM Plex Mono',monospace;font-size:0.56rem;color:var(--mu);letter-spacing:0.08em;text-transform:uppercase;}
+
+/* ── CATEGORY PICKER ── */
+.picker{display:grid;grid-template-columns:repeat(8,1fr);gap:0.3rem;margin-bottom:2rem;}
+@media(max-width:700px){.picker{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:380px){.picker{grid-template-columns:repeat(2,1fr);}}
+.pck{
+  border:1.5px solid var(--bd);background:var(--p);
+  padding:0.65rem 0.3rem;text-align:center;
+  cursor:pointer;border-radius:6px;transition:all 0.14s;
+  display:flex;flex-direction:column;align-items:center;gap:0.25rem;
+}
+.pck:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.08);}
+.pck-ico{font-size:1.3rem;line-height:1;}
+.pck-lbl{font-family:'IBM Plex Mono',monospace;font-size:0.54rem;font-weight:700;color:var(--mu);letter-spacing:0.03em;}
+
+/* per-category active states */
+.pck[data-c="app"]:hover,.pck[data-c="app"].on{border-color:var(--app);background:var(--app-bg);}
+.pck[data-c="app"].on .pck-lbl,.pck[data-c="app"]:hover .pck-lbl{color:var(--app);}
+.pck[data-c="hw"]:hover,.pck[data-c="hw"].on{border-color:var(--hw);background:var(--hw-bg);}
+.pck[data-c="hw"].on .pck-lbl,.pck[data-c="hw"]:hover .pck-lbl{color:var(--hw);}
+.pck[data-c="mob"]:hover,.pck[data-c="mob"].on{border-color:var(--mob);background:var(--mob-bg);}
+.pck[data-c="mob"].on .pck-lbl,.pck[data-c="mob"]:hover .pck-lbl{color:var(--mob);}
+.pck[data-c="virt"]:hover,.pck[data-c="virt"].on{border-color:var(--virt);background:var(--virt-bg);}
+.pck[data-c="virt"].on .pck-lbl,.pck[data-c="virt"]:hover .pck-lbl{color:var(--virt);}
+.pck[data-c="os"]:hover,.pck[data-c="os"].on{border-color:var(--os);background:var(--os-bg);}
+.pck[data-c="os"].on .pck-lbl,.pck[data-c="os"]:hover .pck-lbl{color:var(--os);}
+.pck[data-c="cld"]:hover,.pck[data-c="cld"].on{border-color:var(--cld);background:var(--cld-bg);}
+.pck[data-c="cld"].on .pck-lbl,.pck[data-c="cld"]:hover .pck-lbl{color:var(--cld);}
+.pck[data-c="web"]:hover,.pck[data-c="web"].on{border-color:var(--web);background:var(--web-bg);}
+.pck[data-c="web"].on .pck-lbl,.pck[data-c="web"]:hover .pck-lbl{color:var(--web);}
+.pck[data-c="sc"]:hover,.pck[data-c="sc"].on{border-color:var(--sc);background:var(--sc-bg);}
+.pck[data-c="sc"].on .pck-lbl,.pck[data-c="sc"]:hover .pck-lbl{color:var(--sc);}
+.pck[data-c="sum"]:hover,.pck[data-c="sum"].on{border-color:var(--mu);background:var(--s);}
+.pck[data-c="sum"].on .pck-lbl,.pck[data-c="sum"]:hover .pck-lbl{color:var(--tx);}
+
+/* ── INNER TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:1.8rem;}
+.tab{padding:0.38rem 0.9rem;border:1.5px solid var(--bd);background:var(--p);color:var(--mu);cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.62rem;font-weight:600;transition:all 0.13s;letter-spacing:0.02em;border-radius:4px;}
+.tab:hover,.tab.active{color:#fff;}
+
+/* ── MODELS / SECTIONS ── */
+.cat{display:none;}
+.cat.on{display:block;animation:rise 0.18s ease;}
+.sec{display:none;}
+.sec.on{display:block;}
+@keyframes rise{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* ── CARD ── */
+.card{background:var(--p);border:1.5px solid var(--bd);border-radius:8px;margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:0.9rem 1.4rem;border-bottom:1.5px solid var(--bd);background:var(--s);}
+.card-num{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;color:var(--mu);background:var(--t);border:1px solid var(--bd);border-radius:2px;padding:0.1rem 0.35rem;}
+.card-title{font-family:'Archivo',sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;}
+.bdg{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:0.57rem;padding:0.14rem 0.52rem;border-radius:2px;white-space:nowrap;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.card-bd{padding:1.4rem;}
+p{color:var(--mu);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.75;}
+h3{font-family:'Archivo',sans-serif;font-size:0.92rem;font-weight:800;color:var(--tx);margin:1.3rem 0 0.55rem;padding-left:0.75rem;border-left:4px solid;letter-spacing:-0.01em;}
+
+/* ── CODE ── */
+.code{background:var(--tx);color:#f0edd8;border-radius:5px;padding:1rem 1.2rem;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;line-height:1.92;overflow-x:auto;margin:0.8rem 0;}
+.cg{color:#68efaa;}.cr{color:#ff8080;}.cb{color:#68c8ff;}.co{color:#ffd070;}.cp{color:#d090ff;}.cm{color:var(--mu);}.ct{color:#60eee0;}.ci{color:#a8c8ff;}.cs{color:#ffe070;}.cgd{color:#ffa858;}
+
+/* ── SCENE ── */
+.scene{background:#fffcf0;border-left:4px solid #b08820;border-radius:0 6px 6px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;color:#886600;margin-bottom:0.4rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+
+/* ── EXAM ── */
+.exam{background:#f6f0ff;border:1.5px solid #d0b8f0;border-radius:6px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;color:#5010a8;margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:#5010a8;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.gc{background:var(--s);border:1.5px solid var(--bd);border-radius:6px;padding:1rem;}
+.gc h4{font-family:'Archivo',sans-serif;font-size:0.88rem;font-weight:800;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1.1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--mu);margin-bottom:0.25rem;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s);padding:0.5rem 0.8rem;text-align:left;color:var(--mu);border-bottom:1.5px solid var(--bd);font-size:0.62rem;font-weight:700;font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--bd);font-size:0.82rem;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s);}
+
+.tag{display:inline-block;padding:0.1rem 0.48rem;border-radius:3px;font-size:0.6rem;font-family:'IBM Plex Mono',monospace;font-weight:700;}
+.tg{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.tr{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.tb{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.to{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.tp{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.tt{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.ty{background:#fef9c3;color:#713f12;border:1px solid #fde047;}
+.ts{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;}
+
+/* ── INFO ROW ── */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s);border:1.5px solid var(--bd);border-radius:6px;margin-bottom:0.5rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Archivo',sans-serif;font-size:0.88rem;font-weight:800;margin-bottom:0.12rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--mu);}
+
+/* ── VULN CARD ── */
+.vuln{border:1.5px solid var(--bd);border-radius:6px;padding:1rem 1.1rem;margin-bottom:0.6rem;border-left:5px solid;}
+.vuln-name{font-family:'Archivo',sans-serif;font-size:0.92rem;font-weight:800;margin-bottom:0.15rem;letter-spacing:-0.01em;}
+.vuln-body{font-size:0.78rem;color:var(--mu);}
+.vuln-tags{display:flex;gap:0.3rem;flex-wrap:wrap;margin-top:0.4rem;}
+
+/* ── MITIGATION ROW ── */
+.mit-row{display:flex;align-items:flex-start;gap:1rem;padding:0.55rem 0.9rem;background:var(--s);border:1px solid var(--bd);border-radius:5px;margin-bottom:0.35rem;}
+.mit-threat{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:700;min-width:170px;flex-shrink:0;}
+.mit-fix{font-size:0.76rem;color:var(--mu);flex:1;}
+
+/* ── RISK LEVEL ── */
+.rlevel{display:inline-flex;align-items:center;gap:0.3rem;font-family:'IBM Plex Mono',monospace;font-size:0.6rem;font-weight:700;padding:0.1rem 0.4rem;border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- ── MASTHEAD ── -->
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-kicker">Security+ SY0-701 · Domain 2 · Threats, Vulnerabilities &amp; Mitigations · 22%</div>
+    <div class="hdr-title">Vulner-<br>abilities</div>
+    <div class="hdr-rule"></div>
+    <div class="hdr-desc">Application · Hardware · Mobile · Virtualization · OS · Cloud · Web · Supply Chain — the weaknesses attackers exploit across every layer of the stack.</div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-cats">
+      <div class="hdr-cat"><div class="hdr-cat-dot" style="background:var(--app)"></div>Application Vulnerabilities</div>
+      <div class="hdr-cat"><div class="hdr-cat-dot" style="background:var(--hw)"></div>Hardware Vulnerabilities</div>
+      <div class="hdr-cat"><div class="hdr-cat-dot" style="background:var(--mob)"></div>Mobile Device Vulnerabilities</div>
+      <div class="hdr-cat"><div class="hdr-cat-dot" style="background:var(--virt)"></div>Virtualization Vulnerabilities</div>
+      <div class="hdr-cat"><div class="hdr-cat-dot" style="background:var(--os)"></div>Operating System Vulnerabilities</div>
+      <div class="hdr-cat"><div class="hdr-cat-dot" style="background:var(--cld)"></div>Cloud-Specific Vulnerabilities</div>
+      <div class="hdr-cat"><div class="hdr-cat-dot" style="background:var(--web)"></div>Web-Based Vulnerabilities</div>
+      <div class="hdr-cat"><div class="hdr-cat-dot" style="background:var(--sc)"></div>Supply Chain Vulnerabilities</div>
+    </div>
+    <div class="hdr-bottom">
+      <div><div class="hdr-stat-val">8</div><div class="hdr-stat-lbl">Categories</div></div>
+      <div><div class="hdr-stat-val">22%</div><div class="hdr-stat-lbl">Exam Weight</div></div>
+      <div><div class="hdr-stat-val">60+</div><div class="hdr-stat-lbl">Vuln Types</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CATEGORY PICKER ── -->
+<div class="picker">
+  <div class="pck on" data-c="app" onclick="showCat('app',this)"><span class="pck-ico">🖥️</span><span class="pck-lbl">Application</span></div>
+  <div class="pck" data-c="hw" onclick="showCat('hw',this)"><span class="pck-ico">🔩</span><span class="pck-lbl">Hardware</span></div>
+  <div class="pck" data-c="mob" onclick="showCat('mob',this)"><span class="pck-ico">📱</span><span class="pck-lbl">Mobile</span></div>
+  <div class="pck" data-c="virt" onclick="showCat('virt',this)"><span class="pck-ico">📦</span><span class="pck-lbl">Virtualization</span></div>
+  <div class="pck" data-c="os" onclick="showCat('os',this)"><span class="pck-ico">⚙️</span><span class="pck-lbl">OS-Based</span></div>
+  <div class="pck" data-c="cld" onclick="showCat('cld',this)"><span class="pck-ico">☁️</span><span class="pck-lbl">Cloud</span></div>
+  <div class="pck" data-c="web" onclick="showCat('web',this)"><span class="pck-ico">🌐</span><span class="pck-lbl">Web-Based</span></div>
+  <div class="pck" data-c="sc" onclick="showCat('sc',this)"><span class="pck-ico">⛓️</span><span class="pck-lbl">Supply Chain</span></div>
+  <div class="pck" data-c="sum" onclick="showCat('sum',this)"><span class="pck-ico">📊</span><span class="pck-lbl">Summary</span></div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- APPLICATION VULNERABILITIES     -->
+<!-- ════════════════════════════════ -->
+<div class="cat on" id="c-app">
+  <div class="tabs" id="t-app">
+    <button class="tab active" onclick="goTab('app','a1',this)">Memory &amp; Injection</button>
+    <button class="tab" onclick="goTab('app','a2',this)">Input Validation</button>
+    <button class="tab" onclick="goTab('app','a3',this)">Access Control</button>
+    <button class="tab" onclick="goTab('app','a4',this)">Cryptographic</button>
+    <button class="tab" onclick="goTab('app','a5',this)">Race Conditions</button>
+    <button class="tab" onclick="goTab('app','a6',this)">Exam Notes</button>
+  </div>
+
+  <div class="sec on" id="a1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">APP</span><span class="card-title" style="color:var(--app)">Memory &amp; Injection Vulnerabilities</span><span class="bdg" style="background:var(--app-bg);color:var(--app);border:1px solid #fca5a5">Buffer Overflow · UAF · Injection</span></div>
+    <div class="card-bd">
+      <p>Memory vulnerabilities occur when <strong style="color:var(--tx)">applications fail to properly manage memory allocation and deallocation</strong>, allowing attackers to overwrite memory regions and redirect code execution. These are among the most severe vulnerability types — many lead directly to remote code execution (RCE).</p>
+      <div class="vuln" style="border-left-color:var(--app);background:var(--app-bg)">
+        <div class="vuln-name" style="color:var(--app)">Buffer Overflow</div>
+        <div class="vuln-body">Writing more data into a buffer than it can hold — overflow overwrites adjacent memory including return addresses and function pointers. Stack overflow: overwrites return address → redirect execution to attacker's shellcode. Heap overflow: corrupts heap metadata or adjacent objects. Classic in C/C++. Defense: memory-safe languages, ASLR, DEP/NX bit, stack canaries, compiler protections.</div>
+        <div class="vuln-tags"><span class="tag tr">RCE possible</span><span class="tag to">C/C++ common</span><span class="tag tg">ASLR+DEP mitigate</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">Use After Free (UAF)</div>
+        <div class="vuln-body">Using a memory pointer after the memory it points to has been freed and potentially reallocated to something else. Attacker controls what fills the freed memory → controls what happens when pointer is used. Modern exploit technique — bypasses some stack overflow mitigations. Defense: memory-safe languages, tools like AddressSanitizer, careful pointer management.</div>
+        <div class="vuln-tags"><span class="tag tr">RCE possible</span><span class="tag to">Browser exploits common</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">NULL Pointer Dereference</div>
+        <div class="vuln-body">Application attempts to use a null pointer — typically causes crash (denial of service). In some contexts can be escalated to privilege escalation. Common in kernel-mode code. Defense: null pointer checks before dereference, exception handling, input validation.</div>
+        <div class="vuln-tags"><span class="tag to">DoS</span><span class="tag ty">Privilege escalation sometimes</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">Integer Overflow / Underflow</div>
+        <div class="vuln-body">Arithmetic result exceeds maximum value of integer type → wraps around to small (or negative) value. Security impact: size calculation underflows → too-small buffer allocated → buffer overflow follows. Example: malloc(user_input + 8) where user_input = MAX_INT wraps to 7 → tiny allocation → overflow. Defense: integer bounds checking, safe integer libraries.</div>
+        <div class="vuln-tags"><span class="tag to">Leads to buffer overflow</span><span class="tag ty">Type confusion</span></div>
+      </div>
+      <h3 style="border-left-color:var(--app)">Memory Protection Mechanisms</h3>
+      <div class="code">
+<span class="cm"># Defenses against memory corruption attacks:</span>
+<span class="cb">ASLR</span> (Address Space Layout Randomization):
+  Randomizes: memory addresses of stack, heap, libraries
+  Attacker: can't hardcode addresses in shellcode
+  Bypass: information leak vulnerability reveals addresses
+
+<span class="cb">DEP / NX bit</span> (Data Execution Prevention / No-Execute):
+  Marks memory regions as: executable OR writable — not both
+  Prevents: shellcode in data/stack from executing
+  Bypass: Return-Oriented Programming (ROP) — reuse existing code
+
+<span class="cb">Stack Canaries</span>:
+  Place a random value (canary) between local vars and return address
+  Check canary before returning: if changed → buffer overflow → abort
+  Bypass: heap overflow, information leak to read canary value
+
+<span class="cb">CFI</span> (Control Flow Integrity):
+  Validates: indirect branches only go to valid targets
+  Prevents: redirecting execution to arbitrary locations
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Buffer overflow →</span><span>Write past buffer end — overwrite return address — RCE — ASLR+DEP+canaries defend</span></div>
+        <div class="er"><span class="ek">Use after free →</span><span>Use freed memory pointer — attacker controls reallocation — modern exploit technique</span></div>
+        <div class="er"><span class="ek">ASLR →</span><span>Randomizes memory layout — attacker can't hardcode addresses — defeated by info leaks</span></div>
+        <div class="er"><span class="ek">DEP/NX →</span><span>Data regions not executable — prevents shellcode execution — ROP bypasses it</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="a2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">APP</span><span class="card-title" style="color:var(--app)">Input Validation Vulnerabilities</span><span class="bdg" style="background:var(--app-bg);color:var(--app);border:1px solid #fca5a5">SQLi · Command Injection · Path Traversal</span></div>
+    <div class="card-bd">
+      <div class="vuln" style="border-left-color:var(--app);background:var(--app-bg)">
+        <div class="vuln-name" style="color:var(--app)">SQL Injection (SQLi)</div>
+        <div class="vuln-body">Attacker inserts SQL commands into input that the application uses to build database queries. Classic: username field → enters "' OR '1'='1 --" → bypasses authentication. Impact: dump entire database, modify/delete records, in some cases achieve RCE via xp_cmdshell. Defense: parameterized queries (prepared statements — #1 fix), stored procedures, input validation, WAF, least privilege on DB accounts.</div>
+        <div class="vuln-tags"><span class="tag tr">Critical</span><span class="tag to">Data theft</span><span class="tag tg">Parameterized queries fix</span></div>
+      </div>
+      <div class="code" style="margin:0.8rem 0;font-size:0.64rem">
+<span class="cm"># Vulnerable query (string concatenation):</span>
+query = "SELECT * FROM users WHERE name = '" + username + "'"
+input: ' OR '1'='1' --
+query: SELECT * FROM users WHERE name = '' OR '1'='1' --'
+result: returns ALL users → auth bypass
+
+<span class="cg"># Fixed with parameterized query:</span>
+query = "SELECT * FROM users WHERE name = ?"
+params = [username]
+<span class="cg"># User input treated as data, never as SQL code</span>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">Command Injection / OS Injection</div>
+        <div class="vuln-body">Application passes user input to an OS shell command without proper sanitization. Application: runs "ping " + user_input as shell command. Attacker enters: "8.8.8.8; cat /etc/passwd" → runs both ping AND reveals password file. Semicolon (;), pipe (|), backtick (`) all used to chain commands. Defense: avoid shell commands when possible, use APIs instead, sanitize all input, escape shell metacharacters.</div>
+        <div class="vuln-tags"><span class="tag tr">RCE</span><span class="tag to">High severity</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">Path Traversal / Directory Traversal</div>
+        <div class="vuln-body">Attacker uses "../" sequences in file path to escape the intended directory. Application: serves files from /var/www/uploads/ + filename. Attacker: filename = "../../etc/passwd" → /var/www/uploads/../../etc/passwd → /etc/passwd. Can read any file the application has permission to access. On Windows: ..\ or ..\\ — same concept. Defense: normalize paths, validate against allowed base directory, use safe file path APIs.</div>
+        <div class="vuln-tags"><span class="tag to">File read</span><span class="tag ty">LFI variant</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">XML External Entity (XXE)</div>
+        <div class="vuln-body">XML parser processes external entity references in user-supplied XML. Attacker crafts XML with external entity pointing to sensitive file or internal service. Can: read local files (/etc/passwd), SSRF (server-side request forgery), in some cases RCE. Defense: disable XML external entity processing in parser configuration (DOCTYPE processing disabled by default in modern parsers).</div>
+        <div class="vuln-tags"><span class="tag to">File read</span><span class="tag to">SSRF possible</span></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">SQLi fix →</span><span>Parameterized queries (prepared statements) — #1 defense — NOT input filtering alone</span></div>
+        <div class="er"><span class="ek">Command injection →</span><span>Unsanitized input passed to shell — ; | ` chain commands — RCE possible</span></div>
+        <div class="er"><span class="ek">Path traversal →</span><span>../ sequences escape intended directory — reads arbitrary files</span></div>
+        <div class="er"><span class="ek">XXE →</span><span>XML external entity processing — disable DOCTYPE — file read + SSRF</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="a3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">APP</span><span class="card-title" style="color:var(--app)">Access Control &amp; Auth Vulnerabilities</span><span class="bdg" style="background:var(--app-bg);color:var(--app);border:1px solid #fca5a5">IDOR · Broken Auth · CSRF</span></div>
+    <div class="card-bd">
+      <div class="vuln" style="border-left-color:var(--app);background:var(--app-bg)">
+        <div class="vuln-name" style="color:var(--app)">IDOR — Insecure Direct Object Reference</div>
+        <div class="vuln-body">User can access another user's resources by guessing or modifying an object identifier. GET /account?id=1234 → change to 1235 → see another user's account. Missing server-side authorization check. Impact: access any user's data, modify any record, delete any object. Defense: server-side authorization check on EVERY request — "does this authenticated user own object 1235?" — enforce at the API layer.</div>
+        <div class="vuln-tags"><span class="tag tr">Horizontal privilege escalation</span><span class="tag to">Data exposure</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">Broken Authentication</div>
+        <div class="vuln-body">Weaknesses in authentication implementation: session tokens predictable or improperly managed, missing account lockout (brute force possible), passwords stored in plaintext or weak hash, no MFA, session ID in URL (exposed in logs), session not invalidated on logout. Defense: strong session tokens (CSPRNG), secure cookie attributes (HttpOnly, Secure, SameSite), MFA, account lockout, proper logout handling.</div>
+        <div class="vuln-tags"><span class="tag to">Account takeover</span><span class="tag ty">Session hijacking</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">CSRF — Cross-Site Request Forgery</div>
+        <div class="vuln-body">Tricks authenticated user's browser into making unauthorized requests to a site where they're logged in. Victim visits malicious page → page contains hidden form that auto-submits to bank → bank receives request with victim's session cookie → transfers money. Browser automatically sends cookies. Defense: CSRF tokens (unique per-form random token verified server-side), SameSite cookie attribute (blocks cross-site requests), check Referer header.</div>
+        <div class="vuln-tags"><span class="tag to">Action on behalf of user</span><span class="tag tg">CSRF token defends</span></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">IDOR →</span><span>Change object ID to access other user's data — server-side auth check on every request</span></div>
+        <div class="er"><span class="ek">CSRF →</span><span>Trick browser to make authenticated request — CSRF token + SameSite cookie prevent</span></div>
+        <div class="er"><span class="ek">Broken auth →</span><span>Weak sessions, no lockout, plaintext passwords — MFA + strong tokens fix</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="a4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">APP</span><span class="card-title" style="color:var(--app)">Cryptographic &amp; Config Vulnerabilities</span><span class="bdg" style="background:var(--app-bg);color:var(--app);border:1px solid #fca5a5">Weak Crypto · Hardcoded Secrets · Misconfig</span></div>
+    <div class="card-bd">
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">Hardcoded Credentials / Secrets</div>
+        <div class="vuln-body">Passwords, API keys, or cryptographic secrets embedded directly in source code. Developer convenience → serious security vulnerability. Common in: IoT firmware, mobile apps, backend services. Anyone with access to code (or binary) → extracts credentials. Special risk: code pushed to public GitHub → credentials exposed immediately. Defense: secrets management (Vault, AWS Secrets Manager), environment variables, secret scanning in CI/CD pipeline (git-secrets, GitHub Advanced Security).</div>
+        <div class="vuln-tags"><span class="tag tr">Credential exposure</span><span class="tag to">Affects all deployments</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">Improper Certificate Validation</div>
+        <div class="vuln-body">Application accepts invalid, expired, or self-signed certificates without error — or does not verify hostname matches certificate. Mobile apps often vulnerable: accept any certificate → all traffic vulnerable to MITM with any certificate. Defense: strict certificate validation, certificate pinning (for high-security apps), reject invalid certs, test SSL validation in security review.</div>
+        <div class="vuln-tags"><span class="tag to">MITM possible</span><span class="tag ty">Mobile apps especially</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">Security Misconfiguration</div>
+        <div class="vuln-body">Application or server deployed with insecure default settings: debug mode enabled in production, default credentials unchanged, sample applications left installed, verbose error messages revealing internal details, unnecessary features/services enabled, overly permissive CORS policy. Defense: security hardening checklists, CIS benchmarks, regular configuration audits, infrastructure as code with security scanning (tfsec, Checkov).</div>
+        <div class="vuln-tags"><span class="tag to">Very common</span><span class="tag to">OWASP Top 10 #5</span></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Hardcoded secrets →</span><span>API keys/passwords in source code — public repo = immediate exposure — use secrets manager</span></div>
+        <div class="er"><span class="ek">Security misconfiguration →</span><span>OWASP Top 10 — debug mode, default creds, sample apps — hardening checklists fix</span></div>
+        <div class="er"><span class="ek">Certificate validation →</span><span>Accept any cert = MITM — strict validation + certificate pinning</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="a5">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">APP</span><span class="card-title" style="color:var(--app)">Race Conditions &amp; Logic Flaws</span><span class="bdg" style="background:var(--app-bg);color:var(--app);border:1px solid #fca5a5">TOCTOU · Business Logic</span></div>
+    <div class="card-bd">
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">Race Condition / TOCTOU</div>
+        <div class="vuln-body">Time-of-Check to Time-of-Use: gap between validating a condition and acting on it is exploited. Check: "does user have $100?" (yes). Delay. Use: debit $100 from account. Attacker exploits gap: sends multiple simultaneous requests → balance checked as positive for all → all debit → overdraft. Classic: ATM double-withdrawal attack. Defense: atomic operations, database transactions, locks/mutexes, synchronization primitives.</div>
+        <div class="vuln-tags"><span class="tag to">Concurrency bug</span><span class="tag ty">Financial systems high risk</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--app)">
+        <div class="vuln-name" style="color:var(--app)">Business Logic Vulnerabilities</div>
+        <div class="vuln-body">Flaws in the application's business rules that allow unintended actions. Examples: apply coupon code multiple times, purchase item for negative price (reverse sign), skip payment step in checkout flow, access admin functions from non-admin path. These are logic errors, not technical memory bugs — automated scanners often miss them. Require manual testing and understanding of intended business flow. Defense: thorough design review, manual security testing, abuse case development.</div>
+        <div class="vuln-tags"><span class="tag ty">Hard to automate detect</span><span class="tag to">Financial impact</span></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">TOCTOU →</span><span>Time-of-Check to Time-of-Use — race condition — gap between check and action exploited</span></div>
+        <div class="er"><span class="ek">Business logic →</span><span>Flaw in application rules — missed by automated scanners — requires manual testing</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="a6">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">APP</span><span class="card-title" style="color:var(--app)">Application Vulnerabilities — Exam Summary</span><span class="bdg" style="background:var(--app-bg);color:var(--app);border:1px solid #fca5a5">Key Points</span></div>
+    <div class="card-bd">
+      <div class="exam">
+        <h4>// All Application Vuln Exam Points</h4>
+        <div class="er"><span class="ek">Buffer overflow →</span><span>Write past buffer — RCE — ASLR+DEP+stack canaries mitigate</span></div>
+        <div class="er"><span class="ek">Use after free →</span><span>Freed pointer used — RCE — memory-safe languages defend</span></div>
+        <div class="er"><span class="ek">Integer overflow →</span><span>Arithmetic wraps — leads to buffer overflow — size check attacks</span></div>
+        <div class="er"><span class="ek">SQL injection →</span><span>SQL in input — parameterized queries #1 fix — NOT just filtering</span></div>
+        <div class="er"><span class="ek">Command injection →</span><span>OS commands in input — RCE — avoid shell, sanitize metacharacters</span></div>
+        <div class="er"><span class="ek">Path traversal →</span><span>../ escapes directory — reads arbitrary files — normalize and validate paths</span></div>
+        <div class="er"><span class="ek">IDOR →</span><span>Change ID = access other user's data — server-side auth check every request</span></div>
+        <div class="er"><span class="ek">CSRF →</span><span>Force user's browser to make request — CSRF token + SameSite cookie</span></div>
+        <div class="er"><span class="ek">Hardcoded secrets →</span><span>API keys in code — use secrets manager + scan repos</span></div>
+        <div class="er"><span class="ek">TOCTOU →</span><span>Race condition — gap between check and action — atomic operations fix</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end app -->
+
+<!-- ════════════════════════ -->
+<!-- HARDWARE VULNERABILITIES -->
+<!-- ════════════════════════ -->
+<div class="cat" id="c-hw">
+<div class="card">
+  <div class="card-hd"><span class="card-num">HW</span><span class="card-title" style="color:var(--hw)">Hardware Vulnerabilities</span><span class="bdg" style="background:var(--hw-bg);color:var(--hw);border:1px solid #fdba74">Firmware · Chips · Physical · Side-Channel</span></div>
+  <div class="card-bd">
+    <p>Hardware vulnerabilities exist in the <strong style="color:var(--tx)">physical components of computing systems</strong> — processors, firmware, memory chips, and peripherals. They are often the hardest to patch, the most persistent after exploitation, and can undermine all software-level security controls.</p>
+
+    <h3 style="border-left-color:var(--hw)">Firmware Vulnerabilities</h3>
+    <div class="vuln" style="border-left-color:var(--hw);background:var(--hw-bg)">
+      <div class="vuln-name" style="color:var(--hw)">BIOS / UEFI Vulnerabilities</div>
+      <div class="vuln-body">Firmware that initializes hardware before OS loads. Vulnerabilities allow: persistent malware that survives OS reinstall ("firmware implant"), disable Secure Boot to load untrusted OS, modify boot sequence. BootHole (2020): GRUB2 UEFI Secure Boot bypass. Black Lotus (2022): UEFI bootkit — survived OS wipe. Defense: UEFI Secure Boot, Measured Boot (TPM records boot chain), firmware updates, physical access controls.</div>
+      <div class="vuln-tags"><span class="tag tr">Survives OS reinstall</span><span class="tag to">Very persistent</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--hw)">
+      <div class="vuln-name" style="color:var(--hw)">End-of-Life Firmware / No Patches</div>
+      <div class="vuln-body">Devices whose firmware vendor no longer updates — routers, IoT, industrial controllers. Known vulnerabilities exist with no available fix. Defense: replace EOL devices, if impossible: network isolation + virtual patching + enhanced monitoring as compensating controls.</div>
+      <div class="vuln-tags"><span class="tag tr">No patch available</span><span class="tag to">IoT / industrial</span></div>
+    </div>
+
+    <h3 style="border-left-color:var(--hw)">Processor / CPU Vulnerabilities</h3>
+    <div class="vuln" style="border-left-color:var(--hw)">
+      <div class="vuln-name" style="color:var(--hw)">Spectre &amp; Meltdown (Side-Channel)</div>
+      <div class="vuln-body">Spectre (2018): exploits speculative execution to read memory of other processes — affects nearly all modern CPUs. Meltdown (2018): breaks isolation between user applications and OS kernel — reads kernel memory from user space. Both use timing-based side-channel analysis. Impact: a process can read memory it shouldn't have access to — including passwords, encryption keys, other users' data. Defense: CPU microcode patches, OS kernel patches, browser mitigations, hardware isolation (separate physical hardware for highest sensitivity).</div>
+      <div class="vuln-tags"><span class="tag tr">Cross-VM memory leak</span><span class="tag to">All modern CPUs affected</span><span class="tag ty">Virtualization risk</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--hw)">
+      <div class="vuln-name" style="color:var(--hw)">Rowhammer</div>
+      <div class="vuln-body">Repeatedly accessing (hammering) rows in DRAM causes bit flips in adjacent rows — changing a 0 to a 1 or vice versa in memory the attacker shouldn't control. Used to escalate privileges by flipping a permission bit. Physical hardware flaw in DRAM — not patchable via software alone. Defense: ECC (Error-Correcting Code) memory, memory refresh rate increases, DDR4 improvements.</div>
+      <div class="vuln-tags"><span class="tag to">DRAM flaw</span><span class="tag ty">ECC memory mitigates</span></div>
+    </div>
+
+    <h3 style="border-left-color:var(--hw)">Physical &amp; Peripheral Vulnerabilities</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#fdba74">
+        <h4 style="color:var(--hw)">JTAG / Debug Interfaces</h4>
+        <p>Hardware debug port — used during development to inspect and modify device internals. Often left enabled on production firmware. Attacker with physical access: connect to JTAG → read firmware, extract encryption keys, modify code. Common in: IoT devices, embedded systems, networking equipment. Defense: disable JTAG in production firmware, physical tamper resistance.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--hw)">Evil Maid Attack</h4>
+        <p>Attacker with brief physical access to unattended device installs: hardware keylogger, malicious bootloader, hardware implant, modified firmware. Bypasses full-disk encryption if attacker can intercept boot before OS loads or modify BIOS. Defense: detect tamper via TPM measured boot, BIOS/UEFI passwords, physical security controls, never leave devices unattended in untrusted environments.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--hw)">USB Attacks — BadUSB / Rubber Ducky</h4>
+        <p>Malicious USB device impersonates a keyboard (HID — Human Interface Device). Computer trusts keyboard → executes commands automatically at typing speed. BadUSB: reflash USB firmware to act as keyboard. USB Rubber Ducky: purpose-built attack tool. Malicious USB charger: steal data or deliver payload. Defense: USB port controls (disable unauthorized USB), endpoint policies, physical USB blockers for high-security environments.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--hw)">Cold Boot Attack</h4>
+        <p>RAM retains data for seconds to minutes after power off (remanence effect). Attacker: quickly power off, cool RAM (spray), transplant to attacker machine, read contents. Can extract: full disk encryption keys, passwords, session tokens from RAM. Defense: enable memory encryption features in modern CPUs (AMD SME, Intel TME), enable memory scrubbing on shutdown, physical security.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Spectre / Meltdown →</span><span>CPU side-channel — read other processes' memory — speculative execution flaw — microcode patches</span></div>
+      <div class="er"><span class="ek">BIOS/UEFI vuln →</span><span>Firmware malware survives OS reinstall — Secure Boot + Measured Boot defend</span></div>
+      <div class="er"><span class="ek">JTAG →</span><span>Hardware debug port — extract keys/firmware — disable in production</span></div>
+      <div class="er"><span class="ek">Evil maid →</span><span>Physical access installs hardware implant/keylogger — TPM measured boot detects</span></div>
+      <div class="er"><span class="ek">BadUSB →</span><span>USB device impersonates keyboard — executes commands — USB control policies defend</span></div>
+      <div class="er"><span class="ek">Cold boot →</span><span>RAM retains data briefly — extract encryption keys — memory encryption + physical security</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end hw -->
+
+<!-- ════════════════════════════ -->
+<!-- MOBILE DEVICE VULNERABILITIES -->
+<!-- ════════════════════════════ -->
+<div class="cat" id="c-mob">
+<div class="card">
+  <div class="card-hd"><span class="card-num">MOB</span><span class="card-title" style="color:var(--mob)">Mobile Device Vulnerabilities</span><span class="bdg" style="background:var(--mob-bg);color:var(--mob);border:1px solid #5eead4">Sideloading · Jailbreak · MDM Bypass</span></div>
+  <div class="card-bd">
+    <p>Mobile devices carry sensitive data, access corporate systems, and are always with the user — including outside controlled environments. <strong style="color:var(--tx)">Mobile-specific vulnerabilities</strong> include the unique risks from app stores, device modification, and the intersection of personal and professional use.</p>
+
+    <h3 style="border-left-color:var(--mob)">Mobile Vulnerability Types</h3>
+    <div class="vuln" style="border-left-color:var(--mob);background:var(--mob-bg)">
+      <div class="vuln-name" style="color:var(--mob)">Jailbreaking (iOS) / Rooting (Android)</div>
+      <div class="vuln-body">Removing manufacturer/OS restrictions to gain full root/administrator access. Bypasses: app store restrictions, OS sandboxing, security policies, MDM controls. Allows: install unauthorized apps, access any system file, disable security features. Security risk: jailbroken/rooted device bypasses MDM enrollment controls, disables iOS app sandboxing, exposes root-level attack surface. Defense: MDM with jailbreak/root detection — deny access to corporate resources from jailbroken devices.</div>
+      <div class="vuln-tags"><span class="tag tr">Bypasses security controls</span><span class="tag to">MDM bypass</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--mob)">
+      <div class="vuln-name" style="color:var(--mob)">Sideloading — Unofficial App Installation</div>
+      <div class="vuln-body">Installing apps from outside the official app store (Play Store / App Store). Android: enabled by default or via settings. iOS: normally restricted (jailbreak required or enterprise certificates). Risk: sideloaded apps not reviewed by Apple/Google — may contain malware. Enterprise certificate abuse: attackers use enterprise developer certificates to distribute malicious apps to iOS devices without jailbreak. Defense: MDM policy restricting sideloading, iOS App Store enforcement, enterprise cert monitoring.</div>
+      <div class="vuln-tags"><span class="tag to">Malware vector</span><span class="tag ty">Android more exposed</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--mob)">
+      <div class="vuln-name" style="color:var(--mob)">Outdated OS / Unpatched Mobile</div>
+      <div class="vuln-body">Android fragmentation: device manufacturers control updates — many devices never receive OS patches even when available from Google. iOS: Apple pushes updates directly but users delay. Old mobile OS = known CVEs exploitable. Corporate problem: BYOD devices running old OS connect to corporate email/VPN. Defense: MDM policy requiring minimum OS version — block corporate access for out-of-date devices. Android Enterprise can enforce patch levels.</div>
+      <div class="vuln-tags"><span class="tag to">Android fragmentation</span><span class="tag ty">Known CVEs</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--mob)">
+      <div class="vuln-name" style="color:var(--mob)">Excessive App Permissions</div>
+      <div class="vuln-body">Apps requesting more permissions than needed — microphone, camera, location, contacts, SMS. Malicious apps: request excessive permissions → access data → exfiltrate. Legitimate apps: unnecessary permissions are still a risk (app compromise → those permissions exploited). Defense: review app permissions before installation, OS-level permission controls, MDM restricts which apps can be installed, principle of least privilege for apps.</div>
+      <div class="vuln-tags"><span class="tag ty">Data exposure</span><span class="tag to">Privacy risk</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--mob)">
+      <div class="vuln-name" style="color:var(--mob)">MDM / MAM Bypass &amp; Enrollment Weaknesses</div>
+      <div class="vuln-body">MDM (Mobile Device Management) manages device security policies. MAM (Mobile Application Management) manages apps. Bypass: factory reset removes MDM enrollment (depends on implementation — DEP/ABM can survive reset). Enrollment weakness: user-enrolled devices have less control than corporate-enrolled. Defense: Apple DEP / Android Zero-Touch Enrollment — enrolled at factory → survives reset. Corporate-owned personally enabled (COPE) vs BYOD — COPE has more control.</div>
+      <div class="vuln-tags"><span class="tag ty">Policy bypass</span><span class="tag tb">DEP/Zero-Touch defends</span></div>
+    </div>
+
+    <h3 style="border-left-color:var(--mob)">Mobile-Specific Attack Vectors</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#5eead4">
+        <h4 style="color:var(--mob)">Rogue Mobile Apps</h4>
+        <p>Malicious apps mimicking legitimate ones. "Bank app" that captures credentials. Trojanized apps: real app bundled with malware. Defense: only official app stores, verify developer identity, check permissions, security tools that scan installed apps.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--mob)">SMS-Based Attacks</h4>
+        <p>SIM swapping: social engineer carrier to take victim's number → receive their MFA codes. SS7 attacks: telecom protocol vulnerabilities allow intercepting SMS anywhere in the world. Defense: use authenticator app (TOTP) not SMS for MFA, carrier SIM lock PIN.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--mob)">Unsecured WiFi / Bluetooth</h4>
+        <p>Mobile users frequently connect to open WiFi. Bluesnarfing: unauthorized BT data access. Evil twin: fake corporate WiFi on mobile. Defense: VPN on untrusted networks, disable BT when not needed, MDM enforces VPN policy.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Jailbreak / rooting →</span><span>Remove OS restrictions — bypass MDM — disable sandboxing — MDM detects and blocks access</span></div>
+      <div class="er"><span class="ek">Sideloading →</span><span>Install apps outside official store — malware risk — MDM policy restricts</span></div>
+      <div class="er"><span class="ek">Android fragmentation →</span><span>OEMs control updates — many devices never patched — MDM enforce minimum OS version</span></div>
+      <div class="er"><span class="ek">DEP / Zero-Touch →</span><span>Device Enrollment Program / Zero-Touch — factory enrolled — MDM survives factory reset</span></div>
+      <div class="er"><span class="ek">MAM vs MDM →</span><span>MDM = manage device / MAM = manage apps only — BYOD often MAM only</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end mob -->
+
+<!-- ════════════════════════════════ -->
+<!-- VIRTUALIZATION VULNERABILITIES   -->
+<!-- ════════════════════════════════ -->
+<div class="cat" id="c-virt">
+<div class="card">
+  <div class="card-hd"><span class="card-num">VIRT</span><span class="card-title" style="color:var(--virt)">Virtualization Vulnerabilities</span><span class="bdg" style="background:var(--virt-bg);color:var(--virt);border:1px solid #d8b4fe">VM Escape · Sprawl · Side-Channel · Containers</span></div>
+  <div class="card-bd">
+    <p>Virtualization shares physical resources between multiple isolated environments. <strong style="color:var(--tx)">Vulnerabilities in the virtualization layer can compromise the isolation that is the fundamental security promise of virtualization</strong>.</p>
+
+    <h3 style="border-left-color:var(--virt)">Core Virtualization Vulnerabilities</h3>
+    <div class="vuln" style="border-left-color:var(--virt);background:var(--virt-bg)">
+      <div class="vuln-name" style="color:var(--virt)">VM Escape — Breaking Hypervisor Isolation</div>
+      <div class="vuln-body">A guest VM exploits a hypervisor vulnerability to gain access to the host system or other VMs. CRITICAL — bypasses the fundamental isolation guarantee of virtualization. Real examples: Venom (2015, CVE-2015-3456 — virtual floppy driver), multiple Xen/KVM escape CVEs. If attacker escapes the VM, they own the entire physical host and all VMs running on it. Defense: patch hypervisor immediately (highest priority), run minimal attack surface on hypervisor, dedicated physical hosts for high-sensitivity workloads.</div>
+      <div class="vuln-tags"><span class="tag tr">Critical</span><span class="tag tr">Breaks isolation</span><span class="tag tg">Patch hypervisor ASAP</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--virt)">
+      <div class="vuln-name" style="color:var(--virt)">VM Sprawl — Unmanaged Virtual Machines</div>
+      <div class="vuln-body">VMs easy to create → organizations accumulate hundreds of forgotten, unmanaged VMs. Unpatched VMs: running old OS with unpatched CVEs, no EDR, no monitoring. "The forgotten dev VM from 2018 that still has RDP open." Attackers find these via internal scans — easy targets. Defense: VM inventory and lifecycle management, auto-decommission policy, regular audits, tag all VMs with owner and purpose.</div>
+      <div class="vuln-tags"><span class="tag to">Unpatched systems</span><span class="tag ty">Attack surface hidden</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--virt)">
+      <div class="vuln-name" style="color:var(--virt)">VM Snapshot Vulnerabilities</div>
+      <div class="vuln-body">Snapshots capture VM state at a point in time — including credentials, certificates, and vulnerabilities from that time. Restored snapshot: re-introduces old vulnerabilities that were since patched, old credentials that may have been rotated, old configurations. "We restored the snapshot from before the breach" — but snapshot may contain the initial foothold too. Defense: snapshot lifecycle policy, patch before restoring, don't hoard old snapshots.</div>
+      <div class="vuln-tags"><span class="tag ty">Stale credentials</span><span class="tag ty">Patched vulns return</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--virt)">
+      <div class="vuln-name" style="color:var(--virt)">Side-Channel Attacks (Spectre / Cross-VM)</div>
+      <div class="vuln-body">Co-located VMs on same physical host can potentially infer information about each other via shared hardware resources — CPU cache timing, memory buses, branch predictor state. Spectre exploits this in virtualized environments — VM A reads memory of VM B via timing analysis. Cloud shared tenancy: your VM next to competitor's VM on same physical host — timing attacks potentially leak info. Defense: CPU microcode patches, OS patches, separate physical hosts for highest sensitivity, cloud dedicated hosts option.</div>
+      <div class="vuln-tags"><span class="tag to">Cloud multi-tenancy risk</span><span class="tag ty">Microcode patches</span></div>
+    </div>
+
+    <h3 style="border-left-color:var(--virt)">Container Vulnerabilities</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#d8b4fe">
+        <h4 style="color:var(--virt)">Container Escape</h4>
+        <p>Break out of container isolation to access host OS. Weaker isolation than VMs — containers share host kernel. Vulnerability in container runtime (runc, containerd) can allow escape. Privileged containers: run as root on host — more escape risk. Defense: never run privileged containers unnecessarily, patch container runtime, use Seccomp/AppArmor profiles, consider gVisor (sandboxed container kernel).</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--virt)">Vulnerable Container Images</h4>
+        <p>Base images with known CVEs, outdated packages. "We're running the latest app code on Ubuntu 18.04 base from 2 years ago." Hundreds of known CVEs in the base. Shared images from public registries: may contain malware or vulnerabilities. Defense: regular image scanning (Trivy, Snyk), rebuild images frequently, use minimal base images (distroless, Alpine), private registry with scanning gate.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">VM escape →</span><span>Guest VM exploits hypervisor — accesses host or other VMs — CRITICAL — patch hypervisor immediately</span></div>
+      <div class="er"><span class="ek">VM sprawl →</span><span>Unmanaged accumulated VMs — unpatched, forgotten — regular audits + lifecycle management</span></div>
+      <div class="er"><span class="ek">Snapshot risk →</span><span>Old snapshots contain stale vulns + credentials — lifecycle policy + patch before restore</span></div>
+      <div class="er"><span class="ek">Container escape →</span><span>Break container isolation to host — weaker than VM — don't run privileged containers</span></div>
+      <div class="er"><span class="ek">Side-channel →</span><span>Timing attacks between co-located VMs — Spectre — microcode patches + dedicated hosts</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end virt -->
+
+<!-- ════════════════════════════ -->
+<!-- OS VULNERABILITIES          -->
+<!-- ════════════════════════════ -->
+<div class="cat" id="c-os">
+<div class="card">
+  <div class="card-hd"><span class="card-num">OS</span><span class="card-title" style="color:var(--os)">Operating System Vulnerabilities</span><span class="bdg" style="background:var(--os-bg);color:var(--os);border:1px solid #93c5fd">Kernel · Privilege Escalation · EOL · Misconfig</span></div>
+  <div class="card-bd">
+    <p>The OS is the foundation of all security — <strong style="color:var(--tx)">a compromised OS means all applications and data on the system are compromised</strong>. Kernel vulnerabilities, unpatched systems, and misconfigured OS settings are among the most exploited attack vectors.</p>
+
+    <h3 style="border-left-color:var(--os)">OS Vulnerability Types</h3>
+    <div class="vuln" style="border-left-color:var(--os);background:var(--os-bg)">
+      <div class="vuln-name" style="color:var(--os)">Kernel Vulnerabilities — Local Privilege Escalation</div>
+      <div class="vuln-body">Flaws in the OS kernel allow escalation from unprivileged user to root/SYSTEM. Attacker: gains low-privilege shell via web app vulnerability → exploits kernel CVE → achieves full system compromise. Notable: EternalBlue (CVE-2017-0144, SMBv1 RCE — WannaCry), Dirty Cow (Linux kernel race condition → root), PrintNightmare (Windows Print Spooler RCE). Defense: patch OS promptly, disable unused OS services (SMBv1, Print Spooler on non-print servers), endpoint protection that detects exploit behavior.</div>
+      <div class="vuln-tags"><span class="tag tr">Local privesc → root</span><span class="tag to">Patch critical</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--os)">
+      <div class="vuln-name" style="color:var(--os)">Unpatched / End-of-Life Operating Systems</div>
+      <div class="vuln-body">Systems running after vendor end-of-support date receive no security patches — all future CVEs have no fix. Windows XP: EOL 2014 — still found in industrial environments. Windows 7: EOL January 2020 — still widespread. EternalBlue specifically targeted XP/7. Healthcare: medical devices locked to old OS. Defense: upgrade or replace — if impossible: network isolation, virtual patching (IPS rules), disable vulnerable services, enhanced monitoring as compensating controls.</div>
+      <div class="vuln-tags"><span class="tag tr">No patches available</span><span class="tag to">Compensating controls needed</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--os)">
+      <div class="vuln-name" style="color:var(--os)">Default Configuration Weaknesses</div>
+      <div class="vuln-body">OS defaults optimized for compatibility and ease of use — not security. Windows: SMBv1 enabled by default (pre-2019), Guest account enabled, NTLM authentication enabled alongside Kerberos, NetBIOS and LLMNR broadcast enabled (NBNS/LLMNR poisoning). Linux: root SSH login enabled, all ports accessible, no firewall configured. Defense: OS hardening per CIS Benchmark (Level 1/2), STIG for government, automated hardening scripts/Ansible playbooks.</div>
+      <div class="vuln-tags"><span class="tag to">Compatibility defaults</span><span class="tag tg">CIS benchmark fixes</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--os)">
+      <div class="vuln-name" style="color:var(--os)">Privilege Escalation Paths</div>
+      <div class="vuln-body">Multiple OS-level paths to escalate privileges beyond intended: misconfigured SUID/SGID binaries (Linux), weak file/directory permissions on system files, writable paths in PATH variable, DLL hijacking (Windows loads attacker DLL from writable location), unquoted service paths (Windows), scheduled tasks running as SYSTEM owned by user, sudo misconfigurations. Defense: regular privilege audit, CIS benchmark, minimal services, principle of least privilege throughout.</div>
+      <div class="vuln-tags"><span class="tag to">Local privesc</span><span class="tag ty">Configuration flaw</span></div>
+    </div>
+
+    <h3 style="border-left-color:var(--os)">Notable OS Vulnerabilities Reference</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>CVE / Name</th><th>OS</th><th>Type</th><th>Impact</th><th>Notable Use</th></tr>
+      <tr><td><span class="tag tr">EternalBlue</span></td><td>Windows (SMBv1)</td><td>RCE via network</td><td>Remote code execution</td><td>WannaCry ransomware 2017</td></tr>
+      <tr><td><span class="tag tr">PrintNightmare</span></td><td>Windows Print Spooler</td><td>RCE / LPE</td><td>SYSTEM level access</td><td>Actively exploited 2021</td></tr>
+      <tr><td><span class="tag to">Dirty Cow</span></td><td>Linux kernel</td><td>Race condition → root</td><td>Privilege escalation</td><td>Android rooting</td></tr>
+      <tr><td><span class="tag to">Log4Shell</span></td><td>Java / Log4j</td><td>JNDI injection RCE</td><td>Remote code execution</td><td>Massive 2021 campaign</td></tr>
+      <tr><td><span class="tag ty">BlueKeep</span></td><td>Windows RDP</td><td>Wormable RCE</td><td>Unauthenticated RCE</td><td>Pre-auth RDP exploit</td></tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">EternalBlue →</span><span>SMBv1 vulnerability — WannaCry ransomware — patch MS17-010 — disable SMBv1</span></div>
+      <div class="er"><span class="ek">EOL OS →</span><span>No patches available — compensating controls — isolation + virtual patching</span></div>
+      <div class="er"><span class="ek">CIS benchmark →</span><span>OS hardening standard — Level 1 minimal impact / Level 2 more restrictive</span></div>
+      <div class="er"><span class="ek">DLL hijacking →</span><span>Windows loads DLL from writable location — privilege escalation — verify DLL load paths</span></div>
+      <div class="er"><span class="ek">LLMNR/NBNS →</span><span>Windows broadcast protocols — poisoning attack — disable both to prevent credential theft</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end os -->
+
+<!-- ════════════════════════════ -->
+<!-- CLOUD VULNERABILITIES       -->
+<!-- ════════════════════════════ -->
+<div class="cat" id="c-cld">
+<div class="card">
+  <div class="card-hd"><span class="card-num">CLD</span><span class="card-title" style="color:var(--cld)">Cloud-Specific Vulnerabilities</span><span class="bdg" style="background:var(--cld-bg);color:var(--cld);border:1px solid #5eead4">Misconfiguration · IAM · Shared Tenancy</span></div>
+  <div class="card-bd">
+    <p>Cloud environments introduce <strong style="color:var(--tx)">unique vulnerabilities tied to shared infrastructure, API-driven management, and the complexity of cloud-native services</strong>. Misconfiguration is consistently the #1 cause of cloud breaches.</p>
+
+    <h3 style="border-left-color:var(--cld)">Cloud Vulnerability Types</h3>
+    <div class="vuln" style="border-left-color:var(--cld);background:var(--cld-bg)">
+      <div class="vuln-name" style="color:var(--cld)">Cloud Misconfiguration — #1 Cloud Risk</div>
+      <div class="vuln-body">Incorrectly configured cloud resources expose data or systems. Classic failures: S3 bucket public (companies expose PII to internet), security group allows 0.0.0.0/0 on all ports (any internet connection to database), no MFA on root/admin accounts, storage replication to different region with weaker controls, Lambda function with admin IAM role. Defense: CSPM (Cloud Security Posture Management) — continuously checks against security benchmarks — AWS Security Hub, Prisma Cloud, Azure Defender.</div>
+      <div class="vuln-tags"><span class="tag tr">#1 cloud breach cause</span><span class="tag tg">CSPM detects</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--cld)">
+      <div class="vuln-name" style="color:var(--cld)">Overly Permissive IAM Policies</div>
+      <div class="vuln-body">Cloud IAM roles with AdministratorAccess when ReadOnlyAccess would suffice. Service accounts with far more permissions than needed. Wildcard IAM policies: "Action: *" "Resource: *" — full access to everything. Role chaining: low-privilege role can assume high-privilege role. Defense: least privilege in IAM, regular permission audits, AWS IAM Access Analyzer, remove unused roles and policies, use temporary credentials (STS) for short-lived access.</div>
+      <div class="vuln-tags"><span class="tag to">Privilege escalation</span><span class="tag ty">Very common</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--cld)">
+      <div class="vuln-name" style="color:var(--cld)">Insecure Cloud APIs</div>
+      <div class="vuln-body">Cloud management APIs exposed to internet without adequate authentication or authorization. API keys embedded in client-side code, mobile apps, or public repositories. No rate limiting — brute force enumeration. Broken object-level authorization in cloud APIs (IDOR equivalent). Defense: never embed API keys in client code, secrets manager for keys, API gateway with auth, rate limiting, regular key rotation, monitor for API key usage anomalies.</div>
+      <div class="vuln-tags"><span class="tag to">Key exposure</span><span class="tag ty">OWASP API Top 10</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--cld)">
+      <div class="vuln-name" style="color:var(--cld)">Shared Tenancy Risks</div>
+      <div class="vuln-body">Multiple customers share same physical hardware in public cloud. Hypervisor vulnerabilities (Spectre/Meltdown) could allow cross-tenant information leakage. Noisy neighbor: one tenant's resource exhaustion impacts performance of others. Defense: dedicated instances for highest-sensitivity workloads, cloud provider security controls, encryption of all data (even at rest in cloud), encrypt east-west traffic within cloud environment.</div>
+      <div class="vuln-tags"><span class="tag ty">Side-channel risk</span><span class="tag ty">Dedicated hosts option</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--cld)">
+      <div class="vuln-name" style="color:var(--cld)">Instance Metadata Service (IMDS) Attacks</div>
+      <div class="vuln-body">Cloud instances have a metadata endpoint (169.254.169.254) that provides: IAM credentials for the instance role, user data scripts (may contain secrets), network configuration, identity information. SSRF vulnerability in application → attacker makes request to IMDS → steals IAM credentials → full cloud account access. Capital One breach (2019): WAF SSRF → IMDS → IAM credentials stolen → 100M records. Defense: IMDSv2 (requires session tokens — prevents SSRF exploitation), restrict IMDS access from sensitive workloads.</div>
+      <div class="vuln-tags"><span class="tag tr">SSRF → cloud takeover</span><span class="tag tg">IMDSv2 defends</span></div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Real World — Capital One Breach (2019)</div>
+      <div class="code">
+<span class="cm"># SSRF + IMDS = 100M records stolen:</span>
+WAF misconfiguration: allowed SSRF (server-side request forgery)
+Attacker: crafted request → WAF forwarded to IMDS endpoint
+IMDS: returned IAM role credentials for the WAF's EC2 instance
+IAM role: had ListBuckets + GetObject on S3 ← overly permissive
+Attacker: downloaded 100 million customer records from S3
+
+<span class="cg"># Defense that would have prevented it:</span>
+IMDSv2:         requires session token → SSRF can't use IMDS
+Least privilege: WAF role should NOT have S3 data access
+CSPM:           would have flagged overly permissive IAM role
+CloudTrail:     would have shown anomalous GetObject pattern
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Cloud misconfiguration →</span><span>#1 cloud risk — public S3, open security groups — CSPM continuously checks</span></div>
+      <div class="er"><span class="ek">IAM least privilege →</span><span>AdministratorAccess when ReadOnly needed — use Access Analyzer — regular audits</span></div>
+      <div class="er"><span class="ek">IMDS attack →</span><span>SSRF → 169.254.169.254 → steal IAM credentials — IMDSv2 prevents SSRF exploitation</span></div>
+      <div class="er"><span class="ek">CSPM →</span><span>Cloud Security Posture Management — continuous config compliance checking — AWS Security Hub</span></div>
+      <div class="er"><span class="ek">Shared tenancy →</span><span>Physical hardware shared — Spectre/Meltdown risk — dedicated hosts for sensitive workloads</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end cld -->
+
+<!-- ════════════════════════════ -->
+<!-- WEB-BASED VULNERABILITIES   -->
+<!-- ════════════════════════════ -->
+<div class="cat" id="c-web">
+  <div class="tabs" id="t-web">
+    <button class="tab active" onclick="goTab('web','w1',this)">Injection Attacks</button>
+    <button class="tab" onclick="goTab('web','w2',this)">XSS &amp; CSRF</button>
+    <button class="tab" onclick="goTab('web','w3',this)">OWASP Top 10</button>
+    <button class="tab" onclick="goTab('web','w4',this)">API Vulnerabilities</button>
+    <button class="tab" onclick="goTab('web','w5',this)">Defenses</button>
+  </div>
+
+  <div class="sec on" id="w1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">WEB</span><span class="card-title" style="color:var(--web)">Web Injection Vulnerabilities</span><span class="bdg" style="background:var(--web-bg);color:var(--web);border:1px solid #fdba74">SQLi · SSRF · Template Injection</span></div>
+    <div class="card-bd">
+      <p>Web applications accept user input and use it to interact with backend systems. <strong style="color:var(--tx)">When that input isn't properly validated and neutralized, attackers inject commands that get executed by the backend</strong>.</p>
+      <h3 style="border-left-color:var(--web)">Server-Side Request Forgery (SSRF)</h3>
+      <div class="vuln" style="border-left-color:var(--web);background:var(--web-bg)">
+        <div class="vuln-name" style="color:var(--web)">SSRF — Server-Side Request Forgery</div>
+        <div class="vuln-body">Attacker causes server to make HTTP requests to internal/unintended targets. Application: "fetch this URL for me" → attacker provides internal URL (cloud IMDS, internal admin interface, internal database). Server fetches it — bypassing any firewall that blocks direct external access. Capital One: SSRF → IMDS → IAM credentials. Defense: input validation for URLs, block requests to internal IP ranges (169.254.169.254, 10.x, 172.16.x, 192.168.x), IMDSv2, network policy blocking SSRF targets.</div>
+        <div class="vuln-tags"><span class="tag tr">IMDS → cloud takeover</span><span class="tag to">Internal access bypass</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--web)">
+        <div class="vuln-name" style="color:var(--web)">Server-Side Template Injection (SSTI)</div>
+        <div class="vuln-body">Web frameworks use template engines (Jinja2, Twig, Freemarker). User input directly rendered in template → executes template code. Jinja2: {{7*7}} in input → outputs "49" → code executed. Escalate to RCE: access OS via template sandbox escape. Defense: never pass user input directly to template engine, use safe rendering, sandbox template execution.</div>
+        <div class="vuln-tags"><span class="tag tr">RCE possible</span><span class="tag to">Template engine specific</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--web)">
+        <div class="vuln-name" style="color:var(--web)">Open Redirect</div>
+        <div class="vuln-body">Application takes a URL as parameter and redirects user to it without validation. Legitimate app: /redirect?url=https://company.com/dashboard. Attacker: /redirect?url=https://phishing.com → victim's browser redirected to phishing site. Appears to originate from trusted domain — higher click-through on phishing. Defense: whitelist of allowed redirect destinations, or use relative paths only, never redirect to user-supplied absolute URLs.</div>
+        <div class="vuln-tags"><span class="tag ty">Phishing enabler</span><span class="tag to">Trusted domain abuse</span></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">SSRF →</span><span>Server makes request to internal target — IMDS, internal admin — block internal IP ranges</span></div>
+        <div class="er"><span class="ek">SSTI →</span><span>User input executed in template engine — {{7*7}} test — RCE possible — Jinja2/Twig</span></div>
+        <div class="er"><span class="ek">Open redirect →</span><span>Redirect to user-supplied URL — phishing enabler — whitelist destinations</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="w2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">WEB</span><span class="card-title" style="color:var(--web)">XSS, CSRF &amp; Clickjacking</span><span class="bdg" style="background:var(--web-bg);color:var(--web);border:1px solid #fdba74">Client-Side Attacks</span></div>
+    <div class="card-bd">
+      <div class="vuln" style="border-left-color:var(--web);background:var(--web-bg)">
+        <div class="vuln-name" style="color:var(--web)">XSS — Cross-Site Scripting</div>
+        <div class="vuln-body">Inject malicious JavaScript into web pages viewed by other users. <strong>Stored XSS:</strong> script saved in database → executes for ALL who view that page (comment, profile field). <strong>Reflected XSS:</strong> script in URL parameter → reflected in response → victim clicks malicious link. <strong>DOM-based XSS:</strong> script modifies DOM client-side, never touches server. Impact: steal session cookies, redirect to phishing, keylog page content, perform actions as victim. Defense: output encoding (HTML entity encode untrusted data before rendering), Content Security Policy (CSP), HttpOnly cookies (XSS can't read them).</div>
+        <div class="vuln-tags"><span class="tag to">Session hijacking</span><span class="tag ty">Stored most severe</span><span class="tag tg">CSP + output encoding</span></div>
+      </div>
+      <div class="vuln" style="border-left-color:var(--web)">
+        <div class="vuln-name" style="color:var(--web)">Clickjacking / UI Redress</div>
+        <div class="vuln-body">Attacker overlays a transparent iframe of the target site over a decoy page. Victim: thinks they're clicking "Win a Prize!" → actually clicking "Transfer Money" button on hidden bank page. Defense: X-Frame-Options: DENY (prevents page being loaded in iframe), or Content-Security-Policy: frame-ancestors 'none'.</div>
+        <div class="vuln-tags"><span class="tag ty">UI deception</span><span class="tag tg">X-Frame-Options fixes</span></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Stored XSS →</span><span>Persisted in database — executes for all viewers — most severe XSS type</span></div>
+        <div class="er"><span class="ek">Reflected XSS →</span><span>Script in URL parameter — victim clicks malicious link</span></div>
+        <div class="er"><span class="ek">XSS defense →</span><span>Output encoding + CSP + HttpOnly cookies</span></div>
+        <div class="er"><span class="ek">Clickjacking →</span><span>Hidden iframe trick — X-Frame-Options: DENY prevents</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="w3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">WEB</span><span class="card-title" style="color:var(--web)">OWASP Top 10 Overview</span><span class="bdg" style="background:var(--web-bg);color:var(--web);border:1px solid #fdba74">Industry Standard Web Vuln List</span></div>
+    <div class="card-bd">
+      <p>The OWASP Top 10 is the <strong style="color:var(--tx)">industry standard reference for the most critical web application security risks</strong>. Updated periodically based on real-world breach data.</p>
+      <div style="overflow-x:auto;margin:1rem 0">
+      <table>
+        <tr><th>#</th><th>Category</th><th>Examples</th><th>Key Defense</th></tr>
+        <tr><td><span class="tag tr">A01</span></td><td>Broken Access Control</td><td>IDOR, CSRF, privilege escalation</td><td>Server-side auth checks, least privilege</td></tr>
+        <tr><td><span class="tag tr">A02</span></td><td>Cryptographic Failures</td><td>Weak encryption, plaintext passwords, HTTP</td><td>TLS, strong hashing (bcrypt), AES-256</td></tr>
+        <tr><td><span class="tag to">A03</span></td><td>Injection</td><td>SQLi, command injection, SSTI, XXE</td><td>Parameterized queries, input validation</td></tr>
+        <tr><td><span class="tag to">A04</span></td><td>Insecure Design</td><td>Missing security controls by design</td><td>Threat modeling, security requirements</td></tr>
+        <tr><td><span class="tag to">A05</span></td><td>Security Misconfiguration</td><td>Default creds, debug mode, sample apps</td><td>Hardening, CIS benchmarks, CSPM</td></tr>
+        <tr><td><span class="tag ty">A06</span></td><td>Vulnerable Components</td><td>Outdated libraries, CVEs in dependencies</td><td>SCA scanning, patch dependencies</td></tr>
+        <tr><td><span class="tag ty">A07</span></td><td>Auth &amp; Session Failures</td><td>Weak sessions, no MFA, predictable tokens</td><td>Strong sessions, MFA, lockout</td></tr>
+        <tr><td><span class="tag ty">A08</span></td><td>Software Integrity Failures</td><td>Unsigned updates, compromised dependencies</td><td>Code signing, SCA, SBOM</td></tr>
+        <tr><td><span class="tag ty">A09</span></td><td>Logging &amp; Monitoring Failures</td><td>No audit logs, alerts not acted on</td><td>SIEM, audit logging, alerting</td></tr>
+        <tr><td><span class="tag ts">A10</span></td><td>SSRF</td><td>Internal resource access via server request</td><td>URL validation, block internal IPs</td></tr>
+      </table>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">OWASP A01 →</span><span>Broken Access Control — #1 risk — IDOR, CSRF, missing authorization checks</span></div>
+        <div class="er"><span class="ek">OWASP A03 →</span><span>Injection — SQLi, command, SSTI, XXE — parameterized queries</span></div>
+        <div class="er"><span class="ek">OWASP A06 →</span><span>Vulnerable Components — CVEs in libraries — SCA scanning (Snyk, Dependabot)</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="w4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">WEB</span><span class="card-title" style="color:var(--web)">API Vulnerabilities</span><span class="bdg" style="background:var(--web-bg);color:var(--web);border:1px solid #fdba74">REST · GraphQL · Broken Auth</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#fdba74">
+          <h4 style="color:var(--web)">Broken Object Level Authorization (BOLA)</h4>
+          <p>API equivalent of IDOR. GET /api/orders/1234 → change to 1235 → access another user's order. API-specific because APIs are designed for programmatic access — attackers automate enumeration. Defense: server-side authorization on every API request — verify user owns the requested object.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--web)">Broken Function Level Authorization</h4>
+          <p>Regular user calls admin API endpoint. POST /api/admin/deleteUser — should require admin role. Application only checks on UI, not in API. Attacker: calls API directly — bypasses UI restriction. Defense: enforce authorization in API layer, not just UI.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--web)">Excessive Data Exposure</h4>
+          <p>API returns more data than the client needs — expects client to filter. GET /api/user/profile returns SSN, full credit card, internal ID. Client should only show username. But attacker calls API directly → gets all fields. Defense: return only what the client needs — filter at server, not client.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--web)">Mass Assignment</h4>
+          <p>API automatically maps request body to object properties. Client sends: {"username": "alice", "isAdmin": true}. API blindly assigns all fields → user becomes admin. Defense: explicit allowlist of fields that can be set via API — never auto-assign all body parameters to model.</p>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">BOLA →</span><span>Broken Object Level Authorization — API IDOR — change ID in API call — server-side check</span></div>
+        <div class="er"><span class="ek">Mass assignment →</span><span>API auto-assigns body parameters — {"isAdmin": true} — whitelist allowed fields</span></div>
+        <div class="er"><span class="ek">Excessive data exposure →</span><span>API returns more than needed — filter at server not client</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="w5">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">WEB</span><span class="card-title" style="color:var(--web)">Web Vulnerability Defenses</span><span class="bdg" style="background:var(--web-bg);color:var(--web);border:1px solid #fdba74">WAF · CSP · Headers · SAST/DAST</span></div>
+    <div class="card-bd">
+      <div class="mit-row"><span class="mit-threat" style="color:var(--web)">SQLi / Command injection</span><span class="mit-fix">Parameterized queries — input validation — WAF as additional layer — least privilege DB account</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--web)">XSS (all types)</span><span class="mit-fix">Output encoding — Content Security Policy (CSP) — HttpOnly + Secure cookie flags</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--web)">Clickjacking</span><span class="mit-fix">X-Frame-Options: DENY — or CSP frame-ancestors 'none'</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--web)">SSRF</span><span class="mit-fix">Block internal IP ranges in request validation — IMDSv2 — network policy</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--web)">All web vulns</span><span class="mit-fix">SAST in SDLC (find in code) + DAST (test running app) + WAF (block known patterns) + pen testing</span></div>
+      <div class="mit-row"><span class="mit-threat" style="color:var(--web)">OWASP A06 (components)</span><span class="mit-fix">SCA (Software Composition Analysis) — Snyk, Dependabot — patch all dependencies</span></div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">WAF →</span><span>Web Application Firewall — HTTP-aware — blocks SQLi/XSS/OWASP Top 10 patterns</span></div>
+        <div class="er"><span class="ek">CSP →</span><span>Content Security Policy — restricts what scripts can execute — XSS mitigation</span></div>
+        <div class="er"><span class="ek">SAST →</span><span>Static analysis — find bugs in code before compilation</span></div>
+        <div class="er"><span class="ek">DAST →</span><span>Dynamic testing — test running application — finds runtime vulnerabilities</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end web -->
+
+<!-- ════════════════════════════════ -->
+<!-- SUPPLY CHAIN VULNERABILITIES    -->
+<!-- ════════════════════════════════ -->
+<div class="cat" id="c-sc">
+<div class="card">
+  <div class="card-hd"><span class="card-num">SC</span><span class="card-title" style="color:var(--sc)">Supply Chain Vulnerabilities</span><span class="bdg" style="background:var(--sc-bg);color:var(--sc);border:1px solid #86efac">Vendors · Dependencies · Hardware · MSP</span></div>
+  <div class="card-bd">
+    <p>Supply chain vulnerabilities arise from <strong style="color:var(--tx)">trust relationships with third parties</strong> — software vendors, hardware manufacturers, cloud providers, managed service providers, and open-source components. Compromising one link can affect all downstream organizations.</p>
+
+    <h3 style="border-left-color:var(--sc)">Supply Chain Vulnerability Types</h3>
+    <div class="vuln" style="border-left-color:var(--sc);background:var(--sc-bg)">
+      <div class="vuln-name" style="color:var(--sc)">Compromised Software Updates</div>
+      <div class="vuln-body">Attacker infiltrates vendor's build/update infrastructure — malicious code inserted into legitimate update that is then signed by the vendor and distributed to all customers. SolarWinds Orion (2020): 18,000 organizations installed backdoored update. 3CX (2023): communications app update contained malware. XZ Utils (2024): backdoor inserted into Linux compression library via social engineering of maintainer. Defense: SBOM, verify update signatures, integrity monitoring, anomaly detection for post-update behavior, network monitoring for new C2 connections after updates.</div>
+      <div class="vuln-tags"><span class="tag tr">Signed malware</span><span class="tag tr">Affects all customers</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--sc)">
+      <div class="vuln-name" style="color:var(--sc)">Open Source Dependency Vulnerabilities</div>
+      <div class="vuln-body">Modern applications depend on hundreds of open-source libraries. Each library: potential attack surface. Log4Shell (CVE-2021-44228): single vulnerability in logging library used in thousands of applications — mass exploitation globally. Developers often unaware of transitive dependencies (dependencies of dependencies). Defense: Software Composition Analysis (SCA) tools — Snyk, OWASP Dependency Check, GitHub Dependabot — scan for known CVEs in all dependencies including transitive. SBOM makes all dependencies visible.</div>
+      <div class="vuln-tags"><span class="tag tr">Log4Shell example</span><span class="tag tg">SCA scanning fixes</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--sc)">
+      <div class="vuln-name" style="color:var(--sc)">Dependency Confusion &amp; Typosquatting</div>
+      <div class="vuln-body">Dependency confusion: attacker publishes malicious package with same name as a private internal package but on public registry (npm, PyPI). Package manager prefers public registry → installs malicious version. Alex Birsan (2021): researcher demonstrated this against 35+ companies including Apple, Microsoft, PayPal. Typosquatting: publish "reqeusts" when developers mean "requests". Defense: private package registries with scope/namespace locking, explicitly specify registry source, verify package digests.</div>
+      <div class="vuln-tags"><span class="tag to">Package manager exploit</span><span class="tag ty">35+ companies affected</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--sc)">
+      <div class="vuln-name" style="color:var(--sc)">Hardware Supply Chain Tampering</div>
+      <div class="vuln-body">Physical hardware modified before reaching end user. Methods: malicious chip added to server motherboard (Bloomberg SuperMicro claim), firmware modified on hard drives (Equation Group — NSA-linked), malicious BIOS/UEFI injected at manufacturing or in transit. Interdiction: intelligence agencies intercept packages and modify hardware. Defense: trusted suppliers with verification processes, tamper-evident packaging, hardware attestation (TPM measured boot), firmware integrity verification, supply chain diversity.</div>
+      <div class="vuln-tags"><span class="tag to">State-actor level</span><span class="tag ty">Very hard to detect</span></div>
+    </div>
+    <div class="vuln" style="border-left-color:var(--sc)">
+      <div class="vuln-name" style="color:var(--sc)">Third-Party Vendor Compromise</div>
+      <div class="vuln-body">Vendors with privileged access to customer environments become attack vectors. Target breach (2013): HVAC vendor → network pivot → POS systems → 40M cards. Kaseya (2021): RMM tool used by MSPs → pushed ransomware to 1,500 orgs. Any vendor with: VPN access, API credentials, admin accounts, or physical access is a supply chain risk. Defense: vendor risk assessment, least privilege for vendor access, monitor vendor connections, incident response plan if vendor is compromised.</div>
+      <div class="vuln-tags"><span class="tag to">Trusted access exploited</span><span class="tag to">TPRM mitigates</span></div>
+    </div>
+
+    <h3 style="border-left-color:var(--sc)">Supply Chain Defenses</h3>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--sc)">Compromised software</span><span class="mit-fix">SBOM + code signing verification + post-install behavior monitoring + network anomaly detection</span></div>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--sc)">Open source CVEs</span><span class="mit-fix">SCA scanning (Snyk, Dependabot) — SBOM — scan all transitive dependencies — automated patching</span></div>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--sc)">Dependency confusion</span><span class="mit-fix">Private registry with namespace locking — verify package source — pin exact versions with hashes</span></div>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--sc)">Hardware tampering</span><span class="mit-fix">Trusted suppliers — tamper-evident packaging — TPM measured boot — firmware verification</span></div>
+    <div class="mit-row"><span class="mit-threat" style="color:var(--sc)">Vendor access risk</span><span class="mit-fix">Least privilege vendor access — monitor all vendor sessions — PAM for vendor credentials — TPRM</span></div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">SolarWinds →</span><span>Compromised build pipeline — signed malware in update — 18,000 orgs — SBOM + behavior monitoring</span></div>
+      <div class="er"><span class="ek">Log4Shell →</span><span>Open source library CVE — Log4j — JNDI injection RCE — SCA scanning catches dependencies</span></div>
+      <div class="er"><span class="ek">SBOM →</span><span>Software Bill of Materials — inventory all components — enables rapid CVE response</span></div>
+      <div class="er"><span class="ek">Dependency confusion →</span><span>Public package shadows private package — private registry + namespace locking defends</span></div>
+      <div class="er"><span class="ek">SCA →</span><span>Software Composition Analysis — scan all dependencies including transitive — Snyk, Dependabot</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end sc -->
+
+<!-- ════════════════════════ -->
+<!-- SUMMARY                 -->
+<!-- ════════════════════════ -->
+<div class="cat" id="c-sum">
+<div class="card">
+  <div class="card-hd"><span class="card-num">ALL</span><span class="card-title">Complete Exam Cheat Sheet</span><span class="bdg" style="background:var(--s);color:var(--tx);border:1px solid var(--bd)">Domain 2 · Vulnerabilities</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--app)">Vulnerability Category Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Category</th><th>Top Vulnerabilities</th><th>Key Defenses</th></tr>
+      <tr><td><span class="tag tr">Application</span></td><td>Buffer overflow, SQLi, IDOR, CSRF, hardcoded secrets, TOCTOU</td><td>Memory-safe languages, parameterized queries, server-side authz, secrets manager</td></tr>
+      <tr><td><span class="tag to">Hardware</span></td><td>BIOS/UEFI firmware, Spectre/Meltdown, JTAG, evil maid, BadUSB, cold boot</td><td>Secure Boot, microcode patches, disable JTAG, TPM measured boot</td></tr>
+      <tr><td><span class="tag tg">Mobile</span></td><td>Jailbreak/root, sideloading, outdated OS, excessive permissions</td><td>MDM with jailbreak detect, DEP/Zero-Touch, TOTP not SMS, min OS version</td></tr>
+      <tr><td><span class="tag tp">Virtualization</span></td><td>VM escape, VM sprawl, snapshot stale state, container escape, side-channel</td><td>Patch hypervisor, VM lifecycle, don't run privileged containers</td></tr>
+      <tr><td><span class="tag tb">OS</span></td><td>Kernel privesc, EternalBlue, EOL OS, DLL hijacking, LLMNR poisoning</td><td>Patch promptly, disable SMBv1/LLMNR, CIS benchmark, upgrade EOL</td></tr>
+      <tr><td><span class="tag tt">Cloud</span></td><td>Misconfiguration, overpermissive IAM, IMDS attacks, shared tenancy</td><td>CSPM, least privilege IAM, IMDSv2, dedicated hosts for sensitive</td></tr>
+      <tr><td><span class="tag tsw" style="background:#fff6f0;color:#9a3412;border:1px solid #fdba74">Web</span></td><td>SQLi, XSS, SSRF, CSRF, IDOR/BOLA, clickjacking, OWASP Top 10</td><td>Parameterized queries, output encoding, CSP, WAF, SAST/DAST</td></tr>
+      <tr><td><span class="tag tg" style="background:var(--sc-bg);color:var(--sc);border:1px solid #86efac">Supply Chain</span></td><td>Compromised updates, Log4Shell, dependency confusion, hardware tampering</td><td>SBOM, SCA, code signing, private registry, TPRM</td></tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--virt)">Master Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// 45 Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Write past buffer end — overwrite return address — execute shellcode"</span><span>→ Buffer overflow — ASLR + DEP + stack canaries mitigate</span></div>
+      <div class="er"><span class="ek">"Use freed memory pointer — attacker controls what fills freed space"</span><span>→ Use-After-Free (UAF) — memory-safe languages defend</span></div>
+      <div class="er"><span class="ek">"Randomizes memory layout — attacker can't hardcode addresses"</span><span>→ ASLR (Address Space Layout Randomization)</span></div>
+      <div class="er"><span class="ek">"Data regions not executable — prevents shellcode execution"</span><span>→ DEP / NX bit — defeated by ROP chains</span></div>
+      <div class="er"><span class="ek">"SQL commands inserted in input field — dump entire database"</span><span>→ SQL injection — parameterized queries (prepared statements) fix</span></div>
+      <div class="er"><span class="ek">"' OR '1'='1 — classic attack on login form"</span><span>→ SQL injection authentication bypass</span></div>
+      <div class="er"><span class="ek">"OS commands executed via semicolon in user input"</span><span>→ Command / OS injection — avoid shell, escape metacharacters</span></div>
+      <div class="er"><span class="ek">"../../etc/passwd in filename parameter — read system files"</span><span>→ Path traversal / directory traversal</span></div>
+      <div class="er"><span class="ek">"Change /account?id=1234 to 1235 — see another user's data"</span><span>→ IDOR (Insecure Direct Object Reference) — server-side auth check</span></div>
+      <div class="er"><span class="ek">"Trick browser to submit form to bank using victim's session"</span><span>→ CSRF — CSRF token + SameSite cookie prevent</span></div>
+      <div class="er"><span class="ek">"Gap between checking and acting exploited by concurrent requests"</span><span>→ TOCTOU race condition — atomic operations fix</span></div>
+      <div class="er"><span class="ek">"API key embedded in public GitHub repository"</span><span>→ Hardcoded secrets — use secrets manager + secret scanning</span></div>
+      <div class="er"><span class="ek">"XML parser processes external entity — reads /etc/passwd"</span><span>→ XXE (XML External Entity) — disable DOCTYPE processing</span></div>
+      <div class="er"><span class="ek">"BIOS-level malware survives complete OS reinstall"</span><span>→ UEFI/firmware rootkit — Secure Boot + measured boot defends</span></div>
+      <div class="er"><span class="ek">"CPU leaks other processes' memory via timing analysis"</span><span>→ Spectre/Meltdown — CPU side-channel — microcode patches</span></div>
+      <div class="er"><span class="ek">"Hardware debug port left enabled on IoT device"</span><span>→ JTAG interface — extract firmware/keys — disable in production</span></div>
+      <div class="er"><span class="ek">"Brief physical access installs keyboard keylogger in device"</span><span>→ Evil maid attack — TPM measured boot detects — physical security</span></div>
+      <div class="er"><span class="ek">"USB device impersonates keyboard — executes commands automatically"</span><span>→ BadUSB / HID attack — USB control policy defends</span></div>
+      <div class="er"><span class="ek">"RAM retains data briefly — extract encryption keys after power off"</span><span>→ Cold boot attack — memory encryption + physical security</span></div>
+      <div class="er"><span class="ek">"Remove iOS restrictions — bypass MDM — install unsigned apps"</span><span>→ Jailbreaking — MDM detects and blocks corporate access</span></div>
+      <div class="er"><span class="ek">"Install apps outside official App Store / Play Store"</span><span>→ Sideloading — MDM policy restricts</span></div>
+      <div class="er"><span class="ek">"Android OEM controls updates — devices never patched"</span><span>→ Android fragmentation — MDM enforce minimum OS version</span></div>
+      <div class="er"><span class="ek">"MDM enrollment that survives factory reset on iOS"</span><span>→ DEP (Device Enrollment Program) / Apple Business Manager</span></div>
+      <div class="er"><span class="ek">"Guest VM exploits hypervisor — accesses host and other VMs"</span><span>→ VM escape — CRITICAL — patch hypervisor immediately</span></div>
+      <div class="er"><span class="ek">"Hundreds of forgotten unpatched VMs from old projects"</span><span>→ VM sprawl — lifecycle management + regular audits</span></div>
+      <div class="er"><span class="ek">"Restore snapshot — reintroduces old vulnerabilities and credentials"</span><span>→ VM snapshot vulnerability — patch before restore + lifecycle policy</span></div>
+      <div class="er"><span class="ek">"Container shares host OS kernel — weaker isolation than VM"</span><span>→ Container isolation weakness — container escape more accessible than VM escape</span></div>
+      <div class="er"><span class="ek">"SMBv1 vulnerability — WannaCry 2017 ransomware vector"</span><span>→ EternalBlue (MS17-010) — patch + disable SMBv1</span></div>
+      <div class="er"><span class="ek">"OS vendor stopped support — no more security patches"</span><span>→ End-of-life OS — compensating controls: isolation + virtual patching</span></div>
+      <div class="er"><span class="ek">"Windows loads DLL from user-writable directory"</span><span>→ DLL hijacking — privilege escalation — verify DLL load paths</span></div>
+      <div class="er"><span class="ek">"Windows broadcast protocol — LLMNR poisoning → credential theft"</span><span>→ Disable LLMNR and NBNS — they don't need to be enabled</span></div>
+      <div class="er"><span class="ek">"S3 bucket left public — PII exposed to internet"</span><span>→ Cloud misconfiguration — CSPM detects — #1 cloud risk</span></div>
+      <div class="er"><span class="ek">"IAM role with AdministratorAccess when ReadOnly is sufficient"</span><span>→ Overly permissive IAM — least privilege — Access Analyzer</span></div>
+      <div class="er"><span class="ek">"SSRF to 169.254.169.254 — steals IAM credentials — Capital One"</span><span>→ IMDS attack — IMDSv2 prevents SSRF exploitation</span></div>
+      <div class="er"><span class="ek">"Continuously check cloud configs against security benchmarks"</span><span>→ CSPM (Cloud Security Posture Management)</span></div>
+      <div class="er"><span class="ek">"Injected JavaScript saved in database — executes for all viewers"</span><span>→ Stored XSS — output encoding + CSP + HttpOnly cookies</span></div>
+      <div class="er"><span class="ek">"Transparent iframe tricks user into clicking bank button"</span><span>→ Clickjacking — X-Frame-Options: DENY</span></div>
+      <div class="er"><span class="ek">"Server makes HTTP request to internal resource on behalf of attacker"</span><span>→ SSRF — block internal IP ranges + IMDSv2</span></div>
+      <div class="er"><span class="ek">"User input executed as template code — {{7*7}} = 49"</span><span>→ SSTI (Server-Side Template Injection) — RCE possible</span></div>
+      <div class="er"><span class="ek">"OWASP #1 risk — IDOR, CSRF, missing authorization"</span><span>→ Broken Access Control (A01)</span></div>
+      <div class="er"><span class="ek">"SolarWinds — signed malicious update — 18,000 orgs"</span><span>→ Supply chain attack — compromised build pipeline — SBOM + behavior monitoring</span></div>
+      <div class="er"><span class="ek">"Log4j vulnerability — JNDI injection — mass exploitation 2021"</span><span>→ Log4Shell — open source dependency CVE — SCA scanning catches</span></div>
+      <div class="er"><span class="ek">"Malicious package with same name as internal package on public registry"</span><span>→ Dependency confusion — private registry + namespace locking</span></div>
+      <div class="er"><span class="ek">"Inventory of all software components and their versions"</span><span>→ SBOM (Software Bill of Materials)</span></div>
+      <div class="er"><span class="ek">"Scan all open-source dependencies for known CVEs automatically"</span><span>→ SCA (Software Composition Analysis) — Snyk, Dependabot</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end sum -->
+
+<script>
+const CC={
+  app:'var(--app)',hw:'var(--hw)',mob:'var(--mob)',virt:'var(--virt)',
+  os:'var(--os)',cld:'var(--cld)',web:'var(--web)',sc:'var(--sc)',sum:'var(--mu)'
+};
+
+function showCat(id,el){
+  document.querySelectorAll('.cat').forEach(c=>c.classList.remove('on'));
+  document.querySelectorAll('.pck').forEach(p=>p.classList.remove('on'));
+  document.getElementById('c-'+id).classList.add('on');
+  el.classList.add('on');
+  const c=CC[id];
+  const tabs=document.getElementById('t-'+id);
+  if(tabs){
+    tabs.querySelectorAll('.tab').forEach(t=>{
+      t.onmouseover=()=>{if(!t.classList.contains('active')){t.style.background=c;t.style.borderColor=c;t.style.color='#fff';}};
+      t.onmouseout=()=>{if(!t.classList.contains('active')){t.style.background='';t.style.borderColor='';t.style.color='';}};
+    });
+    const a=tabs.querySelector('.tab.active');
+    if(a){a.style.background=c;a.style.borderColor=c;a.style.color='#fff';}
+  }
+  window.scrollTo(0,0);
+}
+
+function goTab(cat,secId,btn){
+  const cEl=document.getElementById('c-'+cat);
+  const tabs=document.getElementById('t-'+cat);
+  if(!cEl||!tabs)return;
+  cEl.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  tabs.querySelectorAll('.tab').forEach(t=>{t.classList.remove('active');t.style.background='';t.style.borderColor='';t.style.color='';});
+  document.getElementById(secId).classList.add('on');
+  btn.classList.add('active');
+  const c=CC[cat];
+  btn.style.background=c;btn.style.borderColor=c;btn.style.color='#fff';
+  window.scrollTo(0,0);
+}
+
+// Init first tab
+document.addEventListener('DOMContentLoaded',()=>{
+  const a=document.querySelector('#t-app .tab.active');
+  if(a){a.style.background='var(--app)';a.style.borderColor='var(--app)';a.style.color='#fff';}
+});
+</script>
+</body>
+</html>

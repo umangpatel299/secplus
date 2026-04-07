@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture Models — Security+ Domain 3</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@300;400;600;700;900&family=Jost:wght@300;400;500;600;700&family=Overpass+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg:#07080c;
+  --s1:#0d0e14;
+  --s2:#12131b;
+  --s3:#181922;
+  --border:#252638;
+  --text:#dde0f8;
+  --muted:#5c6090;
+  --onp:#ff7b4a;   /* on-prem: warm amber-orange */
+  --cld:#3dc8ff;   /* cloud: sky blue */
+  --vrt:#a855f7;   /* virtualization: violet */
+  --iot:#22d68a;   /* IoT: green */
+  --ics:#ff4466;   /* ICS: alert red */
+  --iac:#f0c040;   /* IaC: gold */
+  --neu:#8899cc;   /* neutral: slate */
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Jost',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+/* ── HEADER ── */
+.hdr{
+  text-align:center;
+  margin-bottom:2.5rem;
+  padding:2rem 0;
+  position:relative;
+}
+.hdr::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 600px 200px at 50% 0%,rgba(61,200,255,0.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hdr-tag{
+  font-family:'Overpass Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.22em;
+  color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem;
+}
+.hdr-title{
+  font-family:'Grenze Gotisch',serif;
+  font-size:3.2rem;font-weight:700;
+  line-height:0.9;margin-bottom:0.4rem;
+  letter-spacing:0.02em;
+}
+.hdr-title .a{color:var(--cld);}
+.hdr-title .b{color:var(--text);}
+.hdr-sub{
+  font-family:'Overpass Mono',monospace;
+  font-size:0.63rem;color:var(--muted);letter-spacing:0.06em;
+}
+
+/* ── MODEL PICKER ── */
+.picker{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:0.4rem;
+  margin-bottom:2rem;
+}
+@media(max-width:700px){.picker{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:400px){.picker{grid-template-columns:repeat(2,1fr);}}
+
+.pick{
+  border-radius:7px;border:1.5px solid var(--border);
+  background:var(--s1);
+  padding:0.75rem 0.4rem;text-align:center;
+  cursor:pointer;transition:all 0.15s;
+  display:flex;flex-direction:column;align-items:center;gap:0.3rem;
+}
+.pick-icon{font-size:1.4rem;line-height:1;}
+.pick-label{
+  font-family:'Overpass Mono',monospace;
+  font-size:0.58rem;font-weight:700;
+  letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--muted);transition:color 0.15s;
+}
+.pick:hover{transform:translateY(-2px);}
+.pick[data-t="onp"]:hover,.pick[data-t="onp"].on{border-color:var(--onp);background:rgba(255,123,74,0.06);}
+.pick[data-t="onp"].on .pick-label,.pick[data-t="onp"]:hover .pick-label{color:var(--onp);}
+.pick[data-t="cld"]:hover,.pick[data-t="cld"].on{border-color:var(--cld);background:rgba(61,200,255,0.06);}
+.pick[data-t="cld"].on .pick-label,.pick[data-t="cld"]:hover .pick-label{color:var(--cld);}
+.pick[data-t="vrt"]:hover,.pick[data-t="vrt"].on{border-color:var(--vrt);background:rgba(168,85,247,0.06);}
+.pick[data-t="vrt"].on .pick-label,.pick[data-t="vrt"]:hover .pick-label{color:var(--vrt);}
+.pick[data-t="iot"]:hover,.pick[data-t="iot"].on{border-color:var(--iot);background:rgba(34,214,138,0.06);}
+.pick[data-t="iot"].on .pick-label,.pick[data-t="iot"]:hover .pick-label{color:var(--iot);}
+.pick[data-t="ics"]:hover,.pick[data-t="ics"].on{border-color:var(--ics);background:rgba(255,68,102,0.08);}
+.pick[data-t="ics"].on .pick-label,.pick[data-t="ics"]:hover .pick-label{color:var(--ics);}
+.pick[data-t="iac"]:hover,.pick[data-t="iac"].on{border-color:var(--iac);background:rgba(240,192,64,0.06);}
+.pick[data-t="iac"].on .pick-label,.pick[data-t="iac"]:hover .pick-label{color:var(--iac);}
+.pick[data-t="cmp"]:hover,.pick[data-t="cmp"].on{border-color:var(--neu);background:rgba(136,153,204,0.06);}
+.pick[data-t="cmp"].on .pick-label,.pick[data-t="cmp"]:hover .pick-label{color:var(--neu);}
+
+/* inner tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:1.8rem;}
+.tab{
+  padding:0.38rem 0.85rem;border-radius:5px;
+  border:1px solid var(--border);background:var(--s1);
+  color:var(--muted);cursor:pointer;
+  font-family:'Overpass Mono',monospace;font-size:0.62rem;
+  font-weight:600;transition:all 0.13s;letter-spacing:0.02em;
+}
+.tab:hover,.tab.active{color:#fff;}
+
+/* ── SECTIONS ── */
+.model{display:none;}
+.model.on{display:block;animation:up 0.18s ease;}
+@keyframes up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+.sec{display:none;}
+.sec.on{display:block;}
+
+/* ── CARD ── */
+.card{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:11px;margin-bottom:1.5rem;overflow:hidden;
+}
+.card-hd{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.9rem 1.4rem;
+  border-bottom:1px solid var(--border);
+  background:var(--s2);
+}
+.card-num{
+  font-family:'Overpass Mono',monospace;font-size:0.58rem;
+  color:var(--muted);background:var(--s3);
+  border:1px solid var(--border);border-radius:3px;padding:0.1rem 0.35rem;
+}
+.card-title{
+  font-family:'Grenze Gotisch',serif;
+  font-size:1.2rem;font-weight:600;letter-spacing:0.02em;
+}
+.bdg{
+  margin-left:auto;font-family:'Overpass Mono',monospace;
+  font-size:0.57rem;padding:0.13rem 0.5rem;
+  border-radius:999px;white-space:nowrap;font-weight:700;
+  letter-spacing:0.04em;text-transform:uppercase;
+}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.72;}
+h3{
+  font-family:'Grenze Gotisch',serif;font-size:1rem;font-weight:600;
+  color:var(--text);margin:1.2rem 0 0.55rem;
+  padding-left:0.7rem;border-left:3px solid;
+  letter-spacing:0.02em;
+}
+
+/* ── CODE ── */
+.code{
+  background:#040508;border:1px solid var(--border);border-radius:7px;
+  padding:1rem 1.2rem;font-family:'Overpass Mono',monospace;
+  font-size:0.68rem;line-height:1.9;color:var(--text);
+  overflow-x:auto;margin:0.8rem 0;
+}
+.cg{color:#22d68a;} .cr{color:#ff4466;} .cb{color:#3dc8ff;}
+.co{color:#ff7b4a;} .cp{color:#a855f7;} .cm{color:var(--muted);}
+.ct{color:#5eead4;} .ci{color:#a5b4fc;} .cy{color:#f0c040);}
+.cl{color:#bef264;} .cgd{color:#f0c040;}
+
+/* ── SCENE ── */
+.scene{
+  background:#120c00;border-left:3px solid var(--onp);
+  border-radius:0 7px 7px 0;padding:1rem 1.2rem;margin:1rem 0;
+}
+.scene-lbl{
+  font-family:'Overpass Mono',monospace;font-size:0.58rem;
+  color:var(--onp);margin-bottom:0.4rem;
+  letter-spacing:0.12em;font-weight:700;text-transform:uppercase;
+}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.gc{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:1rem;}
+.gc h4{font-family:'Grenze Gotisch',serif;font-size:0.95rem;font-weight:600;margin-bottom:0.4rem;letter-spacing:0.02em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* ── EXAM ── */
+.exam{
+  background:#0e0a1a;border:1px solid #2d1a5a;
+  border-radius:8px;padding:1rem 1.2rem;margin-top:1rem;
+}
+.exam h4{
+  font-family:'Overpass Mono',monospace;font-size:0.58rem;
+  color:var(--vrt);margin-bottom:0.6rem;
+  letter-spacing:0.12em;font-weight:700;text-transform:uppercase;
+}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{font-family:'Overpass Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.5rem 0.8rem;text-align:left;color:var(--muted);border-bottom:1px solid var(--border);font-size:0.62rem;font-weight:700;font-family:'Overpass Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.08rem 0.42rem;border-radius:3px;font-size:0.6rem;font-family:'Overpass Mono',monospace;font-weight:700;}
+.tg{background:#082a14;color:#22d68a;} .tr{background:#280810;color:#ff4466;}
+.tb{background:#081830;color:#3dc8ff;} .to{background:#281000;color:#ff7b4a;}
+.tp{background:#180828;color:#a855f7;} .tt{background:#062018;color:#5eead4;}
+.ti{background:#101838;color:#a5b4fc;} .ty{background:#201800;color:#f0c040;}
+.tl{background:#141e00;color:#bef264;} .ts{background:#181828;color:#8899cc;}
+
+/* ── INFO ROW ── */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s2);border:1px solid var(--border);border-radius:7px;margin-bottom:0.5rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Grenze Gotisch',serif;font-size:0.9rem;font-weight:600;margin-bottom:0.12rem;letter-spacing:0.02em;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* ── COMPARE CARD ── */
+.cmp-wrap{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0.6rem;margin:1rem 0;
+}
+@media(max-width:640px){.cmp-wrap{grid-template-columns:1fr;}}
+.cmp-col{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:0.9rem;}
+.cmp-head{font-family:'Grenze Gotisch',serif;font-size:0.9rem;font-weight:600;margin-bottom:0.5rem;padding-bottom:0.4rem;border-bottom:1px solid var(--border);letter-spacing:0.02em;}
+.cmp-item{font-size:0.74rem;color:var(--muted);padding:0.2rem 0;display:flex;gap:0.4rem;}
+.cmp-dot{flex-shrink:0;margin-top:0.35rem;width:5px;height:5px;border-radius:50%;}
+
+/* ── PURP ZONE STRIP ── */
+.zone-row{display:flex;align-items:center;gap:1rem;padding:0.6rem 0.9rem;background:var(--s2);border:1px solid var(--border);border-radius:6px;margin-bottom:0.4rem;}
+.zone-name{font-family:'Overpass Mono',monospace;font-size:0.7rem;font-weight:700;min-width:90px;flex-shrink:0;}
+.zone-desc{font-size:0.76rem;color:var(--muted);flex:1;}
+.zone-access{font-family:'Overpass Mono',monospace;font-size:0.62rem;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-tag">Security+ SY0-701 · Domain 3 · Security Architecture</div>
+  <div class="hdr-title"><span class="a">Architecture</span><br><span class="b">Models</span></div>
+  <div class="hdr-sub">// On-Premises · Cloud · Virtualization · IoT · ICS/SCADA · Infrastructure as Code</div>
+</div>
+
+<!-- MODEL PICKER -->
+<div class="picker">
+  <div class="pick on" data-t="onp" onclick="showModel('onp',this)">
+    <span class="pick-icon">🏢</span>
+    <span class="pick-label">On-Prem</span>
+  </div>
+  <div class="pick" data-t="cld" onclick="showModel('cld',this)">
+    <span class="pick-icon">☁️</span>
+    <span class="pick-label">Cloud</span>
+  </div>
+  <div class="pick" data-t="vrt" onclick="showModel('vrt',this)">
+    <span class="pick-icon">📦</span>
+    <span class="pick-label">Virtual</span>
+  </div>
+  <div class="pick" data-t="iot" onclick="showModel('iot',this)">
+    <span class="pick-icon">📡</span>
+    <span class="pick-label">IoT</span>
+  </div>
+  <div class="pick" data-t="ics" onclick="showModel('ics',this)">
+    <span class="pick-icon">⚙️</span>
+    <span class="pick-label">ICS/OT</span>
+  </div>
+  <div class="pick" data-t="iac" onclick="showModel('iac',this)">
+    <span class="pick-icon">📄</span>
+    <span class="pick-label">IaC</span>
+  </div>
+  <div class="pick" data-t="cmp" onclick="showModel('cmp',this)" style="grid-column:1/-1">
+    <span class="pick-icon">⚖️</span>
+    <span class="pick-label">Compare All</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ -->
+<!-- ON-PREMISES                -->
+<!-- ═══════════════════════════ -->
+<div class="model on" id="m-onp">
+  <div class="tabs" id="tabs-onp">
+    <button class="tab active" onclick="goTab('onp','on1',this)">Overview</button>
+    <button class="tab" onclick="goTab('onp','on2',this)">Security Controls</button>
+    <button class="tab" onclick="goTab('onp','on3',this)">Risks & Threats</button>
+    <button class="tab" onclick="goTab('onp','on4',this)">Exam Notes</button>
+  </div>
+
+  <div class="sec on" id="on1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ONP</span><span class="card-title" style="color:var(--onp)">On-Premises Architecture</span><span class="bdg" style="background:#281000;color:var(--onp);border:1px solid #402000">Full Control</span></div>
+    <div class="card-bd">
+      <p>On-premises (on-prem) means the organization <strong style="color:var(--text)">owns and operates all hardware, software, and infrastructure within its own facilities</strong>. Physical servers, networking equipment, and storage are purchased, installed, and maintained by the org's own IT staff.</p>
+      <h3 style="border-left-color:var(--onp)">What On-Premises Looks Like</h3>
+      <div class="code">
+<span class="cm"># Typical on-prem enterprise architecture:</span>
+
+Physical data center:
+  Servers:         owned hardware in racks
+  Storage:         SAN/NAS arrays in the building
+  Networking:      owned switches, routers, firewalls
+  Power/Cooling:   UPS, generators, HVAC — org's responsibility
+  Physical access: badge readers, cameras, locked cages
+
+Software:
+  OS:              licensed, installed on own hardware
+  Applications:    installed on own servers
+  Databases:       running on own hardware
+  Directory:       Active Directory on own Domain Controllers
+
+Security responsibility: <span class="co">100% organization-owned</span>
+  Physical:        organization secures the facility
+  Network:         organization manages all firewalls, IDS/IPS
+  Compute:         organization patches all OS and apps
+  Data:            organization protects and backs up data
+      </div>
+      <h3 style="border-left-color:var(--onp)">On-Premises: Pros and Cons</h3>
+      <div class="g2">
+        <div class="gc" style="border-color:#402000">
+          <h4 style="color:var(--onp)">Advantages</h4>
+          <ul>
+            <li>Full control over hardware and software</li>
+            <li>Data never leaves your facility</li>
+            <li>Customizable to exact requirements</li>
+            <li>No dependency on internet connectivity</li>
+            <li>Better for air-gapped environments</li>
+            <li>Compliance: some regulations mandate local data</li>
+            <li>Predictable costs (CapEx model)</li>
+          </ul>
+        </div>
+        <div class="gc" style="border-color:#280810">
+          <h4 style="color:var(--ics)">Disadvantages</h4>
+          <ul>
+            <li>High upfront capital expense (CapEx)</li>
+            <li>Org responsible for ALL patching and maintenance</li>
+            <li>Physical disaster destroys everything at site</li>
+            <li>Scaling requires buying hardware in advance</li>
+            <li>Security talent burden — no shared expertise</li>
+            <li>Hardware refreshes every 3-5 years</li>
+            <li>DR requires second physical site</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--onp)">On-premises →</span><span>Org owns ALL hardware — full responsibility for physical + logical security</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">CapEx model →</span><span>Large upfront capital expenditure — purchase hardware — depreciate over time</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Data sovereignty →</span><span>Data never leaves your facility — important for regulated industries</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="on2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ONP</span><span class="card-title" style="color:var(--onp)">On-Premises Security Controls</span><span class="bdg" style="background:#281000;color:var(--onp);border:1px solid #402000">Defend All Layers</span></div>
+    <div class="card-bd">
+      <h3 style="border-left-color:var(--onp)">Physical Security Controls</h3>
+      <div class="g3">
+        <div class="gc"><h4 style="color:var(--onp)">Physical Access</h4><p>Badge readers, mantraps/airlocks, biometric locks for server room, CCTV, security guards, visitor logs. Physical = the first line of defense in on-prem.</p></div>
+        <div class="gc"><h4 style="color:var(--onp)">Environmental Controls</h4><p>UPS (uninterruptible power supply), generators, HVAC for cooling, fire suppression (clean agent — NOT water), humidity monitoring. Protect from: power failure, fire, flood, heat.</p></div>
+        <div class="gc"><h4 style="color:var(--onp)">Hardware Security</h4><p>Cable locks, rack locks, TPM chips for measured boot, BIOS/UEFI passwords, hardware asset tags, decommissioning procedure (drive destruction). Physical access to hardware = game over.</p></div>
+      </div>
+      <h3 style="border-left-color:var(--onp)">Network Security Controls</h3>
+      <div class="code">
+<span class="cm"># Layered network security — on-prem model:</span>
+
+PERIMETER:
+  Firewall:         filter ingress/egress
+  IDS/IPS:          detect/block threats at perimeter
+  DMZ:              semi-trusted zone for public services
+  Web proxy:        filter outbound web traffic
+
+INTERNAL NETWORK:
+  Network segmentation:  VLANs separating systems by function
+  Internal firewall:     control segment-to-segment traffic
+  NAC (802.1X):          verify device before network access
+  Port security:         limit which MACs can use a port
+
+ENDPOINT:
+  EDR:              behavioral detection on every endpoint
+  Host firewall:    Windows Defender Firewall / iptables
+  FDE:              Full Disk Encryption (BitLocker / LUKS)
+  Patch management: WSUS / SCCM / Ansible
+
+IDENTITY:
+  Active Directory: central identity — Kerberos auth
+  MFA:              required for privileged access + remote
+  PAM:              vault admin credentials
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--onp)">DMZ →</span><span>Demilitarized zone — semi-trusted buffer between internet and internal network</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Defense in depth →</span><span>Layered controls — perimeter + network + endpoint + identity — each layer adds protection</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Air gap →</span><span>Physically isolated network — no internet connection — highest on-prem security</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="on3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ONP</span><span class="card-title" style="color:var(--onp)">On-Premises Risks</span><span class="bdg" style="background:#281000;color:var(--onp);border:1px solid #402000">Know the Threats</span></div>
+    <div class="card-bd">
+      <h3 style="border-left-color:var(--onp)">Key Risks Unique to On-Premises</h3>
+      <div class="code">
+<span class="cr">Physical breach:</span>
+  Attacker with physical access → everything compromised
+  Cold boot attack: RAM contents extracted after freeze
+  Evil maid attack: tamper with unattended device
+  Defense: physical access controls + encrypted drives
+
+<span class="cr">Single point of failure:</span>
+  Power outage → datacenter offline
+  Fire/flood → data destroyed
+  Hardware failure → service down
+  Defense: redundancy (N+1), UPS, off-site backup, DR site
+
+<span class="cr">Patch management burden:</span>
+  IT team responsible for patching ALL systems
+  Missed patches → exploited CVEs
+  Patching requires downtime → delayed → risk increases
+  Defense: automated patching (WSUS/Ansible), testing pipeline
+
+<span class="cr">Insider threat:</span>
+  Physical access makes exfiltration easier (USB, print)
+  Admin staff have physical + logical access
+  Defense: DLP, PAM, surveillance, least privilege
+
+<span class="cr">Disaster recovery cost:</span>
+  DR requires duplicate hardware at second site → expensive
+  Testing DR disrupts production
+  Defense: cloud DR as backup, regular DR testing
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--onp)">Cold boot attack →</span><span>Extract RAM contents from powered-off machine — defeats full-disk encryption</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Evil maid attack →</span><span>Physical tampering with unattended device — bootloader, keylogger</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Single point of failure →</span><span>On-prem infrastructure at one site — fire/flood/power = total outage</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="on4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ONP</span><span class="card-title" style="color:var(--onp)">On-Premises Exam Summary</span><span class="bdg" style="background:#281000;color:var(--onp);border:1px solid #402000">Key Points</span></div>
+    <div class="card-bd">
+      <div class="exam">
+        <h4>// All On-Premises Exam Points</h4>
+        <div class="er"><span class="ek" style="color:var(--onp)">Responsibility →</span><span>Organization owns and is responsible for EVERYTHING — hardware, OS, apps, data, physical</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">CapEx →</span><span>Capital expenditure model — buy hardware — high upfront cost</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Data control →</span><span>Data never leaves the building — highest data sovereignty</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Physical security →</span><span>Most important unique control — if attacker has physical access, game over</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">DMZ →</span><span>Buffer zone — public-facing servers between internet and internal</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Air gap →</span><span>No internet connection — maximum isolation — used in ICS/government</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Disaster recovery →</span><span>Requires duplicate physical site — expensive — or use cloud as DR</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Cold boot attack →</span><span>Freeze RAM → move to another machine → extract encryption keys</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">Patch burden →</span><span>IT team patches all systems — no vendor doing it for you</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ -->
+<!-- CLOUD                       -->
+<!-- ═══════════════════════════ -->
+<div class="model" id="m-cld">
+  <div class="tabs" id="tabs-cld">
+    <button class="tab active" onclick="goTab('cld','cl1',this)">Service Models</button>
+    <button class="tab" onclick="goTab('cld','cl2',this)">Deployment Models</button>
+    <button class="tab" onclick="goTab('cld','cl3',this)">Shared Responsibility</button>
+    <button class="tab" onclick="goTab('cld','cl4',this)">Cloud Threats</button>
+    <button class="tab" onclick="goTab('cld','cl5',this)">Exam Notes</button>
+  </div>
+
+  <div class="sec on" id="cl1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">CLD</span><span class="card-title" style="color:var(--cld)">Cloud Service Models</span><span class="bdg" style="background:#081830;color:var(--cld);border:1px solid #102848">IaaS · PaaS · SaaS</span></div>
+    <div class="card-bd">
+      <p>Cloud computing delivers on-demand IT resources over the internet. <strong style="color:var(--text)">Three service models define how much the provider manages vs how much you manage</strong>. This directly determines your security responsibilities.</p>
+      <h3 style="border-left-color:var(--cld)">IaaS — Infrastructure as a Service</h3>
+      <div class="code">
+<span class="cm"># IaaS: provider gives you hardware — you do the rest</span>
+Provider manages:   Physical datacenter, hardware, hypervisor
+You manage:        OS, middleware, runtime, apps, data, security
+
+Examples: AWS EC2, Azure VMs, Google Compute Engine
+
+Security: YOU are responsible for:
+  OS patching:         your job
+  App security:        your job
+  Network config:      your job (security groups = your firewall)
+  Identity:            your job
+  Data protection:     your job
+
+<span class="co">Most control, most responsibility</span>
+Use when: need OS-level customization, legacy app migration
+      </div>
+      <h3 style="border-left-color:var(--cld)">PaaS — Platform as a Service</h3>
+      <div class="code">
+<span class="cm"># PaaS: provider manages platform — you manage app + data</span>
+Provider manages:  Physical, hardware, OS, runtime, middleware
+You manage:        Application code, data, user access
+
+Examples: AWS RDS, Heroku, Google App Engine, Azure App Service
+
+Security: YOU are responsible for:
+  Application security:  your job (code vulnerabilities)
+  Data classification:   your job
+  Identity (IAM):        your job
+  Access controls:       your job
+
+<span class="cb">Moderate control, moderate responsibility</span>
+Use when: developers want to deploy apps without managing servers
+      </div>
+      <h3 style="border-left-color:var(--cld)">SaaS — Software as a Service</h3>
+      <div class="code">
+<span class="cm"># SaaS: provider manages everything — you use the software</span>
+Provider manages:  Everything except your data and who uses it
+You manage:        Data, user access, configuration
+
+Examples: Microsoft 365, Salesforce, Google Workspace, Zoom
+
+Security: YOU are responsible for:
+  Data classification:        who gets to see what
+  IAM (user accounts):        who has access + MFA
+  Configuration:              sharing settings, retention
+  Compliance for your data:   GDPR/HIPAA still YOUR problem
+
+<span class="cg">Least control, least management burden</span>
+Use when: want mature software with no infrastructure management
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--cld)">IaaS →</span><span>Infrastructure — you manage OS up — most control — AWS EC2, Azure VMs</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">PaaS →</span><span>Platform — you manage app + data — AWS RDS, Heroku</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">SaaS →</span><span>Software — you manage data and IAM only — M365, Salesforce</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">Customer ALWAYS owns →</span><span>Data classification + Identity/Access Management — in ALL three models</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="cl2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">CLD</span><span class="card-title" style="color:var(--cld)">Cloud Deployment Models</span><span class="bdg" style="background:#081830;color:var(--cld);border:1px solid #102848">Public · Private · Hybrid</span></div>
+    <div class="card-bd">
+      <div class="cmp-wrap">
+        <div class="cmp-col">
+          <div class="cmp-head" style="color:var(--cld)">Public Cloud</div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--cld)"></div><span>Shared infrastructure with other orgs (multi-tenant)</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--cld)"></div><span>AWS, Azure, GCP</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--cld)"></div><span>OpEx — pay as you go</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--cld)"></div><span>Provider responsible for physical security</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--cld)"></div><span>Scales instantly — global availability</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--ics)"></div><span>Shared infrastructure → tenant isolation risk</span></div>
+        </div>
+        <div class="cmp-col">
+          <div class="cmp-head" style="color:var(--vrt)">Private Cloud</div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--vrt)"></div><span>Dedicated infrastructure for one org</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--vrt)"></div><span>VMware Private Cloud, OpenStack</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--vrt)"></div><span>CapEx or managed by third party</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--vrt)"></div><span>More control, more compliance flexibility</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--vrt)"></div><span>Used by banks, government, healthcare</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--ics)"></div><span>Higher cost — less economies of scale</span></div>
+        </div>
+        <div class="cmp-col">
+          <div class="cmp-head" style="color:var(--iot)">Hybrid Cloud</div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--iot)"></div><span>Mix of on-prem + public cloud</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--iot)"></div><span>Sensitive data on-prem, burst to cloud</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--iot)"></div><span>Cloud bursting: scale to cloud when needed</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--iot)"></div><span>Most common real-world enterprise model</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--ics)"></div><span>Complex security — two environments to manage</span></div>
+          <div class="cmp-item"><div class="cmp-dot" style="background:var(--ics)"></div><span>Connectivity risk — VPN/ExpressRoute to cloud</span></div>
+        </div>
+      </div>
+      <h3 style="border-left-color:var(--cld)">Community Cloud</h3>
+      <div class="info-row">
+        <div class="info-icon">🏛️</div>
+        <div>
+          <div class="info-title">Community Cloud</div>
+          <div class="info-desc">Shared infrastructure for a specific community with common concerns — government agencies, healthcare organizations, financial institutions. Example: FedRAMP cloud for US government agencies. GovCloud: AWS region specifically for US government with higher compliance requirements. Members share the cost and security controls appropriate for their shared regulatory requirements.</div>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--cld)">Multi-tenant →</span><span>Multiple customers share same underlying infrastructure — public cloud — isolation critical</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">Hybrid cloud →</span><span>On-prem + public cloud — most common enterprise model — complex security boundary</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">Community cloud →</span><span>Shared infra for specific sector — GovCloud for US government — FedRAMP</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">Cloud bursting →</span><span>On-prem workloads overflow to cloud during peak demand</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="cl3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">CLD</span><span class="card-title" style="color:var(--cld)">Shared Responsibility Model</span><span class="bdg" style="background:#081830;color:var(--cld);border:1px solid #102848">Who Owns What</span></div>
+    <div class="card-bd">
+      <p>The shared responsibility model defines <strong style="color:var(--text)">who is responsible for security in cloud environments</strong>. It's the most critical cloud security concept — misunderstanding it leads to security gaps.</p>
+      <div class="code">
+<span class="cm"># Shared responsibility: what the customer ALWAYS owns:</span>
+
+In ALL service models (IaaS/PaaS/SaaS):
+  <span class="cr">Customer ALWAYS responsible for:</span>
+  → Data (classification, protection, compliance)
+  → Identity and Access Management (who can access what)
+  → Client/endpoint devices used to access cloud
+  → Account credentials and MFA
+
+<span class="cm"># What varies by service model:</span>
+
+               IaaS       PaaS       SaaS
+               ─────────────────────────
+Data:          Customer   Customer   Customer
+IAM:           Customer   Customer   Customer
+Application:   Customer   Customer   Provider
+Runtime:       Customer   Provider   Provider
+OS:            Customer   Provider   Provider
+Virtualization:Provider   Provider   Provider
+Hardware:      Provider   Provider   Provider
+Physical:      Provider   Provider   Provider
+
+<span class="co">Key exam insight:</span>
+Misconfiguration is #1 cloud breach cause
+"The cloud is secure — your config might not be"
+S3 bucket left public = customer fault, not AWS fault
+      </div>
+      <h3 style="border-left-color:var(--cld)">Cloud Security Architecture Controls</h3>
+      <div class="g3">
+        <div class="gc"><h4 style="color:var(--cld)">CASB</h4><p>Cloud Access Security Broker — sits between users and cloud services. Enforces: DLP, access control, threat detection, compliance for SaaS apps. Sees all cloud traffic. Essential for shadow IT discovery. Examples: Microsoft Defender for Cloud Apps, Netskope.</p></div>
+        <div class="gc"><h4 style="color:var(--cld)">CSPM</h4><p>Cloud Security Posture Management — continuously checks cloud configs against security benchmarks. Detects: S3 bucket publicly accessible, security group open to internet, no MFA on root account. Examples: AWS Security Hub, Azure Defender, Prisma Cloud.</p></div>
+        <div class="gc"><h4 style="color:var(--cld)">CWPP</h4><p>Cloud Workload Protection Platform — protects cloud compute instances (VMs, containers, serverless). EDR equivalent for cloud. Monitors: process execution, network connections, file changes in cloud workloads.</p></div>
+        <div class="gc"><h4 style="color:var(--cld)">SASE</h4><p>Secure Access Service Edge — combines SD-WAN + security functions (FWaaS, CASB, ZTNA, SWG) into a single cloud-delivered service. Network security delivered from the cloud. Gartner-coined term for converged cloud security.</p></div>
+        <div class="gc"><h4 style="color:var(--cld)">ZTNA</h4><p>Zero Trust Network Access — replace VPN with app-level cloud access. Users access specific apps — not the entire network. Continuously verify: identity + device + context. Cloudflare Access, Zscaler ZPA, Prisma Access.</p></div>
+        <div class="gc"><h4 style="color:var(--cld)">Cloud HSM</h4><p>Cloud-based Hardware Security Module for key management. AWS KMS, Azure Key Vault. Encryption keys stored in hardware — never exposed in software. FIPS 140-2 validated. Use for: encrypting data, signing code, CA operations.</p></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--cld)">Shared responsibility →</span><span>Customer always owns data + IAM — provider owns infrastructure layers</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">Misconfiguration →</span><span>#1 cloud security failure — customer's responsibility not provider's</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">CASB →</span><span>Cloud Access Security Broker — enforces DLP + access for SaaS — shadow IT</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">CSPM →</span><span>Cloud Security Posture Management — continuous config compliance checking</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">SASE →</span><span>Converged SD-WAN + cloud security — single service for network + security</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="cl4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">CLD</span><span class="card-title" style="color:var(--cld)">Cloud Threats & Risks</span><span class="bdg" style="background:#081830;color:var(--cld);border:1px solid #102848">Unique Cloud Risks</span></div>
+    <div class="card-bd">
+      <div class="code">
+<span class="cr">Misconfiguration (most common):</span>
+  S3 bucket left public → data exposed
+  Security group 0.0.0.0/0 → internet access to DB
+  Root account has no MFA → account takeover
+  Defense: CSPM continuous monitoring
+
+<span class="cr">Insecure APIs:</span>
+  Cloud = API-driven → every action is an API call
+  API key leaked in code → attacker gets full access
+  OWASP API Top 10 applies to cloud
+  Defense: API gateway, key rotation, least privilege
+
+<span class="cr">Insider threats — cloud admin:</span>
+  Cloud admin has access to ALL resources
+  Can exfiltrate data without physical access
+  Defense: PAM, CloudTrail logging, least privilege IAM
+
+<span class="cr">Data breach via misconfigured sharing:</span>
+  SharePoint link set to "Anyone with link"
+  S3 presigned URL shared publicly
+  Defense: DLP, CASB, least privilege sharing defaults
+
+<span class="cr">Denial of cloud service (cost attack):</span>
+  Attacker runs millions of cloud functions → huge bill
+  Cryptomining on compromised cloud account
+  Defense: billing alerts, spending caps, CloudTrail
+
+<span class="cr">Supply chain / third-party access:</span>
+  Vendor has OAuth app accessing all your M365 data
+  Defense: regular OAuth app review, CASB monitoring
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--cld)">Cloud misconfiguration →</span><span>#1 risk — public S3 buckets, open security groups — customer's fault</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">Serverless security →</span><span>Functions as a Service — org responsible for app code security — provider manages infra</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">API key in code →</span><span>Credential exposure — scan repos for secrets — use secrets manager</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="cl5">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">CLD</span><span class="card-title" style="color:var(--cld)">Cloud Exam Summary</span><span class="bdg" style="background:#081830;color:var(--cld);border:1px solid #102848">Key Points</span></div>
+    <div class="card-bd">
+      <div class="exam">
+        <h4>// All Cloud Exam Points</h4>
+        <div class="er"><span class="ek" style="color:var(--cld)">IaaS →</span><span>You manage OS + app + data — EC2, Azure VMs — most control</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">PaaS →</span><span>You manage app + data — RDS, Heroku — provider handles OS</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">SaaS →</span><span>You manage data + IAM only — M365, Salesforce — least control</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">Shared responsibility →</span><span>Customer ALWAYS owns: data + IAM — in every model</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">Public cloud →</span><span>Multi-tenant — shared physical infrastructure — OpEx</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">Private cloud →</span><span>Dedicated infrastructure — one org — higher compliance control</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">Hybrid cloud →</span><span>On-prem + cloud — most common — complex security boundary</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">CASB →</span><span>Enforce DLP + access policy for SaaS — see cloud traffic — shadow IT</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">CSPM →</span><span>Continuous cloud config compliance — detect public S3, open ports</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">SASE →</span><span>SD-WAN + security converged into cloud service</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">ZTNA →</span><span>Replace VPN — app-level access — continuously verify identity + device</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ -->
+<!-- VIRTUALIZATION              -->
+<!-- ═══════════════════════════ -->
+<div class="model" id="m-vrt">
+  <div class="tabs" id="tabs-vrt">
+    <button class="tab active" onclick="goTab('vrt','vr1',this)">VMs & Hypervisors</button>
+    <button class="tab" onclick="goTab('vrt','vr2',this)">Containers</button>
+    <button class="tab" onclick="goTab('vrt','vr3',this)">Security & Risks</button>
+    <button class="tab" onclick="goTab('vrt','vr4',this)">Exam Notes</button>
+  </div>
+
+  <div class="sec on" id="vr1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">VRT</span><span class="card-title" style="color:var(--vrt)">Virtual Machines & Hypervisors</span><span class="bdg" style="background:#180828;color:var(--vrt);border:1px solid #280d40">Abstract Hardware</span></div>
+    <div class="card-bd">
+      <p>Virtualization creates <strong style="color:var(--text)">software-based emulations of hardware</strong> — allowing multiple virtual machines (VMs) to run on a single physical host. The hypervisor is the software layer that manages this abstraction.</p>
+      <h3 style="border-left-color:var(--vrt)">Hypervisor Types</h3>
+      <div class="g2">
+        <div class="gc" style="border-color:#280d40">
+          <h4 style="color:var(--vrt)">Type 1 — Bare Metal (Native)</h4>
+          <p>Runs DIRECTLY on hardware — no host OS underneath. Hypervisor IS the operating system. Most performant and most secure (smaller attack surface). Examples: VMware ESXi, Microsoft Hyper-V, Xen, KVM. Used in: enterprise data centers, cloud providers (AWS uses Xen/KVM).</p>
+        </div>
+        <div class="gc" style="border-color:#180828">
+          <h4 style="color:var(--iot)">Type 2 — Hosted</h4>
+          <p>Runs ON TOP OF a host OS. Host OS → Hypervisor → VMs. Less performant — extra layer. Less secure — compromising host OS = compromising all VMs. Examples: VMware Workstation, VirtualBox, Parallels. Used in: development, testing, personal use, labs.</p>
+        </div>
+      </div>
+      <h3 style="border-left-color:var(--vrt)">VM Security Concepts</h3>
+      <div class="code">
+<span class="cm"># Key virtualization security concepts:</span>
+
+<span class="cp">VM Isolation:</span>
+  Each VM runs in isolated memory space
+  VMs cannot read each other's memory (by design)
+  Hypervisor enforces isolation
+  Failure: VM escape (critical vulnerability)
+
+<span class="cp">Snapshots:</span>
+  Point-in-time capture of VM state + disk
+  Security use: capture before pentest, restore after
+  Security risk: old snapshot may contain vulnerabilities
+                 stale credentials, outdated software
+  Best practice: delete old snapshots — not "just in case" storage
+
+<span class="cp">VM Sprawl:</span>
+  VMs easy to create → hundreds of forgotten VMs accumulate
+  Unmanaged VMs: unpatched, forgotten credentials
+  Defense: VM inventory, lifecycle policy, auto-shutdown
+
+<span class="cp">Dormant VMs:</span>
+  Powered-off VM: may be outdated when powered on
+  Bring online → immediately vulnerable (no patches applied while off)
+  Defense: patch before powering on + rescan after
+
+<span class="cp">VM Escape:</span>
+  Guest VM escapes hypervisor → accesses host or other VMs
+  Critical vulnerability in hypervisor — exploits escape isolation
+  Defense: keep hypervisor patched, run on dedicated hardware
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Type 1 hypervisor →</span><span>Bare metal — runs directly on hardware — VMware ESXi, Hyper-V — most secure</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Type 2 hypervisor →</span><span>Hosted — runs on OS — VirtualBox, VMware Workstation — less secure</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">VM escape →</span><span>Guest VM breaks out of hypervisor isolation — accesses host/other VMs — critical</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">VM sprawl →</span><span>Uncontrolled VM proliferation — unpatched forgotten VMs — security risk</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Snapshot risk →</span><span>Old snapshots contain stale credentials/vulnerabilities — manage lifecycle</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="vr2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">VRT</span><span class="card-title" style="color:var(--vrt)">Containers</span><span class="bdg" style="background:#180828;color:var(--vrt);border:1px solid #280d40">Docker · Kubernetes · Isolation</span></div>
+    <div class="card-bd">
+      <p>Containers are <strong style="color:var(--text)">lightweight isolated environments that package application code and dependencies</strong>. Unlike VMs, containers share the host OS kernel — making them faster but with different security boundaries.</p>
+      <h3 style="border-left-color:var(--vrt)">VMs vs Containers</h3>
+      <div class="code">
+<span class="cm"># The critical security difference:</span>
+
+VM architecture:
+  Physical hardware
+  → Hypervisor
+  → Guest OS (per VM — full OS)
+  → Application
+
+Container architecture:
+  Physical hardware
+  → Host OS
+  → Container runtime (Docker)
+  → Container (NO full OS — just app + dependencies)
+
+Key difference: containers share the HOST OS kernel
+  VM: separate OS = strong isolation (full boundary)
+  Container: shared kernel = weaker isolation
+
+<span class="cr">Container risk:</span>
+  Kernel vulnerability → ALL containers on that host affected
+  Container escape → access to host OS
+  Privileged container = dangerous (root on host)
+
+<span class="cg">Container benefits:</span>
+  Faster startup (seconds vs minutes)
+  Smaller image (MB vs GB)
+  Consistent environment (dev = prod)
+  Immutable: replace not patch
+      </div>
+      <h3 style="border-left-color:var(--vrt)">Container Security</h3>
+      <div class="g2">
+        <div class="gc"><h4 style="color:var(--vrt)">Image Security</h4><p>Scan container images before deployment (Trivy, Snyk). Use minimal base images (Alpine Linux vs full Ubuntu). No secrets hardcoded in images. Private registry for internal images. Image signing to verify authenticity. Rebuild images regularly — don't run stale.</p></div>
+        <div class="gc"><h4 style="color:var(--vrt)">Runtime Security</h4><p>Never run containers as root if avoidable. Read-only file systems for containers. Network policies between containers (Kubernetes NetworkPolicy). Resource limits — prevent one container consuming all CPU/RAM. Falco: runtime threat detection for containers.</p></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Container vs VM →</span><span>Containers share host OS kernel — less isolation than VMs — faster but weaker boundary</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Container escape →</span><span>Breaking out of container to host OS — weaker isolation than VM escape</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Docker →</span><span>Most popular container runtime — images, containers, registry</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Kubernetes →</span><span>Container orchestration — manages clusters of containers — RBAC + NetworkPolicy</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="vr3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">VRT</span><span class="card-title" style="color:var(--vrt)">Virtualization Security & Risks</span><span class="bdg" style="background:#180828;color:var(--vrt);border:1px solid #280d40">Attack Surface</span></div>
+    <div class="card-bd">
+      <div class="code">
+<span class="cr">VM Escape (Critical):</span>
+  Attacker in guest VM exploits hypervisor vulnerability
+  Gains access to host or other VMs
+  Real examples: Venom (CVE-2015-3456), various Xen CVEs
+  Defense: patch hypervisor immediately, defense in depth
+
+<span class="cr">Hypervisor Compromise:</span>
+  Compromising hypervisor = compromising all VMs
+  Hypervisor = most privileged component
+  Defense: minimal hypervisor software, dedicated hardware,
+           network isolation of management interface,
+           strict access control (MFA for vCenter/Hyper-V)
+
+<span class="co">Cross-VM side-channel attacks:</span>
+  Spectre/Meltdown: timing attacks across VM boundaries
+  Allows reading memory of neighboring VM
+  Defense: patches, CPU microcode updates, VM separation
+
+<span class="co">Snapshot abuse:</span>
+  Old snapshot with pre-breach state has old passwords
+  Developer restores snapshot → old vuln returns
+  Defense: snapshot lifecycle policy, audit snapshot usage
+
+<span class="cy">Sprawl and abandoned VMs:</span>
+  IT team created VM for project → project ended → VM forgotten
+  Unpatched, no EDR, no monitoring → easy target
+  Defense: automated VM inventory, lifecycle enforcement
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--vrt)">VM isolation →</span><span>Each VM in separate memory space — hypervisor enforces — VM escape breaks this</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Side-channel attack →</span><span>Spectre/Meltdown — timing attacks — leak memory across VM boundaries</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Hypervisor management →</span><span>vCenter/Hyper-V Manager — protect with MFA — compromise = all VMs compromised</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="vr4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">VRT</span><span class="card-title" style="color:var(--vrt)">Virtualization Exam Summary</span><span class="bdg" style="background:#180828;color:var(--vrt);border:1px solid #280d40">Key Points</span></div>
+    <div class="card-bd">
+      <div class="exam">
+        <h4>// All Virtualization Exam Points</h4>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Type 1 hypervisor →</span><span>Bare metal — runs directly on hardware — ESXi, Hyper-V — enterprise standard</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Type 2 hypervisor →</span><span>Hosted — runs on OS — VirtualBox — dev/test use</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">VM escape →</span><span>CRITICAL — guest escapes hypervisor — accesses host/other VMs</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">VM sprawl →</span><span>Uncontrolled VM creation — unpatched, unmonitored VMs accumulate</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Dormant VMs →</span><span>Offline = not patched — patch before powering on</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Snapshots →</span><span>Old snapshots = stale vulnerabilities — manage lifecycle — don't hoard</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Containers →</span><span>Share host OS kernel — lighter than VMs — weaker isolation</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Container escape →</span><span>Break out of container to host — easier than VM escape</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">Side-channel →</span><span>Spectre/Meltdown — memory leak across VM boundaries via timing</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ -->
+<!-- IoT                         -->
+<!-- ═══════════════════════════ -->
+<div class="model" id="m-iot">
+  <div class="tabs" id="tabs-iot">
+    <button class="tab active" onclick="goTab('iot','io1',this)">IoT Overview</button>
+    <button class="tab" onclick="goTab('iot','io2',this)">IoT Categories</button>
+    <button class="tab" onclick="goTab('iot','io3',this)">Security Challenges</button>
+    <button class="tab" onclick="goTab('iot','io4',this)">Controls & Exam</button>
+  </div>
+
+  <div class="sec on" id="io1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">IoT</span><span class="card-title" style="color:var(--iot)">Internet of Things</span><span class="bdg" style="background:#082818;color:var(--iot);border:1px solid #104028">Connected Devices</span></div>
+    <div class="card-bd">
+      <p>IoT encompasses <strong style="color:var(--text)">physical devices with embedded sensors, software, and connectivity that allow them to collect and exchange data</strong>. They range from smart thermostats to industrial sensors — and they expand the attack surface massively.</p>
+      <h3 style="border-left-color:var(--iot)">Why IoT Is a Security Challenge</h3>
+      <div class="code">
+<span class="cm"># IoT fundamentally different from traditional IT:</span>
+
+Scale:
+  Traditional IT: hundreds/thousands of devices
+  IoT in enterprise: tens of thousands of devices
+  Smart city: millions of sensors
+  Scale = impossible to manually manage security
+
+Resource constraints:
+  IoT devices: low CPU, low RAM, limited battery
+  Cannot run: full OS, EDR agent, antivirus
+  Limited: encryption capability on tiny hardware
+  Result: security is an afterthought in many devices
+
+Longevity:
+  Traditional PC: replaced every 3-5 years
+  Industrial sensor: runs for 15-20 years
+  Medical device: runs until end-of-support or decommission
+  Problem: vendor stops updating → stuck with vulnerabilities
+
+Physical exposure:
+  IoT devices often in physically exposed locations
+  Smart lock: outside the building (can be stolen/tampered)
+  Parking sensor: embedded in pavement
+  Physical access → often = full compromise
+
+Default credentials:
+  IoT ships with: admin/admin, root/root, admin/12345
+  Many users NEVER change them
+  Mirai botnet: used default credentials to compromise
+  millions of IoT devices → DDoS Dyn DNS → internet outage
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--iot)">IoT attack surface →</span><span>Massive scale + weak security + default credentials = huge attack surface</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">Mirai botnet →</span><span>IoT devices with default credentials → DDoS Dyn DNS → major internet outage 2016</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">Resource constraints →</span><span>Low CPU/RAM — cannot run full security stack — lightweight security needed</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="io2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">IoT</span><span class="card-title" style="color:var(--iot)">IoT Device Categories</span><span class="bdg" style="background:#082818;color:var(--iot);border:1px solid #104028">Types & Examples</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#104028"><h4 style="color:var(--iot)">Consumer IoT</h4><ul><li>Smart home: thermostats, lights, locks, cameras</li><li>Wearables: fitness trackers, smartwatches</li><li>Smart speakers: Alexa, Google Home</li><li>Connected appliances: smart TVs, refrigerators</li><li>Risk: poor security defaults, consumer data</li></ul></div>
+        <div class="gc"><h4 style="color:var(--cld)">Enterprise IoT</h4><ul><li>Building management: HVAC, elevators, access control</li><li>Physical security: IP cameras, badge readers</li><li>Conference room: AV systems, displays</li><li>Network infrastructure: managed switches, APs</li><li>Risk: connected to corporate network — bridge attack</li></ul></div>
+        <div class="gc"><h4 style="color:var(--vrt)">Medical IoT (IoMT)</h4><ul><li>Patient monitoring: heart monitors, pulse oximeters</li><li>Infusion pumps: deliver medication automatically</li><li>Imaging equipment: MRI, CT scanners</li><li>Insulin pumps, pacemakers: life-critical</li><li>Risk: life-safety impact, HIPAA, long lifespan</li></ul></div>
+        <div class="gc"><h4 style="color:var(--iac)">Industrial IoT (IIoT)</h4><ul><li>Manufacturing sensors: temperature, pressure</li><li>Asset tracking: RFID, GPS on equipment</li><li>Predictive maintenance: vibration sensors</li><li>Energy: smart meters, grid sensors</li><li>Risk: OT/IT convergence, safety impact</li></ul></div>
+      </div>
+      <h3 style="border-left-color:var(--iot)">Embedded Systems and Firmware</h3>
+      <div class="info-row">
+        <div class="info-icon">🔧</div>
+        <div>
+          <div class="info-title">Embedded Systems</div>
+          <div class="info-desc">Purpose-built computing within a larger system. RTOS (Real-Time Operating System) — designed for deterministic response time. Examples: car ECU, industrial controller, medical device processor. Security: limited updates, long lifespan, no user interface for patching. Firmware vulnerabilities often require physical access to update. Firmware reverse engineering can expose vulnerabilities.</div>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--iot)">IoMT →</span><span>Internet of Medical Things — pacemakers, infusion pumps — life-safety + HIPAA</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">Embedded system →</span><span>Purpose-built computing in larger device — RTOS — hard to update — long lifespan</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">RTOS →</span><span>Real-Time Operating System — deterministic response — manufacturing/medical/automotive</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="io3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">IoT</span><span class="card-title" style="color:var(--iot)">IoT Security Challenges</span><span class="bdg" style="background:#082818;color:var(--iot);border:1px solid #104028">Unique Threats</span></div>
+    <div class="card-bd">
+      <div class="code">
+<span class="cr">Default credentials:</span>
+  admin/admin, root/12345, blank password
+  Devices shipped with default creds → users never change
+  Shodan: search engine finds millions of exposed IoT
+  Mirai botnet exploited this → 600Gbps DDoS
+  Defense: change ALL defaults immediately
+
+<span class="cr">Lack of updates / EOL devices:</span>
+  Vendor stops support → no more patches
+  Device continues operating with known vulnerabilities
+  Medical devices: FDA approval process slows updates
+  Industrial: can't patch without downtime
+  Defense: compensating controls (network isolation, IDS)
+
+<span class="cr">Weak encryption:</span>
+  Resource-constrained devices can't run full TLS
+  Some use no encryption at all
+  Plaintext communications: sniffable on local network
+  Defense: network segmentation, VPN for IoT traffic
+
+<span class="cr">Physical tampering:</span>
+  Devices in accessible locations
+  Attacker plugs in laptop → extracts firmware
+  JTAG/debug port: hardware debugging interface
+                  often left enabled on production devices
+  Defense: disable debug ports, physical security, tamper-evident
+
+<span class="cr">Insecure update mechanism:</span>
+  Firmware updates over unencrypted HTTP
+  No signature verification on updates
+  Attacker provides malicious firmware → brick or persist
+  Defense: signed firmware updates, HTTPS, certificate pinning
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--iot)">Shodan →</span><span>Search engine for internet-connected devices — finds exposed IoT with default creds</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">JTAG →</span><span>Hardware debug interface — often enabled on IoT — allows firmware extraction</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">Firmware attack →</span><span>Malicious firmware update — no signature verification — device compromised</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">IoT EOL →</span><span>End-of-life device still operating — no patches — compensating controls needed</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="io4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">IoT</span><span class="card-title" style="color:var(--iot)">IoT Controls & Exam Summary</span><span class="bdg" style="background:#082818;color:var(--iot);border:1px solid #104028">Mitigate & Know</span></div>
+    <div class="card-bd">
+      <h3 style="border-left-color:var(--iot)">IoT Security Controls</h3>
+      <div class="g3">
+        <div class="gc"><h4 style="color:var(--iot)">Network Segmentation</h4><p>IoT VLAN isolated from corporate network. NAC: auto-assign IoT devices to IoT VLAN by MAC OUI. Firewall: strict rules — IoT can only reach needed services. Internal attacker on IoT VLAN cannot reach HR system.</p></div>
+        <div class="gc"><h4 style="color:var(--iot)">Inventory and Discovery</h4><p>You can't secure what you don't know exists. NAC agentless discovery — MAC OUI fingerprinting. Nmap scans for new devices. Asset database: every IoT device catalogued. Regular audits: remove unauthorized devices.</p></div>
+        <div class="gc"><h4 style="color:var(--iot)">Change Default Credentials</h4><p>Policy: all new IoT devices — change default credentials before network connection. Scan for default credentials (Shodan-style internal scan). Remove devices that cannot have passwords changed.</p></div>
+      </div>
+      <div class="exam">
+        <h4>// All IoT Exam Points</h4>
+        <div class="er"><span class="ek" style="color:var(--iot)">IoT scale →</span><span>Thousands of devices — can't manually manage — automated controls needed</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">Default creds →</span><span>admin/admin common — Mirai botnet exploited this — change before deploying</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">No patching →</span><span>Long lifespan + vendor EOL = persistent vulnerabilities — compensating controls</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">Network isolation →</span><span>IoT VLAN separate from corporate — limits blast radius when compromised</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">JTAG debug →</span><span>Hardware debug port — extract firmware — disable in production</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">IoMT risk →</span><span>Medical IoT — pacemakers/infusion pumps — compromise = patient harm</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">Shodan →</span><span>Search engine for exposed devices — attackers use to find vulnerable IoT</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ -->
+<!-- ICS / OT                    -->
+<!-- ═══════════════════════════ -->
+<div class="model" id="m-ics">
+  <div class="tabs" id="tabs-ics">
+    <button class="tab active" onclick="goTab('ics','ic1',this)">ICS Overview</button>
+    <button class="tab" onclick="goTab('ics','ic2',this)">Components</button>
+    <button class="tab" onclick="goTab('ics','ic3',this)">Security Challenges</button>
+    <button class="tab" onclick="goTab('ics','ic4',this)">Controls & Exam</button>
+  </div>
+
+  <div class="sec on" id="ic1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ICS</span><span class="card-title" style="color:var(--ics)">Industrial Control Systems</span><span class="bdg" style="background:#280810;color:var(--ics);border:1px solid #401020">OT · SCADA · Safety-Critical</span></div>
+    <div class="card-bd">
+      <p>Industrial Control Systems (ICS) and Operational Technology (OT) control <strong style="color:var(--text)">physical processes in critical infrastructure — power grids, water treatment, manufacturing, pipelines, and transportation</strong>. A cyberattack here can cause physical harm or death.</p>
+      <h3 style="border-left-color:var(--ics)">IT vs OT — The Fundamental Difference</h3>
+      <div class="code">
+<span class="cm"># IT vs OT priorities are OPPOSITE:</span>
+
+IT Security priorities:
+  1. Confidentiality  (data protection)
+  2. Integrity        (data accuracy)
+  3. Availability     (uptime)
+  CIA Triad — in that order
+
+OT/ICS Security priorities:
+  1. Availability     (systems must keep running!)
+  2. Integrity        (commands must be correct)
+  3. Confidentiality  (less important)
+  AIC Triad — REVERSED from IT
+
+Why reversed:
+  Power grid offline → city without power → people die
+  Water treatment down → unsafe water → public health crisis
+  Manufacturing stopped → $millions/hour loss
+  "Just patch it and reboot" → <span class="cr">NOT acceptable in OT</span>
+
+This matters for exam: OT availability &gt;&gt;&gt; confidentiality
+      </div>
+      <h3 style="border-left-color:var(--ics)">ICS Terminology</h3>
+      <div class="g2">
+        <div class="gc"><h4 style="color:var(--ics)">SCADA</h4><p>Supervisory Control and Data Acquisition. Centralized monitoring system for geographically distributed infrastructure. Power grid: SCADA monitors thousands of substations. Water: SCADA controls pumps across a city. Collects data + sends control commands over network.</p></div>
+        <div class="gc"><h4 style="color:var(--ics)">DCS</h4><p>Distributed Control System. Controls process within a single facility. Chemical plant, refinery, manufacturing floor. Similar to SCADA but geographically contained. High speed, deterministic control loops.</p></div>
+        <div class="gc"><h4 style="color:var(--ics)">PLC</h4><p>Programmable Logic Controller. Industrial computer for controlling physical equipment. Reads: sensors (temperature, pressure, flow). Controls: actuators (valves, motors, pumps). Ladder logic programming. Stuxnet targeted PLCs (Siemens S7).</p></div>
+        <div class="gc"><h4 style="color:var(--ics)">RTU / IED</h4><p>Remote Terminal Unit / Intelligent Electronic Device. Field devices — collect data from sensors, send to SCADA. RTU: communicates via radio/cellular to SCADA. IED: in electrical grid — automates switching decisions. Often at remote unmanned locations.</p></div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--ics)">OT priority →</span><span>Availability FIRST — then integrity — then confidentiality (reverse of IT)</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">SCADA →</span><span>Supervisory Control and Data Acquisition — centrally monitors/controls distributed OT</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">PLC →</span><span>Programmable Logic Controller — controls physical equipment — Stuxnet target</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">Safety system →</span><span>SIS (Safety Instrumented System) — shuts down process if dangerous condition — TRITON targeted these</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="ic2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ICS</span><span class="card-title" style="color:var(--ics)">ICS Network Architecture</span><span class="bdg" style="background:#280810;color:var(--ics);border:1px solid #401020">Purdue Model</span></div>
+    <div class="card-bd">
+      <h3 style="border-left-color:var(--ics)">The Purdue Reference Model</h3>
+      <p>Standard architecture for organizing ICS networks into zones with controlled communication between levels.</p>
+      <div class="zone-row"><span class="zone-name" style="color:var(--ics)">Level 4-5</span><span class="zone-desc">Enterprise zone: IT systems, corporate network, internet, business applications</span><span class="zone-access" style="color:var(--cld)">Normal IT</span></div>
+      <div class="zone-row"><span class="zone-name" style="color:var(--onp)">DMZ</span><span class="zone-desc">Industrial DMZ (IDMZ) — buffer between IT and OT — historian servers, jump hosts</span><span class="zone-access" style="color:var(--iac)">Controlled</span></div>
+      <div class="zone-row"><span class="zone-name" style="color:var(--iac)">Level 3</span><span class="zone-desc">Site operations: SCADA servers, engineering workstations, patch management</span><span class="zone-access" style="color:var(--iac)">OT Admin</span></div>
+      <div class="zone-row"><span class="zone-name" style="color:var(--iot)">Level 2</span><span class="zone-desc">Control systems: HMI (Human Machine Interface), DCS controllers, alarms</span><span class="zone-access" style="color:var(--iot)">OT Control</span></div>
+      <div class="zone-row"><span class="zone-name" style="color:var(--ics)">Level 1</span><span class="zone-desc">Basic control: PLCs, RTUs, DCS field controllers — direct equipment control</span><span class="zone-access" style="color:var(--ics)">Field</span></div>
+      <div class="zone-row"><span class="zone-name" style="color:var(--ics)">Level 0</span><span class="zone-desc">Field devices: sensors, actuators, motors, pumps, valves — physical process</span><span class="zone-access" style="color:var(--ics)">Physical</span></div>
+      <h3 style="border-left-color:var(--ics)">Historic ICS Attacks — Exam Reference</h3>
+      <div class="code">
+<span class="cr">Stuxnet (2010):</span>
+  Target: Iranian nuclear centrifuges
+  Vector: USB drop → Windows → WinCC → Siemens S7 PLCs
+  Effect: PLCs commanded centrifuges to spin abnormally
+          → centrifuges destroyed while SCADA showed normal
+  Significance: first known cyber weapon with physical damage
+  Lesson: air-gapped ICS still vulnerable to USB
+
+<span class="cr">Ukraine Power Grid (2015/2016):</span>
+  Target: Ukrainian electrical utilities
+  Vector: Spear phishing → BlackEnergy malware → SCADA
+  Effect: 225,000 customers lost power for hours
+  Significance: first known cyberattack causing power outage
+  Lesson: IT/OT convergence = OT reachable from IT
+
+<span class="cr">Triton/TRISIS (2017):</span>
+  Target: Saudi petrochemical facility
+  Vector: Engineering workstation → Safety Instrumented System
+  Effect: Targeted SIS (safety system) — goal: prevent
+          safety shutdown during sabotage → could cause explosion
+  Significance: first attack targeting safety systems
+  Lesson: even safety systems must be hardened
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--ics)">Purdue model →</span><span>Hierarchical ICS network architecture — levels 0-5 — IDMZ between IT and OT</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">Stuxnet →</span><span>USB → Windows → PLC — first cyber weapon — physical damage to centrifuges</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">TRITON →</span><span>Targeted Safety Instrumented System — could have caused explosion — 2017</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">HMI →</span><span>Human Machine Interface — operator console for controlling ICS — prime target</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="ic3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ICS</span><span class="card-title" style="color:var(--ics)">ICS Security Challenges</span><span class="bdg" style="background:#280810;color:var(--ics);border:1px solid #401020">Legacy · Availability · Patching</span></div>
+    <div class="card-bd">
+      <div class="code">
+<span class="cr">Legacy systems:</span>
+  ICS runs Windows XP, Windows 2000, proprietary OS
+  Vendor won't support: "certified for this OS version only"
+  Patching breaks certification
+  Result: running systems with 15-year-old known vulnerabilities
+  Defense: compensating controls, strict network isolation
+
+<span class="cr">No patching without downtime:</span>
+  Power plant: can't take turbine offline for patches
+  Water treatment: patching pump controller = no water
+  Patch window: annual maintenance shutdown only
+  Defense: virtual patching via IPS, network segmentation
+
+<span class="cr">IT/OT convergence risks:</span>
+  Historically air-gapped: physical separation
+  Now: business demands OT data → connects to corporate IT
+  Path: internet → IT → jump host → OT
+  Each connection = new attack vector
+  Ukraine attack used this convergence path
+
+<span class="cr">Protocols not designed for security:</span>
+  Modbus: no authentication, no encryption (1979 protocol)
+  DNP3: limited security features
+  OPC: complex, many vulnerabilities historically
+  Defense: protocol-aware firewall, anomaly detection (Dragos/Claroty)
+
+<span class="cr">Physical safety implications:</span>
+  Cyber attack → physical damage → injuries/deaths
+  Regulatory: NERC CIP (power), NRC (nuclear)
+  Consequences far exceed traditional IT breach
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--ics)">IT/OT convergence →</span><span>Connecting OT to IT/internet — business need — creates attack path to ICS</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">Modbus →</span><span>Legacy ICS protocol — no authentication — no encryption — widely used still</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">Virtual patching →</span><span>IPS rule blocks exploit without patching the system — used when patching impossible</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">NERC CIP →</span><span>North American Electric Reliability Corporation — mandatory security standards for power grid</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="ic4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ICS</span><span class="card-title" style="color:var(--ics)">ICS Controls & Exam Summary</span><span class="bdg" style="background:#280810;color:var(--ics);border:1px solid #401020">Defend OT</span></div>
+    <div class="card-bd">
+      <h3 style="border-left-color:var(--ics)">ICS Security Controls</h3>
+      <div class="g3">
+        <div class="gc"><h4 style="color:var(--ics)">Air Gap / Network Segmentation</h4><p>Complete network isolation (air gap) — ideal but rare. Industrial DMZ: buffer zone between IT and OT. Data diode: one-way data flow — OT → IT but not back. No direct internet to OT. Jump host required for OT access.</p></div>
+        <div class="gc"><h4 style="color:var(--ics)">OT-Specific Monitoring</h4><p>Passive network monitoring — no active scanning (breaks PLCs). Claroty, Dragos, Nozomi: OT-specific security tools. Baseline: establish normal OT traffic patterns. Alert on: new device on OT network, unusual commands, protocol anomalies.</p></div>
+        <div class="gc"><h4 style="color:var(--ics)">Physical Controls</h4><p>Physical access critical for OT. Lock PLC cabinets. Disable USB ports on HMI/workstations (Stuxnet!). Tamper-evident seals on equipment. Escort policy for vendors in OT areas. Security cameras in control rooms.</p></div>
+      </div>
+      <div class="exam">
+        <h4>// All ICS Exam Points</h4>
+        <div class="er"><span class="ek" style="color:var(--ics)">AIC vs CIA →</span><span>OT: Availability first — then Integrity — then Confidentiality (IT = CIA)</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">SCADA →</span><span>Supervisory Control and Data Acquisition — monitors/controls distributed OT systems</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">PLC →</span><span>Programmable Logic Controller — controls physical equipment — Stuxnet target</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">HMI →</span><span>Human Machine Interface — operator console — prime attack target</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">Stuxnet →</span><span>USB → Windows → WinCC → PLC — first cyber weapon</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">Air gap →</span><span>Physical isolation from internet — ideal OT security — USB still a risk</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">Virtual patching →</span><span>IPS rule protects unpatched system — when downtime impossible</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">Passive monitoring →</span><span>Active scanning breaks PLCs — OT tools passively observe traffic only</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">NERC CIP →</span><span>Mandatory US power grid security standards</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ -->
+<!-- IaC                         -->
+<!-- ═══════════════════════════ -->
+<div class="model" id="m-iac">
+  <div class="tabs" id="tabs-iac">
+    <button class="tab active" onclick="goTab('iac','ia1',this)">IaC Overview</button>
+    <button class="tab" onclick="goTab('iac','ia2',this)">Tools</button>
+    <button class="tab" onclick="goTab('iac','ia3',this)">Security Benefits</button>
+    <button class="tab" onclick="goTab('iac','ia4',this)">Risks & Exam</button>
+  </div>
+
+  <div class="sec on" id="ia1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">IaC</span><span class="card-title" style="color:var(--iac)">Infrastructure as Code</span><span class="bdg" style="background:#201800;color:var(--iac);border:1px solid #382800">Code-Defined Infra</span></div>
+    <div class="card-bd">
+      <p>IaC means <strong style="color:var(--text)">defining and managing infrastructure through code files rather than manual configuration</strong>. Instead of clicking through a GUI to provision servers, you write code that describes the desired infrastructure state — then apply it automatically.</p>
+      <h3 style="border-left-color:var(--iac)">Why IaC Matters for Security</h3>
+      <div class="code">
+<span class="cm"># The "snowflake server" problem IaC solves:</span>
+
+Without IaC:
+  Server 1: Admin A configured manually (2020)
+  Server 2: Admin B configured manually (2021)
+  Server 3: Admin C configured manually (2022)
+
+3 servers, same role → 3 different configurations:
+  Server 1: SSH v2, firewall on, MFA enabled ✓
+  Server 2: SSH v1 still enabled ← <span class="cr">vulnerable</span>
+  Server 3: root login allowed ← <span class="cr">vulnerable</span>
+
+Each server = unique "snowflake" — inconsistent security
+Audit: impossible to verify 500 unique configs
+Breach: attacker finds the misconfigured server
+
+<span class="cg">With IaC:</span>
+  server.tf defines exact configuration
+  Deployed identically to ALL servers
+  Security config is in code → reviewed + tested
+  Drift detection: alert if server deviates from code
+  All 3 servers: identical, secure, auditable ✓
+      </div>
+      <h3 style="border-left-color:var(--iac)">Immutable Infrastructure</h3>
+      <div class="info-row">
+        <div class="info-icon">🔄</div>
+        <div>
+          <div class="info-title">Replace, Don't Patch</div>
+          <div class="info-desc">Traditional: patch running server — changes applied over time — unknown state accumulates. IaC immutable approach: when you need to change a server, destroy it and spin up a new one from updated IaC definition. Compromised server? Destroy it. New clean server from IaC: online in minutes. Attacker's persistence wiped away. Drift impossible — every deployment starts from clean definition.</div>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--iac)">IaC →</span><span>Infrastructure defined in code — consistent, auditable, version-controlled deployment</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Immutable infrastructure →</span><span>Replace not patch — destroy compromised, spin up clean from code</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Configuration drift →</span><span>Infrastructure deviating from desired state — IaC detects and corrects automatically</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Snowflake server →</span><span>Unique hand-crafted server — inconsistent config — IaC eliminates snowflakes</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="ia2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">IaC</span><span class="card-title" style="color:var(--iac)">IaC Tools</span><span class="bdg" style="background:#201800;color:var(--iac);border:1px solid #382800">Terraform · Ansible · Docker</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#382800">
+          <h4 style="color:var(--iac)">Terraform</h4>
+          <p>Cloud infrastructure provisioning. Defines: VPCs, servers, security groups, IAM policies, databases as code. Multi-cloud: same tool for AWS/Azure/GCP. State file: tracks what currently exists. Plan: preview changes before applying. Security groups as code = reviewable firewall rules.</p>
+          <div class="code" style="font-size:0.62rem;margin-top:0.5rem">
+resource "aws_security_group" "web" {
+  ingress { from_port=443 to_port=443
+            protocol="tcp"
+            cidr_blocks=["0.0.0.0/0"] }
+  <span class="cm"># Port 22: NOT OPEN ← security ✓</span>
+}
+          </div>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--cld)">Ansible</h4>
+          <p>Configuration management — applies desired state to existing systems. Agentless: connects via SSH. Idempotent: running multiple times = same result. Security hardening: one playbook enforces CIS benchmark on all servers. Patch deployment. No drift: Ansible ensures servers stay configured correctly.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--vrt)">Docker / Kubernetes</h4>
+          <p>Containerization = immutable runtime. Dockerfile defines exact environment. Image = immutable artifact. Container at runtime = exact same environment every time. Kubernetes: orchestrates containers at scale. Security: scan images before deployment, RBAC in K8s, NetworkPolicy.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--iot)">CI/CD Security (DevSecOps)</h4>
+          <p>Security gates in deployment pipeline. SAST: static code analysis before build. Secrets scan: catch API keys in code. Image scan: vulnerability check before deploy. DAST: live security test of deployed app. IaC scan: check Terraform for misconfigs (checkov, tfsec) before apply.</p>
+        </div>
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--iac)">Terraform →</span><span>Cloud infrastructure provisioning — multi-cloud — security groups as code</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Ansible →</span><span>Agentless config management — SSH-based — idempotent — security hardening at scale</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">DevSecOps →</span><span>Security built into CI/CD pipeline — SAST + secrets scan + image scan + DAST</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Idempotent →</span><span>Running same IaC multiple times = same result — no unintended changes</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="ia3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">IaC</span><span class="card-title" style="color:var(--iac)">IaC Security Benefits</span><span class="bdg" style="background:#201800;color:var(--iac);border:1px solid #382800">Why It Matters</span></div>
+    <div class="card-bd">
+      <div class="code">
+<span class="cgd">1. Version control for infrastructure:</span>
+  All infra changes tracked in Git
+  "Who opened port 22 to the internet?"
+  → git blame shows: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="abcfceddebc8c4c6dbcac5d285c8c4c6">[email&#160;protected]</a>, March 15 14:32
+  Rollback: revert to previous known-good config instantly
+  Pull request: security reviews every infrastructure change
+
+<span class="cgd">2. Reproducible environments:</span>
+  Dev = Staging = Production (same IaC)
+  No "works in dev but breaks in prod"
+  Security config same in all environments
+  New region: spin up identical infra in minutes
+
+<span class="cgd">3. Security scanning before deployment:</span>
+  checkov, tfsec: scan Terraform for misconfigs
+  Before apply: "This security group allows 0.0.0.0/0 on SSH"
+  Fix in code → re-scan → clean → apply
+  Catch misconfigs before they reach production
+
+<span class="cgd">4. Least privilege as code:</span>
+  IAM policies in Terraform → code reviewed
+  Overly permissive role: caught in code review
+  Not discovered months later in access audit
+
+<span class="cgd">5. Incident response:</span>
+  Compromised server: terraform destroy + terraform apply
+  Clean server from known-good definition: online in minutes
+  Forensic image first: then destroy → rebuild
+      </div>
+      <div class="exam">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek" style="color:var(--iac)">IaC security scanning →</span><span>checkov/tfsec — scan Terraform for misconfigs before deployment</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Version control →</span><span>Git tracks all infra changes — who changed what — full audit trail</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Reproducible environments →</span><span>Same code deploys consistently — dev = prod — no config drift between environments</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="ia4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">IaC</span><span class="card-title" style="color:var(--iac)">IaC Risks & Exam Summary</span><span class="bdg" style="background:#201800;color:var(--iac);border:1px solid #382800">Risks + All Points</span></div>
+    <div class="card-bd">
+      <h3 style="border-left-color:var(--iac)">IaC Security Risks</h3>
+      <div class="code">
+<span class="cr">Secrets in code:</span>
+  Hardcoded API key in Terraform → Git history → exposed
+  Defense: never hardcode secrets, use Vault/Secrets Manager,
+           git-secrets / truffleHog to scan repos
+
+<span class="cr">Misconfiguration at scale:</span>
+  IaC error affects ALL deployments simultaneously
+  One bad security group in Terraform → all servers exposed
+  Defense: IaC scanning tools (checkov, tfsec) in pipeline
+
+<span class="cr">State file contains secrets:</span>
+  Terraform state (.tfstate) contains sensitive values
+  Passwords, access keys in plain text in state
+  Defense: remote state with encryption (S3 + KMS), restricted access
+
+<span class="cr">IaC system is high-value target:</span>
+  CI/CD pipeline: compromise = deploy malware to everything
+  Defense: MFA on CI/CD systems, signed artifacts, code review
+      </div>
+      <div class="exam">
+        <h4>// All IaC Exam Points</h4>
+        <div class="er"><span class="ek" style="color:var(--iac)">IaC →</span><span>Infrastructure defined as code — consistent, auditable, version-controlled</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Immutable →</span><span>Replace don't patch — destroy compromised, spin up clean</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Config drift →</span><span>Actual state ≠ desired state — IaC detects and corrects</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Terraform →</span><span>Cloud provisioning — security groups/IAM as code — multi-cloud</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Ansible →</span><span>Agentless config management — idempotent — SSH-based</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">DevSecOps →</span><span>Security in pipeline — SAST, secrets scan, image scan, IaC scan</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Secrets in code →</span><span>API keys hardcoded = exposed in git — use secrets manager</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">Checkov/tfsec →</span><span>IaC security scanners — find misconfigs before deployment</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ -->
+<!-- COMPARE ALL                 -->
+<!-- ═══════════════════════════ -->
+<div class="model" id="m-cmp">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ALL</span><span class="card-title" style="color:var(--neu)">Architecture Models — Full Comparison</span><span class="bdg" style="background:#181828;color:var(--neu);border:1px solid #282848">Side-by-Side</span></div>
+    <div class="card-bd">
+      <h3 style="border-left-color:var(--neu)">Security Responsibilities at a Glance</h3>
+      <div style="overflow-x:auto;margin:1rem 0">
+      <table>
+        <tr><th>Model</th><th>Who Owns Hardware</th><th>Who Patches OS</th><th>Unique Risk</th><th>Key Control</th></tr>
+        <tr><td><span class="tag to">On-Premises</span></td><td>Organization</td><td>Organization (all)</td><td>Physical breach, SPOF</td><td>Defense in depth, physical security</td></tr>
+        <tr><td><span class="tag tb">Cloud (IaaS)</span></td><td>Provider</td><td>Organization</td><td>Misconfiguration</td><td>CSPM, least privilege IAM</td></tr>
+        <tr><td><span class="tag tb">Cloud (PaaS)</span></td><td>Provider</td><td>Provider</td><td>App vulnerabilities</td><td>SAST, DAST, WAF</td></tr>
+        <tr><td><span class="tag tb">Cloud (SaaS)</span></td><td>Provider</td><td>Provider</td><td>Shadow IT, data leakage</td><td>CASB, DLP, MFA</td></tr>
+        <tr><td><span class="tag tp">Virtualization</span></td><td>Organization</td><td>Organization</td><td>VM escape, sprawl</td><td>Patch hypervisor, VM lifecycle mgmt</td></tr>
+        <tr><td><span class="tag tg">IoT</span></td><td>Organization</td><td>Vendor (limited)</td><td>Default creds, no patches</td><td>Network isolation, change creds</td></tr>
+        <tr><td><span class="tag tr">ICS/OT</span></td><td>Organization</td><td>Organization (rare)</td><td>Physical safety impact</td><td>Air gap, passive monitoring</td></tr>
+        <tr><td><span class="tag ty">IaC</span></td><td>Provider (cloud)</td><td>Automated</td><td>Secrets in code, drift at scale</td><td>Secrets manager, IaC scanner</td></tr>
+      </table>
+      </div>
+
+      <h3 style="border-left-color:var(--neu)">Security Priority by Model</h3>
+      <div style="overflow-x:auto;margin:1rem 0">
+      <table>
+        <tr><th>Model</th><th>CIA Priority</th><th>Why</th></tr>
+        <tr><td><span class="tag to">On-Premises</span></td><td>CIA (standard)</td><td>Traditional IT — confidentiality of data matters most</td></tr>
+        <tr><td><span class="tag tb">Cloud</span></td><td>CIA (standard)</td><td>Data confidentiality + availability SLA</td></tr>
+        <tr><td><span class="tag tp">Virtualization</span></td><td>CIA (standard)</td><td>Isolation + confidentiality between tenants</td></tr>
+        <tr><td><span class="tag tg">IoT</span></td><td>AIC (availability first)</td><td>Device must function — patient monitor can't go offline</td></tr>
+        <tr><td><span class="tag tr">ICS/OT</span></td><td><strong>AIC (reversed!)</strong></td><td>Physical process must keep running — availability &gt;&gt;&gt; confidentiality</td></tr>
+      </table>
+      </div>
+
+      <h3 style="border-left-color:var(--neu)">Master Scenario Cheat Sheet</h3>
+      <div class="exam">
+        <h4>// 30 Exam Scenarios — All Architecture Models</h4>
+        <div class="er"><span class="ek" style="color:var(--onp)">"Org owns all hardware — responsible for everything"</span><span>→ On-premises</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">"Physical machine cooled/powered by org"</span><span>→ On-premises — physical responsibility</span></div>
+        <div class="er"><span class="ek" style="color:var(--onp)">"Freeze RAM to extract encryption keys from locked laptop"</span><span>→ Cold boot attack — on-premises risk</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">"You manage OS and up — provider manages hardware"</span><span>→ IaaS (Infrastructure as a Service)</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">"Provider manages everything — you manage data + IAM"</span><span>→ SaaS (Software as a Service)</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">"Customer always responsible for _____ in all cloud models"</span><span>→ Data + Identity/Access Management</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">"S3 bucket exposed publicly — whose fault?"</span><span>→ Customer — cloud misconfiguration</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">"Multiple customers share same physical infrastructure"</span><span>→ Multi-tenant public cloud</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">"Enforce DLP and access control for SaaS applications"</span><span>→ CASB (Cloud Access Security Broker)</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">"Continuously check cloud configs against security benchmarks"</span><span>→ CSPM (Cloud Security Posture Management)</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">"Replace VPN — access specific app not whole network"</span><span>→ ZTNA (Zero Trust Network Access)</span></div>
+        <div class="er"><span class="ek" style="color:var(--cld)">"SD-WAN + cloud security functions in single service"</span><span>→ SASE</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">"Runs directly on hardware — no host OS underneath"</span><span>→ Type 1 hypervisor (bare metal) — ESXi, Hyper-V</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">"Runs on top of host OS — VirtualBox"</span><span>→ Type 2 hypervisor (hosted)</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">"Guest VM breaks isolation — accesses host or other VMs"</span><span>→ VM escape — critical vulnerability</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">"Uncontrolled proliferation of VMs — many unpatched"</span><span>→ VM sprawl</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">"Containers vs VMs — which has weaker isolation?"</span><span>→ Containers — share host OS kernel — weaker than VMs</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">"Timing-based memory leak across VM boundaries"</span><span>→ Side-channel attack — Spectre/Meltdown</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">"Millions of connected devices — default credentials — botnet"</span><span>→ IoT — Mirai botnet</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">"Search engine for internet-exposed devices"</span><span>→ Shodan</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">"Hardware debug interface — extract firmware — disable"</span><span>→ JTAG port</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">"Medical IoT device — pacemaker compromise"</span><span>→ IoMT — life-safety + HIPAA implications</span></div>
+        <div class="er"><span class="ek" style="color:var(--iot)">"Purpose-built computing within a larger system — RTOS"</span><span>→ Embedded system</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">"OT security priority order"</span><span>→ AIC — Availability, Integrity, Confidentiality (reversed from IT)</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">"Centrally monitors and controls geographically distributed OT"</span><span>→ SCADA</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">"Industrial controller — Stuxnet target — ladder logic"</span><span>→ PLC (Programmable Logic Controller)</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">"USB → Windows → PLC — first cyber weapon"</span><span>→ Stuxnet (2010) — attacked Iranian centrifuges</span></div>
+        <div class="er"><span class="ek" style="color:var(--ics)">"Protect unpatched OT system without downtime"</span><span>→ Virtual patching (IPS rule) + network segmentation</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">"Infrastructure defined in version-controlled code files"</span><span>→ Infrastructure as Code (IaC)</span></div>
+        <div class="er"><span class="ek" style="color:var(--iac)">"Actual infrastructure deviates from desired state"</span><span>→ Configuration drift — IaC detects and corrects</span></div>
+      </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Model switcher
+function showModel(id, el) {
+  document.querySelectorAll('.model').forEach(m => m.classList.remove('on'));
+  document.querySelectorAll('.pick').forEach(p => p.classList.remove('on'));
+  document.getElementById('m-'+id).classList.add('on');
+  el.classList.add('on');
+
+  // Color the active tabs for this model
+  const colors = {onp:var_onp,cld:var_cld,vrt:var_vrt,iot:var_iot,ics:var_ics,iac:var_iac,cmp:'#8899cc'};
+  const tabEl = document.getElementById('tabs-'+id);
+  if(tabEl) {
+    const c = {onp:'var(--onp)',cld:'var(--cld)',vrt:'var(--vrt)',iot:'var(--iot)',ics:'var(--ics)',iac:'var(--iac)'}[id] || 'var(--neu)';
+    tabEl.querySelectorAll('.tab').forEach(t=>{
+      t.onmouseover = ()=>{t.style.borderColor=c;t.style.color=c;t.style.background='';};
+      t.onmouseout = ()=>{if(!t.classList.contains('active')){t.style.borderColor='';t.style.color='';t.style.background='';}};
+    });
+    tabEl.querySelectorAll('.tab.active').forEach(t=>{
+      t.style.background=c;t.style.borderColor=c;t.style.color='#07080c';
+    });
+  }
+  window.scrollTo(0,0);
+}
+
+// Inner tab navigation per model
+function goTab(model, secId, btn) {
+  const tabsEl = document.getElementById('tabs-'+model);
+  const modelEl = document.getElementById('m-'+model);
+  
+  modelEl.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  tabsEl.querySelectorAll('.tab').forEach(t=>{
+    t.classList.remove('active');
+    t.style.background='';t.style.borderColor='';t.style.color='';
+  });
+  
+  document.getElementById(secId).classList.add('on');
+  btn.classList.add('active');
+  
+  const c = {onp:'var(--onp)',cld:'var(--cld)',vrt:'var(--vrt)',iot:'var(--iot)',ics:'var(--ics)',iac:'var(--iac)'}[model] || 'var(--neu)';
+  btn.style.background = c;
+  btn.style.borderColor = c;
+  btn.style.color = '#07080c';
+  
+  window.scrollTo(0,0);
+}
+
+// Init tab colors for first model
+document.addEventListener('DOM

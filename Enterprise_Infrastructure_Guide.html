@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Infrastructure — Security+ Domain 3</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Azeret+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root {
+  --bg:#f7f6f0;
+  --s1:#ffffff;
+  --s2:#efede5;
+  --s3:#e6e4da;
+  --border:#d8d5c8;
+  --text:#1a1910;
+  --muted:#706d58;
+  --blue:#1038c0;
+  --green:#0b6835;
+  --red:#b01020;
+  --orange:#a84000;
+  --purple:#5810a8;
+  --teal:#0a6858;
+  --yellow:#785400;
+  --indigo:#2810c8;
+  --lime:#346808;
+  --gold:#886200;
+  --sky:#0858b0;
+  --slate:#3a4458;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Manrope',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+/* ── HEADER ── */
+.hdr{
+  margin-bottom:2.5rem;
+  padding-bottom:1.5rem;
+  border-bottom:2px solid var(--text);
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:1rem;
+  align-items:end;
+}
+@media(max-width:600px){.hdr{grid-template-columns:1fr;}}
+.hdr-left .eyebrow{
+  font-family:'Azeret Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.2em;
+  color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;
+}
+.hdr-title{
+  font-family:'Manrope',sans-serif;
+  font-size:2.8rem;font-weight:800;
+  letter-spacing:-0.04em;line-height:0.95;
+  margin-bottom:0.3rem;
+}
+.hdr-title em{font-style:normal;color:var(--indigo);}
+.hdr-deck{
+  font-family:'Instrument Serif',serif;
+  font-style:italic;font-size:1rem;
+  color:var(--muted);
+}
+.hdr-right{
+  text-align:right;
+  font-family:'Azeret Mono',monospace;
+  font-size:0.58rem;color:var(--muted);line-height:1.8;
+}
+
+/* ── TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:2rem;}
+.tab{
+  padding:0.38rem 0.9rem;border-radius:4px;
+  border:1.5px solid var(--border);background:var(--s1);
+  color:var(--muted);cursor:pointer;
+  font-family:'Azeret Mono',monospace;font-size:0.62rem;
+  font-weight:600;transition:all 0.13s;letter-spacing:0.02em;
+}
+.tab:hover{border-color:var(--indigo);color:var(--indigo);}
+.tab.active{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+
+/* ── SECTION ── */
+.sec{display:none;}
+.sec.on{display:block;animation:rise 0.2s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* ── CARD ── */
+.card{
+  background:var(--s1);border:1.5px solid var(--border);
+  border-radius:10px;margin-bottom:1.5rem;overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.card-hd{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.9rem 1.4rem;border-bottom:1.5px solid var(--border);
+  background:var(--s2);
+}
+.card-num{
+  font-family:'Azeret Mono',monospace;font-size:0.58rem;
+  color:var(--muted);background:var(--s3);
+  border:1px solid var(--border);border-radius:2px;padding:0.1rem 0.35rem;
+}
+.card-title{
+  font-family:'Manrope',sans-serif;
+  font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;
+}
+.bdg{
+  margin-left:auto;font-family:'Azeret Mono',monospace;
+  font-size:0.57rem;padding:0.13rem 0.5rem;
+  border-radius:2px;white-space:nowrap;font-weight:700;
+  letter-spacing:0.04em;text-transform:uppercase;
+}
+.bdg-blue{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.bdg-green{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.bdg-orange{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.bdg-red{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.bdg-purple{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.bdg-teal{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.bdg-indigo{background:#e0e7ff;color:#3730a3;border:1px solid #a5b4fc;}
+.bdg-yellow{background:#fef9c3;color:#713f12;border:1px solid #fde047;}
+.bdg-gold{background:#fef3c7;color:#78350f;border:1px solid #fcd34d;}
+.bdg-slate{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.72;}
+h3{
+  font-family:'Manrope',sans-serif;font-size:0.9rem;font-weight:800;
+  color:var(--text);margin:1.3rem 0 0.6rem;
+  padding-left:0.7rem;border-left:3px solid var(--indigo);
+  letter-spacing:-0.01em;
+}
+
+/* ── CODE ── */
+.code{
+  background:var(--text);color:#f0edd8;
+  border-radius:5px;padding:1rem 1.2rem;
+  font-family:'Azeret Mono',monospace;font-size:0.68rem;
+  line-height:1.9;overflow-x:auto;margin:0.8rem 0;
+}
+.cg{color:#86efac;} .cr{color:#fca5a5;} .cb{color:#93c5fd;}
+.co{color:#fde68a;} .cp{color:#d8b4fe;} .cm{color:#706d58;}
+.ct{color:#5eead4;} .ci{color:#a5b4fc;} .cy{color:#fef08a;}
+.cl{color:#bef264;} .cpk{color:#f9a8d4;} .cs{color:#7dd3fc;}
+
+/* ── SCENE ── */
+.scene{
+  background:#fffbeb;border-left:4px solid var(--orange);
+  border-radius:0 6px 6px 0;padding:1rem 1.2rem;margin:1rem 0;
+}
+.scene-lbl{
+  font-family:'Azeret Mono',monospace;font-size:0.58rem;
+  color:var(--orange);margin-bottom:0.4rem;
+  letter-spacing:0.12em;font-weight:700;text-transform:uppercase;
+}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.gc{background:var(--s2);border:1.5px solid var(--border);border-radius:7px;padding:1rem;}
+.gc h4{font-family:'Manrope',sans-serif;font-size:0.86rem;font-weight:800;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* ── EXAM ── */
+.exam{background:#f0eeff;border:1.5px solid #c4b5fd;border-radius:6px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'Azeret Mono',monospace;font-size:0.58rem;color:var(--purple);margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'Azeret Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.52rem 0.8rem;text-align:left;color:var(--muted);border-bottom:1.5px solid var(--border);font-size:0.63rem;font-weight:700;font-family:'Azeret Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.52rem 0.8rem;border-bottom:1px solid var(--border);font-size:0.82rem;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.08rem 0.42rem;border-radius:2px;font-size:0.6rem;font-family:'Azeret Mono',monospace;font-weight:700;}
+.tg{background:#dcfce7;color:#166534;} .tr{background:#fee2e2;color:#991b1b;}
+.tb{background:#dbeafe;color:#1e40af;} .to{background:#ffedd5;color:#9a3412;}
+.tp{background:#f3e8ff;color:#6b21a8;} .tt{background:#ccfbf1;color:#115e59;}
+.ti{background:#e0e7ff;color:#3730a3;} .ty{background:#fef9c3;color:#713f12;}
+.tl{background:#ecfccb;color:#3f6212;} .ts{background:#f1f5f9;color:#334155;}
+.tgo{background:#fef3c7;color:#78350f;}
+
+/* ── INFO ROW ── */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s2);border:1.5px solid var(--border);border-radius:6px;margin-bottom:0.5rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Manrope',sans-serif;font-size:0.86rem;font-weight:800;margin-bottom:0.12rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* ── PRINCIPLE CARD ── */
+.prin-card{
+  border-radius:7px;padding:1.1rem;border:1.5px solid;
+  margin-bottom:0.7rem;display:flex;gap:1rem;align-items:flex-start;
+}
+.prin-icon{font-size:1.3rem;flex-shrink:0;}
+.prin-title{font-family:'Manrope',sans-serif;font-size:0.9rem;font-weight:800;margin-bottom:0.2rem;letter-spacing:-0.01em;}
+.prin-body{font-size:0.78rem;color:var(--muted);}
+
+/* ── CONTROL MATRIX ── */
+.ctrl-row{
+  display:flex;align-items:center;gap:1rem;
+  padding:0.55rem 0.9rem;background:var(--s2);
+  border:1px solid var(--border);border-radius:5px;margin-bottom:0.35rem;
+}
+.ctrl-name{font-family:'Azeret Mono',monospace;font-size:0.68rem;font-weight:700;min-width:120px;flex-shrink:0;}
+.ctrl-type{min-width:90px;flex-shrink:0;}
+.ctrl-desc{font-size:0.75rem;color:var(--muted);flex:1;}
+
+/* ── PROTOCOL ROW ── */
+.proto-row{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:0.7rem 0;border-bottom:1px solid var(--border);
+}
+.proto-row:last-child{border-bottom:none;}
+.proto-name{font-family:'Azeret Mono',monospace;font-size:0.75rem;font-weight:700;min-width:75px;flex-shrink:0;}
+.proto-port{font-family:'Azeret Mono',monospace;font-size:0.65rem;font-weight:600;min-width:100px;flex-shrink:0;color:var(--muted);}
+.proto-body{font-size:0.77rem;color:var(--muted);}
+
+/* ── FLOW ── */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.flow-box{border-radius:5px;padding:0.5rem 0.8rem;font-family:'Azeret Mono',monospace;font-size:0.64rem;font-weight:700;border:1.5px solid;text-align:center;min-width:80px;}
+.flow-arr{color:var(--muted);font-size:0.9rem;}
+
+/* ── NETWORK ZONES ── */
+.zone-card{
+  border-radius:7px;padding:1rem;border:1.5px solid;
+  margin-bottom:0.5rem;display:flex;gap:1rem;align-items:flex-start;
+}
+.zone-label{font-family:'Azeret Mono',monospace;font-size:0.65rem;font-weight:700;min-width:90px;flex-shrink:0;padding:0.2rem 0.5rem;border-radius:3px;text-align:center;}
+.zone-name{font-family:'Manrope',sans-serif;font-size:0.86rem;font-weight:800;margin-bottom:0.15rem;letter-spacing:-0.01em;}
+.zone-body{font-size:0.76rem;color:var(--muted);}
+
+/* ── JUMP STEP ── */
+.step-list{counter-reset:steps;margin:0.8rem 0;}
+.step{display:flex;gap:0.8rem;padding:0.75rem 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.step:last-child{border-bottom:none;}
+.step-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Azeret Mono',monospace;font-size:0.7rem;font-weight:700;flex-shrink:0;}
+.step-title{font-family:'Manrope',sans-serif;font-size:0.84rem;font-weight:700;margin-bottom:0.15rem;letter-spacing:-0.01em;}
+.step-body{font-size:0.75rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="eyebrow">Security+ SY0-701 · Domain 3 · Security Architecture</div>
+    <div class="hdr-title"><em>Enterprise</em><br>Infrastructure</div>
+    <div class="hdr-deck">Security principles, control selection &amp; secure communication</div>
+  </div>
+  <div class="hdr-right">
+    Domain 3<br>Security Architecture<br>Infrastructure · Controls<br>Access · Communications
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Core Principles</button>
+  <button class="tab" onclick="go('s2',this)">2. Network Segmentation</button>
+  <button class="tab" onclick="go('s3',this)">3. Control Selection</button>
+  <button class="tab" onclick="go('s4',this)">4. Secure Protocols</button>
+  <button class="tab" onclick="go('s5',this)">5. Remote Access</button>
+  <button class="tab" onclick="go('s6',this)">6. Network Devices</button>
+  <button class="tab" onclick="go('s7',this)">7. Infrastructure Design</button>
+  <button class="tab" onclick="go('s8',this)">8. Resilience</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 1. CORE PRINCIPLES     -->
+<!-- ═══════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Core Security Principles for Infrastructure</span><span class="bdg bdg-indigo">Foundation · Design · Defense</span></div>
+  <div class="card-bd">
+    <p>Applying security principles to enterprise infrastructure means <strong style="color:var(--text)">building security into every layer of the architecture</strong> — not bolting it on afterward. These principles guide every infrastructure decision from network design to device configuration.</p>
+
+    <h3>Fundamental Infrastructure Security Principles</h3>
+
+    <div class="prin-card" style="background:#eff6ff;border-color:#bfdbfe">
+      <span class="prin-icon">🏰</span>
+      <div>
+        <div class="prin-title" style="color:var(--blue)">Defense in Depth</div>
+        <div class="prin-body">Layer multiple security controls so that if one fails, others remain. No single control is relied upon. Perimeter firewall fails → internal firewall still blocks. Credential stolen → MFA still required. Endpoint compromised → network segmentation limits lateral movement. The more layers, the higher the attacker's cost and time. Apply at: perimeter, network, host, application, data, and identity layers simultaneously.</div>
+      </div>
+    </div>
+
+    <div class="prin-card" style="background:#f0fdf4;border-color:#bbf7d0">
+      <span class="prin-icon">🔒</span>
+      <div>
+        <div class="prin-title" style="color:var(--green)">Least Privilege</div>
+        <div class="prin-body">Every user, process, and system gets only the minimum access required to perform its function — nothing more. A web server should not have database admin rights. A developer should not have production admin access. A service account should only access the specific resources it needs. Reduces blast radius when anything is compromised. Apply to: user accounts, service accounts, API keys, firewall rules, network access, IAM policies.</div>
+      </div>
+    </div>
+
+    <div class="prin-card" style="background:#fef2f2;border-color:#fecaca">
+      <span class="prin-icon">🎯</span>
+      <div>
+        <div class="prin-title" style="color:var(--red)">Attack Surface Reduction</div>
+        <div class="prin-body">Minimize the number of entry points an attacker can use. Disable unused services, close unused ports, remove unnecessary software, decommission unused systems. Every open port is an opportunity. Every installed service that isn't needed is an unnecessary risk. Hardening guides (CIS Benchmarks) define which services to disable. "If it's not needed — remove it."</div>
+      </div>
+    </div>
+
+    <div class="prin-card" style="background:#fffbeb;border-color:#fde68a">
+      <span class="prin-icon">🔐</span>
+      <div>
+        <div class="prin-title" style="color:var(--yellow)">Zero Trust</div>
+        <div class="prin-body">Never trust, always verify. No implicit trust based on network location — being "inside the network" doesn't mean trusted. Every access request verified: identity + device health + context + behavior. Micro-segmentation isolates resources. ZTNA replaces VPN. Continuous verification — not just at login. Assumes breach: "the attacker is already inside — what does that mean for our architecture?"</div>
+      </div>
+    </div>
+
+    <div class="prin-card" style="background:#f3e8ff;border-color:#e9d5ff">
+      <span class="prin-icon">🧩</span>
+      <div>
+        <div class="prin-title" style="color:var(--purple)">Separation of Duties</div>
+        <div class="prin-body">No single person or system should control an entire critical process end-to-end. Developer cannot deploy to production without a second approval. Firewall rule changes require security review. Admin who creates accounts cannot also delete audit logs. Prevents both insider fraud and reduces blast radius of compromised accounts. Technical enforcement: RBAC, workflow approvals, two-person integrity rules.</div>
+      </div>
+    </div>
+
+    <div class="prin-card" style="background:#ccfbf1;border-color:#99f6e4">
+      <span class="prin-icon">⚙️</span>
+      <div>
+        <div class="prin-title" style="color:var(--teal)">Secure by Default</div>
+        <div class="prin-body">Systems should ship in the most secure state possible — security enabled, unnecessary services disabled, default passwords changed, permissions restrictive. The default configuration should be safe — users must explicitly relax security, not explicitly enable it. Contrast with "secure by design": default = what ships out of the box. Design = the architecture choices made during development. Both are required for truly secure infrastructure.</div>
+      </div>
+    </div>
+
+    <div class="prin-card" style="background:#fef9c3;border-color:#fde047">
+      <span class="prin-icon">🔄</span>
+      <div>
+        <div class="prin-title" style="color:var(--gold)">Fail Secure (Fail Closed)</div>
+        <div class="prin-body">When a security control fails, it should fail in the most secure state — denying access rather than allowing it. Firewall goes down: all traffic should be blocked (fail closed), not allowed through (fail open). Authentication server unreachable: deny access, don't bypass authentication. The alternative (fail open) means failures become security vulnerabilities. Design all controls with a defined failure mode that defaults to security.</div>
+      </div>
+    </div>
+
+    <h3>Applying Principles to Architecture Decisions</h3>
+    <div class="code">
+<span class="cm"># Principles guide EVERY infrastructure decision:</span>
+
+Decision: "Should our web server have direct database access?"
+  Least privilege: web server should only access the DB it needs
+  Attack surface: if web server is compromised, DB access is gained
+  Defense in depth: add: app layer firewall, WAF, DB firewall
+  Answer: no direct access — API gateway + DB firewall rules
+
+Decision: "Should we use a single admin account for all infrastructure?"
+  Least privilege: separate accounts by function
+  Separation of duties: no one admin controls everything
+  Zero trust: shared accounts = no accountability
+  Answer: individual named accounts, MFA, PAM vault
+
+Decision: "Should the IoT thermostat be on our corporate network?"
+  Attack surface: IoT = weak security = attack vector
+  Defense in depth: isolate on separate VLAN
+  Zero trust: thermostat doesn't need corporate AD access
+  Answer: IoT VLAN → only allowed to reach HVAC controller
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Defense in depth →</span><span>Multiple layered controls — if one fails others remain — no single point of protection</span></div>
+      <div class="er"><span class="ek">Least privilege →</span><span>Minimum access needed — reduces blast radius — apply everywhere</span></div>
+      <div class="er"><span class="ek">Attack surface reduction →</span><span>Disable unused services/ports — remove unnecessary software — harden everything</span></div>
+      <div class="er"><span class="ek">Zero trust →</span><span>Never trust always verify — no implicit network trust — continuous verification</span></div>
+      <div class="er"><span class="ek">Fail secure/closed →</span><span>Control failure → deny access — not allow — firewall down = block all</span></div>
+      <div class="er"><span class="ek">Secure by default →</span><span>Ships in most secure state — users relax security, don't enable it</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 2. NETWORK SEGMENTATION -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">Network Segmentation & Zones</span><span class="bdg bdg-blue">VLAN · DMZ · Micro-seg</span></div>
+  <div class="card-bd">
+    <p>Network segmentation <strong style="color:var(--text)">divides the network into isolated zones with controlled communication between them</strong>. It limits lateral movement — an attacker who compromises one segment cannot freely reach all others.</p>
+
+    <h3>Why Segmentation Matters</h3>
+    <div class="code">
+<span class="cm"># Flat network vs segmented network — the difference:</span>
+
+<span class="cr">Flat network (no segmentation):</span>
+  ALL devices on same broadcast domain
+  IoT thermostat → can reach domain controller
+  Marketing laptop → can ping finance database
+  Attacker on ANY device: reach everything
+  Lateral movement: trivial — no barriers
+
+<span class="cg">Segmented network:</span>
+  IoT VLAN:       only reaches HVAC controller
+  Corporate VLAN: users reach apps via firewall rules
+  Finance VLAN:   only finance apps + audit logging
+  Server VLAN:    servers only reachable from specific sources
+  
+  Attacker on IoT: <span class="cg">stuck in IoT VLAN ✓</span>
+  Attacker on marketing laptop: <span class="cg">cannot reach finance DB ✓</span>
+  Lateral movement: blocked at every segment boundary
+    </div>
+
+    <h3>Network Zones Architecture</h3>
+
+    <div class="zone-card" style="background:#eff6ff;border-color:#bfdbfe">
+      <span class="zone-label" style="background:#dbeafe;color:#1e40af">UNTRUSTED</span>
+      <div>
+        <div class="zone-name" style="color:var(--blue)">Internet / Untrusted Zone</div>
+        <div class="zone-body">The public internet and any untrusted external networks. No trust — all traffic from here is potentially hostile. Filtered at perimeter firewall. Only specific inbound services allowed (HTTP/S to web server). All other inbound: DENY by default.</div>
+      </div>
+    </div>
+
+    <div class="zone-card" style="background:#fff7ed;border-color:#fed7aa">
+      <span class="zone-label" style="background:#ffedd5;color:#9a3412">DMZ</span>
+      <div>
+        <div class="zone-name" style="color:var(--orange)">Demilitarized Zone (DMZ)</div>
+        <div class="zone-body">Buffer zone between internet and internal network. Houses publicly accessible servers: web servers, email relays, DNS servers, reverse proxies. Semi-trusted — internet can reach DMZ servers, but DMZ cannot freely reach internal network. Compromised DMZ server should NOT be able to access internal Active Directory. Two-firewall DMZ model: one firewall between internet and DMZ, another between DMZ and internal.</div>
+      </div>
+    </div>
+
+    <div class="zone-card" style="background:#fef9c3;border-color:#fde047">
+      <span class="zone-label" style="background:#fef9c3;color:#713f12">INTERNAL</span>
+      <div>
+        <div class="zone-name" style="color:var(--yellow)">Internal / Corporate Zone</div>
+        <div class="zone-body">Employee workstations, internal applications, printers, corporate services. Trusted — but not implicitly. Access controlled by internal firewalls and ACLs. Sub-segmented by function: Finance VLAN, HR VLAN, Engineering VLAN, IT Admin VLAN. Zero Trust: internal trust is earned, not assumed based on being inside the network.</div>
+      </div>
+    </div>
+
+    <div class="zone-card" style="background:#fef2f2;border-color:#fecaca">
+      <span class="zone-label" style="background:#fee2e2;color:#991b1b">RESTRICTED</span>
+      <div>
+        <div class="zone-name" style="color:var(--red)">Restricted / Secure Zone</div>
+        <div class="zone-body">Most sensitive resources: financial systems, HR data, PCI-scoped systems, security management infrastructure (SIEM, PAM). Highest access controls — MFA + approval + session recording. Minimal connectivity — only specific authorized systems can communicate. Audit logging on all access. Often air-gapped from general corporate network.</div>
+      </div>
+    </div>
+
+    <div class="zone-card" style="background:#f0fdf4;border-color:#bbf7d0">
+      <span class="zone-label" style="background:#dcfce7;color:#166534">GUEST/IOT</span>
+      <div>
+        <div class="zone-name" style="color:var(--green)">Guest / IoT Zone</div>
+        <div class="zone-body">Isolated zone for untrusted devices. Guest WiFi: internet access only — cannot reach any corporate resources. IoT VLAN: devices only reach their management systems — not the corporate network. Prevents IoT or guest devices from being used as pivot points. Separate SSID, separate VLAN, firewall blocks access to internal zones.</div>
+      </div>
+    </div>
+
+    <h3>VLAN — Virtual Local Area Network</h3>
+    <div class="code">
+<span class="cm"># VLANs create logical network segments on same physical infrastructure:</span>
+
+Switch VLAN configuration:
+  Port 1-20:  VLAN 10 (Corporate users)
+  Port 21-30: VLAN 20 (Finance systems)
+  Port 31-40: VLAN 30 (IoT devices)
+  Port 41:    VLAN 99 (IT Management - trunk)
+
+Traffic rules:
+  VLAN 10 → VLAN 20: DENY (users can't reach finance directly)
+  VLAN 10 → Internet: ALLOW via proxy
+  VLAN 30 → Any:      DENY except HVAC controller IP
+  VLAN 20 → Internet: DENY (finance never touches internet)
+
+<span class="cm"># Inter-VLAN routing through firewall only:</span>
+Traffic between VLANs must pass through L3 device (router/firewall)
+Firewall applies rules to VLAN-to-VLAN traffic
+No VLAN-to-VLAN traffic bypasses security inspection
+    </div>
+
+    <h3>Micro-segmentation</h3>
+    <div class="info-row">
+      <div class="info-icon">🔬</div>
+      <div>
+        <div class="info-title">Micro-segmentation — Zero Trust Network</div>
+        <div class="info-desc">Takes segmentation to the individual workload level. Traditional: perimeter + VLANs. Micro-seg: every server, VM, container has its own security policy. East-west traffic between workloads controlled at workload level, not just at VLAN boundary. Software-defined: policy applied in software — scales to thousands of workloads. Example: VMware NSX, Illumio. Even if attacker reaches a server, they cannot reach adjacent servers without explicit policy.</div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">DMZ →</span><span>Buffer zone between internet and internal — houses public-facing servers — semi-trusted</span></div>
+      <div class="er"><span class="ek">VLAN →</span><span>Logical network segment on same physical infra — inter-VLAN through firewall only</span></div>
+      <div class="er"><span class="ek">Micro-segmentation →</span><span>Workload-level isolation — east-west control — Zero Trust network — VMware NSX</span></div>
+      <div class="er"><span class="ek">Flat network risk →</span><span>No segmentation — lateral movement trivial — compromise one = compromise all</span></div>
+      <div class="er"><span class="ek">Guest VLAN →</span><span>Internet only — no corporate access — prevents IoT/guest pivot</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 3. CONTROL SELECTION   -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">Security Control Selection</span><span class="bdg bdg-purple">Preventive · Detective · Corrective</span></div>
+  <div class="card-bd">
+    <p>Control selection means <strong style="color:var(--text)">choosing the right security controls for each risk — matching the control type, category, and method to the threat</strong>. No control is perfect alone; selecting complementary controls creates effective defense in depth.</p>
+
+    <h3>Control Classification — Two Dimensions</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#a5b4fc">
+        <h4 style="color:var(--indigo)">By Function (What It Does)</h4>
+        <ul>
+          <li><strong style="color:var(--text)">Preventive:</strong> stops attack from occurring — firewall, MFA, encryption, access controls</li>
+          <li><strong style="color:var(--text)">Detective:</strong> identifies attack in progress or after — IDS, SIEM, audit logs, security cameras</li>
+          <li><strong style="color:var(--text)">Corrective:</strong> fixes damage after attack — backups/restore, patch, IR plan</li>
+          <li><strong style="color:var(--text)">Deterrent:</strong> discourages attack — warning banners, visible cameras, security policies</li>
+          <li><strong style="color:var(--text)">Compensating:</strong> alternative when primary control isn't feasible — used when can't patch, add network isolation instead</li>
+          <li><strong style="color:var(--text)">Directive:</strong> tells people what to do — policies, procedures, training, signs</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#86efac">
+        <h4 style="color:var(--green)">By Category (What It Is)</h4>
+        <ul>
+          <li><strong style="color:var(--text)">Technical (Logical):</strong> technology enforces — firewalls, EDR, encryption, MFA systems, access control lists</li>
+          <li><strong style="color:var(--text)">Administrative (Managerial):</strong> policies, procedures, training, risk assessments, vendor management</li>
+          <li><strong style="color:var(--text)">Physical:</strong> hardware and environment — locks, cameras, badge readers, guards, mantraps</li>
+          <li><strong style="color:var(--text)">Operational:</strong> day-to-day practices — patch management, backups, monitoring, incident response</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Control Matrix — Matching Controls to Threats</h3>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--blue)">Firewall</span>
+      <span class="ctrl-type"><span class="tag ti">Preventive</span></span>
+      <span class="ctrl-desc">Blocks unauthorized traffic — technical control — first line of network defense — stateful packet inspection</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--blue)">IDS</span>
+      <span class="ctrl-type"><span class="tag tp">Detective</span></span>
+      <span class="ctrl-desc">Detects intrusion attempts — alerts only — out-of-band — signature and anomaly detection</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--blue)">IPS</span>
+      <span class="ctrl-type"><span class="tag ti">Preventive</span></span>
+      <span class="ctrl-desc">Detects AND blocks — inline — can create false positive outages — more aggressive than IDS</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--green)">Encryption</span>
+      <span class="ctrl-type"><span class="tag ti">Preventive</span></span>
+      <span class="ctrl-desc">Protects data confidentiality — in transit (TLS) and at rest (AES-256) — also provides integrity</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--orange)">Audit Logs</span>
+      <span class="ctrl-type"><span class="tag tp">Detective</span></span>
+      <span class="ctrl-desc">Record all actions for investigation — also deterrent — must be protected from tampering — retention policy</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--orange)">SIEM</span>
+      <span class="ctrl-type"><span class="tag tp">Detective</span></span>
+      <span class="ctrl-desc">Aggregate and correlate logs — real-time alerting — central investigation platform</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--teal)">Backups</span>
+      <span class="ctrl-type"><span class="tag tg">Corrective</span></span>
+      <span class="ctrl-desc">Restore data after incident — 3-2-1 rule — immutable backups protect against ransomware</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--red)">Security Camera</span>
+      <span class="ctrl-type"><span class="tag to">Detective</span></span>
+      <span class="ctrl-desc">Physical monitoring — also deterrent (visible cameras) — CCTV — access recording</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--red)">Badge Reader</span>
+      <span class="ctrl-type"><span class="tag ti">Preventive</span></span>
+      <span class="ctrl-desc">Physical access control — also detective (logs who accessed where) — combined function</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--purple)">AUP Policy</span>
+      <span class="ctrl-type"><span class="tag ts">Directive</span></span>
+      <span class="ctrl-desc">Tells users what is and isn't acceptable — administrative control — sets legal foundation for discipline</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--yellow)">Warning Banner</span>
+      <span class="ctrl-type"><span class="tag to">Deterrent</span></span>
+      <span class="ctrl-desc">"Unauthorized access is prohibited..." — discourages casual attackers — also sets legal consent for monitoring</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-name" style="color:var(--gold)">Network Isolation</span>
+      <span class="ctrl-type"><span class="tag tgo">Compensating</span></span>
+      <span class="ctrl-desc">Used when can't patch — isolate vulnerable system — reduce attack surface — temporary until real fix</span>
+    </div>
+
+    <h3>Control Selection Framework</h3>
+    <div class="code">
+<span class="cm"># How to select the right controls for a risk:</span>
+
+Risk: Ransomware encrypting file servers
+
+Step 1 — Preventive controls (stop it happening):
+  EDR on all endpoints (behavioral detection)
+  Email sandbox (stop delivery of ransomware)
+  User training + phishing simulation
+  Least privilege: users can't write to share they don't need
+
+Step 2 — Detective controls (know when it's happening):
+  SIEM rule: mass file modification alert
+  EDR behavioral: shadow copy deletion = ransomware
+  File integrity monitoring on critical shares
+
+Step 3 — Corrective controls (recover when it happens):
+  Immutable backups (3-2-1: 3 copies, 2 media, 1 offsite)
+  Tested DR procedure: restore from backup
+  Incident response plan with ransomware playbook
+
+Step 4 — Compensating controls (if primary fails):
+  Network segmentation: isolate file servers from workstations
+  Air-gapped backup: no connection to network = can't be encrypted
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Preventive →</span><span>Stops attack — firewall, MFA, encryption, access control, patch management</span></div>
+      <div class="er"><span class="ek">Detective →</span><span>Identifies attacks — IDS, SIEM, audit logs, cameras — alerts not blocks</span></div>
+      <div class="er"><span class="ek">Corrective →</span><span>Fixes after attack — backups, IR plan, patching after breach</span></div>
+      <div class="er"><span class="ek">Deterrent →</span><span>Discourages attacks — warning banners, visible cameras, security policies</span></div>
+      <div class="er"><span class="ek">Compensating →</span><span>Alternative when primary can't be implemented — network isolation for unpatched system</span></div>
+      <div class="er"><span class="ek">Technical vs administrative →</span><span>Technical = technology enforces / Administrative = policies and procedures</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 4. SECURE PROTOCOLS    -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Secure Communication Protocols</span><span class="bdg bdg-teal">TLS · SSH · IPsec · HTTPS</span></div>
+  <div class="card-bd">
+    <p>Secure protocols protect data <strong style="color:var(--text)">in transit across networks</strong>. Using the wrong protocol — or the right protocol with weak settings — exposes communications to interception, tampering, and impersonation.</p>
+
+    <h3>Protocol Quick Reference — Ports and Security</h3>
+
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--red)">HTTP</span>
+      <span class="proto-port">TCP 80 — INSECURE</span>
+      <span class="proto-body">Plaintext — no encryption — no authentication of server. Everything visible to MITM. Never use for anything with credentials or sensitive data. Replace with HTTPS. Redirect HTTP → HTTPS.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--green)">HTTPS</span>
+      <span class="proto-port">TCP 443 — TLS encrypted</span>
+      <span class="proto-body">HTTP over TLS. Encrypts in transit + authenticates server via certificate. Minimum: TLS 1.2. Recommended: TLS 1.3. Verify: cipher suite strength, certificate validity, HSTS enabled. HSTS: forces HTTPS even if user types HTTP.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--red)">Telnet</span>
+      <span class="proto-port">TCP 23 — INSECURE</span>
+      <span class="proto-body">Plaintext remote access. Username, password, and all commands visible in plaintext. NEVER use on any production system. Replaced by SSH. If you see Telnet in production: immediate remediation required.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--green)">SSH</span>
+      <span class="proto-port">TCP 22 — Encrypted</span>
+      <span class="proto-body">Secure Shell — encrypted remote access, file transfer (SFTP), port forwarding. Key-based auth stronger than password. Disable root login. Restrict to management VLAN. Use version 2 (SSHv1 is broken). Harden: AllowUsers, MaxAuthTries, disable PasswordAuthentication.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--red)">FTP</span>
+      <span class="proto-port">TCP 20/21 — INSECURE</span>
+      <span class="proto-body">File Transfer Protocol — plaintext credentials and data. Replaced by SFTP (SSH-based) or FTPS (TLS-based). SFTP uses TCP 22. FTPS uses TCP 21 with explicit TLS or TCP 990 implicit TLS. Never run plain FTP in enterprise.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--green)">SFTP/FTPS</span>
+      <span class="proto-port">TCP 22 / TCP 990</span>
+      <span class="proto-body">SFTP: SSH-based file transfer — uses port 22 — encrypted. FTPS: FTP over TLS — port 21 (explicit) or 990 (implicit). Both replace plain FTP. SFTP preferred — simpler firewall rules (single port).</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--red)">SNMP v1/v2</span>
+      <span class="proto-port">UDP 161 — Weak auth</span>
+      <span class="proto-body">Simple Network Management Protocol — monitors network devices. v1/v2: community string = plaintext "password". Anyone sniffing = read/write access to all managed devices. Use only SNMPv3 which adds authentication and encryption.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--green)">SNMPv3</span>
+      <span class="proto-port">UDP 161 — Auth + Encrypt</span>
+      <span class="proto-body">Adds: authentication (SHA/MD5) and privacy (AES/DES encryption). Only version acceptable in modern environments. Supports: authNoPriv (auth only) and authPriv (auth + encryption — use this). Replace all SNMPv1/v2 configurations.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--green)">IPsec</span>
+      <span class="proto-port">IP protocol 50/51 + UDP 500</span>
+      <span class="proto-body">IP Security — encrypts and authenticates IP packets. Used for: VPN tunnels (site-to-site), network-layer encryption. Two modes: Transport (encrypts payload only) and Tunnel (encrypts entire packet, new IP header). AH (Authentication Header): integrity + auth, no encryption. ESP (Encapsulating Security Payload): encryption + integrity + auth. ESP preferred.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--green)">TLS 1.3</span>
+      <span class="proto-port">Various — depends on app</span>
+      <span class="proto-body">Transport Layer Security — current standard. Removed: weak cipher suites, CBC mode, compression, renegotiation. Forward Secrecy: even if key is compromised later, past sessions can't be decrypted. 1-RTT and 0-RTT handshakes — faster than TLS 1.2. Disable TLS 1.0/1.1 (deprecated). Minimum: TLS 1.2 with strong ciphers.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--red)">LDAP</span>
+      <span class="proto-port">TCP 389 — Cleartext</span>
+      <span class="proto-body">Directory query protocol — AD authentication. Plaintext by default. Credentials visible on network. Replace with LDAPS (TCP 636) or LDAP with StartTLS. Attackers on network can harvest credentials from LDAP. All AD-joining systems should use LDAPS.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--green)">LDAPS</span>
+      <span class="proto-port">TCP 636 — TLS encrypted</span>
+      <span class="proto-body">LDAP over SSL/TLS. Encrypts all directory communications. Required for: any environment where AD credentials must be protected. Enable on domain controllers. Configure all clients to use LDAPS. Also: LDAP with StartTLS (upgrades TCP 389 to encrypted).</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--green)">DNSSEC</span>
+      <span class="proto-port">UDP/TCP 53 (DNS)</span>
+      <span class="proto-body">DNS Security Extensions — cryptographically signs DNS records. Prevents DNS poisoning/cache poisoning. Doesn't encrypt DNS (use DoH/DoT for that). Verifies: response came from authoritative server and wasn't modified. Response validated via chain of trust from root zone.</span>
+    </div>
+    <div class="proto-row">
+      <span class="proto-name" style="color:var(--blue)">DoH / DoT</span>
+      <span class="proto-port">TCP 443 / TCP 853</span>
+      <span class="proto-body">DNS over HTTPS / DNS over TLS — encrypts DNS queries. ISP/network can't see what domains you're resolving. DoH (port 443): hard to block, used by browsers. DoT (port 853): easier to filter at firewall. Enterprise concern: DoH bypasses DNS filtering — disable in browsers via GPO.</span>
+    </div>
+
+    <h3>Insecure vs Secure Protocol Replacements</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Insecure Protocol</th><th>Port</th><th>Problem</th><th>Secure Replacement</th><th>Secure Port</th></tr>
+      <tr><td><span class="tag tr">HTTP</span></td><td>80</td><td>No encryption</td><td><span class="tag tg">HTTPS</span></td><td>443</td></tr>
+      <tr><td><span class="tag tr">Telnet</span></td><td>23</td><td>Plaintext credentials</td><td><span class="tag tg">SSH</span></td><td>22</td></tr>
+      <tr><td><span class="tag tr">FTP</span></td><td>20/21</td><td>Plaintext data + creds</td><td><span class="tag tg">SFTP / FTPS</span></td><td>22 / 990</td></tr>
+      <tr><td><span class="tag tr">SNMP v1/v2</span></td><td>161</td><td>Community string exposed</td><td><span class="tag tg">SNMPv3</span></td><td>161</td></tr>
+      <tr><td><span class="tag tr">LDAP</span></td><td>389</td><td>AD creds in plaintext</td><td><span class="tag tg">LDAPS</span></td><td>636</td></tr>
+      <tr><td><span class="tag tr">Rsh/Rlogin</span></td><td>514/513</td><td>No authentication</td><td><span class="tag tg">SSH</span></td><td>22</td></tr>
+      <tr><td><span class="tag tr">TLS 1.0/1.1</span></td><td>Various</td><td>Deprecated — weak ciphers</td><td><span class="tag tg">TLS 1.2/1.3</span></td><td>Various</td></tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">HTTPS →</span><span>HTTP over TLS — TCP 443 — minimum TLS 1.2 — verify cipher strength</span></div>
+      <div class="er"><span class="ek">SSH →</span><span>Secure Shell — TCP 22 — replace Telnet — key-based auth stronger than password</span></div>
+      <div class="er"><span class="ek">TLS 1.3 →</span><span>Current standard — forward secrecy — removed weak ciphers — faster handshake</span></div>
+      <div class="er"><span class="ek">IPsec modes →</span><span>Transport (payload only) vs Tunnel (full packet) — ESP preferred over AH</span></div>
+      <div class="er"><span class="ek">SNMPv3 →</span><span>Only secure SNMP — authPriv mode — authentication + encryption</span></div>
+      <div class="er"><span class="ek">LDAPS →</span><span>TCP 636 — LDAP over TLS — protects AD credentials in transit</span></div>
+      <div class="er"><span class="ek">DoH enterprise risk →</span><span>Bypasses DNS filtering — disable in browsers via GPO</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 5. REMOTE ACCESS       -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Secure Remote Access</span><span class="bdg bdg-green">VPN · ZTNA · Jump Server</span></div>
+  <div class="card-bd">
+    <p>Remote access allows employees to work from outside the corporate network. <strong style="color:var(--text)">Every remote access method must balance usability with security</strong> — a remote access solution that's too complex gets bypassed.</p>
+
+    <h3>VPN — Virtual Private Network</h3>
+    <div class="code">
+<span class="cm"># VPN types and security implications:</span>
+
+<span class="cb">Site-to-site VPN:</span>
+  Connects two office networks permanently
+  HQ ←→ Branch office encrypted tunnel
+  Protocol: IPsec (most common), OpenVPN
+  Gateway devices: VPN concentrators / firewalls
+  Users: transparent — no client needed
+
+<span class="cb">Remote access VPN (client VPN):</span>
+  Individual users connect from remote locations
+  Client software: Cisco AnyConnect, GlobalProtect
+  Protocol: SSL/TLS VPN (TCP 443) or IPsec
+  MFA: required — credential theft bypasses VPN otherwise
+  Split tunnel: some traffic through VPN, rest directly
+  Full tunnel: ALL traffic through VPN
+  
+<span class="cm"># Split tunneling security concern:</span>
+Split tunnel: employee connected to work VPN
+  Work traffic → VPN tunnel (encrypted, monitored)
+  Personal browsing → direct internet (unmonitored)
+  Risk: malware on home computer has path to VPN-connected network
+  Risk: no corporate proxy/DNS filtering on non-VPN traffic
+  Defense: full tunnel OR strict split tunnel with DLP
+
+<span class="cm"># VPN limitations:</span>
+Traditional VPN: "trust the tunnel" — connected = trusted
+If attacker gets VPN credentials → access to ENTIRE internal network
+Modern answer: ZTNA replaces VPN for most use cases
+    </div>
+
+    <h3>ZTNA — Zero Trust Network Access</h3>
+    <div class="info-row">
+      <div class="info-icon">🛡️</div>
+      <div>
+        <div class="info-title">ZTNA vs Traditional VPN</div>
+        <div class="info-desc">Traditional VPN: authenticate once → access everything on the network. ZTNA: authenticate continuously → access only specific authorized applications. User never gets network access — only application access. Device posture checked at every request. Example: Cloudflare Access, Zscaler ZPA, Prisma Access. Replaces VPN for most remote access scenarios. Even compromised credentials give access to ONE app, not the whole network.</div>
+      </div>
+    </div>
+
+    <h3>Jump Server / Bastion Host</h3>
+    <div class="code">
+<span class="cm"># Jump server: hardened intermediate access point for admin tasks</span>
+
+Without jump server:
+  Admin laptop (internet/home) → direct SSH to prod server
+  Attack path: compromise admin laptop → direct access to prod
+  Risk: admin's home network is insecure
+
+With jump server:
+  Admin → Authenticates to jump server (MFA required)
+  Jump server → SSH to production servers
+  Production: only accepts connections FROM jump server IP
+  Admin's machine: can't directly reach production servers
+
+Jump server security:
+  Hardened OS: CIS benchmark, minimal software
+  MFA: required for all jump server access
+  Session recording: everything done via jump server is logged
+  No internet access from jump server: only to managed systems
+  Separate jump servers: for different security zones
+    </div>
+
+    <h3>RDP — Remote Desktop Protocol</h3>
+    <div class="code">
+<span class="cm"># RDP security — TCP 3389 — commonly targeted:</span>
+
+<span class="cr">RDP risks:</span>
+  Default port 3389 — heavily scanned by attackers
+  BlueKeep (CVE-2019-0708): wormable RDP exploit
+  DejaBlue: similar critical RDP vulnerabilities
+  Brute force: RDP login = unlimited password attempts
+  Credential stuffing: leaked credentials + RDP = access
+  RDP hijacking: attacker takes over disconnected session
+
+<span class="cg">RDP hardening:</span>
+  Never expose RDP directly to internet
+  VPN or ZTNA required before RDP is accessible
+  MFA: Network Level Authentication (NLA) minimum
+  Change default port: obscures from automated scanners
+  Account lockout: lock after 3-5 failed attempts
+  Jump server: RDP only accessible through jump server
+  Firewall: restrict RDP to management IPs only
+  Logging: all RDP sessions logged and monitored
+
+<span class="cm"># Alternative: RDP Gateway (built into Windows Server)</span>
+<span class="cm"># Proxies RDP over HTTPS (443) — no direct 3389 exposure</span>
+    </div>
+
+    <h3>Out-of-Band Management</h3>
+    <div class="info-row">
+      <div class="info-icon">📡</div>
+      <div>
+        <div class="info-title">Out-of-Band (OOB) Management</div>
+        <div class="info-desc">Separate management network physically isolated from production traffic. Even if production network is down or compromised, admin can still access and fix systems. Uses: IPMI, iDRAC (Dell), iLO (HP), console servers, cellular OOB modems. When ransomware encrypts production network: OOB allows recovery actions. OOB network should have: separate credentials, MFA, strict access control, no internet access.</div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Site-to-site VPN →</span><span>Connects two offices permanently — IPsec tunnel — no client software for users</span></div>
+      <div class="er"><span class="ek">Remote access VPN →</span><span>Individual users — Cisco AnyConnect / GlobalProtect — requires MFA</span></div>
+      <div class="er"><span class="ek">Split tunneling →</span><span>Only work traffic through VPN — risk: malware on home PC has path to VPN network</span></div>
+      <div class="er"><span class="ek">ZTNA →</span><span>App-level access — not network access — replaces VPN — continuous verification</span></div>
+      <div class="er"><span class="ek">Jump server →</span><span>Hardened intermediary for admin access — MFA + session recording — prod only accepts from jump</span></div>
+      <div class="er"><span class="ek">RDP →</span><span>TCP 3389 — never expose to internet — VPN/ZTNA first — NLA + MFA</span></div>
+      <div class="er"><span class="ek">Out-of-band →</span><span>Separate management network — access infra even when prod network down/compromised</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 6. NETWORK DEVICES     -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Network Infrastructure Devices</span><span class="bdg bdg-orange">Switches · Routers · Firewalls · Proxies</span></div>
+  <div class="card-bd">
+    <p>Network devices are the <strong style="color:var(--text)">hardware and software components that move and filter traffic</strong>. Securing these devices is as important as securing servers — a compromised switch or router gives an attacker ability to intercept, redirect, or block all network traffic.</p>
+
+    <h3>Device Security Hardening</h3>
+    <div class="code">
+<span class="cm"># Universal device hardening — applies to ALL network devices:</span>
+
+<span class="cb">Access security:</span>
+  Change default credentials immediately
+  Use strong unique passwords or certificate auth
+  MFA: for management access where supported
+  Management access: only from dedicated mgmt VLAN
+  SSH (not Telnet) for remote management
+  HTTPS (not HTTP) for web management
+
+<span class="cb">Service reduction (attack surface):</span>
+  Disable unused services: Telnet, HTTP, finger, CDP*
+  *CDP (Cisco Discovery Protocol): reveals network topology to attacker
+  Disable unused ports: shutdown all unused switch ports
+  Assign unused ports to "dead" VLAN
+
+<span class="cb">Monitoring and logging:</span>
+  Syslog: forward all logs to SIEM
+  NTP: synchronize time (critical for log correlation)
+  SNMP v3: monitoring with encryption and auth
+  NetFlow: traffic data for anomaly detection
+
+<span class="cb">Configuration management:</span>
+  Backup running config: before any change
+  Version control: track all config changes
+  Change management: formal process for network changes
+    </div>
+
+    <h3>Key Network Device Types</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#bfdbfe">
+        <h4 style="color:var(--blue)">Managed Switch</h4>
+        <p>Layer 2 device — forwards frames based on MAC addresses. Security features: port security (limit MAC addresses per port), 802.1X (authenticate before network access), VLAN assignment, BPDU Guard (prevent rogue switches), Storm Control (mitigate broadcast storms), Private VLAN (isolate ports within same VLAN).</p>
+      </div>
+      <div class="gc" style="border-color:#bbf7d0">
+        <h4 style="color:var(--green)">Router / Layer 3 Switch</h4>
+        <p>Routes packets between networks. Access Control Lists (ACLs): filter traffic between subnets — stateless (check each packet independently). Anti-spoofing: uRPF (Unicast Reverse Path Forwarding) — drops packets with spoofed source IPs. Routing protocol security: MD5 auth on OSPF/EIGRP/BGP to prevent route injection.</p>
+      </div>
+      <div class="gc" style="border-color:#fecaca">
+        <h4 style="color:var(--red)">Next-Generation Firewall (NGFW)</h4>
+        <p>Stateful packet inspection + deep packet inspection. App identification: block Dropbox, allow Office 365. User identity: rules by AD username not just IP. SSL inspection: decrypt HTTPS to inspect content. IPS integration: block exploits inline. URL filtering. Most important perimeter security device.</p>
+      </div>
+      <div class="gc" style="border-color:#e9d5ff">
+        <h4 style="color:var(--purple)">Web Application Firewall (WAF)</h4>
+        <p>Specifically protects web applications. Understands HTTP — inspects URLs, headers, request body. Blocks: SQL injection, XSS, CSRF, path traversal, API abuse. Positive/negative security model. Deployed: in front of web servers (reverse proxy). Required for: PCI-DSS scope web apps. Examples: AWS WAF, Imperva, ModSecurity.</p>
+      </div>
+      <div class="gc" style="border-color:#a5b4fc">
+        <h4 style="color:var(--indigo)">Proxy Server</h4>
+        <p>Forward proxy: sits between users and internet. Inspects outbound web requests. Enforces URL category filtering. SSL inspection: decrypt outbound HTTPS. Logs all web access. Blocks malware downloads. Reverse proxy: sits in front of servers — hides server IPs, load balancing, WAF. Protects internal servers from direct internet exposure.</p>
+      </div>
+      <div class="gc" style="border-color:#fde047">
+        <h4 style="color:var(--yellow)">Load Balancer</h4>
+        <p>Distributes traffic across multiple servers. Security benefits: DDoS mitigation, connection rate limiting, SSL offloading (centralize certificate management), session persistence, health monitoring. Active/Active: both handle traffic. Active/Passive: standby takes over on failure. Inspect incoming connections before forwarding to backend servers.</p>
+      </div>
+    </div>
+
+    <h3>Wireless Security</h3>
+    <div class="code">
+<span class="cm"># Enterprise wireless security standards:</span>
+
+<span class="cg">WPA3 (current standard):</span>
+  SAE (Simultaneous Authentication of Equals) replaces PSK
+  Forward secrecy: new encryption key per session
+  Protection against offline dictionary attacks
+  WPA3-Enterprise: 802.1X + EAP — per-user authentication
+
+<span class="co">WPA2-Enterprise (still widely used):</span>
+  802.1X authentication: RADIUS server validates users
+  Per-user credentials: not shared PSK
+  EAP methods: PEAP, EAP-TLS (certificate-based = strongest)
+  VLAN assignment per user/group based on auth
+
+<span class="cr">WPA2-Personal / WPA3-Personal:</span>
+  Shared Pre-Shared Key (PSK)
+  All users share same password
+  One compromised device → sniff all traffic (WPA2)
+  Rogue AP easy to set up with same SSID + PSK
+  Only acceptable for: home networks, guest WiFi
+
+<span class="cr">WEP — NEVER USE:</span>
+  Broken encryption (RC4 flaws)
+  Crackable in minutes with basic tools
+  Should not exist in any modern environment
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Port security →</span><span>Limit MAC addresses per switch port — prevent rogue device connection</span></div>
+      <div class="er"><span class="ek">NGFW →</span><span>Next-Gen Firewall — app identification + user identity + SSL inspection + IPS</span></div>
+      <div class="er"><span class="ek">WAF →</span><span>Web Application Firewall — HTTP-aware — blocks SQLi/XSS — PCI-DSS required for web apps</span></div>
+      <div class="er"><span class="ek">Forward proxy →</span><span>Inspects outbound user traffic — URL filtering — SSL inspection — logs web access</span></div>
+      <div class="er"><span class="ek">Reverse proxy →</span><span>Sits in front of servers — hides backend — WAF + load balancing</span></div>
+      <div class="er"><span class="ek">WPA3 →</span><span>Current standard — SAE — forward secrecy — WPA3-Enterprise: 802.1X</span></div>
+      <div class="er"><span class="ek">802.1X →</span><span>Port-based NAC — authenticate before network access — EAP + RADIUS</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 7. INFRASTRUCTURE DESIGN -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Secure Infrastructure Design</span><span class="bdg bdg-yellow">Architecture · Hardening · Baselines</span></div>
+  <div class="card-bd">
+    <p>Secure design means <strong style="color:var(--text)">building security into infrastructure from the ground up</strong> — choosing the right architecture patterns, applying security baselines, and ensuring the design supports ongoing security operations.</p>
+
+    <h3>Infrastructure Hardening</h3>
+    <div class="code">
+<span class="cm"># System hardening: remove what isn't needed, secure what remains</span>
+
+OS hardening (CIS Benchmark Level 1/2):
+  Remove: unnecessary packages and services
+  Disable: unneeded network services (NFS, FTP, rsh)
+  Configure: audit logging (specific event categories)
+  Enable: host-based firewall (ufw/firewalld/Windows Firewall)
+  Restrict: filesystem permissions (least privilege)
+  Secure: bootloader (GRUB password)
+  Enable: SELinux/AppArmor (mandatory access control)
+  Set: strong password policy via PAM
+  
+Application hardening:
+  Remove: default accounts, sample applications, help files
+  Change: default ports where possible
+  Disable: verbose error messages (leak internal info)
+  Enable: security headers (HSTS, CSP, X-Frame-Options)
+  Configure: input validation, parameterized queries
+
+Network hardening:
+  Disable: CDP/LLDP on external-facing ports
+  Enable: BPDU Guard on access ports
+  Configure: DHCP snooping (prevent rogue DHCP)
+  Enable: Dynamic ARP Inspection (prevent ARP poisoning)
+  Implement: IP Source Guard (prevent IP spoofing)
+    </div>
+
+    <h3>Security Baselines and CIS Benchmarks</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">CIS Benchmarks</h4>
+        <p>Consensus-based configuration standards for hundreds of technologies. Level 1: basic security — minimal performance impact. Level 2: more restrictive — may impact usability. Scored: every control has pass/fail check. Free download. Covers: Windows, Linux, AWS, Azure, Docker, Kubernetes, network devices. Gold standard for system hardening.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">STIG — Security Technical Implementation Guide</h4>
+        <p>US DoD hardening guidance. More restrictive than CIS. Required for: DoD systems, many federal contractors. Automated: STIG Viewer, Evaluate-STIG tool. SCAP (Security Content Automation Protocol): machine-readable compliance checking. Used alongside CIS in high-security environments.</p>
+      </div>
+    </div>
+
+    <h3>Network Architecture Patterns</h3>
+
+    <div class="step-list">
+      <div class="step">
+        <div class="step-num" style="background:#dbeafe;color:#1e40af">1</div>
+        <div>
+          <div class="step-title" style="color:var(--blue)">Perimeter Architecture (Traditional)</div>
+          <div class="step-body">Internet → Perimeter Firewall → DMZ → Internal Firewall → Internal Network. Strong perimeter — limited internal controls. Modern weakness: assumes internal = trusted. Works for: organizations with clear internal/external boundary. Insufficient alone: once inside, lateral movement is easy.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#dcfce7;color:#166534">2</div>
+        <div>
+          <div class="step-title" style="color:var(--green)">Defense in Depth Architecture</div>
+          <div class="step-body">Perimeter firewall + internal segmentation + host controls + identity + data controls. Every layer adds cost to attacker. Compromising perimeter doesn't mean owning the network. Most enterprise networks should use this model. Complexity: more to manage, but significantly more resilient.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#f3e8ff;color:#6b21a8">3</div>
+        <div>
+          <div class="step-title" style="color:var(--purple)">Zero Trust Architecture</div>
+          <div class="step-body">No implicit trust anywhere. Identity is the control plane. Every access request: verify identity + device + context. Micro-segmentation at workload level. ZTNA replaces VPN. Comprehensive logging: all access events. Modern cloud-native organizations are building this from scratch. Legacy organizations migrating toward it gradually.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#fef9c3;color:#713f12">4</div>
+        <div>
+          <div class="step-title" style="color:var(--yellow)">SASE Architecture</div>
+          <div class="step-body">Secure Access Service Edge — network and security converged in the cloud. Users connect to cloud-based security stack (not corporate datacenter). SD-WAN + ZTNA + CASB + FWaaS + SWG — all delivered as a service. Ideal for: remote-first organizations, distributed offices, cloud-heavy workloads. Gartner term — vendors: Zscaler, Cloudflare, Palo Alto Prisma.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Infrastructure as Code Security (Revisited)</h3>
+    <div class="code">
+<span class="cm"># Secure infrastructure design implemented via IaC:</span>
+
+Security group (Terraform) — least privilege:
+  Inbound: only HTTPS from load balancer SG
+  Inbound: SSH only from jump server SG
+  Outbound: only to required services
+  No 0.0.0.0/0 rules → automatic DENY all else
+
+Network ACL (subnet-level defense):
+  Subnet A (web tier): allow 443 inbound, 443/3306 to app tier
+  Subnet B (app tier): allow from web tier only, to DB tier
+  Subnet C (DB tier): allow from app tier only, deny all else
+
+<span class="cg">Security baked into code = consistent + auditable + reviewable</span>
+<span class="cg">Every change reviewed in pull request before deployment</span>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">CIS benchmark →</span><span>Level 1 = basic (less impact), Level 2 = restrictive — gold standard for hardening</span></div>
+      <div class="er"><span class="ek">STIG →</span><span>DoD hardening guides — more restrictive than CIS — federal systems</span></div>
+      <div class="er"><span class="ek">DHCP snooping →</span><span>Prevents rogue DHCP server — only trusted ports can send DHCP offers</span></div>
+      <div class="er"><span class="ek">Dynamic ARP Inspection →</span><span>Prevents ARP poisoning — validates ARP packets against DHCP snooping table</span></div>
+      <div class="er"><span class="ek">SASE →</span><span>Network + security converged in cloud — SD-WAN + ZTNA + CASB + FWaaS</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 8. RESILIENCE          -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Infrastructure Resilience & Availability</span><span class="bdg bdg-teal">HA · Redundancy · Recovery</span></div>
+  <div class="card-bd">
+    <p>Resilient infrastructure ensures <strong style="color:var(--text)">services remain available despite hardware failures, attacks, or disasters</strong>. Security can't just be about keeping attackers out — it also means ensuring availability for legitimate users.</p>
+
+    <h3>High Availability Concepts</h3>
+    <div class="code">
+<span class="cm"># Availability = MTBF / (MTBF + MTTR)</span>
+
+MTBF: Mean Time Between Failures (how reliable is hardware)
+MTTR: Mean Time To Repair (how fast can we restore)
+
+Availability targets:
+  99%:    3.65 days downtime/year    (unacceptable for most)
+  99.9%:  8.76 hours/year            (three nines)
+  99.99%: 52.6 minutes/year          (four nines)
+  99.999%:5.26 minutes/year          (five nines — carrier grade)
+
+Achieving high availability:
+  Eliminate single points of failure (SPOF)
+  Redundancy: N+1 (at least one spare)
+  Clustering: multiple nodes, any can take over
+  Geographic distribution: survive site-level failure
+    </div>
+
+    <h3>Redundancy Strategies</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#bfdbfe">
+        <h4 style="color:var(--blue)">Network Redundancy</h4>
+        <p>Dual ISP connections — if one fails, traffic routes over other. Redundant switches — spanning tree / LACP. Multiple paths with OSPF/BGP failover. No single network device is a SPOF. BGP: internet routing protocol for multihoming to multiple ISPs.</p>
+      </div>
+      <div class="gc" style="border-color:#bbf7d0">
+        <h4 style="color:var(--green)">Server Redundancy</h4>
+        <p>Clustering: Active/Active (both serve traffic), Active/Passive (standby). Load balancing: distribute across multiple servers. RAID: disk redundancy within a server. Failover clustering: automatic takeover on failure. Heartbeat: nodes monitor each other — detect failure in seconds.</p>
+      </div>
+      <div class="gc" style="border-color:#fed7aa">
+        <h4 style="color:var(--orange)">Power Redundancy</h4>
+        <p>UPS: uninterruptible power supply — bridges power to generator startup. Generator: sustains power during extended outage. Dual power feeds: from separate utility circuits. PDU redundancy: A+B power feeds to servers. N+1 UPS: one UPS beyond minimum required.</p>
+      </div>
+    </div>
+
+    <h3>Backup and Recovery</h3>
+    <div class="code">
+<span class="cm"># 3-2-1 Backup Rule:</span>
+3 copies of data
+2 different media types (disk + tape, disk + cloud)
+1 copy offsite (geographically separate)
+
+<span class="cm"># 3-2-1-1-0 Extended Rule (modern):</span>
+3 copies | 2 media types | 1 offsite | 1 immutable | 0 errors
+
+Backup types:
+  Full:         all data — slowest — most space — fastest restore
+  Incremental:  changes since LAST backup — fastest — complex restore
+  Differential: changes since LAST FULL — moderate — faster restore
+
+Recovery testing (CRITICAL):
+  Backup without test = false confidence
+  Regular restore tests: verify data integrity
+  Tabletop exercises: test recovery procedures
+  Documented RTO/RPO: clear recovery objectives
+
+<span class="cm"># Immutable backups — ransomware defense:</span>
+Write Once Read Many (WORM) storage
+AWS S3 Object Lock: data cannot be modified or deleted
+Once written: cannot be encrypted by ransomware
+Air-gapped backup: physical separation from network
+Tape backup: ransomware cannot encrypt offline tapes
+    </div>
+
+    <h3>Disaster Recovery</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>DR Site Type</th><th>Description</th><th>RTO</th><th>Cost</th></tr>
+      <tr><td><span class="tag tr">Cold site</span></td><td>Space + power + connectivity — no hardware pre-installed</td><td>Days to weeks</td><td>Lowest</td></tr>
+      <tr><td><span class="tag ty">Warm site</span></td><td>Hardware ready — but needs data restoration and config</td><td>Hours to days</td><td>Medium</td></tr>
+      <tr><td><span class="tag tg">Hot site</span></td><td>Fully operational mirror — real-time data replication</td><td>Minutes to hours</td><td>Highest</td></tr>
+      <tr><td><span class="tag tb">Cloud DR</span></td><td>Replicate to cloud — spin up VMs when needed — elastic</td><td>Hours (can be minutes)</td><td>Variable (OpEx)</td></tr>
+    </table>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Ransomware + Resilient Architecture = Minimal Impact</div>
+      <div class="code">
+<span class="cm"># Monday 2am — ransomware detected on finance server:</span>
+
+Resilience controls activate:
+  EDR: detects + isolates infected server (MTTR starts)
+  Network segmentation: ransomware contained to Finance VLAN
+  IPS: C2 communications blocked at network level
+  Immutable backups: attacker cannot encrypt S3 backup
+
+<span class="cb">Recovery (RTO = 4 hours):</span>
+  2:15 AM: server isolated — forensic image captured
+  2:30 AM: IR team assembled via OOB communications
+  3:00 AM: clean DR server spun up from IaC definition
+  3:30 AM: data restored from immutable S3 backup (RPO = 1hr)
+  4:15 AM: systems tested and returned to production
+  4:30 AM: within 4-hour RTO target ✓
+
+<span class="cg">Without resilience controls:</span>
+<span class="cg">  Flat network: all servers encrypted</span>
+<span class="cg">  No immutable backup: $2M ransom demand</span>
+<span class="cg">  No DR plan: weeks of recovery</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">3-2-1 backup →</span><span>3 copies, 2 media types, 1 offsite — extended: + 1 immutable + 0 errors</span></div>
+      <div class="er"><span class="ek">Immutable backup →</span><span>Cannot be modified or deleted — WORM storage — ransomware defense</span></div>
+      <div class="er"><span class="ek">Hot site →</span><span>Fully operational DR — real-time replication — minutes to hours RTO — highest cost</span></div>
+      <div class="er"><span class="ek">Cold site →</span><span>Space + power + connectivity — no hardware — days to weeks RTO — lowest cost</span></div>
+      <div class="er"><span class="ek">MTBF / MTTR →</span><span>MTBF = how reliable / MTTR = how fast to fix — Availability = MTBF/(MTBF+MTTR)</span></div>
+      <div class="er"><span class="ek">RAID →</span><span>Disk redundancy — within server — RAID 1 (mirror) / RAID 5 (parity) / RAID 10 (mirror+stripe)</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 9. SUMMARY             -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-indigo">Domain 3 · Enterprise Infrastructure</span></div>
+  <div class="card-bd">
+
+    <h3>Security Principles Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Principle</th><th>What It Means</th><th>Applied To</th></tr>
+      <tr><td><span class="tag ti">Defense in Depth</span></td><td>Multiple layered controls — if one fails, others catch it</td><td>All infrastructure layers simultaneously</td></tr>
+      <tr><td><span class="tag tg">Least Privilege</span></td><td>Minimum access needed — reduces blast radius</td><td>Users, processes, services, network rules</td></tr>
+      <tr><td><span class="tag tr">Attack Surface Reduction</span></td><td>Disable unused services/ports — remove unnecessary components</td><td>OS hardening, device hardening, CIS benchmarks</td></tr>
+      <tr><td><span class="tag ty">Zero Trust</span></td><td>Never trust always verify — no implicit network trust</td><td>Identity, access, ZTNA, micro-segmentation</td></tr>
+      <tr><td><span class="tag tgo">Fail Secure/Closed</span></td><td>Control failure → deny access, not allow</td><td>Firewalls, auth systems, access controls</td></tr>
+      <tr><td><span class="tag tt">Separation of Duties</span></td><td>No single person controls entire critical process</td><td>Admin accounts, change management, financial</td></tr>
+    </table>
+    </div>
+
+    <h3>Control Types Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Function</th><th>What It Does</th><th>Examples</th></tr>
+      <tr><td><span class="tag ti">Preventive</span></td><td>Stops attack before it happens</td><td>Firewall, MFA, encryption, ACLs, patch management</td></tr>
+      <tr><td><span class="tag tp">Detective</span></td><td>Identifies attacks in progress or after</td><td>IDS, SIEM, audit logs, cameras, behavioral analytics</td></tr>
+      <tr><td><span class="tag tg">Corrective</span></td><td>Fixes damage after attack occurs</td><td>Backups/restore, IR plan, patching after breach</td></tr>
+      <tr><td><span class="tag to">Deterrent</span></td><td>Discourages attackers from attempting</td><td>Warning banners, visible cameras, security policies</td></tr>
+      <tr><td><span class="tag tgo">Compensating</span></td><td>Alternative when primary control isn't feasible</td><td>Network isolation for unpatched legacy system</td></tr>
+      <tr><td><span class="tag ts">Directive</span></td><td>Tells people what to do</td><td>AUP, policies, procedures, training, warning signs</td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Multiple layered controls — attacker must defeat all"</span><span>→ Defense in depth</span></div>
+      <div class="er"><span class="ek">"System gets only access required for its function"</span><span>→ Least privilege</span></div>
+      <div class="er"><span class="ek">"Control fails — access is denied not allowed"</span><span>→ Fail secure (fail closed)</span></div>
+      <div class="er"><span class="ek">"No implicit trust based on network location"</span><span>→ Zero Trust principle</span></div>
+      <div class="er"><span class="ek">"Buffer zone between internet and internal network"</span><span>→ DMZ (Demilitarized Zone)</span></div>
+      <div class="er"><span class="ek">"Logical network segments on same physical infrastructure"</span><span>→ VLAN</span></div>
+      <div class="er"><span class="ek">"Workload-level isolation — east-west traffic control"</span><span>→ Micro-segmentation</span></div>
+      <div class="er"><span class="ek">"Stops attack from occurring — firewall, MFA"</span><span>→ Preventive control</span></div>
+      <div class="er"><span class="ek">"Identifies attack in progress — IDS, SIEM"</span><span>→ Detective control</span></div>
+      <div class="er"><span class="ek">"Alternative when primary control can't be implemented"</span><span>→ Compensating control</span></div>
+      <div class="er"><span class="ek">"Discourages attackers — warning banners, visible cameras"</span><span>→ Deterrent control</span></div>
+      <div class="er"><span class="ek">"Replace Telnet with ___"</span><span>→ SSH (TCP 22)</span></div>
+      <div class="er"><span class="ek">"Replace HTTP with ___"</span><span>→ HTTPS (TCP 443) with TLS</span></div>
+      <div class="er"><span class="ek">"Replace FTP with ___"</span><span>→ SFTP (TCP 22) or FTPS (TCP 990)</span></div>
+      <div class="er"><span class="ek">"Replace SNMP v1/v2 with ___"</span><span>→ SNMPv3 with authPriv mode</span></div>
+      <div class="er"><span class="ek">"Replace LDAP (389) with ___"</span><span>→ LDAPS (TCP 636)</span></div>
+      <div class="er"><span class="ek">"Current TLS standard — forward secrecy"</span><span>→ TLS 1.3</span></div>
+      <div class="er"><span class="ek">"IPsec mode that encrypts entire packet including headers"</span><span>→ Tunnel mode (Transport mode encrypts payload only)</span></div>
+      <div class="er"><span class="ek">"Connects two offices with permanent encrypted tunnel"</span><span>→ Site-to-site VPN (IPsec)</span></div>
+      <div class="er"><span class="ek">"Replace VPN — app-level access not network access"</span><span>→ ZTNA (Zero Trust Network Access)</span></div>
+      <div class="er"><span class="ek">"Hardened intermediary for admin access to servers"</span><span>→ Jump server / Bastion host</span></div>
+      <div class="er"><span class="ek">"Separate management network — works even if prod is down"</span><span>→ Out-of-band (OOB) management</span></div>
+      <div class="er"><span class="ek">"HTTP-aware — blocks SQL injection and XSS"</span><span>→ WAF (Web Application Firewall)</span></div>
+      <div class="er"><span class="ek">"Inspects outbound user web traffic — URL filtering"</span><span>→ Forward proxy</span></div>
+      <div class="er"><span class="ek">"Current wireless standard — SAE authentication"</span><span>→ WPA3 (WPA3-Enterprise uses 802.1X)</span></div>
+      <div class="er"><span class="ek">"Per-user WiFi authentication — no shared password"</span><span>→ WPA2/WPA3 Enterprise with 802.1X + EAP</span></div>
+      <div class="er"><span class="ek">"Prevents rogue DHCP servers on network"</span><span>→ DHCP snooping</span></div>
+      <div class="er"><span class="ek">"Prevents ARP poisoning attacks"</span><span>→ Dynamic ARP Inspection (DAI)</span></div>
+      <div class="er"><span class="ek">"3 copies, 2 media types, 1 offsite"</span><span>→ 3-2-1 backup rule</span></div>
+      <div class="er"><span class="ek">"Backup that ransomware cannot encrypt"</span><span>→ Immutable backup — WORM storage</span></div>
+      <div class="er"><span class="ek">"Fully operational DR — real-time replication — highest cost"</span><span>→ Hot site</span></div>
+      <div class="er"><span class="ek">"Basic CIS hardening level — minimal performance impact"</span><span>→ CIS Benchmark Level 1</span></div>
+      <div class="er"><span class="ek">"SD-WAN + security functions in single cloud service"</span><span>→ SASE (Secure Access Service Edge)</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

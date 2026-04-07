@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threat Actors & Motivations — Security+ Domain 2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400;1,700&family=Inconsolata:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --bg:#f8f6f0;
+  --p:#ffffff;
+  --s:#f0ede4;
+  --t:#e8e4d8;
+  --bd:#d0ccc0;
+  --tx:#1c1810;
+  --mu:#706858;
+  /* Threat actor colours */
+  --ns:#b81820;   /* nation-state: crimson */
+  --un:#808080;   /* unskilled: grey */
+  --hv:#6020b8;   /* hacktivist: violet */
+  --it:#d84000;   /* insider: deep orange */
+  --oc:#1850a8;   /* org crime: navy */
+  --sh:#2a8858;   /* shadow IT: teal-green */
+  /* Motivation colours */
+  --m1:#c84000;   /* financial */
+  --m2:#1848c0;   /* espionage */
+  --m3:#207850;   /* disruption */
+  --m4:#7820a8;   /* ideology */
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;font-size:14px;line-height:1.65;padding:2rem 1.5rem;}
+
+/* ── HEADER: newspaper front page ── */
+.front{
+  border:3px solid var(--tx);
+  margin-bottom:2.5rem;
+  overflow:hidden;
+}
+.front-flag{
+  background:var(--tx);color:var(--bg);
+  text-align:center;padding:0.5rem 1rem;
+  font-family:'Fraunces',serif;font-size:0.7rem;
+  font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+}
+.front-main{
+  display:grid;grid-template-columns:1fr 3px 1fr;
+  border-top:2px solid var(--tx);
+}
+@media(max-width:600px){.front-main{grid-template-columns:1fr;}}
+.front-divider{background:var(--tx);}
+.front-left{padding:1.5rem 1.8rem 1.2rem;}
+.front-right{padding:1.2rem 1.8rem;display:flex;flex-direction:column;justify-content:center;}
+.front-kicker{font-family:'Inconsolata',monospace;font-size:0.62rem;letter-spacing:0.16em;color:var(--mu);text-transform:uppercase;margin-bottom:0.3rem;}
+.front-headline{font-family:'Fraunces',serif;font-size:3rem;font-weight:900;line-height:0.92;letter-spacing:-0.02em;margin-bottom:0.4rem;}
+.front-hl-red{color:var(--ns);}
+.front-deck{font-family:'Fraunces',serif;font-style:italic;font-size:0.9rem;color:var(--mu);line-height:1.5;margin-bottom:0.5rem;}
+.front-rule{height:2px;background:var(--tx);margin:0.6rem 0;}
+.front-byline{font-family:'Inconsolata',monospace;font-size:0.6rem;color:var(--mu);letter-spacing:0.1em;text-transform:uppercase;}
+.front-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--bd);}
+@media(max-width:500px){.front-summary{grid-template-columns:1fr;}}
+.fs-cell{padding:0.6rem 1rem;border-right:1px solid var(--bd);font-size:0.72rem;}
+.fs-cell:last-child{border-right:none;}
+.fs-label{font-family:'Inconsolata',monospace;font-size:0.58rem;color:var(--mu);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:0.15rem;}
+
+/* ── TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:2rem;}
+.tab{padding:0.4rem 0.9rem;border:1.5px solid var(--bd);background:var(--p);color:var(--mu);cursor:pointer;font-family:'Inconsolata',monospace;font-size:0.63rem;font-weight:700;transition:all 0.13s;letter-spacing:0.03em;}
+.tab:hover{border-color:var(--ns);color:var(--ns);}
+.tab.active{background:var(--tx);color:var(--bg);border-color:var(--tx);}
+
+/* ── SECTIONS ── */
+.sec{display:none;}
+.sec.on{display:block;animation:rise 0.18s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* ── CARD ── */
+.card{background:var(--p);border:1.5px solid var(--bd);margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:0.9rem 1.4rem;border-bottom:1.5px solid var(--bd);background:var(--s);}
+.card-num{font-family:'Inconsolata',monospace;font-size:0.58rem;color:var(--mu);background:var(--t);border:1px solid var(--bd);padding:0.1rem 0.35rem;}
+.card-title{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;letter-spacing:-0.01em;}
+.bdg{margin-left:auto;font-family:'Inconsolata',monospace;font-size:0.57rem;padding:0.14rem 0.52rem;white-space:nowrap;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;}
+.card-bd{padding:1.4rem;}
+p{color:var(--mu);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.75;}
+h3{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--tx);margin:1.3rem 0 0.55rem;padding-left:0.75rem;border-left:4px solid var(--tx);letter-spacing:-0.01em;}
+
+/* ── CODE ── */
+.code{background:var(--tx);color:#f0edd8;padding:1rem 1.2rem;font-family:'Inconsolata',monospace;font-size:0.68rem;line-height:1.95;overflow-x:auto;margin:0.8rem 0;border-left:4px solid var(--ns);}
+.cg{color:#7aff9a;}.cr{color:#ff8080;}.cb{color:#80c8ff;}.co{color:#ffd870;}.cp{color:#d8a0ff;}.cm{color:var(--mu);}.ct{color:#70ffe0;}.ci{color:#a8c0f8;}.cs{color:#ffb870;}.cgd{color:#e8c040;}
+
+/* ── SCENE ── */
+.scene{background:#fffcf0;border-left:4px solid var(--m1);padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'Inconsolata',monospace;font-size:0.58rem;color:var(--m1);margin-bottom:0.4rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+
+/* ── EXAM ── */
+.exam{background:#f3f0ff;border:1.5px solid #c8b8f0;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'Inconsolata',monospace;font-size:0.58rem;color:#5820b0;margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:#5820b0;font-family:'Inconsolata',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3{grid-template-columns:1fr;}}
+.gc{background:var(--s);border:1.5px solid var(--bd);padding:1rem;}
+.gc h4{font-family:'Fraunces',serif;font-size:0.9rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1.1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--mu);margin-bottom:0.25rem;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s);padding:0.5rem 0.8rem;text-align:left;color:var(--mu);border-bottom:1.5px solid var(--bd);font-size:0.62rem;font-weight:700;font-family:'Inconsolata',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--bd);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s);}
+
+.tag{display:inline-block;padding:0.1rem 0.48rem;font-size:0.6rem;font-family:'Inconsolata',monospace;font-weight:700;}
+.tg{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.tr{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.tb{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.to{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.tp{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.tt{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.ty{background:#fef9c3;color:#713f12;border:1px solid #fde047;}
+.ts{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;}
+
+/* ── BIG ACTOR PROFILE CARDS ── */
+.actor{
+  border:1.5px solid var(--bd);
+  margin-bottom:1rem;overflow:hidden;
+}
+.actor-banner{
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem 1.3rem;
+  border-bottom:1.5px solid var(--bd);
+}
+.actor-emoji{font-size:2rem;line-height:1;}
+.actor-name{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;letter-spacing:-0.02em;}
+.actor-subtitle{font-family:'Inconsolata',monospace;font-size:0.62rem;color:var(--mu);letter-spacing:0.08em;text-transform:uppercase;}
+.actor-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid var(--bd);
+}
+@media(max-width:580px){.actor-stats{grid-template-columns:repeat(2,1fr);}}
+.astat{
+  padding:0.65rem 0.9rem;
+  border-right:1px solid var(--bd);
+  text-align:center;
+}
+.astat:last-child{border-right:none;}
+.astat-label{font-family:'Inconsolata',monospace;font-size:0.56rem;color:var(--mu);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:0.2rem;}
+.astat-val{font-family:'Fraunces',serif;font-size:0.85rem;font-weight:700;}
+.actor-body{padding:1.2rem 1.3rem;}
+.actor-row{display:flex;gap:0.8rem;margin-bottom:0.7rem;align-items:flex-start;font-size:0.8rem;}
+.actor-row-label{font-family:'Inconsolata',monospace;font-size:0.62rem;font-weight:700;min-width:90px;flex-shrink:0;letter-spacing:0.04em;text-transform:uppercase;padding-top:0.1rem;}
+.actor-row-body{color:var(--mu);line-height:1.6;flex:1;}
+
+/* ── MOTIVATION CARDS ── */
+.motiv{
+  border:1.5px solid var(--bd);padding:1.1rem 1.2rem;
+  margin-bottom:0.7rem;display:flex;gap:1rem;align-items:flex-start;
+  border-left:5px solid;
+}
+.motiv-icon{font-size:1.4rem;flex-shrink:0;}
+.motiv-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;margin-bottom:0.2rem;letter-spacing:-0.01em;}
+.motiv-body{font-size:0.78rem;color:var(--mu);}
+
+/* ── CAPABILITY METER ── */
+.cap-row{display:flex;align-items:center;gap:0.8rem;padding:0.45rem 0.8rem;background:var(--s);border:1px solid var(--bd);margin-bottom:0.35rem;}
+.cap-name{font-family:'Inconsolata',monospace;font-size:0.65rem;font-weight:700;min-width:130px;flex-shrink:0;}
+.cap-bar{flex:1;height:10px;background:var(--t);overflow:hidden;}
+.cap-fill{height:100%;}
+.cap-note{font-size:0.7rem;color:var(--mu);min-width:110px;flex-shrink:0;text-align:right;}
+
+/* ── COMPARE MATRIX ── */
+.cmatrix{overflow-x:auto;margin:1rem 0;}
+.cmat-table{border-collapse:collapse;font-size:0.72rem;min-width:700px;width:100%;}
+.cmat-table th{background:var(--s);padding:0.45rem 0.65rem;border:1px solid var(--bd);color:var(--mu);font-family:'Inconsolata',monospace;font-size:0.6rem;letter-spacing:0.05em;text-transform:uppercase;}
+.cmat-table td{padding:0.45rem 0.65rem;border:1px solid var(--bd);vertical-align:middle;}
+.cmat-table tr:hover td{background:var(--s);}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin:0 2px;}
+
+/* ── SOPHISTICATION SCALE ── */
+.soph-scale{display:flex;align-items:stretch;border:1.5px solid var(--bd);overflow:hidden;margin:1rem 0;}
+.soph-cell{flex:1;padding:0.9rem 0.6rem;text-align:center;border-right:1px solid var(--bd);}
+.soph-cell:last-child{border-right:none;}
+.soph-num{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:900;opacity:0.2;margin-bottom:0.2rem;line-height:1;}
+.soph-label{font-family:'Fraunces',serif;font-size:0.78rem;font-weight:700;margin-bottom:0.15rem;}
+.soph-who{font-family:'Inconsolata',monospace;font-size:0.58rem;color:var(--mu);}
+
+/* ── INFO ROW ── */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s);border:1.5px solid var(--bd);margin-bottom:0.5rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Fraunces',serif;font-size:0.9rem;font-weight:700;margin-bottom:0.12rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--mu);}
+</style>
+</head>
+<body>
+
+<!-- NEWSPAPER MASTHEAD -->
+<div class="front">
+  <div class="front-flag">Security+ SY0-701 · Domain 2 · Threats, Vulnerabilities &amp; Mitigations · 22%</div>
+  <div class="front-main">
+    <div class="front-left">
+      <div class="front-kicker">Breaking · Threat Intelligence Briefing</div>
+      <div class="front-headline">Threat<br>Actors &amp;<br><span class="front-hl-red">Motivations</span></div>
+      <div class="front-rule"></div>
+      <div class="front-deck">Nation-states, organized crime, hacktivists, insiders, unskilled attackers, and shadow IT — who attacks, why, and how to recognize them on the exam.</div>
+      <div class="front-byline">Security+ Domain 2 · Subtopic 1 of 4 · Estimated reading time: 25 min</div>
+    </div>
+    <div class="front-divider"></div>
+    <div class="front-right">
+      <div style="font-family:'Inconsolata',monospace;font-size:0.62rem;color:var(--mu);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem;">CONTENTS THIS ISSUE</div>
+      <div style="display:flex;flex-direction:column;gap:0.35rem;font-size:0.8rem;color:var(--mu);">
+        <div>🏴 <strong style="color:var(--tx)">Nation-State APTs</strong> — espionage, sabotage, warfare</div>
+        <div>💀 <strong style="color:var(--tx)">Organized Crime</strong> — ransomware, financial fraud</div>
+        <div>✊ <strong style="color:var(--tx)">Hacktivists</strong> — ideology, disruption, DDoS</div>
+        <div>🎯 <strong style="color:var(--tx)">Insider Threats</strong> — malicious, negligent, accidental</div>
+        <div>🧑‍💻 <strong style="color:var(--tx)">Unskilled Attackers</strong> — script kiddies, low sophistication</div>
+        <div>🖥️ <strong style="color:var(--tx)">Shadow IT</strong> — unauthorized tech, unmanaged risk</div>
+        <div>💰 <strong style="color:var(--tx)">Motivations</strong> — financial, espionage, disruption, ideology</div>
+      </div>
+    </div>
+  </div>
+  <div class="front-summary">
+    <div class="fs-cell"><span class="fs-label">Threat Actors Covered</span>6 + Shadow IT</div>
+    <div class="fs-cell"><span class="fs-label">Motivations Covered</span>8 distinct motivations</div>
+    <div class="fs-cell"><span class="fs-label">Exam Weight</span>Domain 2 = 22% of test</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Nation-State</button>
+  <button class="tab" onclick="go('s3',this)">3. Organized Crime</button>
+  <button class="tab" onclick="go('s4',this)">4. Hacktivists</button>
+  <button class="tab" onclick="go('s5',this)">5. Insider Threats</button>
+  <button class="tab" onclick="go('s6',this)">6. Unskilled Attackers</button>
+  <button class="tab" onclick="go('s7',this)">7. Shadow IT</button>
+  <button class="tab" onclick="go('s8',this)">8. Motivations</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 1. OVERVIEW            -->
+<!-- ═══════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Threat Actors Overview</span><span class="bdg" style="background:#fee2e2;color:#991b1b;border:1px solid #fca5a5">Who Attacks · Why · How</span></div>
+  <div class="card-bd">
+    <p>A <strong style="color:var(--tx)">threat actor</strong> is any individual, group, or entity that poses a risk to an organization's security. Understanding threat actors helps defenders prioritize controls, allocate budgets, and design defenses appropriate for the most likely attackers against their specific organization.</p>
+
+    <h3 style="border-left-color:var(--ns)">Why Threat Actor Identification Matters</h3>
+    <div class="code">
+<span class="cm"># Threat model drives your defense strategy:</span>
+
+Small accounting firm:
+  Most likely: organized crime (ransomware for financial gain)
+  Less likely: nation-state (you don't have state secrets)
+  Defense focus: backups, email security, patch management
+
+Hospital:
+  Likely: organized crime (patient data = high value)
+          nation-state (medical research = espionage target)
+  Critical: ransomware + IoMT security + HIPAA compliance
+
+Government contractor:
+  Likely: nation-state APT (you have cleared personnel + defense secrets)
+  Defense focus: CMMC compliance, strict access controls, CI security
+
+Critical infrastructure (power, water):
+  Likely: nation-state (sabotage/warfare capability)
+  Defense focus: OT/ICS security, air gaps, NERC CIP
+
+<span class="cm"># Key insight: knowing the actor tells you what controls matter most</span>
+    </div>
+
+    <h3 style="border-left-color:var(--ns)">Threat Actor Sophistication Spectrum</h3>
+    <div class="soph-scale">
+      <div class="soph-cell" style="background:#f0f0f0">
+        <div class="soph-num" style="color:var(--un)">1</div>
+        <div class="soph-label" style="color:var(--un)">Script Kiddie</div>
+        <div class="soph-who">Uses others' tools<br>No custom capability</div>
+      </div>
+      <div class="soph-cell" style="background:#f5f0f8">
+        <div class="soph-num" style="color:var(--hv)">2</div>
+        <div class="soph-label" style="color:var(--hv)">Hacktivist</div>
+        <div class="soph-who">Moderate skills<br>Ideological motive</div>
+      </div>
+      <div class="soph-cell" style="background:#fff0f0">
+        <div class="soph-num" style="color:var(--it)">3</div>
+        <div class="soph-label" style="color:var(--it)">Insider</div>
+        <div class="soph-who">Legitimate access<br>Variable skill</div>
+      </div>
+      <div class="soph-cell" style="background:#f0f0ff">
+        <div class="soph-num" style="color:var(--oc)">4</div>
+        <div class="soph-label" style="color:var(--oc)">Org Crime</div>
+        <div class="soph-who">High capability<br>Financial motive</div>
+      </div>
+      <div class="soph-cell" style="background:#fff8f0">
+        <div class="soph-num" style="color:var(--ns)">5</div>
+        <div class="soph-label" style="color:var(--ns)">Nation-State</div>
+        <div class="soph-who">Most sophisticated<br>Unlimited resources</div>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--ns)">Key Attributes to Know for Each Actor</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#fca5a5">
+        <h4 style="color:var(--ns)">Sophistication / Capability</h4>
+        <p>What technical skill level does this actor have? Can they develop zero-days? Do they use off-the-shelf tools? Do they have persistent access teams? Shapes: what defenses are effective against them.</p>
+      </div>
+      <div class="gc" style="border-color:#fde68a">
+        <h4 style="color:var(--it)">Resources / Funding</h4>
+        <p>How much money and time can this actor dedicate to an attack? Nation-states: effectively unlimited. Script kiddies: near zero. Resources determine persistence and scale of attack.</p>
+      </div>
+      <div class="gc" style="border-color:#93c5fd">
+        <h4 style="color:var(--oc)">Motivation / Intent</h4>
+        <p>What does this actor want? Financial gain, espionage, disruption, ideology? Motivation determines targets, tactics, and what data/systems are at risk. Critical for threat modeling.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Threat actor →</span><span>Individual, group, or entity posing security risk — understanding them drives defense priorities</span></div>
+      <div class="er"><span class="ek">Three actor attributes →</span><span>Sophistication (skill), Resources (funding/time), Motivation (what they want)</span></div>
+      <div class="er"><span class="ek">Threat modeling →</span><span>Identify likely actors for YOUR org → prioritize appropriate defenses</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 2. NATION-STATE         -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s2">
+<div class="actor">
+  <div class="actor-banner" style="background:linear-gradient(135deg,#2a0508,#1c1810)">
+    <span class="actor-emoji">🏴</span>
+    <div>
+      <div class="actor-name" style="color:#ff8080">Nation-State / APT</div>
+      <div class="actor-subtitle" style="color:#a07070">Advanced Persistent Threat · State-Sponsored</div>
+    </div>
+    <span class="bdg" style="margin-left:auto;background:#400008;color:#ff8080;border:1px solid #800010">HIGHEST SOPHISTICATION</span>
+  </div>
+  <div class="actor-stats">
+    <div class="astat"><span class="astat-label">Sophistication</span><span class="astat-val" style="color:var(--ns)">Maximum</span></div>
+    <div class="astat"><span class="astat-label">Resources</span><span class="astat-val" style="color:var(--ns)">Unlimited</span></div>
+    <div class="astat"><span class="astat-label">Patience</span><span class="astat-val" style="color:var(--ns)">Years</span></div>
+    <div class="astat"><span class="astat-label">Primary Goal</span><span class="astat-val" style="color:var(--ns)">Espionage</span></div>
+  </div>
+  <div class="actor-body">
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--ns)">Definition</span>
+      <span class="actor-row-body">Hackers working directly for or sponsored by a government. The most sophisticated and well-resourced threat actors. Operate with near-unlimited budgets, teams of specialists, and government intelligence resources. Sometimes called APTs — Advanced Persistent Threats — because they maintain long-term, stealthy access rather than smash-and-grab attacks.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--ns)">Motivations</span>
+      <span class="actor-row-body">Espionage (steal classified/military/industrial secrets), sabotage (damage critical infrastructure), pre-positioning (establish access for future use in wartime), influence operations (election interference, disinformation), economic advantage (steal R&D to benefit domestic industry).</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--ns)">Targets</span>
+      <span class="actor-row-body">Government agencies, defense contractors, critical infrastructure (power grids, water, financial systems), advanced technology companies (semiconductors, aerospace, pharma), political organizations, think tanks, universities with classified research.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--ns)">Tactics / TTPs</span>
+      <span class="actor-row-body">Zero-day exploits (purchased or developed in-house), supply chain attacks (SolarWinds), spear phishing with extensive OSINT, custom malware families, watering hole attacks, living-off-the-land (use legitimate tools to avoid detection), long dwell time (months to years without detection).</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--ns)">Notable Examples</span>
+      <span class="actor-row-body">Russia (APT28/Fancy Bear — 2016 election), China (APT41 — intellectual property theft), North Korea (Lazarus Group — financial theft + Sony Pictures), Iran (OilRig — Middle East energy), SolarWinds 2020 (Russia — ~18,000 orgs compromised).</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--ns)">APT Explained</span>
+      <span class="actor-row-body">Advanced: custom tools, zero-days, deep technical capability. Persistent: stay hidden for months/years, patient, re-establish access if detected. Threat: clear adversarial intent, targeted rather than opportunistic. Nation-states and sophisticated cybercriminal groups both qualify as APTs.</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><span class="card-num">NS</span><span class="card-title" style="color:var(--ns)">Nation-State: Deep Dive</span><span class="bdg" style="background:#fee2e2;color:#991b1b;border:1px solid #fca5a5">APT Lifecycle</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--ns)">The APT Attack Lifecycle</h3>
+    <div class="code">
+<span class="cm"># Nation-state APT doesn't smash and grab — methodical, patient:</span>
+
+Phase 1 — RECONNAISSANCE (months):
+  OSINT on target org and employees
+  Identify: technology stack, key personnel, supply chain vendors
+  Social media: who uses what tools, who travels when, org chart
+
+Phase 2 — INITIAL ACCESS (careful, often via supply chain or spear phish):
+  Spear phish targeting specific employee with relevant context
+  OR: supply chain compromise (SolarWinds model)
+  OR: zero-day against internet-facing service
+  Goal: minimal footprint — avoid detection
+
+Phase 3 — ESTABLISH FOOTHOLD:
+  Install custom backdoor / implant
+  Test: C2 (command and control) connectivity
+  Maintain: multiple redundant persistence mechanisms
+
+Phase 4 — ESCALATE PRIVILEGE:
+  Move from user → admin → domain admin
+  Credential theft: Mimikatz, pass-the-hash
+  Kerberoasting, DCSync to get domain credentials
+
+Phase 5 — LATERAL MOVEMENT (slow, deliberate, low noise):
+  Move to high-value systems without triggering alerts
+  Use legitimate tools: PsExec, WMI, RDP (blend into normal traffic)
+  Map: what data exists, where is it, who has access
+
+Phase 6 — EXFILTRATION (slow, encrypted, small chunks):
+  Compress + encrypt data → stage in inconspicuous location
+  Exfil over long period via allowed protocols (HTTPS, DNS)
+  Blend with normal traffic patterns
+
+Phase 7 — MAINTAIN ACCESS (years):
+  Remain hidden after objectives met
+  Re-entry: if discovered, multiple backdoors ensure return
+  Average dwell time: 204 days (industry average)
+    </div>
+    <h3 style="border-left-color:var(--ns)">Capabilities That Set Nation-States Apart</h3>
+    <div class="cap-row"><span class="cap-name" style="color:var(--ns)">Zero-day exploits</span><div class="cap-bar"><div class="cap-fill" style="width:95%;background:var(--ns)"></div></div><span class="cap-note">Purchase or develop in-house</span></div>
+    <div class="cap-row"><span class="cap-name" style="color:var(--ns)">Custom malware</span><div class="cap-bar"><div class="cap-fill" style="width:90%;background:var(--ns)"></div></div><span class="cap-note">Unique to each campaign</span></div>
+    <div class="cap-row"><span class="cap-name" style="color:var(--ns)">OPSEC</span><div class="cap-bar"><div class="cap-fill" style="width:92%;background:var(--ns)"></div></div><span class="cap-note">Extreme anti-forensics</span></div>
+    <div class="cap-row"><span class="cap-name" style="color:var(--ns)">Supply chain attacks</span><div class="cap-bar"><div class="cap-fill" style="width:85%;background:var(--ns)"></div></div><span class="cap-note">SolarWinds model</span></div>
+    <div class="cap-row"><span class="cap-name" style="color:var(--ns)">Dwell time</span><div class="cap-bar"><div class="cap-fill" style="width:95%;background:var(--ns)"></div></div><span class="cap-note">Months to years undetected</span></div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Nation-state →</span><span>Government-sponsored — maximum sophistication — unlimited resources — espionage focus</span></div>
+      <div class="er"><span class="ek">APT →</span><span>Advanced Persistent Threat — long dwell time — stealthy — targeted not opportunistic</span></div>
+      <div class="er"><span class="ek">Nation-state motivation →</span><span>Espionage, sabotage, pre-positioning, economic advantage, influence operations</span></div>
+      <div class="er"><span class="ek">Nation-state targets →</span><span>Government, defense, critical infrastructure, advanced technology, political orgs</span></div>
+      <div class="er"><span class="ek">Living off the land →</span><span>Use legitimate system tools to evade detection — PSExec, WMI, PowerShell</span></div>
+      <div class="er"><span class="ek">Dwell time →</span><span>Average 204 days before detection — nation-states can persist for years</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 3. ORGANIZED CRIME      -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s3">
+<div class="actor">
+  <div class="actor-banner" style="background:linear-gradient(135deg,#080a20,#1c1810)">
+    <span class="actor-emoji">💀</span>
+    <div>
+      <div class="actor-name" style="color:#8090ff">Organized Crime</div>
+      <div class="actor-subtitle" style="color:#707090">Cybercriminal Groups · Ransomware Gangs · Financial Fraud</div>
+    </div>
+    <span class="bdg" style="margin-left:auto;background:#0c1040;color:#8090ff;border:1px solid #1820a0">FINANCIAL MOTIVE</span>
+  </div>
+  <div class="actor-stats">
+    <div class="astat"><span class="astat-label">Sophistication</span><span class="astat-val" style="color:var(--oc)">High</span></div>
+    <div class="astat"><span class="astat-label">Resources</span><span class="astat-val" style="color:var(--oc)">High</span></div>
+    <div class="astat"><span class="astat-label">Patience</span><span class="astat-val" style="color:var(--oc)">Medium</span></div>
+    <div class="astat"><span class="astat-label">Primary Goal</span><span class="astat-val" style="color:var(--oc)">Money</span></div>
+  </div>
+  <div class="actor-body">
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--oc)">Definition</span>
+      <span class="actor-row-body">Professional criminal organizations operating online for financial profit. Run like businesses — with HR, technical support desks, affiliate programs (Ransomware-as-a-Service), and customer service for ransom negotiations. Often operate from jurisdictions where they're unlikely to be extradited.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--oc)">Motivations</span>
+      <span class="actor-row-body">Purely financial. Ransomware (encrypt files → demand payment), data theft (sell on dark web markets), business email compromise (BEC — trick finance into wire transfers), credit card fraud, cryptojacking (use victim's resources to mine cryptocurrency), banking trojans.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--oc)">Targets</span>
+      <span class="actor-row-body">Anyone who has money or valuable data — opportunistic. High-value: healthcare (HIPAA fines increase ransom pressure), financial services, manufacturing (high downtime cost), education, local/state government (understaffed IT, critical services). Ransomware: targets based on ability to pay AND critical nature of operations.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--oc)">Tactics / TTPs</span>
+      <span class="actor-row-body">Phishing campaigns at scale, RaaS (Ransomware-as-a-Service), initial access brokers (buy network access from IABs), double extortion (encrypt AND threaten to publish), BEC targeting CFO/finance, credential stuffing attacks, dark web data sales.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--oc)">Notable Examples</span>
+      <span class="actor-row-body">LockBit (RaaS — most prolific 2022-2024), Conti (healthcare — $180M 2021), REvil/Sodinokibi (Kaseya 2021, Colonial Pipeline-adjacent), FIN7 (financial fraud — Carbanak bank heist $1B), Evil Corp (financial trojans from Russia).</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><span class="card-num">OC</span><span class="card-title" style="color:var(--oc)">Organized Crime Deep Dive</span><span class="bdg" style="background:#dbeafe;color:#1e40af;border:1px solid #93c5fd">RaaS · BEC · Double Extortion</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--oc)">Ransomware as a Service (RaaS)</h3>
+    <div class="code">
+<span class="cm"># RaaS — crime organized like a business franchise:</span>
+
+RaaS Operators (the developers):
+  Build and maintain ransomware platform
+  Provide: malware, C2 infrastructure, payment portal,
+           negotiation support, decryption service
+  Take: 20-30% of each ransom payment
+
+Affiliates (the attackers):
+  Purchase access to RaaS platform
+  Handle: initial compromise, lateral movement, deployment
+  Keep: 70-80% of ransom payment
+  No coding required — plug-and-play crime
+
+Initial Access Brokers (IABs):
+  Specialize in gaining initial access
+  Sell: VPN credentials, compromised admin accounts
+  Price: $50-$100,000 depending on org size and access level
+  Affiliates buy access → deploy ransomware
+
+<span class="cm"># Double extortion evolution:</span>
+Original: encrypt files → pay for decryption key
+Double:   encrypt files + steal data → pay or we publish
+Triple:   encrypt + steal + DDoS + contact customers directly
+
+<span class="cg"># Why this model is effective:</span>
+Healthcare: pay quickly — patient safety
+Government: pay to restore services  
+Manufacturing: every hour offline = massive revenue loss
+    </div>
+
+    <h3 style="border-left-color:var(--oc)">Business Email Compromise (BEC)</h3>
+    <div class="info-row">
+      <div class="info-icon">📧</div>
+      <div>
+        <div class="info-title" style="color:var(--oc)">BEC — The $2.7 Billion Scam</div>
+        <div class="info-desc">Attackers compromise or spoof executive email accounts to trick employees into making fraudulent wire transfers or gift card purchases. Classic: attacker poses as CEO to CFO — "I need you to wire $250K to this account urgently for a confidential acquisition. Don't discuss with anyone." FBI: BEC is the highest-loss cybercrime — $2.7B in 2022. Defense: dual-approval for wire transfers, out-of-band verification, no "urgent secrecy" bypass of process.</div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Organized crime motivation →</span><span>Financial gain — money is the sole driver — not ideology or espionage</span></div>
+      <div class="er"><span class="ek">RaaS →</span><span>Ransomware-as-a-Service — operators + affiliates — IABs sell access — criminal franchise model</span></div>
+      <div class="er"><span class="ek">Double extortion →</span><span>Encrypt files AND steal data — pay or we publish — increases ransom pressure</span></div>
+      <div class="er"><span class="ek">BEC →</span><span>Business Email Compromise — CEO/exec impersonation — wire transfer fraud — $2.7B annual losses</span></div>
+      <div class="er"><span class="ek">Cryptojacking →</span><span>Use victim's CPU/GPU to mine cryptocurrency — slow performance — financial gain for attacker</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 4. HACKTIVISTS          -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s4">
+<div class="actor">
+  <div class="actor-banner" style="background:linear-gradient(135deg,#150a28,#1c1810)">
+    <span class="actor-emoji">✊</span>
+    <div>
+      <div class="actor-name" style="color:#c090ff">Hacktivists</div>
+      <div class="actor-subtitle" style="color:#907098">Ideology-Driven · Social/Political Agenda · Anonymous</div>
+    </div>
+    <span class="bdg" style="margin-left:auto;background:#200838;color:#c090ff;border:1px solid #401060">IDEOLOGY MOTIVE</span>
+  </div>
+  <div class="actor-stats">
+    <div class="astat"><span class="astat-label">Sophistication</span><span class="astat-val" style="color:var(--hv)">Low–Medium</span></div>
+    <div class="astat"><span class="astat-label">Resources</span><span class="astat-val" style="color:var(--hv)">Low</span></div>
+    <div class="astat"><span class="astat-label">Patience</span><span class="astat-val" style="color:var(--hv)">Short</span></div>
+    <div class="astat"><span class="astat-label">Primary Goal</span><span class="astat-val" style="color:var(--hv)">Publicity</span></div>
+  </div>
+  <div class="actor-body">
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--hv)">Definition</span>
+      <span class="actor-row-body">Hackers motivated by a political, social, or ideological cause rather than financial gain. "Hacking as activism." Want to: embarrass targets, disrupt operations, make a political statement, raise awareness of their cause. Often loosely organized — Anonymous being the most famous example.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--hv)">Motivations</span>
+      <span class="actor-row-body">Ideological — environmental, political, social justice, anti-government, anti-corporate, anti-war. Goal: embarrass the target, disrupt their operations, leak embarrassing information, or make a public statement. They want publicity and attention for their cause more than financial gain.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--hv)">Targets</span>
+      <span class="actor-row-body">Organizations they disagree with politically or ethically: corporations they view as corrupt, government agencies involved in controversial activities, media organizations, banks, oil companies, religious organizations. Opportunistic within their cause — whoever makes the best political statement.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--hv)">Tactics / TTPs</span>
+      <span class="actor-row-body">DDoS attacks (most common — Low Orbit Ion Cannon/LOIC), website defacement (replace homepage with political message), doxing (publish personal info of targets), data leaks (steal and publish embarrassing documents), social media campaigns to amplify attacks.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--hv)">Notable Examples</span>
+      <span class="actor-row-body">Anonymous (widespread DDoS/defacement — HBGary, Church of Scientology, governments), LulzSec (Sony, FBI, CIA), Killnet (pro-Russia DDoS — Ukraine war), Sudan (pro-Sudanese DDoS), WikiLeaks (data leaking — different but related model).</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><span class="card-num">HV</span><span class="card-title" style="color:var(--hv)">Hacktivists Deep Dive</span><span class="bdg" style="background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe">DDoS · Defacement · Doxing</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--hv)">Hacktivist Tactics</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#d8b4fe">
+        <h4 style="color:var(--hv)">DDoS Attacks</h4>
+        <p>Overwhelm a website or service with traffic until it goes offline. Easy to participate — low technical barrier. LOIC (Low Orbit Ion Cannon): GUI tool anyone can run. Hivemind DDoS: coordinate via IRC/Telegram. Makes a statement: "look what we can do." Mitigation: DDoS protection services (Cloudflare, Akamai).</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--ns)">Website Defacement</h4>
+        <p>Deface the target's homepage with political message. High visual impact — media coverage. Exploits CMS vulnerabilities (WordPress, Drupal) or SQL injection. Goal: embarrass the org, spread the message. Defense: WAF, patching, file integrity monitoring on web server.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--oc)">Data Leaks / Doxing</h4>
+        <p>Steal and publish sensitive documents or personal information. Embarrass leadership, expose wrongdoing. Doxing: publish private information (home address, phone, family) of specific individuals. Chilling effect on targets. Defense: DLP, encryption, access control on sensitive data.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Real World — Anonymous vs HBGary Federal (2011)</div>
+      <div class="code">
+<span class="cm"># HBGary Federal CEO claimed he could unmask Anonymous leaders:</span>
+Response: Anonymous compromised HBGary Federal systems
+  Stolen: 70,000 emails → published on internet
+  Content: embarrassing internal communications, client info
+  CEO resigned within days
+  Company folded
+
+What Anonymous used:
+  SQL injection on HBGary's CMS website
+  Social engineering HBGary's SysAdmin (via phone)
+  Password reuse: same password as leaked site → corporate email
+  
+<span class="cg">Lesson: hacktivists motivated by retaliation + ideology</span>
+<span class="cg">Defense: patch CMS, unique passwords, MFA, don't provoke them</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Hacktivist motivation →</span><span>Ideology — political, social, environmental cause — NOT financial</span></div>
+      <div class="er"><span class="ek">Primary tactics →</span><span>DDoS (most common), website defacement, doxing, data leaks</span></div>
+      <div class="er"><span class="ek">Hacktivist goal →</span><span>Publicity and attention for their cause — embarrass target — political statement</span></div>
+      <div class="er"><span class="ek">Anonymous →</span><span>Most famous hacktivist group — loosely organized — DDoS and defacement campaigns</span></div>
+      <div class="er"><span class="ek">Doxing →</span><span>Publishing private personal information about a target — hacktivist tactic</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 5. INSIDER THREATS      -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s5">
+<div class="actor">
+  <div class="actor-banner" style="background:linear-gradient(135deg,#200800,#1c1810)">
+    <span class="actor-emoji">🎯</span>
+    <div>
+      <div class="actor-name" style="color:#ffb080">Insider Threats</div>
+      <div class="actor-subtitle" style="color:#a07050">Employees · Contractors · Trusted Insiders · Most Dangerous</div>
+    </div>
+    <span class="bdg" style="margin-left:auto;background:#300c00;color:#ffb080;border:1px solid #601800">TRUSTED ACCESS</span>
+  </div>
+  <div class="actor-stats">
+    <div class="astat"><span class="astat-label">Sophistication</span><span class="astat-val" style="color:var(--it)">Variable</span></div>
+    <div class="astat"><span class="astat-label">Resources</span><span class="astat-val" style="color:var(--it)">Low–Med</span></div>
+    <div class="astat"><span class="astat-label">Access</span><span class="astat-val" style="color:var(--it)">Legitimate</span></div>
+    <div class="astat"><span class="astat-label">Detection</span><span class="astat-val" style="color:var(--it)">Hardest</span></div>
+  </div>
+  <div class="actor-body">
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--it)">Definition</span>
+      <span class="actor-row-body">Current or former employees, contractors, partners, or anyone with legitimate authorized access to systems and data who poses a security risk. The most difficult threat to defend against because they start with legitimate access and their activity often looks like normal work. Insider threat ≠ always malicious — negligence is also a major category.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--it)">Three Types</span>
+      <span class="actor-row-body"><strong>Malicious Insider:</strong> intentionally harms org — theft, sabotage, espionage. <strong>Negligent Insider:</strong> accidental — clicks phishing link, loses laptop, misconfigures system, weak password. <strong>Compromised Insider:</strong> legitimate account taken over by external attacker — actions appear to be from trusted employee.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--it)">Motivations</span>
+      <span class="actor-row-body">Financial (selling data or access), revenge (disgruntled — fired, passed over for promotion, workplace conflict), ideology (leaking to press, competitor), coercion (forced by external actor or organized crime), curiosity (snooping on colleagues' data), ego (proving they can access restricted data).</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--it)">Why So Dangerous</span>
+      <span class="actor-row-body">Already inside security perimeter — no need to breach external controls. Has legitimate access to resources — hard to distinguish malicious activity from normal work. Knows where valuable data is and how to access it. May have physical access to hardware. Can disable or circumvent security controls. Traditional perimeter defenses irrelevant.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--it)">Warning Signs</span>
+      <span class="actor-row-body">Mass data download before resignation, accessing data outside normal job scope, unusual hours accessing sensitive systems, disgruntlement (conflicts, discipline, passed over), financial stress, recent job offer from competitor, accessing competitor or job search sites from work.</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><span class="card-num">IT</span><span class="card-title" style="color:var(--it)">Insider Threats Deep Dive</span><span class="bdg" style="background:#ffedd5;color:#9a3412;border:1px solid #fdba74">Detection · Prevention · Response</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--it)">Insider Threat Types — Compared</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Type</th><th>Intent</th><th>Skill Required</th><th>Example</th><th>Primary Control</th></tr>
+      <tr>
+        <td><span class="tag tr">Malicious</span></td>
+        <td>Deliberate harm/theft</td>
+        <td>Low (has access)</td>
+        <td>Employee downloads customer DB before resigning → sells to competitor</td>
+        <td>DLP, UBA, access monitoring, least privilege</td>
+      </tr>
+      <tr>
+        <td><span class="tag ty">Negligent</span></td>
+        <td>No malicious intent</td>
+        <td>N/A — accidental</td>
+        <td>Employee clicks phishing link / loses unencrypted laptop</td>
+        <td>Training, MFA, encryption, phishing simulation</td>
+      </tr>
+      <tr>
+        <td><span class="tag to">Compromised</span></td>
+        <td>External attacker using internal account</td>
+        <td>N/A — credential theft</td>
+        <td>Attacker steals credentials → acts as employee internally</td>
+        <td>MFA, impossible travel alerts, UBA, SIEM</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--it)">Detecting Insider Threats</h3>
+    <div class="code">
+<span class="cm"># Technical controls for insider threat detection:</span>
+
+User Behavior Analytics (UBA/UEBA):
+  Baseline: learn normal behavior patterns per user
+  Alert: deviation from baseline
+  Example: "Alice normally downloads 5 files/day. Today: 50,000 files"
+  Example: "Bob logged in from Moscow — he's normally in Toronto"
+
+DLP (Data Loss Prevention):
+  Monitor: what data is leaving and by what channel
+  Block or alert: sensitive data in email, USB, cloud upload
+  Pattern matching: SSNs, credit cards, classified markings
+
+Privileged Access Management (PAM):
+  Session recording: all admin sessions recorded
+  Just-in-time: access granted only when needed, then revoked
+  Approval workflow: admin actions require second-party approval
+
+Access reviews:
+  Quarterly: managers certify what their employees still need
+  Separation of duties: critical actions require two people
+  Least privilege: people only have what their job requires
+
+<span class="cm"># Non-technical indicators to watch for:</span>
+HR flag:  formal discipline, performance issues, resignation notice
+Finance:  sudden financial stress, legal troubles
+Access:   requesting access outside normal scope
+Network:  visiting job search sites, competitor pages on work systems
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — The Disgruntled IT Admin</div>
+      <div class="code">
+<span class="cm"># IT admin loses promotion → become security risk:</span>
+
+Timeline:
+  Week 1: Admin learns junior colleague got promotion they expected
+  Week 2: Admin visits job search sites from work computer
+  Week 3: Admin begins copying server configs to personal Dropbox
+  Week 4: Admin accepts job offer — gives 2-week notice
+  Day before last: Admin deletes critical virtual machines
+  Last day: Admin uses still-active VPN credential → exfils data
+
+What would have caught it:
+  <span class="cb">UBA alert Week 3:</span> unusual Dropbox uploads from admin account
+  <span class="cg">DLP alert Week 3:</span> config files being copied to personal cloud
+  <span class="cg">HR flag to security:</span> performance issue + resignation = elevated risk
+  <span class="cg">Access revocation:</span> VPN should have been disabled on last day
+  <span class="cg">Separation of duties:</span> VM deletion should require second approval
+
+<span class="co">Lesson: insider threat requires people + process + technology</span>
+<span class="co">No single technical control is sufficient</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Insider threat types →</span><span>Malicious (deliberate), Negligent (accidental), Compromised (attacker using insider's account)</span></div>
+      <div class="er"><span class="ek">Why hardest to detect →</span><span>Legitimate access — activity looks normal — already inside perimeter</span></div>
+      <div class="er"><span class="ek">UBA/UEBA →</span><span>User Behavior Analytics — baseline normal + alert on deviation — key insider threat control</span></div>
+      <div class="er"><span class="ek">DLP →</span><span>Data Loss Prevention — monitors data leaving org — key control against data exfiltration</span></div>
+      <div class="er"><span class="ek">Least privilege →</span><span>Limit blast radius — insider can only steal/damage what they have access to</span></div>
+      <div class="er"><span class="ek">Negligent insider →</span><span>Biggest actual category — accidental — phishing clicks, lost devices, misconfigs</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 6. UNSKILLED ATTACKERS  -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s6">
+<div class="actor">
+  <div class="actor-banner" style="background:linear-gradient(135deg,#181818,#1c1810)">
+    <span class="actor-emoji">🧑‍💻</span>
+    <div>
+      <div class="actor-name" style="color:#b0b0b0">Unskilled Attackers</div>
+      <div class="actor-subtitle" style="color:#808080">Script Kiddies · Low Skill · Opportunistic</div>
+    </div>
+    <span class="bdg" style="margin-left:auto;background:#282828;color:#b0b0b0;border:1px solid #505050">LOWEST SOPHISTICATION</span>
+  </div>
+  <div class="actor-stats">
+    <div class="astat"><span class="astat-label">Sophistication</span><span class="astat-val" style="color:var(--un)">Very Low</span></div>
+    <div class="astat"><span class="astat-label">Resources</span><span class="astat-val" style="color:var(--un)">Minimal</span></div>
+    <div class="astat"><span class="astat-label">Patience</span><span class="astat-val" style="color:var(--un)">Low</span></div>
+    <div class="astat"><span class="astat-label">Scale</span><span class="astat-val" style="color:var(--un)">Very High</span></div>
+  </div>
+  <div class="actor-body">
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--un)">Definition</span>
+      <span class="actor-row-body">Individuals with limited or no technical skills who use pre-built tools, scripts, and exploit kits created by others. Also called "script kiddies." They don't understand how the attacks work — they just run the tools. Volume compensates for skill: automated scanning can hit millions of targets. Even basic defenses stop most of these attacks.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--un)">Motivations</span>
+      <span class="actor-row-body">Thrill/bragging rights, curiosity, low-level financial gain (selling compromised accounts), attention/recognition in online communities, following tutorial videos ("I want to hack my ex's account"). Mixed — not purely financial or ideological. Sometimes they stumble into a more serious attack without realizing it.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--un)">How They Work</span>
+      <span class="actor-row-body">Download pre-made exploit kits, use Metasploit without understanding it, run automated scanners (Shodan, Nmap), use leaked credential databases for credential stuffing, buy "hack tools" on dark web forums, watch YouTube/tutorial videos. Target selection: opportunistic — attack whoever is vulnerable, not specific targets.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--un)">Why They Still Matter</span>
+      <span class="actor-row-body">Volume: millions of automated scans per day. Unpatched systems, default credentials, known CVEs — all easily exploited by unskilled attackers. You don't need sophistication to exploit a system that never changed its default router password. Basic hygiene (patches, no defaults, MFA) stops virtually all unskilled attacks.</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><span class="card-num">SK</span><span class="card-title" style="color:var(--un)">Unskilled Attackers Deep Dive</span><span class="bdg" style="background:#f1f5f9;color:#334155;border:1px solid #cbd5e1">Script Kiddies · Tools · Defense</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--un)">Tools Used by Unskilled Attackers</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--un)">Automated Scanning</h4>
+        <p>Shodan/Censys: finds internet-connected devices with known vulnerabilities or default credentials. Nmap: port scanner — finds open services. Nikto/WPScan: automated web vulnerability scanner. These require zero expertise to run — point at a target and click.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--un)">Pre-Built Exploit Kits</h4>
+        <p>Metasploit Framework: pre-built exploits with GUI — "select target, select exploit, click execute." Published PoC code from CVE databases. Dark web exploit kits: pre-packaged attacks sold cheaply. They don't need to understand — they just run the tool.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--un)">Credential-Based Attacks</h4>
+        <p>Credential stuffing: use leaked username/password databases. Password spraying: try common passwords against many accounts. Hydra/Medusa: brute force tools anyone can run. Leaked databases from Have I Been Pwned — billions of credentials available.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--mu)">Defense is Simple</h4>
+        <p>Patch known CVEs: unskilled attackers can't exploit what's patched. Change default credentials: they're looking for admin/admin. MFA: credential stuffing fails. Close unused ports: nothing to scan. Basic hygiene stops 99% of unskilled attacks.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Script kiddie / unskilled →</span><span>Uses others' tools — no custom capability — opportunistic — volume compensates for skill</span></div>
+      <div class="er"><span class="ek">Motivation →</span><span>Mixed: thrill, curiosity, bragging rights, minor financial gain</span></div>
+      <div class="er"><span class="ek">Why they matter →</span><span>High volume — hit millions of targets — basic defenses stop them</span></div>
+      <div class="er"><span class="ek">Defense →</span><span>Patch CVEs + change defaults + MFA + close unused ports = stops virtually all unskilled attacks</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 7. SHADOW IT            -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s7">
+<div class="actor">
+  <div class="actor-banner" style="background:linear-gradient(135deg,#081810,#1c1810)">
+    <span class="actor-emoji">🖥️</span>
+    <div>
+      <div class="actor-name" style="color:#70dfa0">Shadow IT</div>
+      <div class="actor-subtitle" style="color:#507060">Unauthorized Technology · Unmanaged Risk · Not Always Malicious</div>
+    </div>
+    <span class="bdg" style="margin-left:auto;background:#0c2818;color:#70dfa0;border:1px solid #184830">INTERNAL RISK</span>
+  </div>
+  <div class="actor-stats">
+    <div class="astat"><span class="astat-label">Intent</span><span class="astat-val" style="color:var(--sh)">Usually Benign</span></div>
+    <div class="astat"><span class="astat-label">Risk Level</span><span class="astat-val" style="color:var(--sh)">High</span></div>
+    <div class="astat"><span class="astat-label">Visibility</span><span class="astat-val" style="color:var(--sh)">Low</span></div>
+    <div class="astat"><span class="astat-label">Scale</span><span class="astat-val" style="color:var(--sh)">Widespread</span></div>
+  </div>
+  <div class="actor-body">
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--sh)">Definition</span>
+      <span class="actor-row-body">IT systems, software, services, or devices that are used within an organization without explicit IT approval or oversight. NOT always malicious — usually employees trying to be more productive. The risk is: IT/security doesn't know about it, can't manage it, can't secure it, can't audit it. Classic: employees using personal Dropbox for work files because corporate OneDrive is "too slow."</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--sh)">Why It Happens</span>
+      <span class="actor-row-body">IT processes too slow — employee needs a tool now, can't wait 3 weeks for approval. Approved tools don't meet needs — personal Gmail is easier than corporate email. Bring Your Own Device (BYOD) without proper MDM enrollment. Remote work: employees set up home systems outside IT's visibility. "I'll just use my own laptop for this — it's faster."</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--sh)">Examples</span>
+      <span class="actor-row-body">Personal Dropbox/Google Drive with work files, unauthorized SaaS apps (Slack, Trello, Notion when not corporate-approved), personal laptops used for work, unapproved IoT devices connected to office network, personal email used for work communications, browser extensions that access work data.</span>
+    </div>
+    <div class="actor-row">
+      <span class="actor-row-label" style="color:var(--sh)">Security Risks</span>
+      <span class="actor-row-body">Data stored in unmanaged cloud = breach nobody knows happened. Unpatched personal devices = attack entry point. No MFA on personal services = easy credential theft. Data sovereignty: files stored in unapproved jurisdiction (GDPR concern). Compliance: auditors ask about data handling — shadow IT means you can't answer. No backup, no recovery, no DLP.</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-hd"><span class="card-num">SIT</span><span class="card-title" style="color:var(--sh)">Shadow IT Deep Dive</span><span class="bdg" style="background:#dcfce7;color:#166534;border:1px solid #86efac">Discovery · Risk · Policy</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--sh)">Shadow IT Security Impact</h3>
+    <div class="code">
+<span class="cm"># Real security consequences of shadow IT:</span>
+
+<span class="cr">Scenario 1 — The Personal Dropbox:</span>
+  Finance employee stores client contracts in personal Dropbox
+  Personal Dropbox: no MFA enabled, reused password
+  Password breach: Dropbox credentials in leaked database
+  Attacker accesses: all client contracts — GDPR/contractual breach
+  Organization: didn't know data was there → couldn't prevent → couldn't detect
+
+<span class="cr">Scenario 2 — The Personal Laptop:</span>
+  Developer uses personal laptop because "it's faster"
+  Personal laptop: no EDR, no patch management, no DLP
+  Malware from pirated software: keylogger installed
+  Keylogger captures: corporate VPN credentials, GitHub tokens
+  Attacker: accesses corporate code repository
+
+<span class="cr">Scenario 3 — The Rogue IoT:</span>
+  Marketing team buys smart TV for conference room without IT approval
+  TV ships with old firmware, default credentials
+  TV: sits on corporate network, never patched
+  Attacker: uses TV as pivot point onto corporate network
+
+<span class="cg">Common thread: IT/Security has NO visibility, NO control, NO ability to respond</span>
+    </div>
+    <h3 style="border-left-color:var(--sh)">Shadow IT Detection and Controls</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#86efac">
+        <h4 style="color:var(--sh)">Detection</h4>
+        <ul>
+          <li>CASB (Cloud Access Security Broker): discover what cloud services employees are using</li>
+          <li>Network monitoring: DNS queries to unapproved SaaS services</li>
+          <li>SIEM: unusual outbound connections to new cloud providers</li>
+          <li>DLP: data going to unauthorized destinations</li>
+          <li>Asset discovery: scan for unknown devices on network</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--it)">Prevention</h4>
+        <ul>
+          <li>Approved tools list: fast approval process so employees don't go rogue</li>
+          <li>Web proxy: block access to unapproved SaaS categories</li>
+          <li>Endpoint policy: restrict unauthorized software installation</li>
+          <li>Network access control: only approved devices on corporate network</li>
+          <li>Security awareness: train employees on why shadow IT is risky</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Shadow IT →</span><span>Unauthorized IT systems/services — usually not malicious — security can't manage what it doesn't know exists</span></div>
+      <div class="er"><span class="ek">Shadow IT risk →</span><span>Unmanaged devices, unmonitored data, no patches, no DLP, compliance violations</span></div>
+      <div class="er"><span class="ek">CASB →</span><span>Cloud Access Security Broker — discovers and controls unapproved cloud service usage — shadow IT detection</span></div>
+      <div class="er"><span class="ek">Why it happens →</span><span>IT processes too slow — employees need tools now — approved tools don't meet needs</span></div>
+      <div class="er"><span class="ek">Solution →</span><span>Fast approval process + CASB + web proxy + awareness training + NAC</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 8. MOTIVATIONS          -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Attack Motivations</span><span class="bdg" style="background:#fef9c3;color:#713f12;border:1px solid #fde047">Why They Attack</span></div>
+  <div class="card-bd">
+    <p>Understanding <strong style="color:var(--tx)">why a threat actor attacks helps predict what they will target, how they will attack, and when they will stop</strong>. Motivation drives everything from target selection to tactics to persistence.</p>
+
+    <div class="motiv" style="border-left-color:var(--m1);background:#fff8f0">
+      <div class="motiv-icon">💰</div>
+      <div>
+        <div class="motiv-title" style="color:var(--m1)">Financial Gain</div>
+        <div class="motiv-body">The most common motivation. Attackers want money — directly or through theft of sellable assets. Includes: ransomware (pay or lose data), data theft (sell on dark web), BEC wire fraud, cryptojacking, banking trojans, credit card theft. Primary actors: organized crime groups. Defense relevance: financial actors stop when the money isn't worth the effort — make attacks economically expensive.</div>
+      </div>
+    </div>
+
+    <div class="motiv" style="border-left-color:var(--m2);background:#f0f4ff">
+      <div class="motiv-icon">🔍</div>
+      <div>
+        <div class="motiv-title" style="color:var(--m2)">Espionage</div>
+        <div class="motiv-body">Stealing secrets — government, military, corporate, or diplomatic. State espionage: steal classified documents, military blueprints, diplomatic cables. Corporate espionage: steal trade secrets, product designs, customer lists, business strategies. Can be: nation-state stealing from foreign governments OR corporations, or competitors hiring hackers. Primary actors: nation-states, sometimes organized crime hired by state actors.</div>
+      </div>
+    </div>
+
+    <div class="motiv" style="border-left-color:var(--m3);background:#f0fff8">
+      <div class="motiv-icon">💣</div>
+      <div>
+        <div class="motiv-title" style="color:var(--m3)">Disruption / Sabotage</div>
+        <div class="motiv-body">Destroy, disrupt, or damage the target's operations — availability attacks. DoS/DDoS: make service unavailable. Destructive malware: wipe data, destroy systems (NotPetya 2017 — $10B damage). Physical infrastructure attacks: power grids, water treatment (Stuxnet). Ransom without intent to restore: pure destruction. Primary actors: nation-states (wartime, geopolitical), hacktivists (attention), terrorists.</div>
+      </div>
+    </div>
+
+    <div class="motiv" style="border-left-color:var(--m4);background:#faf0ff">
+      <div class="motiv-icon">✊</div>
+      <div>
+        <div class="motiv-title" style="color:var(--m4)">Ideology / Hacktivism</div>
+        <div class="motiv-body">Attack driven by belief — political, social, religious, environmental. Want to: make a statement, embarrass the target, expose wrongdoing, advance a cause. Not primarily financial — willing to risk themselves for the cause. Can overlap with state actors (state uses ideology as cover). Primary actors: hacktivists (Anonymous), sometimes insider threats (whistleblowers).</div>
+      </div>
+    </div>
+
+    <div class="motiv" style="border-left-color:var(--sh);background:#f0fff4">
+      <div class="motiv-icon">📊</div>
+      <div>
+        <div class="motiv-title" style="color:var(--sh)">Data Exfiltration</div>
+        <div class="motiv-body">Steal data for any subsequent use — sale, espionage, leverage, competitive advantage. Distinct from pure financial because the data itself is the prize, not a secondary asset. PII: sell for identity theft. IP: sell to competitor or government. Credentials: use to access more systems. Health data: HIPAA fine leverage. All major actor types exfiltrate data — they just use it differently.</div>
+      </div>
+    </div>
+
+    <div class="motiv" style="border-left-color:var(--mu);background:#f8f6f0">
+      <div class="motiv-icon">😤</div>
+      <div>
+        <div class="motiv-title" style="color:var(--tx)">Revenge / Retaliation</div>
+        <div class="motiv-body">Personal grievance drives the attack. Disgruntled employee attacks former employer after termination. Hacktivist retaliates after org attacks their cause (Anonymous vs HBGary). Nation-state retaliates for sanctions or cyber operations. Revenge attackers are particularly dangerous: they have inside knowledge and strong motivation. Defense: thorough offboarding + revoking all access immediately.</div>
+      </div>
+    </div>
+
+    <div class="motiv" style="border-left-color:var(--it);background:#fff8f0">
+      <div class="motiv-icon">⚔️</div>
+      <div>
+        <div class="motiv-title" style="color:var(--it)">Chaos / Anarchism</div>
+        <div class="motiv-body">Attack just to cause chaos — no specific goal. Some hacktivists ("for the lulz"), some insiders with no specific agenda, some state actors who want to demonstrate capability or destabilize. NotPetya was a political weapon disguised as ransomware — no intent to let victims recover. Hard to reason about — no clear "what do they want" to negotiate with.</div>
+      </div>
+    </div>
+
+    <div class="motiv" style="border-left-color:var(--oc);background:#f0f4ff">
+      <div class="motiv-icon">🌐</div>
+      <div>
+        <div class="motiv-title" style="color:var(--oc)">War / Geopolitical</div>
+        <div class="motiv-body">Cyber operations as part of military or geopolitical strategy. Pre-positioning: establish access before conflict begins. Wartime cyber operations: disable enemy communications, power, finance. Psychological operations: spread disinformation. Hybrid warfare: combine cyber with kinetic operations. Increasing in relevance: Ukraine/Russia conflict shows cyber as integral component of modern warfare.</div>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--tx)">Motivation → Actor → Target Mapping</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Motivation</th><th>Primary Actor</th><th>Typical Target</th><th>Key Tactic</th></tr>
+      <tr><td><span class="tag to">Financial</span></td><td>Organized crime</td><td>Healthcare, finance, manufacturing</td><td>Ransomware, BEC, data theft</td></tr>
+      <tr><td><span class="tag tb">Espionage</span></td><td>Nation-state</td><td>Government, defense, advanced tech</td><td>APT, spear phishing, supply chain</td></tr>
+      <tr><td><span class="tag tr">Disruption</span></td><td>Nation-state, hacktivist</td><td>Critical infra, media, government</td><td>DDoS, destructive malware, wiper</td></tr>
+      <tr><td><span class="tag tp">Ideology</span></td><td>Hacktivist</td><td>Controversial orgs, governments</td><td>DDoS, defacement, doxing</td></tr>
+      <tr><td><span class="tag ts">Data exfil</span></td><td>All actors</td><td>Anyone with valuable data</td><td>Exfiltration, C2, staged theft</td></tr>
+      <tr><td><span class="tag ty">Revenge</span></td><td>Insider (disgruntled)</td><td>Former employer</td><td>Sabotage, data theft, system damage</td></tr>
+      <tr><td><span class="tag tg">Chaos</span></td><td>Hacktivist, state</td><td>Destabilization targets</td><td>Wiper malware, disinformation</td></tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Data exfiltration →</span><span>Stealing data — common goal across all actor types — used for sale, espionage, or leverage</span></div>
+      <div class="er"><span class="ek">Financial gain →</span><span>Most common motivation — organized crime — ransomware, BEC, data theft, cryptojacking</span></div>
+      <div class="er"><span class="ek">Espionage →</span><span>Stealing secrets — nation-states primarily — classified, military, corporate IP</span></div>
+      <div class="er"><span class="ek">Disruption/sabotage →</span><span>Destroy/damage operations — nation-states + hacktivists — DDoS, wiper malware</span></div>
+      <div class="er"><span class="ek">Ideology →</span><span>Hacktivists — political/social cause — embarrass target — make statement</span></div>
+      <div class="er"><span class="ek">Revenge →</span><span>Disgruntled insiders — know the org — dangerous because inside knowledge</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 9. SUMMARY              -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Exam Cheat Sheet</span><span class="bdg" style="background:#f3f0ff;color:#5820b0;border:1px solid #c8b8f0">Domain 2 · Threat Actors &amp; Motivations</span></div>
+  <div class="card-bd">
+
+    <h3 style="border-left-color:var(--ns)">Threat Actor Comparison Matrix</h3>
+    <div class="cmatrix">
+    <table class="cmat-table">
+      <tr>
+        <th>Actor</th>
+        <th>Sophistication</th>
+        <th>Resources</th>
+        <th>Primary Motivation</th>
+        <th>Primary Tactics</th>
+        <th>Primary Targets</th>
+      </tr>
+      <tr>
+        <td><span class="tag tr">Nation-State</span></td>
+        <td>🔴🔴🔴🔴🔴 Max</td>
+        <td>Unlimited</td>
+        <td>Espionage, sabotage</td>
+        <td>APT, supply chain, zero-day, spear phish</td>
+        <td>Government, defense, critical infra</td>
+      </tr>
+      <tr>
+        <td><span class="tag tb">Organized Crime</span></td>
+        <td>🔵🔵🔵🔵 High</td>
+        <td>High</td>
+        <td>Financial gain</td>
+        <td>Ransomware, BEC, RaaS, data theft</td>
+        <td>Healthcare, finance, manufacturing</td>
+      </tr>
+      <tr>
+        <td><span class="tag tp">Hacktivist</span></td>
+        <td>🟣🟣 Low-Med</td>
+        <td>Low</td>
+        <td>Ideology, publicity</td>
+        <td>DDoS, defacement, doxing, leaks</td>
+        <td>Controversial orgs, govt, media</td>
+      </tr>
+      <tr>
+        <td><span class="tag to">Insider Threat</span></td>
+        <td>🟠🟠🟠 Variable</td>
+        <td>Low-Med</td>
+        <td>Financial, revenge, negligence</td>
+        <td>Data theft, sabotage, accidental</td>
+        <td>Their own organization</td>
+      </tr>
+      <tr>
+        <td><span class="tag ts">Unskilled/SK</span></td>
+        <td>⬜ Minimal</td>
+        <td>Minimal</td>
+        <td>Thrill, curiosity, minor gain</td>
+        <td>Tool use, credential stuffing, scanning</td>
+        <td>Opportunistic — vulnerable systems</td>
+      </tr>
+      <tr>
+        <td><span class="tag tg">Shadow IT</span></td>
+        <td>N/A — not attacker</td>
+        <td>N/A</td>
+        <td>Productivity (usually)</td>
+        <td>Unauthorized tools/services</td>
+        <td>Within own org (creates risk)</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--it)">Master Exam Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// 40 Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Most sophisticated, unlimited resources, espionage focused"</span><span>→ Nation-state / APT</span></div>
+      <div class="er"><span class="ek">"Government-sponsored hackers — steal military secrets"</span><span>→ Nation-state threat actor</span></div>
+      <div class="er"><span class="ek">"Advanced Persistent Threat — long dwell time, stealthy"</span><span>→ APT — typical nation-state attack style</span></div>
+      <div class="er"><span class="ek">"Stay hidden for 200+ days — use legitimate tools to blend in"</span><span>→ Nation-state APT — living off the land technique</span></div>
+      <div class="er"><span class="ek">"Software update from legitimate vendor installs malware"</span><span>→ Supply chain attack — nation-state primary tactic (SolarWinds)</span></div>
+      <div class="er"><span class="ek">"Purely financially motivated — ransomware gangs"</span><span>→ Organized cybercriminal group</span></div>
+      <div class="er"><span class="ek">"Criminal group operates like a business — developers, affiliates"</span><span>→ Ransomware-as-a-Service (RaaS) — organized crime</span></div>
+      <div class="er"><span class="ek">"Encrypt files AND threaten to publish stolen data"</span><span>→ Double extortion ransomware — organized crime</span></div>
+      <div class="er"><span class="ek">"CFO tricked into wiring $500K to criminal account"</span><span>→ BEC — Business Email Compromise — organized crime</span></div>
+      <div class="er"><span class="ek">"Use victim's computers to mine cryptocurrency"</span><span>→ Cryptojacking — organized crime financial motivation</span></div>
+      <div class="er"><span class="ek">"Politically motivated — attack to advance a cause"</span><span>→ Hacktivist</span></div>
+      <div class="er"><span class="ek">"Flood website with traffic until it goes offline — political statement"</span><span>→ DDoS attack — hacktivist primary tactic</span></div>
+      <div class="er"><span class="ek">"Replace homepage with political message"</span><span>→ Website defacement — hacktivist</span></div>
+      <div class="er"><span class="ek">"Publish personal home address and phone number of executive"</span><span>→ Doxing — hacktivist tactic</span></div>
+      <div class="er"><span class="ek">"Anonymous collective — attacks government agencies they oppose"</span><span>→ Hacktivist group</span></div>
+      <div class="er"><span class="ek">"Most dangerous — already inside the perimeter, legitimate access"</span><span>→ Insider threat</span></div>
+      <div class="er"><span class="ek">"Employee downloads 50,000 files the week before resigning"</span><span>→ Malicious insider threat — data exfiltration</span></div>
+      <div class="er"><span class="ek">"Employee accidentally clicks phishing link — no malicious intent"</span><span>→ Negligent insider threat</span></div>
+      <div class="er"><span class="ek">"Attacker steals employee credentials — acts as that employee internally"</span><span>→ Compromised insider threat</span></div>
+      <div class="er"><span class="ek">"Disgruntled IT admin deletes production databases after passing over for promotion"</span><span>→ Malicious insider — revenge motivation</span></div>
+      <div class="er"><span class="ek">"Detect insider anomalies — baseline normal behavior + alert on deviation"</span><span>→ UBA/UEBA — User Behavior Analytics</span></div>
+      <div class="er"><span class="ek">"Monitor data leaving organization — alert on sensitive data in email/USB"</span><span>→ DLP — Data Loss Prevention — insider threat control</span></div>
+      <div class="er"><span class="ek">"No technical skill — runs others' exploit kits from YouTube tutorials"</span><span>→ Unskilled attacker / script kiddie</span></div>
+      <div class="er"><span class="ek">"High volume, opportunistic, targets unpatched systems"</span><span>→ Unskilled attacker — volume compensates for skill</span></div>
+      <div class="er"><span class="ek">"Basic hygiene stops virtually all of these attacks"</span><span>→ Unskilled attackers — patch + change defaults + MFA = complete defense</span></div>
+      <div class="er"><span class="ek">"Employees use personal Dropbox for work files — IT doesn't know"</span><span>→ Shadow IT</span></div>
+      <div class="er"><span class="ek">"Unauthorized devices and services — creates risk IT can't manage"</span><span>→ Shadow IT</span></div>
+      <div class="er"><span class="ek">"Discover which unapproved cloud services employees are using"</span><span>→ CASB — Cloud Access Security Broker — shadow IT detection</span></div>
+      <div class="er"><span class="ek">"Shadow IT happens because IT is too slow — what's the fix?"</span><span>→ Fast IT approval process + CASB + web proxy + awareness training</span></div>
+      <div class="er"><span class="ek">"Most common attack motivation overall"</span><span>→ Financial gain — organized crime — ransomware, BEC</span></div>
+      <div class="er"><span class="ek">"Steal secrets — military blueprints, diplomatic cables"</span><span>→ Espionage motivation — nation-state primary driver</span></div>
+      <div class="er"><span class="ek">"Destroy target's operations — wiper malware — not about money"</span><span>→ Disruption/sabotage motivation — nation-state or hacktivist</span></div>
+      <div class="er"><span class="ek">"Attack based on political, social, or environmental beliefs"</span><span>→ Ideology motivation — hacktivist</span></div>
+      <div class="er"><span class="ek">"Steal data to sell — PII, credentials, health records on dark web"</span><span>→ Data exfiltration motivation — common across all actor types</span></div>
+      <div class="er"><span class="ek">"Former employee attacks company after termination"</span><span>→ Revenge motivation — insider threat</span></div>
+      <div class="er"><span class="ek">"Pre-positioning access in foreign networks for future wartime use"</span><span>→ War/geopolitical motivation — nation-state</span></div>
+      <div class="er"><span class="ek">"Which actor has BOTH high sophistication AND unlimited resources?"</span><span>→ Nation-state — the only actor with both at maximum level</span></div>
+      <div class="er"><span class="ek">"Which actor is hardest to detect and why?"</span><span>→ Insider threat — legitimate access means activity looks normal</span></div>
+      <div class="er"><span class="ek">"Which actor has lowest skill but highest volume?"</span><span>→ Unskilled attackers/script kiddies</span></div>
+      <div class="er"><span class="ek">"NotPetya 2017 — wiped data, no recovery — $10B damage — what motivation?"</span><span>→ Disruption/sabotage — nation-state (Russia) geopolitical attack on Ukraine</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

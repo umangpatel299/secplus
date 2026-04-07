@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Controls — Security+ Domain 1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Courier+Prime:wght@400;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root{
+  --bg:#09090d;
+  --s1:#0f0f14;
+  --s2:#15151c;
+  --s3:#1b1b24;
+  --bd:#26263a;
+  --tx:#e8e6ff;
+  --mu:#5a587a;
+  /* Control category colours */
+  --tech:#3b9eff;
+  --mgmt:#ff9d3b;
+  --oper:#3bde8f;
+  --phys:#ff4f7b;
+  /* Control function colours */
+  --prev:#60e0ff;
+  --dete:#b47aff;
+  --corr:#50e898;
+  --dtr:#ffcc44;
+  --comp:#ff8a60;
+  --dire:#66bbff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:'Syne',sans-serif;font-size:14px;line-height:1.6;padding:2rem 1.5rem;}
+
+/* ── HEADER ── */
+.hdr{text-align:center;margin-bottom:2.5rem;padding:2rem 0;position:relative;}
+.hdr::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:2px;background:linear-gradient(90deg,var(--prev),var(--dete));}
+.hdr-tag{font-family:'Courier Prime',monospace;font-size:0.6rem;letter-spacing:0.22em;color:var(--mu);text-transform:uppercase;margin-bottom:0.7rem;}
+.hdr-title{font-family:'Syne',sans-serif;font-size:3.4rem;font-weight:800;line-height:0.9;letter-spacing:-0.04em;margin-bottom:0.5rem;}
+.hdr-title .w1{color:var(--tx);}
+.hdr-title .w2{
+  background:linear-gradient(135deg,var(--prev),var(--dete));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hdr-sub{font-family:'Courier Prime',monospace;font-size:0.63rem;color:var(--mu);letter-spacing:0.06em;}
+
+/* ── TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2.2rem;}
+.tab{padding:0.4rem 0.9rem;border-radius:5px;border:1px solid var(--bd);background:var(--s1);color:var(--mu);cursor:pointer;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;transition:all 0.13s;letter-spacing:0.03em;}
+.tab:hover{border-color:var(--prev);color:var(--prev);}
+.tab.active{background:linear-gradient(135deg,#0d2040,#1a1040);border-color:var(--prev);color:var(--prev);}
+
+/* ── SECTIONS ── */
+.sec{display:none;}
+.sec.on{display:block;animation:up 0.2s ease;}
+@keyframes up{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* ── CARD ── */
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:0.95rem 1.4rem;border-bottom:1px solid var(--bd);background:var(--s2);}
+.card-num{font-family:'Courier Prime',monospace;font-size:0.58rem;color:var(--mu);background:var(--s3);border:1px solid var(--bd);border-radius:3px;padding:0.1rem 0.35rem;}
+.card-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;}
+.bdg{margin-left:auto;font-family:'Courier Prime',monospace;font-size:0.57rem;padding:0.14rem 0.55rem;border-radius:999px;white-space:nowrap;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.card-bd{padding:1.4rem;}
+p{color:var(--mu);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.75;}
+h3{font-family:'Syne',sans-serif;font-size:0.88rem;font-weight:700;color:var(--tx);margin:1.3rem 0 0.55rem;padding-left:0.7rem;border-left:3px solid;letter-spacing:-0.01em;}
+
+/* ── CODE ── */
+.code{background:#050508;border:1px solid var(--bd);border-radius:7px;padding:1rem 1.2rem;font-family:'Courier Prime',monospace;font-size:0.68rem;line-height:1.95;overflow-x:auto;margin:0.8rem 0;}
+.cg{color:#3bde8f;}.cr{color:#ff4f7b;}.cb{color:#3b9eff;}.co{color:#ffcc44;}.cp{color:#b47aff;}.cm{color:var(--mu);}.ct{color:#50e898;}.ci{color:#60e0ff;}.cs{color:#ff8a60;}
+
+/* ── SCENE ── */
+.scene{background:#100a00;border-left:3px solid var(--comp);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'Courier Prime',monospace;font-size:0.58rem;color:var(--comp);margin-bottom:0.4rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+
+/* ── EXAM ── */
+.exam{background:#0c0820;border:1px solid #2a1a50;border-radius:8px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'Courier Prime',monospace;font-size:0.58rem;color:var(--dete);margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--dete);font-family:'Courier Prime',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3{grid-template-columns:1fr;}}
+.gc{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1rem;}
+.gc h4{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1.1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--mu);margin-bottom:0.25rem;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.5rem 0.8rem;text-align:left;color:var(--mu);border-bottom:1px solid var(--bd);font-size:0.62rem;font-weight:700;font-family:'Courier Prime',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--bd);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+/* ── TAGS ── */
+.tag{display:inline-block;padding:0.1rem 0.5rem;border-radius:3px;font-size:0.6rem;font-family:'Courier Prime',monospace;font-weight:700;}
+/* function colours */
+.t-prev{background:#071a28;color:var(--prev);border:1px solid #0e3050;}
+.t-dete{background:#16082a;color:var(--dete);border:1px solid #2d1050;}
+.t-corr{background:#072014;color:var(--corr);border:1px solid #0e4028;}
+.t-dtr{background:#1e1600;color:var(--dtr);border:1px solid #3c2c00;}
+.t-comp{background:#1e0e00;color:var(--comp);border:1px solid #3c1e00;}
+.t-dire{background:#071830;color:var(--dire);border:1px solid #0e3060;}
+/* category colours */
+.t-tech{background:#071a28;color:var(--tech);border:1px solid #0e3050;}
+.t-mgmt{background:#1e1000;color:var(--mgmt);border:1px solid #3c2000;}
+.t-oper{background:#072014;color:var(--oper);border:1px solid #0e4028;}
+.t-phys{background:#200614;color:var(--phys);border:1px solid #400c28;}
+
+/* ── CONTROL CARDS (big feature cards) ── */
+.ctrl-card{
+  border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:1rem;
+  border:1px solid var(--bd);position:relative;overflow:hidden;
+}
+.ctrl-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:10px 0 0 10px;}
+.ctrl-num{font-family:'Syne',sans-serif;font-size:4rem;font-weight:800;opacity:0.04;position:absolute;top:-0.5rem;right:0.8rem;line-height:1;pointer-events:none;}
+.ctrl-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.7rem;}
+.ctrl-icon{font-size:1.4rem;}
+.ctrl-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;}
+.ctrl-tags{display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:0.6rem;}
+.ctrl-def{font-family:'Lora',serif;font-style:italic;font-size:0.82rem;color:var(--mu);line-height:1.7;margin-bottom:0.7rem;}
+.ctrl-examples{font-size:0.77rem;color:var(--mu);}
+.ctrl-examples strong{color:var(--tx);font-size:0.75rem;}
+
+/* ── MATRIX TABLE ── */
+.matrix-wrap{overflow-x:auto;margin:1rem 0;}
+.matrix{border-collapse:collapse;font-size:0.72rem;min-width:700px;width:100%;}
+.matrix th{background:var(--s2);padding:0.5rem 0.6rem;border:1px solid var(--bd);color:var(--mu);font-family:'Courier Prime',monospace;font-size:0.6rem;letter-spacing:0.05em;text-transform:uppercase;}
+.matrix td{padding:0.45rem 0.6rem;border:1px solid var(--bd);vertical-align:top;}
+.matrix tr:first-child th:first-child{background:var(--s3);}
+.m-cell{font-size:0.7rem;color:var(--mu);line-height:1.45;}
+.m-cell strong{display:block;font-size:0.72rem;margin-bottom:0.2rem;}
+.m-hdr-row th{background:var(--s3);}
+.m-cat-cell{writing-mode:vertical-lr;transform:rotate(180deg);font-family:'Syne',sans-serif;font-weight:700;font-size:0.7rem;text-align:center;white-space:nowrap;padding:0.8rem 0.4rem;}
+
+/* ── DECISION FLOW ── */
+.dflow{display:flex;flex-direction:column;gap:0.4rem;margin:1rem 0;}
+.dflow-node{
+  border-radius:7px;padding:0.75rem 1.1rem;
+  border:1px solid var(--bd);
+  display:flex;gap:0.8rem;align-items:flex-start;
+}
+.dflow-q{font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:-0.01em;}
+.dflow-a{font-size:0.75rem;color:var(--mu);margin-top:0.15rem;}
+.dflow-arr{text-align:center;font-size:0.8rem;color:var(--mu);}
+
+/* ── SCENARIO CHIPS ── */
+.chip-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;margin:0.8rem 0;}
+@media(max-width:600px){.chip-grid{grid-template-columns:1fr;}}
+.chip{background:var(--s2);border:1px solid var(--bd);border-radius:7px;padding:0.8rem 1rem;}
+.chip-q{font-size:0.77rem;color:var(--tx);margin-bottom:0.3rem;line-height:1.5;}
+.chip-a{font-family:'Courier Prime',monospace;font-size:0.65rem;font-weight:700;}
+
+/* ── OVERLAP DIAGRAM ── */
+.overlap-row{display:flex;align-items:flex-start;gap:0.7rem;margin-bottom:0.45rem;padding:0.7rem 0.9rem;background:var(--s2);border:1px solid var(--bd);border-radius:7px;}
+.overlap-left{min-width:140px;flex-shrink:0;}
+.overlap-right{font-size:0.75rem;color:var(--mu);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-tag">Security+ SY0-701 · Domain 1 · General Security Concepts · 12%</div>
+  <div class="hdr-title">
+    <div class="w1">Security</div>
+    <div class="w2">Controls</div>
+  </div>
+  <div class="hdr-sub">// Technical · Managerial · Operational · Physical × Preventive · Detective · Corrective · Deterrent · Compensating · Directive</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Categories</button>
+  <button class="tab" onclick="go('s3',this)">3. Functions</button>
+  <button class="tab" onclick="go('s4',this)">4. All 10 Controls</button>
+  <button class="tab" onclick="go('s5',this)">5. Control Matrix</button>
+  <button class="tab" onclick="go('s6',this)">6. Scenarios</button>
+  <button class="tab" onclick="go('s7',this)">7. Layering Strategy</button>
+  <button class="tab" onclick="go('s8',this)">📊 Summary</button>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- TAB 1 — OVERVIEW                -->
+<!-- ════════════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">01</span>
+    <span class="card-title">What Are Security Controls?</span>
+    <span class="bdg" style="background:#071a28;color:var(--prev);border:1px solid #0e3050">Foundation · Domain 1</span>
+  </div>
+  <div class="card-bd">
+    <p>Security controls are <strong style="color:var(--tx)">safeguards or countermeasures used to reduce risk, protect assets, and ensure CIA</strong> — Confidentiality, Integrity, and Availability. Every firewall rule, security policy, guard station, and training program is a security control.</p>
+
+    <h3 style="border-left-color:var(--prev)">Two Ways to Classify Every Control</h3>
+    <div class="code">
+<span class="cm"># Security+ classifies controls along TWO independent axes:</span>
+
+AXIS 1 — CATEGORY (what KIND of control is it?):
+  <span class="cb">Technical</span>      Technology enforces it — firewall, AV, MFA
+  <span class="co">Managerial</span>     Policy and process — risk assessments, audits
+  <span class="cg">Operational</span>    People and day-to-day procedures
+  <span class="cr">Physical</span>       Tangible hardware — locks, cameras, guards
+
+AXIS 2 — FUNCTION (what does it DO?):
+  <span class="ci">Preventive</span>     Stops the attack from happening
+  <span class="cp">Detective</span>      Identifies an attack in progress or after
+  <span class="cg">Corrective</span>     Fixes damage after an attack
+  <span class="co">Deterrent</span>      Discourages the attacker from trying
+  <span class="cs">Compensating</span>  Alternative when primary control isn't feasible
+  <span class="cb">Directive</span>      Guides behavior — tells people what to do
+
+<span class="cm"># Every control has BOTH a category AND a function:</span>
+Firewall:           Technical   + Preventive
+Security Policy:    Managerial  + Directive
+Backup + Restore:   Operational + Corrective
+Security Camera:    Physical    + Detective (also Deterrent)
+    </div>
+
+    <h3 style="border-left-color:var(--prev)">Why This Matters for the Exam</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#0e3050">
+        <h4 style="color:var(--prev)">Scenario Questions</h4>
+        <p>The exam presents a scenario and asks "Which type of control is this?" You must identify BOTH the category (Technical/Managerial/Operational/Physical) AND the function (Preventive/Detective/Corrective etc.). A single control can satisfy multiple classifications simultaneously.</p>
+      </div>
+      <div class="gc" style="border-color:#2d1050">
+        <h4 style="color:var(--dete)">Defense in Depth</h4>
+        <p>Effective security uses controls from ALL categories and functions together. No single control is sufficient. The exam tests whether you can select the right combination of controls to address a given threat scenario.</p>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--prev)">The CIA Triad — What Controls Protect</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#0e3050">
+        <h4 style="color:var(--prev)">Confidentiality</h4>
+        <p>Ensure data is only accessible to authorized parties. Controls: encryption, access control, MFA, data classification, DLP. Threat: eavesdropping, credential theft, unauthorized access.</p>
+      </div>
+      <div class="gc" style="border-color:#0e4028">
+        <h4 style="color:var(--corr)">Integrity</h4>
+        <p>Ensure data is accurate and hasn't been tampered with. Controls: hashing, digital signatures, file integrity monitoring, audit logs. Threat: man-in-the-middle, data tampering, unauthorized modification.</p>
+      </div>
+      <div class="gc" style="border-color:#3c2c00">
+        <h4 style="color:var(--dtr)">Availability</h4>
+        <p>Ensure systems and data are accessible when needed. Controls: redundancy, backups, DDoS protection, UPS, DR sites. Threat: DDoS, ransomware, hardware failure, natural disaster.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Two axes →</span><span>Every control has a CATEGORY (what it is) AND a FUNCTION (what it does)</span></div>
+      <div class="er"><span class="ek">Categories →</span><span>Technical, Managerial, Operational, Physical</span></div>
+      <div class="er"><span class="ek">Functions →</span><span>Preventive, Detective, Corrective, Deterrent, Compensating, Directive</span></div>
+      <div class="er"><span class="ek">One control, two labels →</span><span>Firewall = Technical + Preventive. Camera = Physical + Detective + Deterrent</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- TAB 2 — CATEGORIES              -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">02</span>
+    <span class="card-title">Control Categories — What Kind Is It?</span>
+    <span class="bdg" style="background:#071a28;color:var(--tech);border:1px solid #0e3050">Technical · Managerial · Operational · Physical</span>
+  </div>
+  <div class="card-bd">
+    <p>The <strong style="color:var(--tx)">category answers "what mechanism implements the control?"</strong> — is it technology, a policy, a human process, or a physical object? The same function (e.g., "Preventive") can be implemented through any of the four categories.</p>
+
+    <!-- TECHNICAL -->
+    <div class="ctrl-card" style="background:linear-gradient(135deg,#071a28 0%,#0d0d14 100%);">
+      <div class="ctrl-card::before" style="background:var(--tech)"></div>
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--tech);border-radius:10px 0 0 10px;"></div>
+      <div class="ctrl-num" style="color:var(--tech)">T</div>
+      <div class="ctrl-header">
+        <span class="ctrl-icon">💻</span>
+        <span class="ctrl-name" style="color:var(--tech)">Technical Controls</span>
+        <span class="tag t-tech" style="margin-left:auto">Also: Logical Controls</span>
+      </div>
+      <div class="ctrl-def">"Security controls implemented through technology — hardware, software, or firmware — that automatically enforce policy without relying on human action."</div>
+      <div class="ctrl-examples">
+        <strong>Examples:</strong> Firewall rules, antivirus / EDR, encryption (TLS, AES-256), MFA system, intrusion detection system (IDS), access control lists (ACLs), SIEM, DLP software, password complexity requirements enforced by AD, full disk encryption (BitLocker), certificate-based authentication, VPN, network segmentation (VLANs).
+      </div>
+      <div class="code" style="margin-top:0.8rem;font-size:0.64rem">
+<span class="cm"># Why "logical" as well as "technical"?</span>
+Technical: implemented through hardware/software/firmware
+Logical:   same thing — older terminology still appears on exams
+Both terms refer to technology-enforced controls
+
+Key characteristic: <span class="cb">enforces automatically</span>
+The firewall doesn't ask "should I block this?" — it just does
+MFA doesn't optionally require a second factor — it mandates it
+If the rule says DENY → traffic is DENIED regardless of who asks
+      </div>
+    </div>
+
+    <!-- MANAGERIAL -->
+    <div class="ctrl-card" style="background:linear-gradient(135deg,#1a0c00 0%,#0d0d14 100%);">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--mgmt);border-radius:10px 0 0 10px;"></div>
+      <div class="ctrl-num" style="color:var(--mgmt)">M</div>
+      <div class="ctrl-header">
+        <span class="ctrl-icon">📋</span>
+        <span class="ctrl-name" style="color:var(--mgmt)">Managerial Controls</span>
+        <span class="tag t-mgmt" style="margin-left:auto">Also: Administrative Controls</span>
+      </div>
+      <div class="ctrl-def">"Security controls implemented through organizational policies, procedures, guidelines, and governance — the administrative framework that guides how security should work."</div>
+      <div class="ctrl-examples">
+        <strong>Examples:</strong> Information security policy, risk assessment process, security awareness training program, acceptable use policy (AUP), background checks, vendor risk management program, incident response policy, data classification policy, change management process, business continuity plan, penetration testing authorization, security audit schedule.
+      </div>
+      <div class="code" style="margin-top:0.8rem;font-size:0.64rem">
+<span class="cm"># Key characteristic: governance and oversight</span>
+Managerial controls answer: "what SHOULD we do?"
+They create the framework that everything else operates within
+Without managerial controls: technical controls have no direction
+
+<span class="cm"># Risk assessment = classic managerial control:</span>
+  Identify assets → identify threats → assess risk
+  Decision: accept / mitigate / transfer / avoid
+  This GUIDES which technical controls to deploy
+
+<span class="cm"># Policy is the foundation:</span>
+  "Employees must use strong passwords" (managerial/directive)
+  Active Directory password policy enforces it (technical/preventive)
+  Managerial sets the requirement → Technical enforces it
+      </div>
+    </div>
+
+    <!-- OPERATIONAL -->
+    <div class="ctrl-card" style="background:linear-gradient(135deg,#071a0e 0%,#0d0d14 100%);">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--oper);border-radius:10px 0 0 10px;"></div>
+      <div class="ctrl-num" style="color:var(--oper)">O</div>
+      <div class="ctrl-header">
+        <span class="ctrl-icon">🔧</span>
+        <span class="ctrl-name" style="color:var(--oper)">Operational Controls</span>
+        <span class="tag t-oper" style="margin-left:auto">People + Day-to-Day</span>
+      </div>
+      <div class="ctrl-def">"Security controls implemented through people, day-to-day procedures, and ongoing operational practices — the human element of security execution."</div>
+      <div class="ctrl-examples">
+        <strong>Examples:</strong> Security awareness training (delivery, not just the policy), patch management execution (IT staff applying patches), backup procedures (staff running and verifying backups), incident response activities (SOC analyst investigating an alert), two-person integrity rule (requires two people to complete sensitive tasks), employee termination procedure (revoking access on last day), physical security patrols, change management review meetings.
+      </div>
+      <div class="code" style="margin-top:0.8rem;font-size:0.64rem">
+<span class="cm"># Operational vs Managerial — the distinction:</span>
+Managerial: "We shall maintain a patch management POLICY"
+Operational: IT team that actually APPLIES patches each Tuesday
+
+Managerial: "We shall train employees on security"
+Operational: The actual security awareness training SESSIONS
+
+<span class="cm"># Key characteristic: execution by people</span>
+Operational controls depend on people doing things correctly
+Weakness: human error, fatigue, shortcuts
+Strength: adaptable, can handle novel situations
+      </div>
+    </div>
+
+    <!-- PHYSICAL -->
+    <div class="ctrl-card" style="background:linear-gradient(135deg,#200614 0%,#0d0d14 100%);">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--phys);border-radius:10px 0 0 10px;"></div>
+      <div class="ctrl-num" style="color:var(--phys)">P</div>
+      <div class="ctrl-header">
+        <span class="ctrl-icon">🔒</span>
+        <span class="ctrl-name" style="color:var(--phys)">Physical Controls</span>
+        <span class="tag t-phys" style="margin-left:auto">Tangible · Environmental</span>
+      </div>
+      <div class="ctrl-def">"Security controls that use physical barriers, hardware, and environmental measures to protect assets from physical threats — unauthorized physical access, theft, damage, and environmental hazards."</div>
+      <div class="ctrl-examples">
+        <strong>Examples:</strong> Locks and deadbolts (door, cabinet, rack), security cameras (CCTV), badge/card readers, biometric scanners (fingerprint, retinal), mantraps / airlocks, security guards and receptionists, fencing and bollards, lighting, alarms (motion, door, glass-break), cable locks on devices, server room with keypad access, UPS and generator (power continuity), fire suppression system, shredder (destroy physical documents).
+      </div>
+      <div class="code" style="margin-top:0.8rem;font-size:0.64rem">
+<span class="cm"># Physical controls are the FIRST line of defense for hardware</span>
+If attacker has physical access → all logical controls in question
+Cold boot attack: physical access → extract RAM → get encryption keys
+Evil maid attack: physical access → tamper with device
+Theft: physical access → device + data gone
+
+<span class="cm"># Physical controls are often DUAL function:</span>
+Security camera:  Physical + Detective (records) + Deterrent (visible)
+Badge reader:     Physical + Preventive (denies entry) + Detective (logs)
+Mantrap:          Physical + Preventive (traps tailgaters)
+Guards:           Physical + Preventive + Detective + Deterrent
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Technical/Logical →</span><span>Technology enforces automatically — firewall, EDR, encryption, MFA — no human needed</span></div>
+      <div class="er"><span class="ek">Managerial/Administrative →</span><span>Policies, governance, risk assessment — sets the direction for all other controls</span></div>
+      <div class="er"><span class="ek">Operational →</span><span>People and procedures in practice — patching, training delivery, incident response</span></div>
+      <div class="er"><span class="ek">Physical →</span><span>Tangible hardware and environment — locks, cameras, guards, fencing</span></div>
+      <div class="er"><span class="ek">Managerial vs Operational →</span><span>Managerial = the policy / Operational = people executing the policy</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- TAB 3 — FUNCTIONS               -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">03</span>
+    <span class="card-title">Control Functions — What Does It Do?</span>
+    <span class="bdg" style="background:#16082a;color:var(--dete);border:1px solid #2d1050">Prevent · Detect · Correct · Deter · Compensate · Direct</span>
+  </div>
+  <div class="card-bd">
+    <p>The <strong style="color:var(--tx)">function answers "at what point in the attack lifecycle does this control act?"</strong> — before the attack, during it, or after it. Understanding timing is critical to building defense in depth.</p>
+
+    <h3 style="border-left-color:var(--prev)">Control Functions Mapped to the Attack Timeline</h3>
+    <div class="code">
+<span class="cm"># Where each control type acts on the attack timeline:</span>
+
+BEFORE ATTACK:
+  <span class="ci">Preventive</span>  — blocks the attack from succeeding
+  <span class="co">Deterrent</span>   — discourages attacker from trying at all
+  <span class="cb">Directive</span>   — guides behavior to avoid creating vulnerabilities
+
+DURING ATTACK:
+  <span class="cp">Detective</span>   — identifies attack in progress → triggers response
+  <span class="ci">Preventive</span>  — (also acts during) continues blocking
+
+AFTER ATTACK:
+  <span class="cg">Corrective</span>  — fixes damage and restores normal state
+  <span class="cs">Compensating</span>— alternative when other controls have failed/unavailable
+
+Timeline:
+  Deterrent      Preventive     Detective      Corrective
+      ↓               ↓              ↓              ↓
+  [attacker       [attack         [attack        [attack
+   decides NOT    blocked]        detected]      remediated]
+   to try]
+    </div>
+
+    <!-- 6 function cards -->
+    <h3 style="border-left-color:var(--prev)">Preventive</h3>
+    <div class="ctrl-card" style="background:linear-gradient(135deg,#071a28 0%,#0d0d14 100%);">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--prev);border-radius:10px 0 0 10px;"></div>
+      <div class="ctrl-header">
+        <span class="ctrl-icon">🛡️</span>
+        <span class="ctrl-name" style="color:var(--prev)">Preventive Controls</span>
+        <span class="tag t-prev" style="margin-left:auto">Before Attack · Blocks</span>
+      </div>
+      <div class="ctrl-def">"Controls that stop a security incident from occurring in the first place — they act before the attack reaches its goal."</div>
+      <div class="ctrl-examples">
+        <strong>Exam examples:</strong> Firewall (blocks unauthorized traffic), MFA (blocks credential-only access), encryption (blocks data readable without key), access control list (blocks unauthorized access), antivirus (blocks known malware execution), cable lock (blocks laptop theft), mantrap (blocks tailgating), background check (blocks hiring of malicious insider), patch management (blocks exploitation of known CVEs), security awareness training (blocks social engineering success).
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--dete)">Detective</h3>
+    <div class="ctrl-card" style="background:linear-gradient(135deg,#16082a 0%,#0d0d14 100%);">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--dete);border-radius:10px 0 0 10px;"></div>
+      <div class="ctrl-header">
+        <span class="ctrl-icon">🔍</span>
+        <span class="ctrl-name" style="color:var(--dete)">Detective Controls</span>
+        <span class="tag t-dete" style="margin-left:auto">During/After Attack · Identifies</span>
+      </div>
+      <div class="ctrl-def">"Controls that identify and alert on security incidents — they do NOT prevent or stop the attack, but they reveal that something has occurred so a response can begin."</div>
+      <div class="ctrl-examples">
+        <strong>Exam examples:</strong> IDS — Intrusion Detection System (alerts on suspicious traffic — does NOT block), SIEM (correlates logs and generates alerts), security cameras/CCTV (records activity), audit logs (records what happened), file integrity monitoring (detects changes to critical files), motion sensors (detects unauthorized movement), smoke detectors (detects fire), honeypot (detects attacker activity by baiting them to attack it), antivirus in detection-only mode, security audit findings.
+      </div>
+      <div class="code" style="margin-top:0.8rem;font-size:0.64rem">
+<span class="cm"># Critical exam distinction: IDS vs IPS</span>
+IDS (Intrusion DETECTION System): <span class="cp">Detective</span>
+  → Monitors and alerts — does NOT block
+  → Out-of-band — copies of packets analyzed
+  → False positive: alert on legitimate traffic (only an alert)
+
+IPS (Intrusion PREVENTION System): <span class="ci">Preventive</span>
+  → Monitors AND actively blocks inline
+  → In-band — all traffic passes through
+  → False positive: BLOCKS legitimate traffic (business impact)
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--corr)">Corrective</h3>
+    <div class="ctrl-card" style="background:linear-gradient(135deg,#071a0e 0%,#0d0d14 100%);">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--corr);border-radius:10px 0 0 10px;"></div>
+      <div class="ctrl-header">
+        <span class="ctrl-icon">🔧</span>
+        <span class="ctrl-name" style="color:var(--corr)">Corrective Controls</span>
+        <span class="tag t-corr" style="margin-left:auto">After Attack · Restores</span>
+      </div>
+      <div class="ctrl-def">"Controls that reduce the impact of an incident and restore systems to normal operation after a security event has occurred."</div>
+      <div class="ctrl-examples">
+        <strong>Exam examples:</strong> Backup and restore (restores data after ransomware/failure), incident response plan (structured recovery process), patching a vulnerability after exploitation, quarantining an infected endpoint (EDR auto-isolation), applying a hotfix, restoring from a snapshot, reimaging a compromised workstation, activating DR site after primary site failure, revoking compromised certificates, resetting compromised passwords across the org.
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--dtr)">Deterrent</h3>
+    <div class="ctrl-card" style="background:linear-gradient(135deg,#1a1000 0%,#0d0d14 100%);">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--dtr);border-radius:10px 0 0 10px;"></div>
+      <div class="ctrl-header">
+        <span class="ctrl-icon">⚠️</span>
+        <span class="ctrl-name" style="color:var(--dtr)">Deterrent Controls</span>
+        <span class="tag t-dtr" style="margin-left:auto">Before Attack · Discourages</span>
+      </div>
+      <div class="ctrl-def">"Controls that discourage a threat actor from attempting an attack by making the perceived risk or cost of attacking higher than the potential reward."</div>
+      <div class="ctrl-examples">
+        <strong>Exam examples:</strong> Warning login banner ("Unauthorized access is prohibited and monitored"), visible security cameras (presence discourages), security guard station at entrance, "Property protected by security system" sign, parking lot lighting (criminals prefer darkness), barbed wire fence topping, security awareness: "you will be caught" culture, published security policies with consequences, military presence, "No trespassing" signs.
+      </div>
+      <div class="code" style="margin-top:0.8rem;font-size:0.64rem">
+<span class="cm"># Deterrent vs Preventive — the key distinction:</span>
+Deterrent: attacker <span class="co">DECIDES NOT TO TRY</span> — works on psychology
+Preventive: attacker tries but is <span class="ci">BLOCKED</span>
+
+Visible camera = Deterrent (criminal sees it and walks away)
+CCTV recording = Detective (records if they proceed anyway)
+
+Warning banner = Deterrent (you MIGHT decide not to log in)
+                  also = Directive (tells users what's allowed)
+Firewall = Preventive (you TRY to connect and are BLOCKED)
+
+<span class="cm"># Deterrents can FAIL: determined attacker ignores warning</span>
+<span class="cm"># That's why preventive + detective also needed</span>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--comp)">Compensating</h3>
+    <div class="ctrl-card" style="background:linear-gradient(135deg,#180800 0%,#0d0d14 100%);">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--comp);border-radius:10px 0 0 10px;"></div>
+      <div class="ctrl-header">
+        <span class="ctrl-icon">🔄</span>
+        <span class="ctrl-name" style="color:var(--comp)">Compensating Controls</span>
+        <span class="tag t-comp" style="margin-left:auto">Alternative · Workaround</span>
+      </div>
+      <div class="ctrl-def">"Alternative controls used when the primary or ideal control cannot be implemented — they reduce risk to an acceptable level without using the preferred method."</div>
+      <div class="ctrl-examples">
+        <strong>Exam examples:</strong> Network isolation for a legacy system that can't be patched (compensates for missing patch management), enhanced monitoring instead of fixing a vulnerability during a freeze window, encrypted communications instead of physically securing a cable, additional logging + alerting when MFA can't be deployed on a legacy app, manual approval process compensating for a missing automated control, increased physical security when remote access controls are unavailable.
+      </div>
+      <div class="code" style="margin-top:0.8rem;font-size:0.64rem">
+<span class="cm"># Classic compensating control scenario:</span>
+Problem: Windows XP machine running critical manufacturing app
+         Cannot be patched (vendor won't certify updated OS)
+         Cannot be replaced (app only runs on XP, replacement: 18 months)
+
+Ideal control: PATCH the OS ← not possible
+Compensating:
+  Network isolation: XP machine on isolated VLAN
+  Enhanced monitoring: IDS watches its traffic closely
+  Firewall ACLs: only specific allowed communications
+  No internet: zero internet access from that VLAN
+  Physical access: only authorized technicians in that room
+
+<span class="cm"># PCI-DSS explicitly allows compensating controls for requirements</span>
+<span class="cm"># that can't be met — must be documented and approved</span>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--dire)">Directive</h3>
+    <div class="ctrl-card" style="background:linear-gradient(135deg,#071828 0%,#0d0d14 100%);">
+      <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:var(--dire);border-radius:10px 0 0 10px;"></div>
+      <div class="ctrl-header">
+        <span class="ctrl-icon">📜</span>
+        <span class="ctrl-name" style="color:var(--dire)">Directive Controls</span>
+        <span class="tag t-dire" style="margin-left:auto">Guides Behavior · Instructs</span>
+      </div>
+      <div class="ctrl-def">"Controls that direct, guide, or instruct people on how to behave in order to maintain security — they inform and require specific actions through documented rules and communication."</div>
+      <div class="ctrl-examples">
+        <strong>Exam examples:</strong> Acceptable Use Policy (AUP), security awareness training program (content, not just delivery), password policy documentation, data classification policy, warning banners ("This system is for authorized users only"), "Employees must lock screens when leaving desks" sign, emergency procedures posted on the wall, compliance requirements documentation, security handbook, "No tailgating" sign, "Do not plug in unknown USB devices" poster.
+      </div>
+      <div class="code" style="margin-top:0.8rem;font-size:0.64rem">
+<span class="cm"># Directive controls by themselves don't ENFORCE anything:</span>
+Policy: "Use strong passwords" ← Directive
+  Does not BLOCK weak passwords — just says to use strong ones
+  
+Active Directory password complexity ← Technical + Preventive
+  ENFORCES the policy — blocks passwords that don't comply
+
+<span class="cm"># Directive provides the REQUIREMENT</span>
+<span class="cm"># Technical/Physical/Operational ENFORCES the requirement</span>
+
+<span class="cm"># Warning banner is BOTH:</span>
+  Directive: tells users what behavior is acceptable/unacceptable
+  Deterrent: might discourage unauthorized access attempts
+  (Control can serve multiple functional roles)
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Preventive →</span><span>Stops attack — blocks before impact — firewall, MFA, encryption, ACLs</span></div>
+      <div class="er"><span class="ek">Detective →</span><span>Identifies attack — alerts only — IDS, SIEM, logs, cameras, honeypot</span></div>
+      <div class="er"><span class="ek">Corrective →</span><span>Restores after attack — backups, patching, reimaging, IR plan</span></div>
+      <div class="er"><span class="ek">Deterrent →</span><span>Discourages attacker from trying — warning banner, visible camera, guard station</span></div>
+      <div class="er"><span class="ek">Compensating →</span><span>Alternative when primary can't be implemented — network isolation for unpatched system</span></div>
+      <div class="er"><span class="ek">Directive →</span><span>Guides behavior — policies, AUP, warning signs, training content</span></div>
+      <div class="er"><span class="ek">IDS vs IPS →</span><span>IDS = Detective (alerts only) / IPS = Preventive (blocks inline)</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- TAB 4 — ALL 10 CONTROLS         -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">04</span>
+    <span class="card-title">All 10 Control Types — Deep Reference</span>
+    <span class="bdg" style="background:#0c0820;color:var(--dete);border:1px solid #2a1a50">Complete Reference</span>
+  </div>
+  <div class="card-bd">
+    <p>Security+ lists <strong style="color:var(--tx)">10 control types</strong> — 4 categories + 6 functions. Here is every one with its definition, classification, real examples, and exam-critical distinctions.</p>
+
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr>
+        <th>#</th><th>Control Type</th><th>Classification</th><th>Core Purpose</th><th>Key Examples</th><th>Exam Trap</th>
+      </tr>
+      <tr>
+        <td><strong>1</strong></td>
+        <td><span class="tag t-tech">Technical</span></td>
+        <td><span class="tag" style="background:#101020;color:var(--mu);border:1px solid var(--bd)">Category</span></td>
+        <td>Technology enforces automatically</td>
+        <td>Firewall, MFA, encryption, EDR, SIEM, ACL</td>
+        <td>Also called "logical" — same thing</td>
+      </tr>
+      <tr>
+        <td><strong>2</strong></td>
+        <td><span class="tag t-mgmt">Managerial</span></td>
+        <td><span class="tag" style="background:#101020;color:var(--mu);border:1px solid var(--bd)">Category</span></td>
+        <td>Governance and policy framework</td>
+        <td>Risk assessment, audit, security policy, background check</td>
+        <td>Also "administrative" — policy itself, not execution</td>
+      </tr>
+      <tr>
+        <td><strong>3</strong></td>
+        <td><span class="tag t-oper">Operational</span></td>
+        <td><span class="tag" style="background:#101020;color:var(--mu);border:1px solid var(--bd)">Category</span></td>
+        <td>People executing day-to-day security</td>
+        <td>Applying patches, running backups, security training delivery</td>
+        <td>Policy = Managerial. Executing policy = Operational</td>
+      </tr>
+      <tr>
+        <td><strong>4</strong></td>
+        <td><span class="tag t-phys">Physical</span></td>
+        <td><span class="tag" style="background:#101020;color:var(--mu);border:1px solid var(--bd)">Category</span></td>
+        <td>Tangible hardware and environment</td>
+        <td>Locks, cameras, guards, fencing, badge readers, mantrap</td>
+        <td>Often ALSO deterrent — visible physical controls deter</td>
+      </tr>
+      <tr>
+        <td><strong>5</strong></td>
+        <td><span class="tag t-prev">Preventive</span></td>
+        <td><span class="tag" style="background:#101020;color:var(--mu);border:1px solid var(--bd)">Function</span></td>
+        <td>Stops attack before impact</td>
+        <td>Firewall, MFA, encryption, patch, mantrap, background check</td>
+        <td>Does not detect — only blocks</td>
+      </tr>
+      <tr>
+        <td><strong>6</strong></td>
+        <td><span class="tag t-dete">Detective</span></td>
+        <td><span class="tag" style="background:#101020;color:var(--mu);border:1px solid var(--bd)">Function</span></td>
+        <td>Identifies attacks — alerts only</td>
+        <td>IDS, SIEM, audit logs, CCTV, honeypot, FIM</td>
+        <td>IDS detects — IPS prevents. Camera detects — lock prevents</td>
+      </tr>
+      <tr>
+        <td><strong>7</strong></td>
+        <td><span class="tag t-corr">Corrective</span></td>
+        <td><span class="tag" style="background:#101020;color:var(--mu);border:1px solid var(--bd)">Function</span></td>
+        <td>Restores normal state after attack</td>
+        <td>Backup/restore, IR plan, quarantine endpoint, patch post-breach</td>
+        <td>Backups = Corrective (not Preventive)</td>
+      </tr>
+      <tr>
+        <td><strong>8</strong></td>
+        <td><span class="tag t-dtr">Deterrent</span></td>
+        <td><span class="tag" style="background:#101020;color:var(--mu);border:1px solid var(--bd)">Function</span></td>
+        <td>Discourages attack attempts</td>
+        <td>Warning banner, visible camera, guard post, "Beware of dog" sign</td>
+        <td>Doesn't block — works on psychology. Determined attackers ignore it</td>
+      </tr>
+      <tr>
+        <td><strong>9</strong></td>
+        <td><span class="tag t-comp">Compensating</span></td>
+        <td><span class="tag" style="background:#101020;color:var(--mu);border:1px solid var(--bd)">Function</span></td>
+        <td>Alternative when primary can't be used</td>
+        <td>Network isolation for unpatched system, enhanced monitoring</td>
+        <td>NOT the best control — fills gap when ideal is impossible</td>
+      </tr>
+      <tr>
+        <td><strong>10</strong></td>
+        <td><span class="tag t-dire">Directive</span></td>
+        <td><span class="tag" style="background:#101020;color:var(--mu);border:1px solid var(--bd)">Function</span></td>
+        <td>Guides/instructs behavior</td>
+        <td>AUP, policies, warning banner, training content, procedures</td>
+        <td>Directs but doesn't enforce. Warning banner = also deterrent</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--comp)">Commonly Confused Pairs</h3>
+    <div class="overlap-row">
+      <div class="overlap-left">
+        <span class="tag t-prev" style="margin-right:0.3rem">Preventive</span><span style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:var(--mu)">vs</span><span class="tag t-dtr" style="margin-left:0.3rem">Deterrent</span>
+      </div>
+      <div class="overlap-right">Preventive = attacker TRIES → gets BLOCKED. Deterrent = attacker DOESN'T TRY because of perceived risk. A lock is Preventive. A "Protected by alarm" sign is Deterrent. Both can protect the same asset.</div>
+    </div>
+    <div class="overlap-row">
+      <div class="overlap-left">
+        <span class="tag t-dete" style="margin-right:0.3rem">Detective</span><span style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:var(--mu)">vs</span><span class="tag t-prev">Preventive</span>
+      </div>
+      <div class="overlap-right">IDS = Detective (alerts, does not block). IPS = Preventive (blocks inline). SIEM = Detective (identifies, alerts). Firewall = Preventive (blocks traffic). A camera RECORDS (Detective). A lock BLOCKS (Preventive).</div>
+    </div>
+    <div class="overlap-row">
+      <div class="overlap-left">
+        <span class="tag t-mgmt" style="margin-right:0.3rem">Managerial</span><span style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:var(--mu)">vs</span><span class="tag t-oper">Operational</span>
+      </div>
+      <div class="overlap-right">Managerial = the POLICY document ("We shall have a patch management program"). Operational = the IT staff who APPLY patches every Tuesday. Writing the backup policy = Managerial. Running the backups = Operational.</div>
+    </div>
+    <div class="overlap-row">
+      <div class="overlap-left">
+        <span class="tag t-corr" style="margin-right:0.3rem">Corrective</span><span style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:var(--mu)">vs</span><span class="tag t-prev">Preventive</span>
+      </div>
+      <div class="overlap-right">Backup = Corrective (used AFTER incident to restore). Patch = Preventive (stops exploit BEFORE it happens). Both involve fixing things but at different points in the timeline. Patching BEFORE an attack is Preventive. Applying a hotfix AFTER a breach is Corrective.</div>
+    </div>
+    <div class="overlap-row">
+      <div class="overlap-left">
+        <span class="tag t-dire" style="margin-right:0.3rem">Directive</span><span style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:var(--mu)">vs</span><span class="tag t-dtr">Deterrent</span>
+      </div>
+      <div class="overlap-right">Warning banner: "Unauthorized access is prohibited" — Directive (instructs) AND Deterrent (discourages). "No tailgating" sign — Directive (instructs behavior) AND Deterrent (reminds of consequences). Many controls fulfill multiple functions simultaneously.</div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Technical = Logical →</span><span>Same category — two names — both mean technology-enforced controls</span></div>
+      <div class="er"><span class="ek">Administrative = Managerial →</span><span>Same category — two names — governance, policy, audit</span></div>
+      <div class="er"><span class="ek">Backup → Corrective →</span><span>Restores AFTER incident — not preventive — common trick question</span></div>
+      <div class="er"><span class="ek">IDS → Detective →</span><span>Alerts only — IPS is Preventive (blocks inline)</span></div>
+      <div class="er"><span class="ek">Warning banner → Directive + Deterrent →</span><span>Multiple functions from one control is normal and expected</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- TAB 5 — CONTROL MATRIX          -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">05</span>
+    <span class="card-title">The Full Control Matrix</span>
+    <span class="bdg" style="background:#071a0e;color:var(--oper);border:1px solid #0e4028">Category × Function</span>
+  </div>
+  <div class="card-bd">
+    <p>Every real-world security control can be placed in this matrix. <strong style="color:var(--tx)">Mastering this grid means you can classify any control on the exam.</strong></p>
+
+    <div class="matrix-wrap">
+    <table class="matrix">
+      <tr class="m-hdr-row">
+        <th style="width:100px"></th>
+        <th style="color:var(--prev)">🛡️ Preventive</th>
+        <th style="color:var(--dete)">🔍 Detective</th>
+        <th style="color:var(--corr)">🔧 Corrective</th>
+        <th style="color:var(--dtr)">⚠️ Deterrent</th>
+        <th style="color:var(--comp)">🔄 Compensating</th>
+        <th style="color:var(--dire)">📜 Directive</th>
+      </tr>
+
+      <tr>
+        <td class="m-cat-cell" rowspan="1" style="background:linear-gradient(135deg,#071a28,#0d0d14);color:var(--tech);width:90px">💻 Technical</td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--prev)">Technical Preventive</strong>
+          Firewall rules<br>MFA enforcement<br>Encryption (AES/TLS)<br>Access Control Lists<br>Antivirus blocking<br>CAPTCHA<br>Patch management<br>IPS inline blocking</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dete)">Technical Detective</strong>
+          IDS alerts<br>SIEM correlation<br>Log analysis tools<br>File Integrity Monitor<br>DLP (detection mode)<br>Honeypot<br>Vulnerability scanner<br>Behavioral analytics</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--corr)">Technical Corrective</strong>
+          EDR auto-quarantine<br>Backup + restore system<br>Snapshot rollback<br>Auto-patch deployment<br>Malware removal tool<br>Certificate revocation<br>SOAR auto-remediation</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dtr)">Technical Deterrent</strong>
+          Login warning banner<br>CAPTCHA (also deters bots)<br>Rate limiting<br>Account lockout msg<br>"You are being monitored"<br>Slow-hash for passwords</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--comp)">Technical Compensating</strong>
+          Network isolation VLAN<br>Enhanced monitoring<br>Encrypted comms<br>(compensating for lack<br>of physical cable security)<br>WAF compensating<br>for unpatched app</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dire)">Technical Directive</strong>
+          Warning pop-up text<br>On-screen usage policy<br>Mandatory policy<br>acceptance click-through<br>Password complexity<br>requirements display</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="m-cat-cell" style="background:linear-gradient(135deg,#1a0c00,#0d0d14);color:var(--mgmt)">📋 Managerial</td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--prev)">Managerial Preventive</strong>
+          Background checks<br>Vendor security review<br>Security policy<br>(prevents by guiding)<br>Risk assessment<br>(identifies threats<br>so controls can be applied)</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dete)">Managerial Detective</strong>
+          Security audits<br>Risk assessments<br>Penetration testing<br>Compliance reviews<br>Audit committee oversight<br>Annual policy review</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--corr)">Managerial Corrective</strong>
+          Incident response policy<br>Business continuity plan<br>Disaster recovery plan<br>Post-incident review<br>Lessons learned process</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dtr)">Managerial Deterrent</strong>
+          Published discipline policy<br>"Violations will be<br>prosecuted" in policy<br>Security culture messaging<br>Security certifications<br>(deters attacker by<br>signaling strong posture)</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--comp)">Managerial Compensating</strong>
+          Risk acceptance<br>documentation<br>Exception approval process<br>Compensating control<br>approval (PCI-DSS)<br>Interim risk acceptance<br>with review date</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dire)">Managerial Directive</strong>
+          Security policies<br>Acceptable Use Policy<br>Data classification policy<br>Password policy document<br>Change management policy<br>Information security policy</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="m-cat-cell" style="background:linear-gradient(135deg,#071a0e,#0d0d14);color:var(--oper)">🔧 Operational</td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--prev)">Operational Preventive</strong>
+          Security awareness training<br>(delivery — prevents<br>social engineering success)<br>Patch application<br>Configuration hardening<br>Two-person integrity<br>Change management reviews</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dete)">Operational Detective</strong>
+          Log review by analysts<br>SOC monitoring<br>Security patrols<br>Phishing report review<br>Vulnerability scanning<br>Penetration test execution<br>Tabletop exercises</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--corr)">Operational Corrective</strong>
+          IR execution by team<br>Running backup restores<br>Wiping + reimaging<br>Password resets<br>Vendor emergency patch<br>Business recovery<br>activities</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dtr)">Operational Deterrent</strong>
+          Visible security patrols<br>Security desk presence<br>Employee challenge<br>culture: "who are you?"<br>Visible badge<br>checking procedures</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--comp)">Operational Compensating</strong>
+          Manual approval process<br>(compensating for<br>missing automation)<br>Extra security review<br>when tool unavailable<br>Manual log review<br>when SIEM is down</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dire)">Operational Directive</strong>
+          Security training content<br>Procedure documents<br>Checklists and runbooks<br>Job aids and quick<br>reference guides<br>Emergency procedures</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="m-cat-cell" style="background:linear-gradient(135deg,#200614,#0d0d14);color:var(--phys)">🔒 Physical</td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--prev)">Physical Preventive</strong>
+          Door locks + deadbolts<br>Mantrap / airlock<br>Badge reader (denies entry)<br>Biometric scanner<br>Cable locks on devices<br>Bollards (stops vehicles)<br>Fencing</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dete)">Physical Detective</strong>
+          CCTV / security cameras<br>Motion sensors<br>Smoke / heat detectors<br>Access logs (physical)<br>Alarm systems<br>Glass-break sensors<br>Vibration sensors</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--corr)">Physical Corrective</strong>
+          Fire suppression system<br>UPS (restores power)<br>Spare hardware on-site<br>Generator startup<br>Emergency locks<br>Disaster recovery<br>at physical site</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dtr)">Physical Deterrent</strong>
+          Visible cameras<br>Guard station at entrance<br>Warning / no-trespassing<br>signage<br>Barbed wire visible<br>Security lighting<br>Attack dog signage</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--comp)">Physical Compensating</strong>
+          Extra guards when<br>access system fails<br>Temporary barriers<br>when permanent fence<br>is under repair<br>Manual visitor log<br>when badge system down</div>
+        </td>
+        <td>
+          <div class="m-cell"><strong style="color:var(--dire)">Physical Directive</strong>
+          "No tailgating" sign<br>"No photography" sign<br>Exit signs (life safety)<br>"Clean desk" reminders<br>"Lock server room<br>after entry" sign<br>Visitor escort sign</div>
+        </td>
+      </tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Badge reader →</span><span>Physical + Preventive (denies entry) + Detective (logs access)</span></div>
+      <div class="er"><span class="ek">Security camera →</span><span>Physical + Detective (records) + Deterrent (visible presence)</span></div>
+      <div class="er"><span class="ek">AUP →</span><span>Managerial + Directive (tells users what to do)</span></div>
+      <div class="er"><span class="ek">Backup system →</span><span>Technical/Operational + Corrective (restores after incident)</span></div>
+      <div class="er"><span class="ek">Firewall →</span><span>Technical + Preventive (blocks traffic)</span></div>
+      <div class="er"><span class="ek">Mantrap →</span><span>Physical + Preventive (physically traps or denies tailgaters)</span></div>
+      <div class="er"><span class="ek">Warning banner →</span><span>Technical + Directive + Deterrent (tells users rules AND discourages)</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- TAB 6 — SCENARIOS               -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">06</span>
+    <span class="card-title">Scenario Practice — Classify the Control</span>
+    <span class="bdg" style="background:#1a0c00;color:var(--mgmt);border:1px solid #3c2000">Exam Practice</span>
+  </div>
+  <div class="card-bd">
+    <p>The Security+ exam presents controls in context and asks you to classify them. <strong style="color:var(--tx)">Practice identifying both the category AND function for each control.</strong></p>
+
+    <h3 style="border-left-color:var(--comp)">Quick Classification Chips</h3>
+    <div class="chip-grid">
+      <div class="chip">
+        <div class="chip-q">An organization deploys an IDS to monitor network traffic and send alerts when suspicious patterns are detected.</div>
+        <div class="chip-a" style="color:var(--tech)">Technical</div>
+        <div class="chip-a" style="color:var(--dete)">+ Detective</div>
+      </div>
+      <div class="chip">
+        <div class="chip-q">A company requires all employees to complete annual security awareness training before their access is renewed.</div>
+        <div class="chip-a" style="color:var(--mgmt)">Managerial</div>
+        <div class="chip-a" style="color:var(--dire)">+ Directive</div>
+      </div>
+      <div class="chip">
+        <div class="chip-q">Server room entrance has a mantrap that requires badge scan to enter and prevents multiple people from passing simultaneously.</div>
+        <div class="chip-a" style="color:var(--phys)">Physical</div>
+        <div class="chip-a" style="color:var(--prev)">+ Preventive</div>
+      </div>
+      <div class="chip">
+        <div class="chip-q">After a ransomware attack, the IT team restores all encrypted files from last night's offline backup.</div>
+        <div class="chip-a" style="color:var(--oper)">Operational</div>
+        <div class="chip-a" style="color:var(--corr)">+ Corrective</div>
+      </div>
+      <div class="chip">
+        <div class="chip-q">A login screen displays "This system is for authorized users only. All activity is monitored and logged."</div>
+        <div class="chip-a" style="color:var(--tech)">Technical</div>
+        <div class="chip-a" style="color:var(--dire)">+ Directive</div>
+        <div class="chip-a" style="color:var(--dtr)">+ Deterrent</div>
+      </div>
+      <div class="chip">
+        <div class="chip-q">A legacy Windows XP machine can't be patched. The team places it on an isolated VLAN with strict firewall rules.</div>
+        <div class="chip-a" style="color:var(--tech)">Technical</div>
+        <div class="chip-a" style="color:var(--comp)">+ Compensating</div>
+      </div>
+      <div class="chip">
+        <div class="chip-q">Security guards visibly patrol the parking lot and building perimeter every 2 hours.</div>
+        <div class="chip-a" style="color:var(--phys)">Physical</div>
+        <div class="chip-a" style="color:var(--dete)">+ Detective</div>
+        <div class="chip-a" style="color:var(--dtr)">+ Deterrent</div>
+      </div>
+      <div class="chip">
+        <div class="chip-q">IT enforces a 14-character minimum password complexity requirement through Active Directory Group Policy.</div>
+        <div class="chip-a" style="color:var(--tech)">Technical</div>
+        <div class="chip-a" style="color:var(--prev)">+ Preventive</div>
+      </div>
+      <div class="chip">
+        <div class="chip-q">The CISO conducts an annual risk assessment to identify threats and assign risk ratings.</div>
+        <div class="chip-a" style="color:var(--mgmt)">Managerial</div>
+        <div class="chip-a" style="color:var(--dete)">+ Detective</div>
+      </div>
+      <div class="chip">
+        <div class="chip-q">Ceiling-mounted smoke detectors and water sprinklers protect the data center from fire damage.</div>
+        <div class="chip-a" style="color:var(--phys)">Physical</div>
+        <div class="chip-a" style="color:var(--dete)">Detectors = Detective</div>
+        <div class="chip-a" style="color:var(--corr)">Sprinklers = Corrective</div>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--comp)">Scenario Deep Dives</h3>
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Hospital with Legacy Medical Device</div>
+      <div class="code">
+<span class="cm"># Context: Hospital has a patient-connected device running Windows XP</span>
+<span class="cm"># Cannot be patched — FDA approval required for OS update</span>
+<span class="cm"># Cannot be taken offline — patient monitoring is critical</span>
+
+Controls deployed:
+
+1. Network micro-segmentation → isolated VLAN
+   Category: <span class="cb">Technical</span>  Function: <span class="cs">Compensating</span>
+   Reason: compensates for inability to patch
+
+2. IDS monitoring device traffic for anomalies
+   Category: <span class="cb">Technical</span>  Function: <span class="cp">Detective</span>
+   Reason: identifies if device is being attacked
+
+3. Physical lock on medical device room
+   Category: <span class="cr">Physical</span>   Function: <span class="ci">Preventive</span>
+   Reason: prevents physical tampering
+
+4. Policy: "Only medical staff may access device room"
+   Category: <span class="co">Managerial</span> Function: <span class="cb">Directive</span>
+   Reason: directs behavior through policy
+
+5. Security guard checks ID before allowing room entry
+   Category: <span class="cr">Physical</span>   Function: <span class="ci">Preventive</span> + <span class="cp">Detective</span>
+   Reason: prevents unauthorized entry, logs who entered
+
+6. Exception documented in risk register → CISO approved
+   Category: <span class="co">Managerial</span> Function: <span class="cs">Compensating</span>
+   Reason: formal risk acceptance for compensating approach
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Office Physical Security</div>
+      <div class="code">
+<span class="cm"># Classify each control at the office building entrance:</span>
+
+Badge reader at door:
+  Physical + <span class="ci">Preventive</span> (denies entry without badge)
+  Physical + <span class="cp">Detective</span> (logs all badge scans)
+
+"No tailgating. One person per scan" sign:
+  Physical + <span class="cb">Directive</span> (instructs behavior)
+  Physical + <span class="co">Deterrent</span> (reminds and discourages)
+
+Visible CCTV camera above entrance:
+  Physical + <span class="cp">Detective</span> (records footage)
+  Physical + <span class="co">Deterrent</span> (visible = discourages)
+
+Receptionist who greets all visitors:
+  Operational + <span class="ci">Preventive</span> (challenges unknown visitors)
+  Operational + <span class="cp">Detective</span> (spots unusual behavior)
+  Physical + <span class="co">Deterrent</span> (presence discourages)
+
+Visitor policy (must sign in, wear badge, be escorted):
+  Managerial + <span class="cb">Directive</span> (tells people what to do)
+  Managerial + <span class="ci">Preventive</span> (prevents unauthorized wandering)
+
+Turnstile mantrap at entrance:
+  Physical + <span class="ci">Preventive</span> (physically prevents tailgating)
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Risk assessment →</span><span>Managerial + Detective (identifies risks)</span></div>
+      <div class="er"><span class="ek">Security awareness training →</span><span>Operational + Preventive (prevents social engineering) + Directive (directs behavior)</span></div>
+      <div class="er"><span class="ek">Fire suppression →</span><span>Physical + Corrective (puts out fire and limits damage)</span></div>
+      <div class="er"><span class="ek">Smoke detector →</span><span>Physical + Detective (detects fire, alerts)</span></div>
+      <div class="er"><span class="ek">Patch management policy →</span><span>Managerial + Directive (the policy) — applying patches = Operational + Preventive</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- TAB 7 — LAYERING STRATEGY       -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">07</span>
+    <span class="card-title">Control Layering Strategy</span>
+    <span class="bdg" style="background:#071a0e;color:var(--corr);border:1px solid #0e4028">Defense in Depth</span>
+  </div>
+  <div class="card-bd">
+    <p>Effective security uses <strong style="color:var(--tx)">multiple controls from multiple categories and functions working together</strong>. No single control is sufficient — the art is selecting complementary controls that cover each other's weaknesses.</p>
+
+    <h3 style="border-left-color:var(--corr)">Decision Framework — Selecting Controls</h3>
+    <div class="dflow">
+      <div class="dflow-node" style="background:linear-gradient(135deg,#071a28,#0d0d14);border-color:#0e3050">
+        <span style="font-size:1.2rem">1️⃣</span>
+        <div>
+          <div class="dflow-q" style="color:var(--prev)">Identify the Threat</div>
+          <div class="dflow-a">What are you protecting against? Unauthorized access? Malware? Data loss? Physical theft? Insider threat? Each threat may need different controls.</div>
+        </div>
+      </div>
+      <div class="dflow-arr">↓</div>
+      <div class="dflow-node" style="background:linear-gradient(135deg,#16082a,#0d0d14);border-color:#2d1050">
+        <span style="font-size:1.2rem">2️⃣</span>
+        <div>
+          <div class="dflow-q" style="color:var(--dete)">Select Preventive Controls First</div>
+          <div class="dflow-a">Try to stop the attack before it succeeds. What technical, physical, managerial, and operational controls can prevent this threat? Ideal: stop it before it happens.</div>
+        </div>
+      </div>
+      <div class="dflow-arr">↓</div>
+      <div class="dflow-node" style="background:linear-gradient(135deg,#071a0e,#0d0d14);border-color:#0e4028">
+        <span style="font-size:1.2rem">3️⃣</span>
+        <div>
+          <div class="dflow-q" style="color:var(--corr)">Add Detective Controls</div>
+          <div class="dflow-a">Assume the preventive control might fail. How will you KNOW if it does? Every preventive control needs a corresponding detective control. If firewall rule is bypassed — the IDS should catch it.</div>
+        </div>
+      </div>
+      <div class="dflow-arr">↓</div>
+      <div class="dflow-node" style="background:linear-gradient(135deg,#1a1000,#0d0d14);border-color:#3c2000">
+        <span style="font-size:1.2rem">4️⃣</span>
+        <div>
+          <div class="dflow-q" style="color:var(--dtr)">Add Corrective Controls</div>
+          <div class="dflow-a">Assume the attack succeeds. How do you recover? Backup and restore, IR plan, DR site. Recovery capability prevents a bad event from becoming catastrophic.</div>
+        </div>
+      </div>
+      <div class="dflow-arr">↓</div>
+      <div class="dflow-node" style="background:linear-gradient(135deg,#180800,#0d0d14);border-color:#3c1800">
+        <span style="font-size:1.2rem">5️⃣</span>
+        <div>
+          <div class="dflow-q" style="color:var(--comp)">Add Deterrents and Directives</div>
+          <div class="dflow-a">Layer in deterrents (visible controls, warnings) and directives (policies, training) to reduce attack attempts and guide employee behavior. The human element of security.</div>
+        </div>
+      </div>
+      <div class="dflow-arr">↓</div>
+      <div class="dflow-node" style="background:linear-gradient(135deg,#071828,#0d0d14);border-color:#0e3060">
+        <span style="font-size:1.2rem">6️⃣</span>
+        <div>
+          <div class="dflow-q" style="color:var(--dire)">Use Compensating Where Needed</div>
+          <div class="dflow-a">When ideal controls can't be implemented (cost, legacy system, technical constraint), apply compensating controls that reduce risk to an acceptable level. Always document why the primary control isn't possible.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--corr)">Complete Defense — Ransomware Example</h3>
+    <div class="code">
+<span class="cm"># Threat: Ransomware via phishing email</span>
+<span class="cm"># Apply controls from ALL categories across ALL functions:</span>
+
+<span class="ci">PREVENTIVE controls:</span>
+  Email sandbox (Technical+Preventive): detonate attachments
+  Anti-phishing filter (Technical+Preventive): block known bad
+  MFA on all accounts (Technical+Preventive): blocks credential theft
+  EDR behavioral block (Technical+Preventive): stops execution
+  Security awareness training (Operational+Preventive): train to spot
+  Patching policy (Managerial+Preventive): removes exploit path
+  Least privilege (Technical+Preventive): limits spread if executes
+
+<span class="cp">DETECTIVE controls:</span>
+  SIEM rule: mass file modification alert (Technical+Detective)
+  EDR behavioral: shadow copy deletion flag (Technical+Detective)
+  Email reporting button (Operational+Detective): staff report
+  Phishing simulation metrics (Operational+Detective): spot trends
+
+<span class="cg">CORRECTIVE controls:</span>
+  Immutable backups (Technical+Corrective): restore without paying
+  IR plan with ransomware playbook (Managerial+Corrective): structured response
+  Network segmentation (Technical+Corrective/Compensating): contains blast radius
+  DR site (Technical+Corrective): continue operations during recovery
+
+<span class="co">DETERRENT controls:</span>
+  Published security policy with consequences (Managerial+Deterrent)
+  Visible security team presence (Operational+Deterrent)
+
+<span class="cb">DIRECTIVE controls:</span>
+  AUP: prohibits clicking unknown links (Managerial+Directive)
+  "Don't open unexpected attachments" poster (Physical+Directive)
+  Security awareness content: how to report (Operational+Directive)
+
+<span class="cg">Result: attacker must defeat ALL layers — each layer raises cost and time</span>
+    </div>
+
+    <h3 style="border-left-color:var(--corr)">Control Coverage Assessment</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#0e3050">
+        <h4 style="color:var(--tech)">Technical Controls</h4>
+        <p>Most scalable and consistent. Don't rely on human behavior. Can fail due to: misconfiguration, zero-day bypasses, management plane compromise. Strength: enforces policy automatically at scale.</p>
+      </div>
+      <div class="gc" style="border-color:#3c2000">
+        <h4 style="color:var(--mgmt)">Managerial Controls</h4>
+        <p>Sets the entire direction — without policy, technical controls have no purpose. Can fail due to: leadership not prioritizing security, poorly written policies, no enforcement. Strength: creates legal and organizational accountability.</p>
+      </div>
+      <div class="gc" style="border-color:#0e4028">
+        <h4 style="color:var(--oper)">Operational Controls</h4>
+        <p>Human adaptability — can handle novel situations. Can fail due to: human error, fatigue, training gaps, shortcuts. Strength: human judgment in ambiguous situations. Security culture is an operational control.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">No control is sufficient alone →</span><span>Defense in depth: combine Preventive + Detective + Corrective + Deterrent</span></div>
+      <div class="er"><span class="ek">Control selection sequence →</span><span>Preventive first → Detective → Corrective → Deterrent/Directive → Compensating if needed</span></div>
+      <div class="er"><span class="ek">Compensating control requirement →</span><span>Document why primary control can't be used + must be formally approved</span></div>
+      <div class="er"><span class="ek">Detective requires response →</span><span>Detection alone is useless without a process to act on alerts (SIEM + SOC)</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- TAB 8 — SUMMARY                 -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">08</span>
+    <span class="card-title">Complete Exam Cheat Sheet</span>
+    <span class="bdg" style="background:#071828;color:var(--dire);border:1px solid #0e3060">Domain 1 · Security Controls</span>
+  </div>
+  <div class="card-bd">
+
+    <h3 style="border-left-color:var(--prev)">Categories vs Functions — Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th colspan="3">CATEGORIES — What Kind of Control?</th></tr>
+      <tr>
+        <td><span class="tag t-tech">Technical / Logical</span></td>
+        <td>Technology enforces — automatic — hardware/software/firmware</td>
+        <td>Firewall, MFA, encryption, IDS/IPS, EDR, SIEM, ACL</td>
+      </tr>
+      <tr>
+        <td><span class="tag t-mgmt">Managerial / Administrative</span></td>
+        <td>Policies and governance — sets direction</td>
+        <td>Security policy, risk assessment, background check, audit</td>
+      </tr>
+      <tr>
+        <td><span class="tag t-oper">Operational</span></td>
+        <td>People executing procedures — day-to-day</td>
+        <td>Applying patches, running backups, SOC operations, training</td>
+      </tr>
+      <tr>
+        <td><span class="tag t-phys">Physical</span></td>
+        <td>Tangible hardware and environment</td>
+        <td>Locks, cameras, guards, mantrap, fencing, badge reader</td>
+      </tr>
+    </table>
+    </div>
+
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th colspan="3">FUNCTIONS — What Does It Do?</th></tr>
+      <tr>
+        <td><span class="tag t-prev">Preventive</span></td>
+        <td>Stops attack before impact — blocks</td>
+        <td>Firewall, MFA, patch mgmt, lock, mantrap, background check</td>
+      </tr>
+      <tr>
+        <td><span class="tag t-dete">Detective</span></td>
+        <td>Identifies attacks — alerts only, doesn't block</td>
+        <td>IDS, SIEM, audit logs, CCTV, FIM, honeypot, risk assessment</td>
+      </tr>
+      <tr>
+        <td><span class="tag t-corr">Corrective</span></td>
+        <td>Restores after attack — reduces impact</td>
+        <td>Backup/restore, IR plan, quarantine, reimage, DR site</td>
+      </tr>
+      <tr>
+        <td><span class="tag t-dtr">Deterrent</span></td>
+        <td>Discourages attacker from trying</td>
+        <td>Warning banner, visible camera, guard post, fence sign</td>
+      </tr>
+      <tr>
+        <td><span class="tag t-comp">Compensating</span></td>
+        <td>Alternative when primary control unavailable</td>
+        <td>Network isolation for unpatched system, enhanced monitoring</td>
+      </tr>
+      <tr>
+        <td><span class="tag t-dire">Directive</span></td>
+        <td>Guides/instructs behavior — informs not enforces</td>
+        <td>AUP, policies, warning banner, training content, signs</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--dete)">Exam Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// 40 Scenarios → Category + Function</h4>
+      <div class="er"><span class="ek">"Technology blocks unauthorized traffic automatically"</span><span>→ Technical + Preventive (Firewall)</span></div>
+      <div class="er"><span class="ek">"Alerts on suspicious traffic but does NOT block it"</span><span>→ Technical + Detective (IDS)</span></div>
+      <div class="er"><span class="ek">"Alerts AND blocks suspicious traffic inline"</span><span>→ Technical + Preventive (IPS)</span></div>
+      <div class="er"><span class="ek">"Correlates logs from multiple sources, generates alerts"</span><span>→ Technical + Detective (SIEM)</span></div>
+      <div class="er"><span class="ek">"Requires a second factor beyond password to log in"</span><span>→ Technical + Preventive (MFA)</span></div>
+      <div class="er"><span class="ek">"Renders data unreadable without a key"</span><span>→ Technical + Preventive (Encryption)</span></div>
+      <div class="er"><span class="ek">"Restores data after ransomware attack"</span><span>→ Technical/Operational + Corrective (Backup restore)</span></div>
+      <div class="er"><span class="ek">"Automatically isolates infected endpoint"</span><span>→ Technical + Corrective (EDR quarantine)</span></div>
+      <div class="er"><span class="ek">"Decoy system designed to attract and detect attackers"</span><span>→ Technical + Detective (Honeypot)</span></div>
+      <div class="er"><span class="ek">"Monitors files for unauthorized changes"</span><span>→ Technical + Detective (File Integrity Monitoring)</span></div>
+      <div class="er"><span class="ek">"Governance document — what employees may/may not do"</span><span>→ Managerial + Directive (AUP)</span></div>
+      <div class="er"><span class="ek">"Identifies threats and assigns risk ratings annually"</span><span>→ Managerial + Detective (Risk assessment)</span></div>
+      <div class="er"><span class="ek">"Reviews individual's history before employment"</span><span>→ Managerial + Preventive (Background check)</span></div>
+      <div class="er"><span class="ek">"Structured plan for responding to security incidents"</span><span>→ Managerial + Corrective (Incident response policy)</span></div>
+      <div class="er"><span class="ek">"IT team applies patches every Tuesday"</span><span>→ Operational + Preventive (Patch management execution)</span></div>
+      <div class="er"><span class="ek">"SOC analyst reviews SIEM alerts each shift"</span><span>→ Operational + Detective (Log/alert review)</span></div>
+      <div class="er"><span class="ek">"Security analyst delivers phishing awareness session"</span><span>→ Operational + Preventive + Directive (Training delivery)</span></div>
+      <div class="er"><span class="ek">"Two people required to complete sensitive financial transaction"</span><span>→ Operational + Preventive (Two-person integrity)</span></div>
+      <div class="er"><span class="ek">"IT team runs backup restore test to verify recoverability"</span><span>→ Operational + Corrective (Backup validation)</span></div>
+      <div class="er"><span class="ek">"Door requires badge to open — denies unauthorized entry"</span><span>→ Physical + Preventive (Badge reader + lock)</span></div>
+      <div class="er"><span class="ek">"Camera records footage of all who enter data center"</span><span>→ Physical + Detective (CCTV)</span></div>
+      <div class="er"><span class="ek">"Visible security camera at entrance"</span><span>→ Physical + Deterrent (visible = discourages) + Detective</span></div>
+      <div class="er"><span class="ek">"Airlock that only allows one person to pass at a time"</span><span>→ Physical + Preventive (Mantrap)</span></div>
+      <div class="er"><span class="ek">"Motion sensor triggers alarm when area is entered after hours"</span><span>→ Physical + Detective (Motion sensor alarm)</span></div>
+      <div class="er"><span class="ek">"Fire suppression system activates when fire is detected"</span><span>→ Physical + Corrective (Suppression = corrective)</span></div>
+      <div class="er"><span class="ek">"Smoke detector sounds alarm in data center"</span><span>→ Physical + Detective (Detects fire, alerts)</span></div>
+      <div class="er"><span class="ek">"Guard station visibly present at building entrance"</span><span>→ Physical + Deterrent + Detective + Preventive</span></div>
+      <div class="er"><span class="ek">"Warning: Unauthorized access is prohibited" on login screen"</span><span>→ Technical + Directive + Deterrent</span></div>
+      <div class="er"><span class="ek">"No Tailgating — One Person Per Scan" sign at door"</span><span>→ Physical + Directive + Deterrent</span></div>
+      <div class="er"><span class="ek">"Legacy system cannot be patched — team isolates it on VLAN"</span><span>→ Technical + Compensating</span></div>
+      <div class="er"><span class="ek">"Manual approval process added because automation tool is down"</span><span>→ Operational + Compensating</span></div>
+      <div class="er"><span class="ek">"UPS automatically restores power when main power fails"</span><span>→ Physical + Corrective (restores availability)</span></div>
+      <div class="er"><span class="ek">"Fence topped with barbed wire around data center"</span><span>→ Physical + Preventive (barrier) + Deterrent (visible)</span></div>
+      <div class="er"><span class="ek">"Anti-virus in detection-only mode (not blocking)"</span><span>→ Technical + Detective</span></div>
+      <div class="er"><span class="ek">"Anti-virus actively blocking malware execution"</span><span>→ Technical + Preventive</span></div>
+      <div class="er"><span class="ek">"Password policy document stating minimum 12 characters"</span><span>→ Managerial + Directive (the document)</span></div>
+      <div class="er"><span class="ek">"AD enforces 12-character minimum automatically"</span><span>→ Technical + Preventive (the enforcement)</span></div>
+      <div class="er"><span class="ek">"Security awareness training teaches phishing recognition"</span><span>→ Operational + Preventive (prevents clicking) + Directive</span></div>
+      <div class="er"><span class="ek">"Pentest finds vulnerability before attacker does"</span><span>→ Operational + Detective (identifies weakness)</span></div>
+      <div class="er"><span class="ek">"Organization buys cyber insurance for breach costs"</span><span>→ Managerial + Compensating (transfers/compensates for financial risk)</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

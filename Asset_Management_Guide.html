@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asset Management — Security+ Domain 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600;700&family=Epilogue:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #0e0f14;
+  --s1: #14151d;
+  --s2: #1c1d28;
+  --s3: #232438;
+  --border: #2e2f45;
+  --text: #e4e5f0;
+  --muted: #7475a0;
+  --blue: #60a5fa;
+  --green: #4ade80;
+  --red: #f87171;
+  --orange: #fb923c;
+  --purple: #c084fc;
+  --teal: #2dd4bf;
+  --yellow: #fbbf24;
+  --pink: #f472b6;
+  --indigo: #818cf8;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Epilogue',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+.title {
+  font-size:2rem;
+  font-weight:700;
+  text-align:center;
+  letter-spacing:-0.03em;
+  margin-bottom:0.25rem;
+  background:linear-gradient(135deg,var(--indigo),var(--teal));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.sub {
+  text-align:center;
+  font-family:'Inconsolata',monospace;
+  font-size:0.72rem;
+  color:var(--muted);
+  margin-bottom:2rem;
+}
+
+/* TABS */
+.tabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.35rem;
+  justify-content:center;
+  margin-bottom:2rem;
+}
+.tab {
+  padding:0.45rem 1rem;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:var(--s1);
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'Inconsolata',monospace;
+  font-size:0.68rem;
+  font-weight:600;
+  transition:all 0.15s;
+}
+.tab:hover { border-color:var(--indigo); color:var(--indigo); }
+.tab.active { background:var(--indigo); color:#fff; border-color:var(--indigo); }
+
+/* SECTIONS */
+.sec { display:none; }
+.sec.on { display:block; animation:up 0.2s ease; }
+@keyframes up { from{opacity:0;transform:translateY(5px);} to{opacity:1;transform:none;} }
+
+/* CARD */
+.card {
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:1.5rem;
+  overflow:hidden;
+}
+.card-hd {
+  display:flex;
+  align-items:center;
+  gap:0.8rem;
+  padding:1.1rem 1.4rem;
+  border-bottom:1px solid var(--border);
+}
+.card-num {
+  font-family:'Inconsolata',monospace;
+  font-size:0.62rem;
+  color:var(--muted);
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:0.15rem 0.4rem;
+}
+.card-title { font-size:1.05rem; font-weight:600; letter-spacing:-0.01em; }
+.bdg {
+  margin-left:auto;
+  font-family:'Inconsolata',monospace;
+  font-size:0.62rem;
+  padding:0.2rem 0.65rem;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.bdg-blue   { background:#1e3a5f; color:var(--blue);   border:1px solid #2a4f7f; }
+.bdg-green  { background:#1a3d28; color:var(--green);  border:1px solid #2a5538; }
+.bdg-orange { background:#3d2a10; color:var(--orange); border:1px solid #5a3d18; }
+.bdg-red    { background:#3d1515; color:var(--red);    border:1px solid #5a2020; }
+.bdg-purple { background:#2a1a40; color:var(--purple); border:1px solid #3d2a5a; }
+.bdg-teal   { background:#0f2d2a; color:var(--teal);   border:1px solid #1a4040; }
+.bdg-indigo { background:#1e2050; color:var(--indigo); border:1px solid #2a2f7f; }
+.bdg-yellow { background:#3d2e10; color:var(--yellow); border:1px solid #5a4518; }
+
+.card-bd { padding:1.4rem; }
+p { color:var(--muted); font-size:0.86rem; margin-bottom:0.8rem; }
+h3 {
+  font-size:0.9rem;
+  font-weight:600;
+  color:var(--text);
+  margin:1.2rem 0 0.6rem;
+  padding-left:0.7rem;
+  border-left:3px solid var(--indigo);
+}
+
+/* CODE */
+.code {
+  background:#08090f;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:1rem 1.2rem;
+  font-family:'Inconsolata',monospace;
+  font-size:0.7rem;
+  line-height:1.85;
+  color:var(--text);
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.cg{color:var(--green);}
+.cr{color:var(--red);}
+.cb{color:var(--blue);}
+.co{color:var(--orange);}
+.cp{color:var(--purple);}
+.cm{color:var(--muted);}
+.ct{color:var(--teal);}
+.cy{color:var(--yellow);}
+.ci{color:var(--indigo);}
+
+/* SCENE */
+.scene {
+  background:#1e1a10;
+  border-left:3px solid var(--orange);
+  border-radius:0 8px 8px 0;
+  padding:1rem 1.2rem;
+  margin:1rem 0;
+}
+.scene-lbl {
+  font-family:'Inconsolata',monospace;
+  font-size:0.62rem;
+  color:var(--orange);
+  margin-bottom:0.5rem;
+  letter-spacing:0.06em;
+  font-weight:700;
+}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc {
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1rem;
+}
+.gc h4{font-size:0.82rem;font-weight:600;margin-bottom:0.4rem;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* LIFECYCLE STEPS */
+.lifecycle {
+  display:flex;
+  gap:0;
+  overflow-x:auto;
+  margin:1rem 0;
+  position:relative;
+}
+.lc-step {
+  flex:1;
+  min-width:120px;
+  text-align:center;
+  padding:1rem 0.5rem;
+  position:relative;
+}
+.lc-step::after {
+  content:'→';
+  position:absolute;
+  right:-8px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
+  font-size:1rem;
+  z-index:1;
+}
+.lc-step:last-child::after{display:none;}
+.lc-num {
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:2px solid;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Inconsolata',monospace;
+  font-size:0.8rem;
+  font-weight:700;
+  margin:0 auto 0.5rem;
+}
+.lc-label{font-size:0.75rem;font-weight:600;margin-bottom:0.3rem;}
+.lc-desc{font-size:0.65rem;color:var(--muted);line-height:1.4;}
+
+/* ASSET TABLE */
+.asset-row {
+  display:grid;
+  grid-template-columns:140px 1fr 1fr 120px;
+  gap:0.5rem;
+  padding:0.7rem 0.8rem;
+  border-radius:8px;
+  margin-bottom:0.4rem;
+  border:1px solid var(--border);
+  background:var(--s2);
+  align-items:start;
+  font-size:0.77rem;
+}
+.asset-row.hdr {
+  background:var(--s3);
+  font-family:'Inconsolata',monospace;
+  font-size:0.65rem;
+  font-weight:700;
+  color:var(--muted);
+  border-color:var(--border);
+}
+@media(max-width:640px){.asset-row{grid-template-columns:1fr;}}
+
+/* STATUS PILL */
+.pill {
+  display:inline-block;
+  font-family:'Inconsolata',monospace;
+  font-size:0.62rem;
+  padding:0.15rem 0.5rem;
+  border-radius:999px;
+  font-weight:600;
+}
+.pill-g{background:#1a3d28;color:var(--green);border:1px solid #2a5538;}
+.pill-r{background:#3d1515;color:var(--red);border:1px solid #5a2020;}
+.pill-o{background:#3d2a10;color:var(--orange);border:1px solid #5a3d18;}
+.pill-b{background:#1e3a5f;color:var(--blue);border:1px solid #2a4f7f;}
+.pill-p{background:#2a1a40;color:var(--purple);border:1px solid #3d2a5a;}
+.pill-y{background:#3d2e10;color:var(--yellow);border:1px solid #5a4518;}
+
+/* DISPOSAL METHODS */
+.disposal-card {
+  border-radius:10px;
+  padding:1rem;
+  border:1px solid;
+  margin-bottom:0.6rem;
+}
+
+/* EXAM */
+.exam {
+  background:#1a1030;
+  border:1px solid #3d2a5a;
+  border-radius:10px;
+  padding:1rem 1.2rem;
+  margin-top:1rem;
+}
+.exam h4 {
+  font-family:'Inconsolata',monospace;
+  font-size:0.62rem;
+  color:var(--purple);
+  margin-bottom:0.6rem;
+  letter-spacing:0.06em;
+  font-weight:700;
+}
+.er{display:flex;gap:0.5rem;margin-bottom:0.4rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'Inconsolata',monospace;font-size:0.68rem;flex-shrink:0;font-weight:700;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.55rem 0.8rem;text-align:left;color:var(--muted);border-bottom:1px solid var(--border);font-size:0.7rem;font-weight:700;font-family:'Inconsolata',monospace;}
+td{padding:0.55rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.1rem 0.45rem;border-radius:4px;font-size:0.62rem;font-family:'Inconsolata',monospace;font-weight:600;}
+.tg{background:#1a3d28;color:var(--green);}
+.tr{background:#3d1515;color:var(--red);}
+.tb{background:#1e3a5f;color:var(--blue);}
+.to{background:#3d2a10;color:var(--orange);}
+.tp{background:#2a1a40;color:var(--purple);}
+.tt{background:#0f2d2a;color:var(--teal);}
+.ti{background:#1e2050;color:var(--indigo);}
+.ty{background:#3d2e10;color:var(--yellow);}
+
+/* INFO BOXES */
+.info-row {
+  display:flex;
+  align-items:flex-start;
+  gap:0.8rem;
+  padding:0.8rem 1rem;
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  margin-bottom:0.5rem;
+}
+.info-icon {
+  font-size:1.1rem;
+  flex-shrink:0;
+  margin-top:0.1rem;
+}
+.info-title{font-size:0.83rem;font-weight:600;margin-bottom:0.15rem;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* FLOW DIAGRAM */
+.flow {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:0.4rem;
+  margin:1rem 0;
+}
+.flow-box {
+  border-radius:8px;
+  padding:0.6rem 0.9rem;
+  font-size:0.73rem;
+  font-weight:500;
+  border:1px solid;
+  text-align:center;
+  min-width:90px;
+}
+.flow-arr{color:var(--muted);font-size:1.1rem;}
+
+/* MONITORING DASHBOARD */
+.dash-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0.6rem;
+  margin:1rem 0;
+}
+@media(max-width:640px){.dash-grid{grid-template-columns:1fr 1fr;}}
+.dash-card {
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1rem;
+  text-align:center;
+}
+.dash-num {
+  font-family:'Inconsolata',monospace;
+  font-size:1.6rem;
+  font-weight:700;
+  margin-bottom:0.2rem;
+}
+.dash-label{font-size:0.72rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="title">Asset Management</div>
+<p class="sub">// Domain 4 — Security Operations · Acquisition · Assignment · Monitoring · Disposal</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Acquisition</button>
+  <button class="tab" onclick="go('s3',this)">3. Assignment</button>
+  <button class="tab" onclick="go('s4',this)">4. Hardware Assets</button>
+  <button class="tab" onclick="go('s5',this)">5. Software Assets</button>
+  <button class="tab" onclick="go('s6',this)">6. Data Assets</button>
+  <button class="tab" onclick="go('s7',this)">7. Monitoring & Tracking</button>
+  <button class="tab" onclick="go('s8',this)">8. Disposal</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- 1. OVERVIEW                    -->
+<!-- ════════════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">01</span>
+    <span class="card-title">Asset Management Overview</span>
+    <span class="bdg bdg-indigo">Full Lifecycle</span>
+  </div>
+  <div class="card-bd">
+    <p>Asset management is the <strong style="color:var(--text)">systematic process of tracking and managing every hardware, software, and data asset</strong> throughout its entire lifecycle — from the moment it's acquired to the moment it's disposed of. You can't secure what you don't know you have.</p>
+
+    <h3>Why Asset Management Matters for Security</h3>
+    <div class="code">
+<span class="cm"># The fundamental security problem:</span>
+Unknown asset = unmanaged asset = unsecured asset
+
+Company has 500 known laptops → all patched ✓
+Company also has 47 FORGOTTEN laptops → never patched ✗
+Attacker finds forgotten laptop via network scan
+Exploits 3-year-old unpatched vulnerability
+Uses it as entry point → lateral movement begins
+
+<span class="cm"># Shadow IT example:</span>
+Developer spins up AWS instance for testing
+Forgets about it → never registered in asset inventory
+Never patched, never monitored, never secured
+Attacker finds it via Shodan (internet scanner)
+<span class="cr">Breach originates from asset nobody knew existed ✗</span>
+
+<span class="cg"># With proper asset management:</span>
+Every asset registered at acquisition
+Every asset assigned to an owner
+Every asset monitored continuously
+Every asset patched and secured
+Every asset properly disposed of
+<span class="cg">No unknown assets = no forgotten attack surfaces ✓</span>
+    </div>
+
+    <h3>The Asset Lifecycle — Full Picture</h3>
+    <div class="lifecycle">
+      <div class="lc-step">
+        <div class="lc-num" style="border-color:var(--blue);color:var(--blue)">1</div>
+        <div class="lc-label" style="color:var(--blue)">Acquisition</div>
+        <div class="lc-desc">Purchase, receive, verify, register in inventory</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-num" style="border-color:var(--green);color:var(--green)">2</div>
+        <div class="lc-label" style="color:var(--green)">Assignment</div>
+        <div class="lc-desc">Assign owner, classify, tag, configure baseline</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-num" style="border-color:var(--teal);color:var(--teal)">3</div>
+        <div class="lc-label" style="color:var(--teal)">Deployment</div>
+        <div class="lc-desc">Deploy with security controls, enroll in MDM/management</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-num" style="border-color:var(--purple);color:var(--purple)">4</div>
+        <div class="lc-label" style="color:var(--purple)">Monitoring</div>
+        <div class="lc-desc">Track location, patch status, compliance, usage</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-num" style="border-color:var(--orange);color:var(--orange)">5</div>
+        <div class="lc-label" style="color:var(--orange)">Maintenance</div>
+        <div class="lc-desc">Patch, update, repair, reconfigure as needed</div>
+      </div>
+      <div class="lc-step">
+        <div class="lc-num" style="border-color:var(--red);color:var(--red)">6</div>
+        <div class="lc-label" style="color:var(--red)">Disposal</div>
+        <div class="lc-desc">Sanitize data, decommission, document, recycle/destroy</div>
+      </div>
+    </div>
+
+    <h3>Three Asset Categories</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#2a4f7f">
+        <h4 style="color:var(--blue)">💻 Hardware Assets</h4>
+        <p>Physical devices — laptops, servers, switches, routers, phones, tablets, printers, USB drives, IoT devices, network equipment.</p>
+        <ul>
+          <li>Has physical location</li>
+          <li>Can be stolen or lost</li>
+          <li>Contains data that must be wiped</li>
+          <li>Tracked by serial number</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#2a5538">
+        <h4 style="color:var(--green)">📦 Software Assets</h4>
+        <p>Applications, licenses, operating systems, firmware, SaaS subscriptions, cloud services, open-source components.</p>
+        <ul>
+          <li>License compliance critical</li>
+          <li>Version tracking required</li>
+          <li>Vulnerability scanning needed</li>
+          <li>Tracked by license key/version</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#3d2a5a">
+        <h4 style="color:var(--purple)">📊 Data Assets</h4>
+        <p>Databases, files, intellectual property, customer records, financial data, credentials, certificates, encryption keys.</p>
+        <ul>
+          <li>Classification required</li>
+          <li>Retention policies apply</li>
+          <li>Must be tracked by location</li>
+          <li>Requires destruction policy</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-card">
+        <div class="dash-num" style="color:var(--blue)">100%</div>
+        <div class="dash-label">Assets must be inventoried</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-num" style="color:var(--green)">1:1</div>
+        <div class="dash-label">Every asset needs an owner</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-num" style="color:var(--orange)">24/7</div>
+        <div class="dash-label">Continuous monitoring</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-num" style="color:var(--red)">0</div>
+        <div class="dash-label">Orphaned assets allowed</div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Asset management →</span><span>Track every asset from acquisition to disposal — you can't secure what you don't know</span></div>
+      <div class="er"><span class="ek">Hardware assets →</span><span>Physical devices — laptops, servers, phones, network equipment</span></div>
+      <div class="er"><span class="ek">Software assets →</span><span>Applications, licenses, OS, SaaS subscriptions</span></div>
+      <div class="er"><span class="ek">Data assets →</span><span>Databases, files, IP, credentials, encryption keys</span></div>
+      <div class="er"><span class="ek">Shadow IT →</span><span>Unknown assets = unmanaged attack surface — biggest risk</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- 2. ACQUISITION                 -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">02</span>
+    <span class="card-title">Asset Acquisition</span>
+    <span class="bdg bdg-blue">Purchase · Verify · Register</span>
+  </div>
+  <div class="card-bd">
+    <p>Acquisition is the <strong style="color:var(--text)">first and most critical phase</strong> — security must be considered before a single purchase is made. Buying the wrong thing, from the wrong vendor, or without proper verification creates security risks that persist for years.</p>
+
+    <h3>Acquisition Process — Step by Step</h3>
+
+    <div class="info-row">
+      <div class="info-icon">📋</div>
+      <div>
+        <div class="info-title" style="color:var(--blue)">Step 1 — Business Requirements & Security Review</div>
+        <div class="info-desc">Before purchasing: define what's needed, who will use it, what data it will touch. Security team reviews: does this meet security requirements? What risks does it introduce? This prevents buying insecure products.</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">🔍</div>
+      <div>
+        <div class="info-title" style="color:var(--blue)">Step 2 — Vendor Assessment / Supply Chain Verification</div>
+        <div class="info-desc">Evaluate vendor security posture. Do they have SOC 2 certification? Do they use secure development practices? Have they had breaches? For hardware: buy ONLY from authorized resellers — not grey market. Remember: Cisco fake switches came from unauthorized vendors.</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">✅</div>
+      <div>
+        <div class="info-title" style="color:var(--blue)">Step 3 — Purchase & Receipt Verification</div>
+        <div class="info-desc">When hardware arrives: verify serial numbers match purchase order. Check physical tamper-evident seals intact. Verify firmware version before connecting to network. For software: verify digital signatures on installers.</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">🏷️</div>
+      <div>
+        <div class="info-title" style="color:var(--blue)">Step 4 — Registration in Asset Inventory</div>
+        <div class="info-desc">Immediately record in CMDB (Configuration Management Database): serial number, model, purchase date, warranty expiry, cost, assigned department, physical location, responsible owner. This is when the asset officially exists in the organization.</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">🔒</div>
+      <div>
+        <div class="info-title" style="color:var(--blue)">Step 5 — Baseline Security Configuration</div>
+        <div class="info-desc">Before deployment: apply secure baseline configuration. Change default credentials. Apply all available patches. Install required security agents (antivirus, EDR, MDM enrollment). This is the "golden image" application phase.</div>
+      </div>
+    </div>
+
+    <h3>Supply Chain Security — Critical for Exam</h3>
+    <div class="code">
+<span class="cm"># Why supply chain matters during acquisition:</span>
+
+<span class="cr">Scenario 1 — Grey market hardware:</span>
+Company buys "Cisco switches" from eBay seller
+Price: 40% cheaper than authorized reseller
+Switches arrive → look legitimate → installed
+Reality: counterfeit switches with modified firmware
+         (like the 2020 fake Cisco Catalyst case)
+         Backdoor built into hardware before arrival
+         Company has no idea
+
+<span class="cg">Prevention:</span>
+Buy ONLY from Cisco-authorized resellers
+Verify serial numbers on Cisco's website
+Check firmware matches official release hash
+Physical inspection: holographic labels, serial format
+
+<span class="cr">Scenario 2 — Malicious software supply chain:</span>
+Developer downloads popular npm package
+Package has typosquatted name "lodash-secure"
+(real package: "lodash")
+Typosquatted package: contains credential stealer
+Developer installs → credentials sent to attacker
+
+<span class="cg">Prevention:</span>
+Verify exact package names
+Check download counts and publish dates
+Use private package registry
+Software composition analysis (SCA) tools
+    </div>
+
+    <h3>Acquisition Security Checklist</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--green)">Hardware Checklist</h4>
+        <ul>
+          <li>Purchase from authorized reseller only</li>
+          <li>Verify serial numbers on manufacturer site</li>
+          <li>Check tamper-evident seals on receipt</li>
+          <li>Verify firmware version vs official release</li>
+          <li>Compare firmware hash vs vendor's published hash</li>
+          <li>Register in asset inventory immediately</li>
+          <li>Apply baseline before any network connection</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Software Checklist</h4>
+        <ul>
+          <li>Download only from official vendor site</li>
+          <li>Verify digital signature of installer</li>
+          <li>Check SHA-256 hash vs vendor published</li>
+          <li>License key registered and documented</li>
+          <li>Note version — vulnerability tracking later</li>
+          <li>Record all dependencies (SBOM)</li>
+          <li>Scan with antivirus before installation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — New Laptop Fleet Purchase (200 units)</div>
+      <div class="code">
+<span class="cm"># IT department purchasing 200 Dell laptops:</span>
+
+<span class="cb">Week 1 — Pre-purchase:</span>
+Security review: meets encryption requirements ✓
+Vendor check: Dell authorized reseller verified ✓
+Contract: includes security requirements, warranty
+
+<span class="cb">Week 3 — Laptops arrive:</span>
+IT receives 200 boxes
+Random sample (20 units):
+  → Serial numbers verified on Dell support site ✓
+  → Tamper seals intact ✓
+  → BIOS version: 1.14.2 (latest) ✓
+All 200: registered in ServiceNow CMDB
+Fields: Serial#, Model, Purchase date, Cost center
+
+<span class="cb">Week 4 — Baseline configuration:</span>
+Golden image applied to all 200:
+  → Windows 11 Enterprise + all patches
+  → Microsoft Defender + Intune enrollment
+  → BitLocker enabled + TPM verified
+  → CIS Level 1 baseline applied via GPO
+  → BIOS password set
+
+<span class="cg">Week 5 — Deployment to users:</span>
+Each laptop: assigned to named user in CMDB
+Asset tag applied (physical label)
+User signs asset acknowledgment form
+Laptop handed over — <span class="cg">fully secured and tracked ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Supply chain risk →</span><span>Buy from authorized vendors only — grey market = counterfeit risk</span></div>
+      <div class="er"><span class="ek">Verify on receipt →</span><span>Serial numbers, tamper seals, firmware version/hash</span></div>
+      <div class="er"><span class="ek">CMDB →</span><span>Configuration Management Database — where all assets registered</span></div>
+      <div class="er"><span class="ek">SBOM →</span><span>Software Bill of Materials — inventory of ALL software components and dependencies</span></div>
+      <div class="er"><span class="ek">Baseline before deployment →</span><span>Never connect to network before applying security baseline</span></div>
+      <div class="er"><span class="ek">Hash verification →</span><span>Compare downloaded software hash vs vendor's published hash</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- 3. ASSIGNMENT                  -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">03</span>
+    <span class="card-title">Asset Assignment & Ownership</span>
+    <span class="bdg bdg-green">Owner · Classification · Tagging</span>
+  </div>
+  <div class="card-bd">
+    <p>Every asset must have a <strong style="color:var(--text)">named owner</strong> who is accountable for its security. Unowned assets are nobody's responsibility — which means nobody patches them, nobody monitors them, nobody notices when they're compromised.</p>
+
+    <h3>Asset Ownership Roles</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#2a5538">
+        <h4 style="color:var(--green)">Data Owner</h4>
+        <p>Senior business executive responsible for a DATA ASSET. Decides classification level. Determines who has access. Accountable for regulatory compliance. Approves access requests.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Customer database:
+Data Owner: Chief Revenue Officer
+  → Classifies as CONFIDENTIAL
+  → Approves who can access
+  → Accountable for GDPR compliance
+  → Reviews access quarterly
+        </div>
+      </div>
+      <div class="gc" style="border-color:#2a4f7f">
+        <h4 style="color:var(--blue)">Data Custodian</h4>
+        <p>IT staff who MANAGES and MAINTAINS the data on behalf of the owner. Implements the owner's classification decisions. Performs backups, applies patches, manages permissions technically.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Customer database:
+Data Custodian: Database Administrator
+  → Implements encryption (owner decided)
+  → Performs daily backups
+  → Applies security patches
+  → Manages database accounts
+  → Runs access control lists
+        </div>
+      </div>
+      <div class="gc" style="border-color:#1a4040">
+        <h4 style="color:var(--teal)">Asset Owner (Hardware)</h4>
+        <p>Department or individual responsible for a physical asset. Responsible for its security, maintenance, and return. Signs for the asset. Notifies IT if lost, stolen, or damaged.</p>
+      </div>
+      <div class="gc" style="border-color:#2a1a40">
+        <h4 style="color:var(--purple)">System Owner</h4>
+        <p>Manager responsible for an information SYSTEM (collection of hardware + software + data). Signs off on system security plan. Authorizes system to operate (ATO — Authorization to Operate).</p>
+      </div>
+    </div>
+
+    <h3>Asset Tagging Methods</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--orange)">Physical Tags</h4>
+        <p>Barcode or QR code label physically attached to hardware. Scanned during audits. Tamper-evident — removal shows asset has been tampered with. Printed with: asset ID, department, serial number.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Asset Tag: AST-2024-00847
+Barcode: |||||||||||||||
+Dept: Finance
+Serial: 5CG23456789
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">RFID Tags</h4>
+        <p>Radio Frequency Identification — passive tags that respond when scanned. Scanners can detect assets within range without direct line of sight. Used for: server room audits, large warehouses, data centers.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">GPS Tracking</h4>
+        <p>Active tracking for mobile assets — company vehicles, high-value equipment. Continuous location data. Alert when device leaves authorized geofenced area. Used for: fleet management, high-value laptop tracking.</p>
+      </div>
+    </div>
+
+    <h3>Asset Classification at Assignment</h3>
+    <div class="code">
+<span class="cm"># When assigning an asset, classify it:</span>
+
+<span class="cb">Hardware classification questions:</span>
+What data will this device process?
+  → Medical records: HIGH sensitivity
+  → Email only: MEDIUM sensitivity
+  → Public display kiosk: LOW sensitivity
+
+Who will use it and where?
+  → Travels internationally: higher risk
+  → Office-only desktop: lower risk
+
+What happens if it's lost?
+  → Contains PII: breach notification required
+  → Contains public data: minor inconvenience
+
+<span class="cg">Classification drives security controls:</span>
+HIGH sensitivity laptop:
+  ✓ BitLocker mandatory
+  ✓ MFA required
+  ✓ VPN for all traffic
+  ✓ Screen privacy filter
+  ✓ GPS tracking enabled
+
+LOW sensitivity kiosk:
+  ✓ Local user only (no domain)
+  ✓ Kiosk mode browser
+  ✓ No data stored locally
+  ✓ Physical security sufficient
+    </div>
+
+    <h3>Asset Register — What Gets Recorded</h3>
+    <div class="asset-row hdr">
+      <div>Asset Details</div>
+      <div>Assignment Info</div>
+      <div>Security Controls</div>
+      <div>Status</div>
+    </div>
+    <div class="asset-row">
+      <div>
+        <div style="font-weight:600;font-size:0.78rem">Dell Latitude 5540</div>
+        <div style="font-size:0.68rem;color:var(--muted)">S/N: 5CG23456789<br>Asset: AST-2024-847<br>Purchased: 2024-01-15</div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem">Owner: Sarah Chen</div>
+        <div style="font-size:0.68rem;color:var(--muted)">Dept: Finance<br>Location: HQ Floor 3<br>Manager: J.Smith</div>
+      </div>
+      <div>
+        <div style="font-size:0.72rem">
+          <span class="pill pill-g">BitLocker ✓</span><br>
+          <span class="pill pill-g">EDR ✓</span><br>
+          <span class="pill pill-g">MDM ✓</span>
+        </div>
+      </div>
+      <div><span class="pill pill-g">Active</span></div>
+    </div>
+    <div class="asset-row">
+      <div>
+        <div style="font-weight:600;font-size:0.78rem">Cisco 2960-X Switch</div>
+        <div style="font-size:0.68rem;color:var(--muted)">S/N: FOC2345X678<br>Asset: AST-2022-112<br>Purchased: 2022-03-20</div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem">Owner: Network Team</div>
+        <div style="font-size:0.68rem;color:var(--muted)">Dept: IT Infrastructure<br>Location: Server Room B<br>Manager: M.Wilson</div>
+      </div>
+      <div>
+        <div style="font-size:0.72rem">
+          <span class="pill pill-g">802.1X ✓</span><br>
+          <span class="pill pill-o">Patch needed</span>
+        </div>
+      </div>
+      <div><span class="pill pill-o">Action Req</span></div>
+    </div>
+    <div class="asset-row">
+      <div>
+        <div style="font-weight:600;font-size:0.78rem">iPhone 15 Pro</div>
+        <div style="font-size:0.68rem;color:var(--muted)">S/N: DNQXYZ12345<br>Asset: AST-2024-891<br>Purchased: 2024-02-01</div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem">Owner: Mark Johnson</div>
+        <div style="font-size:0.68rem;color:var(--muted)">Dept: Sales<br>Location: Mobile<br>Manager: L.Davis</div>
+      </div>
+      <div>
+        <div style="font-size:0.72rem">
+          <span class="pill pill-g">MDM ✓</span><br>
+          <span class="pill pill-g">Encrypted ✓</span>
+        </div>
+      </div>
+      <div><span class="pill pill-g">Active</span></div>
+    </div>
+    <div class="asset-row">
+      <div>
+        <div style="font-weight:600;font-size:0.78rem">HP LaserJet M507</div>
+        <div style="font-size:0.68rem;color:var(--muted)">S/N: VNB3K12345<br>Asset: AST-2021-034<br>Purchased: 2021-06-15</div>
+      </div>
+      <div>
+        <div style="font-size:0.75rem">Owner: Office Admin</div>
+        <div style="font-size:0.68rem;color:var(--muted)">Dept: Admin<br>Location: HQ Floor 2<br>Manager: R.Brown</div>
+      </div>
+      <div>
+        <div style="font-size:0.72rem">
+          <span class="pill pill-r">No MDM</span><br>
+          <span class="pill pill-r">Default creds?</span>
+        </div>
+      </div>
+      <div><span class="pill pill-r">Risk Flag</span></div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Unowned Asset Causes Breach</div>
+      <div class="code">
+<span class="cm"># Common real-world scenario:</span>
+
+2019: Contractor sets up test server for project
+Server registered? <span class="cr">No — "it's just temporary"</span>
+Project ends 2020: contractor leaves
+Server: still running, nobody knows about it
+OS patches: <span class="cr">none since 2019</span>
+Monitoring: <span class="cr">none</span>
+Security scans: <span class="cr">never scanned — not in inventory</span>
+
+2023: Attacker scans internet
+Finds server with 3-year-old vulnerability
+Exploits CVE-2019-XXXX in 4 seconds
+Uses it as pivot point → internal network access
+Lateral movement → finance servers → data theft
+
+<span class="cr">Root cause: asset never assigned an owner</span>
+<span class="cr">Nobody was responsible → nobody maintained it</span>
+
+<span class="cg">Prevention:</span>
+All assets registered in CMDB at creation
+Every asset has a named owner
+Quarterly audits: find orphaned assets
+Any asset without owner → auto-shutdown policy
+Cloud assets: tag enforcement (no tag = terminated)
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Data owner →</span><span>Business executive — decides classification, accountable for compliance</span></div>
+      <div class="er"><span class="ek">Data custodian →</span><span>IT staff — implements and maintains data security on owner's behalf</span></div>
+      <div class="er"><span class="ek">Asset tag →</span><span>Physical label — barcode/QR — scanned during audits</span></div>
+      <div class="er"><span class="ek">RFID →</span><span>Radio tracking — scanned without line of sight — data center audits</span></div>
+      <div class="er"><span class="ek">Orphaned asset →</span><span>Asset with no owner = unmanaged = security risk</span></div>
+      <div class="er"><span class="ek">ATO →</span><span>Authorization to Operate — system owner signs off — especially government</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- 4. HARDWARE ASSETS             -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">04</span>
+    <span class="card-title">Hardware Asset Management</span>
+    <span class="bdg bdg-orange">Physical Devices</span>
+  </div>
+  <div class="card-bd">
+    <p>Hardware assets include <strong style="color:var(--text)">every physical device</strong> in the organization. Managing hardware means knowing where every device is, what it contains, who owns it, and whether it's secure.</p>
+
+    <h3>Hardware Inventory Categories</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">End-User Devices</h4>
+        <ul>
+          <li>Laptops and desktops</li>
+          <li>Smartphones and tablets</li>
+          <li>Thin clients</li>
+          <li>Workstations</li>
+          <li>Monitors (may have USB hubs)</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Network Infrastructure</h4>
+        <ul>
+          <li>Routers and switches</li>
+          <li>Firewalls and IPS appliances</li>
+          <li>Wireless access points</li>
+          <li>Load balancers</li>
+          <li>VPN concentrators</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Server Infrastructure</h4>
+        <ul>
+          <li>Physical servers</li>
+          <li>Storage arrays (NAS/SAN)</li>
+          <li>Backup appliances</li>
+          <li>HSMs (key management)</li>
+          <li>Out-of-band management (iDRAC/ILO)</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Peripherals</h4>
+        <ul>
+          <li>Printers (contain hard drives!)</li>
+          <li>USB drives and external drives</li>
+          <li>Webcams and headsets</li>
+          <li>Scanners and copiers</li>
+          <li>KVM switches</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">IoT Devices</h4>
+        <ul>
+          <li>IP cameras and door locks</li>
+          <li>HVAC and building systems</li>
+          <li>Smart TVs and displays</li>
+          <li>Medical devices</li>
+          <li>Industrial sensors</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Removable Media</h4>
+        <ul>
+          <li>USB flash drives</li>
+          <li>External hard drives</li>
+          <li>Backup tapes</li>
+          <li>CDs/DVDs</li>
+          <li>SD cards</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Key Hardware Asset Security Concerns</h3>
+    <div class="code">
+<span class="cm"># Printers — often forgotten but high risk:</span>
+Modern printers have:
+  → Hard drives storing copies of printed documents
+  → Network interfaces (often poorly secured)
+  → Embedded web servers (default passwords!)
+  → Memory buffers containing recent print jobs
+
+If printer not in asset inventory:
+  → Never patched (firmware vulnerabilities)
+  → Default credentials never changed
+  → Hard drive never wiped before disposal
+  → Contains months of sensitive printed documents
+
+<span class="cg">Solution:</span>
+Register ALL printers in CMDB
+Change default admin credentials
+Enable firmware auto-update
+Include in vulnerability scan scope
+Wipe hard drive before decommissioning
+
+<span class="cm"># USB drives — massive data leak risk:</span>
+Untracked USB drives:
+  → Employee pockets USB drive when leaving
+  → USB drive lost → sensitive data exposed
+  → USB found in parking lot → plugged in → malware
+
+<span class="cg">Solution:</span>
+Encrypt ALL organizational USB drives
+Register each USB in inventory (serial number)
+Use DLP to track what's copied to USB
+Disable USB ports on endpoints where not needed
+Use managed encrypted drives (IronKey, Kingston)
+    </div>
+
+    <h3>Hardware Tracking Tools</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--indigo)">CMDB — Configuration Management Database</h4>
+        <p>Central database of ALL assets and their relationships. Records: hardware specs, software installed, network connections, owner, location, patch status. Examples: ServiceNow, Freshservice, Device42, Lansweeper.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Network Discovery Tools</h4>
+        <p>Automatically scan network to find connected devices. Compares discovered devices vs CMDB — rogue/unauthorized devices flagged. Examples: Nmap, Nessus, Qualys, Lansweeper, SolarWinds.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Discovery scan finds: 847 devices
+CMDB has: 823 devices registered
+Delta: <span class="co">24 unregistered devices found!</span>
+Action: investigate each unknown device
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Data Center Hardware Audit</div>
+      <div class="code">
+<span class="cm"># Quarterly hardware audit — server room:</span>
+
+<span class="cb">Automated scan (Lansweeper):</span>
+Devices found on network: 284
+Devices in CMDB: 271
+<span class="co">Unregistered devices: 13</span>
+
+<span class="co">Investigation of 13 unknown devices:</span>
+Device 1-8: New servers deployed by cloud team
+            Forgot to register in CMDB → <span class="cg">registered now</span>
+Device 9:   Personal NAS device — employee's own
+            Unauthorized → <span class="cr">disconnected, employee notified</span>
+Device 10:  Old decommissioned server (should be off)
+            Still running → <span class="cr">powered off, removed</span>
+Device 11:  IP camera (facilities installed it)
+            No IT approval → <span class="co">assessed, secured, registered</span>
+Device 12-13: Raspberry Pi devices
+             Unknown purpose → <span class="cr">INCIDENT RAISED</span>
+             Security investigation: found by intern
+             testing home project → <span class="cr">removed immediately</span>
+
+<span class="cg">Outcome: CMDB now accurate, rogue devices removed ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">CMDB →</span><span>Configuration Management Database — central inventory of all assets</span></div>
+      <div class="er"><span class="ek">Printers →</span><span>Often forgotten — contain hard drives — must be wiped before disposal</span></div>
+      <div class="er"><span class="ek">USB drives →</span><span>Encrypt all — register each one — DLP controls what's copied</span></div>
+      <div class="er"><span class="ek">Network discovery →</span><span>Scan network, compare vs CMDB — find unauthorized devices</span></div>
+      <div class="er"><span class="ek">Rogue device →</span><span>Unregistered device on network = security risk = investigate immediately</span></div>
+      <div class="er"><span class="ek">IoT tracking →</span><span>IP cameras, HVAC, medical devices — all must be in inventory</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- 5. SOFTWARE ASSETS             -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">05</span>
+    <span class="card-title">Software Asset Management</span>
+    <span class="bdg bdg-purple">Licenses · Versions · Compliance</span>
+  </div>
+  <div class="card-bd">
+    <p>Software asset management tracks <strong style="color:var(--text)">every application, license, and software component</strong> in the organization. Unauthorized software is a security risk. Unlicensed software is a legal risk. Outdated software is a vulnerability risk.</p>
+
+    <h3>Software Inventory Categories</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Licensed Commercial Software</h4>
+        <ul>
+          <li>Microsoft 365, Adobe Creative Cloud</li>
+          <li>Security tools (Splunk, CrowdStrike)</li>
+          <li>ERP systems (SAP, Oracle)</li>
+          <li>Database software (SQL Server, Oracle DB)</li>
+          <li>Operating system licenses</li>
+        </ul>
+        <p style="margin-top:0.4rem;font-size:0.75rem">Track: license keys, expiry dates, seat counts, version numbers</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Open Source Software</h4>
+        <ul>
+          <li>Linux distributions</li>
+          <li>Apache, Nginx web servers</li>
+          <li>MySQL, PostgreSQL databases</li>
+          <li>Programming language runtimes</li>
+          <li>Third-party libraries (npm, pip, Maven)</li>
+        </ul>
+        <p style="margin-top:0.4rem;font-size:0.75rem">Track: version, known CVEs, license type (GPL, MIT, Apache)</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">SaaS Applications</h4>
+        <ul>
+          <li>Salesforce, HubSpot (CRM)</li>
+          <li>Slack, Teams (communication)</li>
+          <li>GitHub, Jira (development)</li>
+          <li>Zoom, Webex (conferencing)</li>
+          <li>Dropbox, Box (file sharing)</li>
+        </ul>
+        <p style="margin-top:0.4rem;font-size:0.75rem">Track: subscription cost, data stored, SSO integration, admin access</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Shadow IT Software</h4>
+        <ul>
+          <li>Unapproved SaaS tools employees self-sign-up for</li>
+          <li>Personal apps used for work data</li>
+          <li>Pirated or cracked software</li>
+          <li>Downloaded utilities (not approved)</li>
+        </ul>
+        <p style="margin-top:0.4rem;font-size:0.75rem">Detected by: CASB, endpoint agents, browser extensions scanning</p>
+      </div>
+    </div>
+
+    <h3>License Management — Security Implications</h3>
+    <div class="code">
+<span class="cm"># License compliance failures:</span>
+
+<span class="cr">Under-licensing (more users than licenses):</span>
+Company has 100 SQL Server licenses
+Actual installations: 147 servers
+Risk: vendor audit → massive fines
+     Microsoft audit: $2.3M compliance penalty (real case)
+Also: may be running unsupported versions to avoid cost
+
+<span class="cr">Over-licensing (unused licenses):</span>
+Company paying for 500 Adobe licenses
+Only 200 actually used
+Risk: financial waste
+     Unused accounts → attack surface if credentials shared
+     
+<span class="cr">Expired licenses:</span>
+Security software license expired:
+  → Antivirus stops updating definitions
+  → Vulnerability scanner loses access
+  → SIEM stops ingesting logs
+  → Security gap opens without warning
+
+<span class="cg">Solution — License Management Tools:</span>
+Snow Software, Flexera, Ivanti, ServiceNow SAM
+  → Automated discovery of all installed software
+  → Compare installs vs purchased licenses
+  → Alert before license expires
+  → Track software utilization
+  → Identify unused software for reclamation
+    </div>
+
+    <h3>SBOM — Software Bill of Materials</h3>
+    <div class="info-row">
+      <div class="info-icon">📄</div>
+      <div>
+        <div class="info-title" style="color:var(--teal)">What Is SBOM?</div>
+        <div class="info-desc">A complete inventory of ALL software components in an application — including every third-party library, open source component, and dependency. Like a nutrition label for software. Required by US Executive Order 14028 (2021) for software sold to federal government.</div>
+      </div>
+    </div>
+    <div class="code">
+<span class="cm"># Why SBOM matters — Log4Shell example:</span>
+CVE-2021-44228 (Log4Shell) discovered December 2021
+Affects: Apache Log4j library versions 2.0-2.14.1
+
+<span class="cr">Company WITHOUT SBOM:</span>
+"Do we use Log4j?"
+IT team: "I don't think so... maybe?"
+Days of manual searching across all applications
+Some applications missed → remain vulnerable
+<span class="cr">Breach via overlooked Log4j instance</span>
+
+<span class="cg">Company WITH SBOM:</span>
+"Do we use Log4j?"
+SBOM query: <span class="ci">search component:"log4j" version:"<2.15"</span>
+Result: <span class="cg">47 applications use vulnerable Log4j</span>
+        <span class="cg">Listed by application name and version</span>
+Patching: targeted, fast, complete
+<span class="cg">All 47 patched within 48 hours ✓</span>
+    </div>
+
+    <h3>Authorized vs Unauthorized Software</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#2a5538">
+        <h4 style="color:var(--green)">Application Whitelisting</h4>
+        <p>Only pre-approved software allowed to run. Everything else blocked automatically. Extremely effective against malware — unknown executables simply don't run. Tools: AppLocker (Windows), Carbon Black, Bit9.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Policy: only run approved applications
+User tries to run: <span class="cr">HackerTool.exe</span>
+AppLocker: <span class="cr">NOT IN WHITELIST → BLOCKED ✗</span>
+Malware installed: <span class="cr">BLOCKED → can't execute ✗</span>
+        </div>
+      </div>
+      <div class="gc" style="border-color:#3d1515">
+        <h4 style="color:var(--red)">Application Blacklisting</h4>
+        <p>Block specific known-bad applications. Everything else runs freely. Less effective than whitelisting — attackers just rename malware. Still useful for blocking specific unwanted software (BitTorrent, gaming apps).</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Software Audit Discovers Shadow IT</div>
+      <div class="code">
+<span class="cm"># Annual software audit using Lansweeper + CASB:</span>
+
+<span class="co">Endpoint scan discovers on employee laptops:</span>
+TeamViewer:           found on 47 laptops
+  → Only 12 are IT-approved installations
+  → 35 personal installs: <span class="cr">UNAUTHORIZED</span>
+  → Risk: backdoor access to corporate machines
+
+uTorrent:             found on 23 laptops
+  → Zero IT approvals
+  → Risk: <span class="cr">illegal downloads, malware, bandwidth</span>
+
+Python 2.7:           found on 156 servers
+  → EOL since 2020, CVEs unfixed
+  → Risk: <span class="cr">known vulnerabilities, unpatched forever</span>
+
+Zoom (personal ver):  14 laptops using personal accounts
+  → Work meetings on personal accounts
+  → Risk: <span class="cr">data leaving corporate control</span>
+
+<span class="cg">Actions taken:</span>
+TeamViewer personal: removed via GPO ✓
+uTorrent: removed via GPO, users warned ✓
+Python 2.7: upgrade project initiated ✓
+Zoom: migrated to corporate licensed account ✓
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">SBOM →</span><span>Software Bill of Materials — full inventory of all components and dependencies</span></div>
+      <div class="er"><span class="ek">License compliance →</span><span>Over-licensing wastes money — under-licensing = legal risk and fines</span></div>
+      <div class="er"><span class="ek">Shadow IT software →</span><span>Unapproved apps employees install — detected by CASB + endpoint agents</span></div>
+      <div class="er"><span class="ek">Whitelisting →</span><span>Only approved software runs — most effective anti-malware approach</span></div>
+      <div class="er"><span class="ek">Blacklisting →</span><span>Block known-bad software — less effective than whitelist</span></div>
+      <div class="er"><span class="ek">EOL software →</span><span>End of Life — no patches — permanent vulnerabilities — must upgrade</span></div>
+      <div class="er"><span class="ek">Log4Shell lesson →</span><span>SBOM lets you instantly find all uses of vulnerable component</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- 6. DATA ASSETS                 -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">06</span>
+    <span class="card-title">Data Asset Management</span>
+    <span class="bdg bdg-teal">Classification · Location · Retention</span>
+  </div>
+  <div class="card-bd">
+    <p>Data is often the most valuable asset — and the hardest to track. Unlike hardware, data can be in <strong style="color:var(--text)">multiple places simultaneously</strong>, copied silently, and lost without anyone knowing. Managing data assets means knowing what data exists, where it lives, who can access it, and when it must be deleted.</p>
+
+    <h3>Data Asset Inventory — What to Track</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Structured Data</h4>
+        <p>Data in databases — organized in rows and columns. SQL Server, MySQL, PostgreSQL, Oracle databases. Customer records, financial transactions, employee data, product inventory.</p>
+        <ul>
+          <li>Track: database name, server, schema</li>
+          <li>Track: data classification level</li>
+          <li>Track: who has database access</li>
+          <li>Track: encryption status</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Unstructured Data</h4>
+        <p>Files not in database format — documents, spreadsheets, PDFs, images, emails, presentations. Hardest to track — often scattered across file servers, SharePoint, cloud drives, email.</p>
+        <ul>
+          <li>Track: file share locations</li>
+          <li>Track: SharePoint/OneDrive sites</li>
+          <li>Track: email archives</li>
+          <li>Discovery tools: Microsoft Purview</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Credentials and Keys</h4>
+        <p>Passwords, API keys, certificates, encryption keys, SSH keys. Extremely high value — compromise = attacker impersonates the system. Must be stored in dedicated vault.</p>
+        <ul>
+          <li>Never in code repositories</li>
+          <li>HashiCorp Vault, AWS Secrets Manager</li>
+          <li>Rotate regularly</li>
+          <li>Track expiry dates</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Intellectual Property</h4>
+        <p>Source code, designs, formulas, patents, trade secrets, research data. Often most valuable organizational asset. Limited access, version control, DRM protection.</p>
+        <ul>
+          <li>Track: code repositories (GitHub)</li>
+          <li>Track: design files, CAD drawings</li>
+          <li>Track: research databases</li>
+          <li>Strict access controls</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Data Location Tracking</h3>
+    <div class="code">
+<span class="cm"># The challenge: data exists in MANY places simultaneously</span>
+
+Customer PII example — where does it live?
+<span class="cr">Production:</span>
+  ✓ CRM database — tracked, encrypted, controlled
+  ✓ ERP system — tracked, access controlled
+
+<span class="co">Shadow copies — often missed:</span>
+  ? Marketing spreadsheet on SharePoint — exported from CRM
+  ? Email to vendor with customer list attached
+  ? Backup tape in offsite storage
+  ? Developer test database (real data copied for testing!)
+  ? Analytics platform — connected to CRM
+  ? Support team's Zendesk — customer emails archived
+  ? Employee's personal OneDrive — "backup" they made
+
+<span class="cg">Data discovery tools find all locations:</span>
+Microsoft Purview, Varonis, BigID
+  → Scan all storage locations
+  → Find PII, credit card numbers, SSNs
+  → Map where sensitive data actually lives
+  → Compare vs where it SHOULD be
+  → Alert on data in wrong location
+
+<span class="cr">Developers using production data for testing = major risk</span>
+<span class="cg">Solution: data masking/synthetic data for test environments</span>
+    </div>
+
+    <h3>Data Retention and Legal Hold</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--orange)">Retention Policies</h4>
+        <p>How long data must be kept before deletion. Driven by regulation:</p>
+        <ul>
+          <li>HIPAA: medical records = 6 years minimum</li>
+          <li>PCI-DSS: transaction logs = 1 year</li>
+          <li>SOX: financial records = 7 years</li>
+          <li>GDPR: only as long as necessary</li>
+          <li>IRS: tax records = 7 years</li>
+        </ul>
+        <p style="margin-top:0.4rem;font-size:0.75rem">Auto-delete when retention period expires — reduces risk and storage costs.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Legal Hold</h4>
+        <p>When litigation is anticipated — normal retention/deletion policies SUSPENDED. All relevant data must be preserved exactly as-is. Deleting data under legal hold = obstruction of justice.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Legal hold triggered:
+  → All relevant email: preserved
+  → All documents: preserved
+  → Backup tapes: do NOT overwrite
+  → Database logs: preserved
+
+Normal auto-delete: <span class="cr">SUSPENDED</span>
+Duration: until litigation resolved
+Tool: Microsoft Purview eDiscovery
+      </code>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — GDPR Data Subject Access Request</div>
+      <div class="code">
+<span class="cm"># EU customer submits GDPR access request:</span>
+"Please provide all personal data you hold about me"
+Legal deadline: 30 days to respond
+
+<span class="cr">Company WITHOUT data asset management:</span>
+IT searches known databases → finds some records
+Marketing searches email → finds some records
+Support searches tickets → finds more records
+HR: "was she ever an employee?" → check separately
+Legal: "did she sign any contracts?"
+Finance: "any invoices?"
+
+30 days later: <span class="cr">incomplete response sent</span>
+Regulator finds missed data → <span class="cr">€150,000 fine</span>
+
+<span class="cg">Company WITH data asset management (Microsoft Purview):</span>
+Run data subject request query: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="aecddbdddac1c3cbdceecbc3cfc7c280cdc1c3">[email&#160;protected]</a>
+Purview searches ALL registered data locations:
+  → CRM: 2 records found ✓
+  → Email: 47 emails found ✓
+  → Support tickets: 12 tickets found ✓
+  → Marketing DB: 1 record found ✓
+  → Financial: 3 invoices found ✓
+  → Total: complete picture in 2 hours
+
+Response: <span class="cg">complete, accurate, within deadline ✓</span>
+<span class="cg">No regulatory action ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Data discovery →</span><span>Find where sensitive data actually lives — often in unexpected places</span></div>
+      <div class="er"><span class="ek">Legal hold →</span><span>Suspend deletion — preserve all relevant data — litigation pending</span></div>
+      <div class="er"><span class="ek">Retention policy →</span><span>HIPAA=6yr / SOX=7yr / PCI=1yr / GDPR=as long as necessary</span></div>
+      <div class="er"><span class="ek">Credentials as assets →</span><span>API keys, certificates, SSH keys — store in vault, rotate regularly</span></div>
+      <div class="er"><span class="ek">Test data risk →</span><span>Using production data in test environment = data in uncontrolled location</span></div>
+      <div class="er"><span class="ek">Data subject request →</span><span>GDPR — 30 days to respond — need to know ALL locations data exists</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- 7. MONITORING & TRACKING       -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">07</span>
+    <span class="card-title">Monitoring & Tracking Assets</span>
+    <span class="bdg bdg-indigo">Continuous Visibility</span>
+  </div>
+  <div class="card-bd">
+    <p>Asset management isn't a one-time activity — it requires <strong style="color:var(--text)">continuous monitoring</strong> to track changes, detect unauthorized modifications, verify compliance, and identify assets approaching end of life.</p>
+
+    <h3>What to Monitor</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Patch Status</h4>
+        <p>Is every asset running the latest security patches? Unpatched systems = known vulnerabilities. Continuous tracking via vulnerability scanners and SCCM/Intune patch compliance dashboards.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Patch compliance dashboard:
+  Critical patches: <span class="cg">847/847 systems (100%) ✓</span>
+  High patches:     <span class="co">823/847 systems (97%)</span>
+  Outstanding:      <span class="cr">24 systems need patching !</span>
+  Oldest patch gap: <span class="cr">Server-12: 45 days overdue</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Compliance Status</h4>
+        <p>Is every asset meeting its security baseline? BitLocker enabled? EDR installed? MDM enrolled? Antivirus up to date? Non-compliant devices flagged and remediated automatically.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">License Expiry</h4>
+        <p>Track when software licenses expire. Alert 90 days before expiry. Security software expiring = gap in security coverage. Expired licenses = legal risk. Auto-renewal or procurement triggered.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">End of Life Tracking</h4>
+        <p>Track when hardware and software reach end of manufacturer support. EOL = no more security patches = permanent vulnerability. Plan replacement 12-18 months before EOL date.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+EOL alerts:
+  Windows Server 2012: EOL Oct 2023 → <span class="cr">urgent!</span>
+  iPhone 8 (iOS 16): EOL → <span class="co">replace cycle</span>
+  Cisco 2960 switches: EOL Jan 2025 → <span class="co">plan now</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Asset Monitoring Tools</h3>
+    <div class="info-row">
+      <div class="info-icon">🔍</div>
+      <div>
+        <div class="info-title" style="color:var(--indigo)">Vulnerability Scanners</div>
+        <div class="info-desc">Nessus, Qualys, Rapid7 — continuously scan all registered assets for known vulnerabilities. Compare to CVE database. Prioritize by CVSS score. Flag assets with critical unpatched CVEs. Integration with CMDB — scan unknown devices = alert.</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">📡</div>
+      <div>
+        <div class="info-title" style="color:var(--teal)">Network Access Control (NAC)</div>
+        <div class="info-desc">Controls network access based on device health and registration. Only registered, compliant devices get network access. Unknown device plugs in → quarantine VLAN. Non-compliant device → limited access until remediated. Cisco ISE, Forescout, Aruba ClearPass.</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">📊</div>
+      <div>
+        <div class="info-title" style="color:var(--blue)">SIEM Asset Correlation</div>
+        <div class="info-desc">SIEM correlates security events WITH asset data. "Which asset generated this alert? Who owns it? Is it in scope for compliance? When was it last patched?" Asset context transforms alerts from noise into actionable intelligence.</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">🛡️</div>
+      <div>
+        <div class="info-title" style="color:var(--green)">Endpoint Detection and Response (EDR)</div>
+        <div class="info-desc">Agent on every managed endpoint continuously monitors behavior. Reports back to CMDB: software installed, patches applied, compliance status, suspicious activity. Integration with CMDB shows asset security health in real time.</div>
+      </div>
+    </div>
+
+    <h3>Physical Asset Tracking</h3>
+    <div class="code">
+<span class="cm"># Physical location tracking matters:</span>
+
+Laptop checked out to employee:
+  CMDB: Location = "Employee: Sarah Chen"
+  Building badge: Sarah entered building ✓
+  VPN log: Sarah connected from NY ✓
+
+3 weeks later:
+  Sarah left company (offboarding)
+  IT should have collected laptop
+  
+<span class="co">CMDB shows: laptop still assigned to Sarah</span>
+<span class="co">Sarah: no longer employed</span>
+<span class="co">Laptop location: UNKNOWN</span>
+<span class="cr">Action: Contact Sarah, collect laptop, or report as lost</span>
+
+<span class="cm"># Geofencing for high-value assets:</span>
+Server rack with GPS tracker
+Alert triggered if server leaves data center
+<span class="cr">Server leaving building without authorization = ALERT</span>
+
+<span class="cm"># Mobile device location:</span>
+MDM tracks last known location of corporate phones
+Lost phone reported → check last known location
+Asset theft → provide location to law enforcement
+    </div>
+
+    <h3>Asset Lifecycle Events to Track</h3>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Event</th><th>What Triggers It</th><th>Action Required</th></tr>
+      <tr><td>New device detected on network</td><td>NAC / network scan</td><td>Register or quarantine</td></tr>
+      <tr><td>Patch missing for 30+ days</td><td>Vuln scanner</td><td>Force patch or exception approved</td></tr>
+      <tr><td>Software license expiring in 90 days</td><td>License tool</td><td>Renew or plan replacement</td></tr>
+      <tr><td>Hardware EOL in 12 months</td><td>CMDB lifecycle tracking</td><td>Start replacement procurement</td></tr>
+      <tr><td>Employee terminated</td><td>HR system</td><td>Collect all assigned assets within 24hrs</td></tr>
+      <tr><td>Device not seen on network for 30 days</td><td>CMDB / NAC</td><td>Locate asset — lost? returned? disposed?</td></tr>
+      <tr><td>Asset moved to new location</td><td>RFID / manual update</td><td>Update CMDB location field</td></tr>
+      <tr><td>Security non-compliance detected</td><td>EDR / MDM</td><td>Auto-remediate or quarantine from network</td></tr>
+    </table>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Employee Offboarding Asset Recovery</div>
+      <div class="code">
+<span class="cm"># Employee John Smith resigns — last day Friday</span>
+
+<span class="cb">HR triggers offboarding workflow:</span>
+HR system notifies IT: "John Smith — last day Friday"
+
+<span class="cb">IT pulls John's asset report from CMDB:</span>
+  Laptop: Dell Latitude 5540 (AST-2024-312) ✓
+  Phone:  iPhone 15 (AST-2024-889) ✓
+  Yubikey: Security key (AST-2023-445) ✓
+  Access badge: Corp-Badge-0847 ✓
+  Software: Sent credentials to 14 systems
+
+<span class="cb">Friday offboarding checklist:</span>
+09:00 — AD account disabled ✓
+09:00 — Email access revoked ✓
+09:01 — VPN certificate revoked ✓
+09:01 — MFA tokens disabled ✓
+09:30 — Physical device collection meeting
+  → Laptop returned ✓ → wiped same day
+  → Phone returned ✓ → wiped, MDM unenrolled
+  → Yubikey returned ✓ → deregistered
+  → Badge deactivated ✓
+  → All 14 software accounts disabled ✓
+
+<span class="cb">CMDB updated:</span>
+All assets: status → "Returned/Available for redeployment"
+
+<span class="cg">No orphaned assets, no lingering access ✓</span>
+<span class="cg">John has zero access by close of business ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">NAC →</span><span>Network Access Control — only registered, compliant devices get network access</span></div>
+      <div class="er"><span class="ek">Patch compliance →</span><span>Continuously verify all assets have required patches applied</span></div>
+      <div class="er"><span class="ek">EOL tracking →</span><span>Plan replacement before manufacturer stops patches — 12-18 months ahead</span></div>
+      <div class="er"><span class="ek">Offboarding →</span><span>Employee leaves = collect ALL assets + revoke ALL access immediately</span></div>
+      <div class="er"><span class="ek">Orphaned asset →</span><span>Device not seen on network, no owner — investigate immediately</span></div>
+      <div class="er"><span class="ek">Vulnerability scanner →</span><span>Nessus, Qualys — continuously scan all assets for CVEs</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- 8. DISPOSAL                    -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">08</span>
+    <span class="card-title">Asset Disposal</span>
+    <span class="bdg bdg-red">Sanitize · Decommission · Document</span>
+  </div>
+  <div class="card-bd">
+    <p>Disposal is <strong style="color:var(--text)">the riskiest phase</strong> — data that survives on improperly disposed hardware can lead to massive breaches. Simply deleting files or formatting drives is NOT secure disposal. The sensitivity of data stored determines the disposal method required.</p>
+
+    <h3>Data Sanitization Methods — Must Know All Three</h3>
+
+    <div class="disposal-card" style="background:#1a1a30;border-color:var(--blue)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem">
+        <div style="font-weight:700;color:var(--blue);font-size:0.9rem">1. Clearing (Overwriting)</div>
+        <span class="pill pill-b">Reuse within org</span>
+      </div>
+      <p style="font-size:0.8rem;margin-bottom:0.6rem">Overwrite all storage locations with zeros, ones, or random data. Makes data unrecoverable by normal means. Multiple-pass overwriting (DoD 5220.22-M standard = 7 passes). Suitable when device will be reused within same organization.</p>
+      <div class="code" style="font-size:0.65rem">
+Tools: DBAN (Darik's Boot and Nuke), Eraser, Windows Reset
+Method: write zeros → write ones → write random → verify
+Suitable for: HDDs being reassigned to another department
+NOT for: SSDs (wear leveling may not overwrite all cells)
+NOT for: highly classified data disposal
+      </div>
+    </div>
+
+    <div class="disposal-card" style="background:#1a1500;border-color:var(--orange)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem">
+        <div style="font-weight:700;color:var(--orange);font-size:0.9rem">2. Purging (Degaussing / Cryptographic Erase)</div>
+        <span class="pill pill-o">Sell / Donate</span>
+      </div>
+      <p style="font-size:0.8rem;margin-bottom:0.6rem">More thorough than clearing — renders data unrecoverable with laboratory equipment. Degaussing: powerful magnetic field destroys magnetic media. Cryptographic erase: destroy the encryption key (if drive was encrypted — data becomes unreadable).</p>
+      <div class="code" style="font-size:0.65rem">
+Degaussing:
+  → Exposes HDD/tape to strong magnetic field
+  → Permanently destroys magnetic data
+  → Also destroys drive firmware → drive unusable
+  → NOT suitable for SSDs (not magnetic)
+  
+Cryptographic Erase (CE):
+  → If drive encrypted: simply destroy the key
+  → Data becomes permanently unreadable instantly
+  → Works for SSDs, HDDs, USBs
+  → Fastest secure erase method
+  → ATA Secure Erase command for SSDs
+      </div>
+    </div>
+
+    <div class="disposal-card" style="background:#1a0000;border-color:var(--red)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem">
+        <div style="font-weight:700;color:var(--red);font-size:0.9rem">3. Destroying (Physical Destruction)</div>
+        <span class="pill pill-r">Highly sensitive data</span>
+      </div>
+      <p style="font-size:0.8rem;margin-bottom:0.6rem">Physical destruction of the storage media. Absolute guarantee that data cannot be recovered. Required for Top Secret / classified data. Certificate of Destruction issued by certified vendor.</p>
+      <div class="code" style="font-size:0.65rem">
+Methods:
+  Shredding:      industrial shredder reduces to tiny particles
+  Incineration:   burn in certified incinerator
+  Disintegration: shred into particles &lt; 2mm
+  Melting:        smelt the metal components
+  Pulverizing:    hammer/crush into pieces
+
+Who requires this:
+  → Government classified data (TS/SCI)
+  → Healthcare with highly sensitive records
+  → Financial institutions per policy
+  → Any org with broken/EOL encrypted drives
+  
+Certificate of Destruction: legal proof of secure disposal
+NIST 800-88: US government standard for media sanitization
+      </div>
+    </div>
+
+    <h3>Disposal by Media Type</h3>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Media Type</th><th>Clearing</th><th>Purging</th><th>Destroying</th><th>Special Notes</th></tr>
+      <tr>
+        <td>HDD (magnetic)</td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag tg">Yes (degauss)</span></td>
+        <td><span class="tag tg">Yes (shred)</span></td>
+        <td>All methods work</td>
+      </tr>
+      <tr>
+        <td>SSD (flash)</td>
+        <td><span class="tag to">Risky</span></td>
+        <td><span class="tag tg">Yes (ATA SE)</span></td>
+        <td><span class="tag tg">Yes (shred)</span></td>
+        <td>Overwrite unreliable due to wear leveling</td>
+      </tr>
+      <tr>
+        <td>USB Flash Drive</td>
+        <td><span class="tag to">Risky</span></td>
+        <td><span class="tag tg">Yes (CE)</span></td>
+        <td><span class="tag tg">Yes (shred)</span></td>
+        <td>Flash — same issue as SSD</td>
+      </tr>
+      <tr>
+        <td>Magnetic Tape</td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag tg">Yes (degauss)</span></td>
+        <td><span class="tag tg">Yes (incinerate)</span></td>
+        <td>Degaussing most practical</td>
+      </tr>
+      <tr>
+        <td>CD/DVD (optical)</td>
+        <td><span class="tag tr">No</span></td>
+        <td><span class="tag tr">No (not magnetic)</span></td>
+        <td><span class="tag tg">Yes (shred)</span></td>
+        <td>Only physical destruction works</td>
+      </tr>
+      <tr>
+        <td>Printer hard drive</td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag tg">Yes</span></td>
+        <td>Often forgotten! Contains print job copies</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3>Disposal Process — Step by Step</h3>
+    <div class="flow">
+      <div class="flow-box" style="background:#1a1a30;border-color:var(--blue);color:var(--blue)">Request disposal in CMDB</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#1a2a10;border-color:var(--green);color:var(--green)">Retrieve all data from device</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#2a1a10;border-color:var(--orange);color:var(--orange)">Apply sanitization method</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#2a1a40;border-color:var(--purple);color:var(--purple)">Verify sanitization complete</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#0f2d2a;border-color:var(--teal);color:var(--teal)">Get Certificate of Destruction</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#3d1515;border-color:var(--red);color:var(--red)">Remove from CMDB</div>
+    </div>
+
+    <h3>Special Disposal Considerations</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--yellow)">Cloud Asset Disposal</h4>
+        <p>When terminating cloud resources: delete all data first, terminate instances, verify storage deleted. Cloud providers may retain data briefly after deletion. Request cryptographic erasure or deletion confirmation. For compliance: document deletion with timestamps.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+AWS S3 bucket disposal:
+  1. Download/archive needed data
+  2. Delete all objects
+  3. Delete bucket
+  4. Verify with AWS CLI: aws s3 ls
+  5. Check no orphaned snapshots/AMIs
+  6. Document deletion date + account
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--pink)">Third-Party Disposal</h4>
+        <p>Using certified disposal vendor (ITAD — IT Asset Disposition): verify they have NAID (National Association for Information Destruction) certification. Get written certificate of destruction for every asset. Do NOT assume vendor handles data securely without verification.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Hospital Server Decommission</div>
+      <div class="code">
+<span class="cm"># Hospital decommissioning old patient records server:</span>
+Server: Dell PowerEdge R740
+Storage: 8x 4TB SATA HDDs
+Data: 10 years of patient records (HIPAA)
+Requirement: NIST 800-88 compliant disposal
+
+<span class="cb">Step 1 — Data backup and verification:</span>
+All records migrated to new system ✓
+Verified all data accessible on new server ✓
+Legal hold check: no active holds ✓
+
+<span class="cb">Step 2 — Sanitization (HIPAA = destroy required):</span>
+IT team removes all 8 HDDs
+Certified ITAD vendor (NAID-certified) engaged
+Drives transported in locked, GPS-tracked case
+On-site witnessed degaussing of all 8 drives
+Post-degauss: all 8 drives physically shredded
+Shredded material: sent to certified recycler
+
+<span class="cb">Step 3 — Documentation:</span>
+Certificate of Destruction issued:
+  → Lists all 8 drive serial numbers
+  → Date/time of destruction
+  → NAID certificate number
+  → Method: degauss + shred
+  → Witness signature
+
+<span class="cb">Step 4 — CMDB update:</span>
+Server AST-2015-089: status → DISPOSED
+All 8 drives: status → DISPOSED
+Documentation: linked in CMDB record
+<span class="cg">Audit trail: complete and HIPAA compliant ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Clearing →</span><span>Overwrite — reuse within org — multiple passes — not reliable for SSDs</span></div>
+      <div class="er"><span class="ek">Purging →</span><span>Degaussing (magnetic) or Cryptographic Erase — sell/donate appropriate</span></div>
+      <div class="er"><span class="ek">Destroying →</span><span>Physical shredding/incineration — classified data — absolute guarantee</span></div>
+      <div class="er"><span class="ek">SSD special case →</span><span>Overwriting unreliable — use ATA Secure Erase or physical destruction</span></div>
+      <div class="er"><span class="ek">Certificate of Destruction →</span><span>Legal proof of secure disposal — required for compliance</span></div>
+      <div class="er"><span class="ek">NIST 800-88 →</span><span>US government standard for media sanitization — know this reference</span></div>
+      <div class="er"><span class="ek">Cryptographic erase →</span><span>Destroy encryption key — fastest secure erase — works if data was encrypted</span></div>
+      <div class="er"><span class="ek">Degaussing →</span><span>Magnetic field destroys HDD/tape — ruins drive firmware too</span></div>
+      <div class="er"><span class="ek">Delete ≠ disposal →</span><span>Deleted files are NOT destroyed — recoverable with forensic tools</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- 9. SUMMARY                     -->
+<!-- ════════════════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">09</span>
+    <span class="card-title">Complete Summary — Exam Cheat Sheet</span>
+    <span class="bdg bdg-indigo">All Topics</span>
+  </div>
+  <div class="card-bd">
+
+    <h3>Asset Lifecycle Summary</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Phase</th><th>Key Activity</th><th>Security Focus</th><th>Exam Keyword</th></tr>
+      <tr><td>Acquisition</td><td>Purchase, verify, register</td><td>Supply chain verification, hash check</td><td>SBOM, CMDB, authorized vendor only</td></tr>
+      <tr><td>Assignment</td><td>Owner, classify, tag</td><td>Data owner vs custodian, classification</td><td>Every asset needs a named owner</td></tr>
+      <tr><td>Deployment</td><td>Configure baseline, enroll</td><td>Hardening before network connection</td><td>Golden image, MDM enrollment</td></tr>
+      <tr><td>Monitoring</td><td>Track patches, location, compliance</td><td>NAC, vulnerability scanning, EOL</td><td>Continuous — not one-time</td></tr>
+      <tr><td>Maintenance</td><td>Patch, update, repair</td><td>Vulnerability management</td><td>Patch before exploit</td></tr>
+      <tr><td>Disposal</td><td>Sanitize, decommission, document</td><td>Data destruction method matters</td><td>Clearing → Purging → Destroying</td></tr>
+    </table>
+    </div>
+
+    <h3>Data Sanitization Methods — Critical Table</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Method</th><th>How</th><th>When to Use</th><th>Works on SSD?</th></tr>
+      <tr><td><span class="tag tb">Clearing</span></td><td>Overwrite with zeros/ones/random</td><td>Reuse within same org</td><td><span class="tag to">Risky</span></td></tr>
+      <tr><td><span class="tag to">Purging (Degauss)</span></td><td>Magnetic field destroys data</td><td>HDD/tape going outside org</td><td><span class="tag tr">No — not magnetic</span></td></tr>
+      <tr><td><span class="tag tg">Purging (Crypto Erase)</span></td><td>Destroy encryption key</td><td>Encrypted drives — fastest</td><td><span class="tag tg">Yes</span></td></tr>
+      <tr><td><span class="tag tr">Destroying</span></td><td>Shred/incinerate/disintegrate</td><td>Classified/highly sensitive</td><td><span class="tag tg">Yes</span></td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// EXAM SCENARIOS → ANSWERS</h4>
+      <div class="er"><span class="ek">"You can't secure what you don't know you have"</span><span>→ Asset inventory / CMDB — must know every asset</span></div>
+      <div class="er"><span class="ek">"Unknown device found on network"</span><span>→ Rogue device — investigate, register or remove</span></div>
+      <div class="er"><span class="ek">"Buy hardware only from authorized resellers"</span><span>→ Supply chain security — prevent counterfeit hardware</span></div>
+      <div class="er"><span class="ek">"Full inventory of all software components"</span><span>→ SBOM (Software Bill of Materials)</span></div>
+      <div class="er"><span class="ek">"Business executive decides data classification"</span><span>→ Data Owner</span></div>
+      <div class="er"><span class="ek">"IT staff implements encryption on behalf of owner"</span><span>→ Data Custodian</span></div>
+      <div class="er"><span class="ek">"Physical label on hardware for tracking"</span><span>→ Asset tag (barcode/QR code)</span></div>
+      <div class="er"><span class="ek">"Scan without line of sight for audits"</span><span>→ RFID tags</span></div>
+      <div class="er"><span class="ek">"Employee leaves — what to do with their assets"</span><span>→ Offboarding — collect all assets + revoke all access</span></div>
+      <div class="er"><span class="ek">"Asset with no assigned owner"</span><span>→ Orphaned asset — security risk — assign owner or decommission</span></div>
+      <div class="er"><span class="ek">"Only approved apps can run"</span><span>→ Application whitelisting (AppLocker)</span></div>
+      <div class="er"><span class="ek">"Preserve all data — lawsuit pending"</span><span>→ Legal hold — suspend retention/deletion policies</span></div>
+      <div class="er"><span class="ek">"Hardware manufacturer stops patches"</span><span>→ End of Life (EOL) — plan replacement 12-18 months ahead</span></div>
+      <div class="er"><span class="ek">"Overwrite drive for reassignment within org"</span><span>→ Clearing (DBAN, multiple overwrite passes)</span></div>
+      <div class="er"><span class="ek">"Destroy magnetic tape with powerful magnet"</span><span>→ Degaussing (form of purging)</span></div>
+      <div class="er"><span class="ek">"Fastest secure erase if drive was encrypted"</span><span>→ Cryptographic erase — destroy the key</span></div>
+      <div class="er"><span class="ek">"Overwriting SSD unreliable — why?"</span><span>→ Wear leveling — use ATA Secure Erase or physical destruction instead</span></div>
+      <div class="er"><span class="ek">"Legal proof drive was securely destroyed"</span><span>→ Certificate of Destruction from certified ITAD vendor</span></div>
+      <div class="er"><span class="ek">"US government media sanitization standard"</span><span>→ NIST SP 800-88</span></div>
+      <div class="er"><span class="ek">"Simply deleting files — is it secure disposal?"</span><span>→ NO — files recoverable with forensic tools — must use proper sanitization</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function go(id, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.r

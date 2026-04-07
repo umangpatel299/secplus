@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automation & Orchestration — Security+ Domain 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Courier+Prime:wght@400;700&display=swap');
+
+:root {
+  --bg:#f2f0ea;
+  --s1:#ffffff;
+  --s2:#e8e6df;
+  --s3:#dedad0;
+  --border:#ccc9bc;
+  --text:#1e1c14;
+  --muted:#7a7560;
+  --blue:#1a56c8;
+  --green:#1a7a40;
+  --red:#b81c1c;
+  --orange:#b85a10;
+  --purple:#6a1ca8;
+  --teal:#0a7870;
+  --yellow:#8a6210;
+  --indigo:#3028b8;
+  --lime:#3a7010;
+  --rose:#a81848;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Barlow',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+/* MASTHEAD */
+.mast{
+  text-align:center;
+  margin-bottom:2.5rem;
+  padding-bottom:1.5rem;
+  border-bottom:3px solid var(--text);
+}
+.mast-kicker{
+  font-family:'Courier Prime',monospace;
+  font-size:0.65rem;
+  letter-spacing:0.2em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:0.4rem;
+}
+.mast-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:4rem;
+  letter-spacing:0.04em;
+  color:var(--text);
+  line-height:0.95;
+  margin-bottom:0.4rem;
+}
+.mast-title span{color:var(--indigo);}
+.mast-deck{
+  font-family:'Courier Prime',monospace;
+  font-size:0.68rem;
+  color:var(--muted);
+  letter-spacing:0.04em;
+}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.4rem 0.85rem;
+  border-radius:4px;
+  border:2px solid var(--border);
+  background:var(--s1);
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'Courier Prime',monospace;
+  font-size:0.64rem;
+  font-weight:700;
+  transition:all 0.13s;
+  letter-spacing:0.03em;
+  text-transform:uppercase;
+}
+.tab:hover{border-color:var(--indigo);color:var(--indigo);}
+.tab.active{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+
+/* SECTIONS */
+.sec{display:none;}
+.sec.on{display:block;animation:up 0.2s ease;}
+@keyframes up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* CARD */
+.card{background:var(--s1);border:2px solid var(--text);border-radius:6px;margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:1rem 1.4rem;border-bottom:2px solid var(--text);}
+.card-num{font-family:'Courier Prime',monospace;font-size:0.6rem;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:3px;padding:0.15rem 0.4rem;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.04em;}
+.bdg{margin-left:auto;font-family:'Courier Prime',monospace;font-size:0.58rem;padding:0.18rem 0.6rem;border-radius:3px;white-space:nowrap;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.bdg-blue{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.bdg-green{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.bdg-orange{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.bdg-red{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.bdg-purple{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.bdg-teal{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.bdg-indigo{background:#e0e7ff;color:#3730a3;border:1px solid #a5b4fc;}
+.bdg-lime{background:#ecfccb;color:#3f6212;border:1px solid #bef264;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.86rem;margin-bottom:0.8rem;line-height:1.7;}
+h3{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem;
+  letter-spacing:0.04em;
+  color:var(--text);
+  margin:1.3rem 0 0.6rem;
+  padding-left:0.75rem;
+  border-left:4px solid var(--indigo);
+}
+
+/* CODE */
+.code{
+  background:var(--text);
+  color:#e8e5d8;
+  border-radius:4px;
+  padding:1rem 1.2rem;
+  font-family:'Courier Prime',monospace;
+  font-size:0.69rem;
+  line-height:1.9;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.cg{color:#86efac;} .cr{color:#fca5a5;} .cb{color:#93c5fd;}
+.co{color:#fcd34d;} .cp{color:#d8b4fe;} .cm{color:#7a7560;}
+.ct{color:#5eead4;} .ci{color:#a5b4fc;} .cy{color:#fde68a;}
+.cl{color:#bef264;} .cpk{color:#f9a8d4;}
+
+/* SCENE */
+.scene{
+  background:#fef9ec;
+  border-left:4px solid var(--orange);
+  border-radius:0 4px 4px 0;
+  padding:1rem 1.2rem;
+  margin:1rem 0;
+}
+.scene-lbl{
+  font-family:'Courier Prime',monospace;
+  font-size:0.6rem;
+  color:var(--orange);
+  margin-bottom:0.4rem;
+  letter-spacing:0.12em;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{background:var(--s2);border:1.5px solid var(--border);border-radius:5px;padding:1rem;}
+.gc h4{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.04em;margin-bottom:0.4rem;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{background:#f0eeff;border:2px solid var(--indigo);border-radius:4px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'Courier Prime',monospace;font-size:0.6rem;color:var(--indigo);margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.4rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--indigo);font-family:'Courier Prime',monospace;font-size:0.67rem;flex-shrink:0;font-weight:700;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.55rem 0.8rem;text-align:left;color:var(--muted);border-bottom:2px solid var(--border);font-size:0.68rem;font-weight:700;font-family:'Courier Prime',monospace;letter-spacing:0.04em;text-transform:uppercase;}
+td{padding:0.55rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.1rem 0.45rem;border-radius:3px;font-size:0.6rem;font-family:'Courier Prime',monospace;font-weight:700;letter-spacing:0.03em;}
+.tg{background:#dcfce7;color:#166534;}
+.tr{background:#fee2e2;color:#991b1b;}
+.tb{background:#dbeafe;color:#1e40af;}
+.to{background:#ffedd5;color:#9a3412;}
+.tp{background:#f3e8ff;color:#6b21a8;}
+.tt{background:#ccfbf1;color:#115e59;}
+.ti{background:#e0e7ff;color:#3730a3;}
+.ty{background:#fef9c3;color:#854d0e;}
+.tl{background:#ecfccb;color:#3f6212;}
+
+/* INFO ROW */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s2);border:1.5px solid var(--border);border-radius:5px;margin-bottom:0.5rem;}
+.info-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-size:0.85rem;font-weight:700;margin-bottom:0.15rem;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.03em;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* FLOW */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.flow-box{border-radius:4px;padding:0.55rem 0.85rem;font-size:0.7rem;font-weight:700;border:2px solid;text-align:center;min-width:85px;font-family:'Courier Prime',monospace;text-transform:uppercase;letter-spacing:0.02em;}
+.flow-arr{color:var(--muted);font-size:1rem;}
+
+/* USE CASE CARDS */
+.use-card{
+  background:var(--s1);
+  border:2px solid var(--border);
+  border-radius:5px;
+  padding:1.1rem;
+  margin-bottom:0.7rem;
+  display:flex;
+  gap:1rem;
+  align-items:flex-start;
+}
+.use-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;
+  line-height:1;
+  color:var(--indigo);
+  opacity:0.3;
+  flex-shrink:0;
+  min-width:36px;
+}
+.use-title{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.03em;margin-bottom:0.25rem;}
+.use-body{font-size:0.78rem;color:var(--muted);}
+
+/* RISK TABLE */
+.risk-row{display:flex;gap:1rem;padding:0.7rem 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.risk-row:last-child{border-bottom:none;}
+.risk-icon{font-size:1.2rem;flex-shrink:0;}
+.risk-title{font-size:0.85rem;font-weight:700;margin-bottom:0.15rem;}
+.risk-desc{font-size:0.76rem;color:var(--muted);}
+
+/* COMPARISON */
+.cmp{display:flex;gap:0;border-radius:5px;overflow:hidden;border:2px solid var(--border);margin:1rem 0;}
+.cmp-col{flex:1;padding:1rem;}
+.cmp-col+.cmp-col{border-left:2px solid var(--border);}
+.cmp-head{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:0.03em;margin-bottom:0.5rem;}
+.cmp-item{font-size:0.74rem;color:var(--muted);padding:0.2rem 0;display:flex;gap:0.4rem;}
+.cmp-dot{flex-shrink:0;margin-top:0.35rem;width:5px;height:5px;border-radius:50%;}
+
+/* TOOL STRIP */
+.tool-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;margin:1rem 0;}
+@media(max-width:600px){.tool-strip{grid-template-columns:1fr;}}
+.tool-box{background:var(--s2);border:1.5px solid var(--border);border-radius:5px;padding:1rem;}
+.tool-name{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.03em;margin-bottom:0.2rem;}
+.tool-type{font-family:'Courier Prime',monospace;font-size:0.6rem;color:var(--muted);margin-bottom:0.4rem;letter-spacing:0.04em;text-transform:uppercase;}
+.tool-desc{font-size:0.75rem;color:var(--muted);}
+
+/* TIMING VISUAL */
+.timing-row{display:flex;align-items:center;gap:1rem;padding:0.6rem 0;border-bottom:1px solid var(--border);}
+.timing-row:last-child{border-bottom:none;}
+.timing-label{font-family:'Courier Prime',monospace;font-size:0.72rem;min-width:140px;font-weight:700;}
+.timing-bar-wrap{flex:1;background:var(--s3);border-radius:2px;height:20px;overflow:hidden;position:relative;}
+.timing-bar{height:100%;border-radius:2px;display:flex;align-items:center;padding:0 0.5rem;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;color:#fff;white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<div class="mast">
+  <div class="mast-kicker">CompTIA Security+ SY0-701 — Domain 4 / Security Operations</div>
+  <div class="mast-title">Auto<span>mation</span><br>& Orchestration</div>
+  <div class="mast-deck">// Use Cases · Scripting Benefits · Considerations · SOAR · IaC · Playbooks</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Use Cases</button>
+  <button class="tab" onclick="go('s3',this)">3. Scripting</button>
+  <button class="tab" onclick="go('s4',this)">4. SOAR</button>
+  <button class="tab" onclick="go('s5',this)">5. IaC</button>
+  <button class="tab" onclick="go('s6',this)">6. API Security</button>
+  <button class="tab" onclick="go('s7',this)">7. Considerations</button>
+  <button class="tab" onclick="go('s8',this)">8. Tools</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ════════════════════ -->
+<!-- 1. OVERVIEW         -->
+<!-- ════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Why Automation Matters in Security</span><span class="bdg bdg-indigo">Speed · Scale · Consistency</span></div>
+  <div class="card-bd">
+    <p>Security teams are <strong style="color:var(--text)">outnumbered and outpaced</strong>. Attackers use automation — credential stuffing bots, automated exploit kits, ransomware that spreads in minutes. Defenders who rely on manual processes will always be too slow. Automation levels the playing field.</p>
+
+    <h3>The Speed Problem</h3>
+    <div class="code">
+<span class="cm"># The fundamental mismatch:</span>
+
+Ransomware time from initial access → domain encryption:
+  Fastest recorded: <span class="cr">45 minutes</span>
+  Average: <span class="cr">4-5 hours</span>
+
+Manual security response time:
+  Alert noticed:        30 min (if SOC staffed)
+  Alert investigated:   60 min
+  Threat confirmed:     90 min
+  Remediation started: 120 min
+  Remediation done:    240 min
+  Total manual:        <span class="cr">4 hours — possibly too late</span>
+
+Automated security response:
+  Alert received:           0 sec
+  Endpoint isolated:        3 sec
+  Threat intel checked:     5 sec
+  IOCs blocked on FW:       8 sec
+  Affected accounts locked: 10 sec
+  IR team paged:            12 sec
+  Total automated:         <span class="cg">12 seconds ✓</span>
+
+<span class="cg">Automation is the only way to match attack speed</span>
+    </div>
+
+    <h3>Automation vs Orchestration — Different Things</h3>
+    <div class="cmp">
+      <div class="cmp-col" style="background:var(--s2)">
+        <div class="cmp-head" style="color:var(--blue)">Automation</div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--blue)"></div><span>Single task performed without human</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--blue)"></div><span>Repetitive, well-defined process</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--blue)"></div><span>"Auto-patch this server"</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--blue)"></div><span>"Block this IP on the firewall"</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--blue)"></div><span>One tool, one action</span></div>
+      </div>
+      <div class="cmp-col" style="background:var(--s2)">
+        <div class="cmp-head" style="color:var(--purple)">Orchestration</div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--purple)"></div><span>Coordinates MULTIPLE automated tasks</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--purple)"></div><span>Workflow across multiple systems/tools</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--purple)"></div><span>"When phishing alert fires — do these 12 steps"</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--purple)"></div><span>SIEM → SOAR → EDR → Firewall → Ticket</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--purple)"></div><span>Many tools, coordinated workflow</span></div>
+      </div>
+    </div>
+
+    <h3>Core Benefits of Security Automation</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#86efac">
+        <h4 style="color:var(--green)">Speed</h4>
+        <p>Respond in seconds instead of hours. Attack timelines measured in minutes — response must match. Automation bridges the gap between alert volume and analyst capacity.</p>
+      </div>
+      <div class="gc" style="border-color:#93c5fd">
+        <h4 style="color:var(--blue)">Consistency</h4>
+        <p>Automation does the same thing every time — humans make mistakes when tired or rushed. Every phishing email handled identically. No missed steps, no forgotten actions, no variation between analysts.</p>
+      </div>
+      <div class="gc" style="border-color:#d8b4fe">
+        <h4 style="color:var(--purple)">Scale</h4>
+        <p>100 alerts or 10,000 alerts — automation handles both without adding headcount. Manual process: 1 analyst handles ~20 alerts/hour. Automation: handles thousands simultaneously without fatigue.</p>
+      </div>
+      <div class="gc" style="border-color:#fde68a">
+        <h4 style="color:var(--yellow)">Availability</h4>
+        <p>Automation works 24/7/365. No holidays, no sick days, no shift gaps. 3am Sunday attack triggers immediate automated response. No waiting for business hours.</p>
+      </div>
+      <div class="gc" style="border-color:#fdba74">
+        <h4 style="color:var(--orange)">Audit Trail</h4>
+        <p>Automated systems log every action automatically. Every step documented. Compliance reporting automated. Forensic timeline always available. No "I forgot to document that."</p>
+      </div>
+      <div class="gc" style="border-color:#bef264">
+        <h4 style="color:var(--lime)">Human Focus</h4>
+        <p>Frees analysts from repetitive tasks. Humans focus on: novel threats, complex investigations, strategic decisions. Automation handles: known threats, routine checks, standard responses.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Automation →</span><span>Single task without human — repetitive, well-defined</span></div>
+      <div class="er"><span class="ek">Orchestration →</span><span>Coordinates multiple automated tasks across multiple tools — workflow</span></div>
+      <div class="er"><span class="ek">SOAR →</span><span>Security Orchestration Automation and Response — security-specific orchestration platform</span></div>
+      <div class="er"><span class="ek">Speed benefit →</span><span>Automation responds in seconds — manual takes hours — attackers move in minutes</span></div>
+      <div class="er"><span class="ek">Consistency benefit →</span><span>Same process every time — humans make errors — automation doesn't</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════ -->
+<!-- 2. USE CASES        -->
+<!-- ════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">Security Automation Use Cases</span><span class="bdg bdg-blue">What Gets Automated</span></div>
+  <div class="card-bd">
+    <p>Security automation covers a broad range of tasks — from routine maintenance to real-time threat response. These are the <strong style="color:var(--text)">specific use cases the Security+ exam tests on</strong>.</p>
+
+    <div class="use-card">
+      <div class="use-num">01</div>
+      <div>
+        <div class="use-title" style="color:var(--blue)">User Provisioning and Deprovisioning</div>
+        <div class="use-body">Automatically create accounts when HR adds new hire. Automatically disable accounts when employee departs. SCIM protocol pushes changes to all SaaS apps instantly. Removes human error from offboarding — no orphaned accounts.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># HR system → automation trigger:</span>
+HR event: "John Smith — Status: TERMINATED — Effective: 2024-03-15"
+
+Automation workflow triggers:
+  14 seconds → AD account disabled
+  15 seconds → All OAuth tokens revoked
+  16 seconds → VPN certificate revoked
+  18 seconds → Email forwarding set to manager
+  20 seconds → MDM: remote wipe queued
+  22 seconds → All 23 SaaS accounts deprovisioned
+  24 seconds → Ticket created: "Offboarding complete"
+<span class="cg">Manual equivalent: 45-90 minutes of IT work</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="use-card">
+      <div class="use-num">02</div>
+      <div>
+        <div class="use-title" style="color:var(--green)">Vulnerability Scanning and Patch Management</div>
+        <div class="use-body">Scheduled scans run automatically — no manual triggering. Critical vulnerability found → automatic ticket created with CVE details, CVSS score, affected systems, and remediation steps. Patch deployment automated after approval workflow completed. Scan after patching to confirm fix.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Automated vulnerability pipeline:</span>
+Monday 02:00 → Nessus scan starts automatically (all 847 systems)
+Monday 06:23 → Scan complete → results processed
+Critical findings: 3
+  → ServiceNow ticket auto-created (P1, 24hr SLA)
+  → Assigned to: Server team (from asset ownership DB)
+  → Patch sourced: WSUS/Ansible playbook auto-selected
+  → Change request auto-drafted (needs human approval)
+Monday 08:00 → Server team sees pre-packaged P1 tickets
+Monday 14:00 → Manager approves change
+Monday 22:00 → Ansible auto-deploys patch to prod
+Tuesday 02:00 → Validation scan confirms: <span class="cg">CVEs closed ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="use-card">
+      <div class="use-num">03</div>
+      <div>
+        <div class="use-title" style="color:var(--red)">Incident Response</div>
+        <div class="use-body">SOAR playbooks automate initial triage and containment steps. Phishing alert → automatically sandbox attachment, block URLs, quarantine email copies, notify recipients. Malware detected → automatically isolate endpoint, capture memory dump, create P1 ticket. Automation does the first 80% of response in seconds.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Ransomware detection → automated response:</span>
+EDR: ransomware behavior detected on WORKSTATION-047
+  T+0:00 → SOAR playbook: "Ransomware Response" triggered
+  T+0:03 → EDR: endpoint isolated from network
+  T+0:05 → AD: user account locked
+  T+0:07 → Threat intel: IOCs extracted, shared to all controls
+  T+0:08 → Firewall: C2 IPs and domains blocked
+  T+0:10 → DNS: C2 domains sinkholed
+  T+0:12 → SIEM: search all hosts for same IOCs
+  T+0:15 → Backup team: notified to check backup integrity
+  T+0:20 → P1 ticket: created with full context + timeline
+  T+0:25 → IR team: paged via PagerDuty
+  T+0:30 → Management: breach notification email ready (draft)
+<span class="cg">Human analyst arrives to pre-packaged investigation ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="use-card">
+      <div class="use-num">04</div>
+      <div>
+        <div class="use-title" style="color:var(--orange)">Log Aggregation and Analysis</div>
+        <div class="use-body">All logs automatically forwarded to SIEM via configured agents. Correlation rules automatically find patterns across sources. Anomaly detection runs continuously. Security-relevant events auto-tagged and prioritized. Reports auto-generated and distributed to stakeholders on schedule.</div>
+      </div>
+    </div>
+
+    <div class="use-card">
+      <div class="use-num">05</div>
+      <div>
+        <div class="use-title" style="color:var(--purple)">Threat Intelligence Enrichment</div>
+        <div class="use-body">When alert fires — automatically enrich with context: IP reputation check (VirusTotal, Shodan), domain WHOIS lookup, file hash lookup against threat intel feeds, geolocation of source IP, previous incident history for this indicator. Analyst sees fully enriched alert — not raw data.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Alert fires: connection to IP 185.220.101.34</span>
+<span class="cm"># Automated enrichment (runs before analyst sees alert):</span>
+
+VirusTotal: 47/73 vendors → MALICIOUS
+AbuseIPDB: reported 1,247 times → Tor exit node
+Shodan: open ports 80,443,4444,9001
+Geolocation: Netherlands (Tor infrastructure)
+Previous incidents: 3 other hosts connected here (compromised)
+MITRE ATT&CK: T1090 — Proxy/Tor
+
+Analyst sees: <span class="cg">fully enriched alert — context ready</span>
+Decision time: <span class="cg">30 seconds vs 20 minutes manual lookup</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="use-card">
+      <div class="use-num">06</div>
+      <div>
+        <div class="use-title" style="color:var(--teal)">Compliance Monitoring and Reporting</div>
+        <div class="use-body">Continuously check systems against compliance benchmarks (CIS, PCI-DSS, HIPAA). Any deviation → auto-alert and auto-remediate where policy allows. PCI-DSS quarterly scan reports auto-generated and distributed. Compliance dashboards updated in real time. Audit evidence automatically collected and stored.</div>
+      </div>
+    </div>
+
+    <div class="use-card">
+      <div class="use-num">07</div>
+      <div>
+        <div class="use-title" style="color:var(--indigo)">Access Recertification</div>
+        <div class="use-body">Quarterly access reviews triggered automatically. Managers receive email with list of their direct reports' access — click Approve/Revoke per item. Non-responses after reminder → auto-escalate. Access automatically revoked for any rejected items. Certification report auto-generated for auditors.</div>
+      </div>
+    </div>
+
+    <div class="use-card">
+      <div class="use-num">08</div>
+      <div>
+        <div class="use-title" style="color:var(--rose)">Certificate Management</div>
+        <div class="use-body">Certificates expiring in 30 days → auto-alert. ACME protocol enables fully automated certificate renewal (Let's Encrypt). Certificate health monitored continuously. Expired certificate → service outage. Automation eliminates "forgot to renew" incidents.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Automated certificate lifecycle:</span>
+Certbot (ACME client) runs daily check:
+  website.company.com cert: expires in 29 days
+  Threshold: 30 days → renewal triggered
+  Certbot: requests new cert from Let's Encrypt
+  Let's Encrypt: validates domain ownership (HTTP-01)
+  New cert: installed automatically
+  Old cert: replaced without service interruption
+  Alert: "Certificate renewed — valid 90 days" → team
+<span class="cg">Zero human intervention required ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Automation Handles Black Friday Attack</div>
+      <div class="code">
+<span class="cm"># Friday 11:47 PM — Black Friday, no SOC staff on duty:</span>
+
+<span class="cr">Attack: credential stuffing against login portal</span>
+Rate: 50,000 login attempts per minute
+Source: 3,000 different IPs (botnet)
+
+<span class="cm"># Automation responds with zero human involvement:</span>
+T+0:00 → WAF rate limiting: triggers at 1000 req/min/IP
+T+0:05 → SIEM: correlates login failures across all IPs
+T+0:10 → Automation: identifies botnet pattern (low success, high volume)
+T+0:15 → Threat intel: 2,847 IPs match known botnet ranges
+T+0:20 → Firewall: 2,847 IPs auto-blocked
+T+0:25 → Remaining 153 IPs: CAPTCHA challenge deployed
+T+0:30 → Attack volume: reduced 94%
+T+0:35 → Successful logins from attack IPs: BLOCKED
+T+0:40 → Alert: on-call engineer paged (FYI — contained)
+
+<span class="cg">Result: attack contained — zero customer impact ✓</span>
+<span class="cg">Revenue: Black Friday sales unaffected ✓</span>
+<span class="cm"># Manual response: engineer wakes up at midnight</span>
+<span class="cm"># Reviews alert: 45 minutes — attack long over</span>
+<span class="cm"># But damage already done — automation prevented it</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Provisioning automation →</span><span>HR event triggers account creation/deletion across all systems via SCIM</span></div>
+      <div class="er"><span class="ek">Patch management →</span><span>Automated scanning, ticket creation, deployment, verification — reduces manual work</span></div>
+      <div class="er"><span class="ek">IR automation →</span><span>SOAR playbooks contain threats in seconds — isolate, block, notify, document</span></div>
+      <div class="er"><span class="ek">Threat intel enrichment →</span><span>Automatically add context to alerts — reputation, geolocation, previous incidents</span></div>
+      <div class="er"><span class="ek">Compliance automation →</span><span>Continuous monitoring vs benchmarks — auto-reports — evidence collection</span></div>
+      <div class="er"><span class="ek">Certificate automation →</span><span>ACME protocol (Let's Encrypt) — auto-renew before expiry — eliminates forgotten renewals</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════ -->
+<!-- 3. SCRIPTING        -->
+<!-- ════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">Scripting Benefits for Security</span><span class="bdg bdg-green">Python · PowerShell · Bash</span></div>
+  <div class="card-bd">
+    <p>Scripting is the foundation of security automation — custom scripts can <strong style="color:var(--text)">automate almost any repetitive security task</strong>, integrate tools that don't natively connect, and perform analysis at a scale no human could match manually.</p>
+
+    <h3>Why Scripting Matters</h3>
+    <div class="code">
+<span class="cm"># Task: Check all 847 servers for insecure SSH config</span>
+
+<span class="cr">Manual approach:</span>
+  Connect to each server: 2 minutes each
+  Check /etc/ssh/sshd_config manually: 3 minutes each
+  Document findings: 2 minutes each
+  Total: 847 × 7 minutes = <span class="cr">5,929 minutes (99 hours)</span>
+  Human error: guaranteed after first 50 servers
+
+<span class="cg">Scripted approach:</span>
+  Python script with paramiko (SSH library):
+  Connects to all 847 servers in parallel
+  Reads sshd_config on each
+  Checks: PermitRootLogin, PasswordAuthentication,
+          Protocol, AllowedCiphers, MaxAuthTries
+  Outputs: CSV report with compliance status
+  Total: <span class="cg">4 minutes ✓</span>
+  Accuracy: <span class="cg">100% (same check every time)</span>
+    </div>
+
+    <h3>Security Scripting Languages</h3>
+
+    <div class="info-row">
+      <div class="info-icon">🐍</div>
+      <div>
+        <div class="info-title">Python — Most Popular for Security</div>
+        <div class="info-desc">Vast library ecosystem: requests (HTTP), paramiko (SSH), scapy (packet craft), shodan (internet scanning), pwntools (exploitation), pandas (data analysis). Security tools built in Python: Metasploit modules, Volatility (forensics), Impacket (network protocols). Cross-platform — works on Windows, Linux, macOS. Human-readable — easy to audit and maintain.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Python: scan for default credentials on network devices</span>
+import paramiko, ipaddress, csv
+
+default_creds = [("admin","admin"),("admin","password"),("root","root")]
+results = []
+
+for ip in ipaddress.IPv4Network("10.0.0.0/24"):
+    for user, pwd in default_creds:
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        try:
+            ssh.connect(str(ip), username=user, password=pwd, timeout=2)
+            results.append({"ip":str(ip),"user":user,"pwd":pwd,"status":"<span class="cr">VULNERABLE</span>"})
+            ssh.close()
+        except: pass
+
+<span class="cm"># Output results to CSV for remediation team</span>
+with open("default_creds_report.csv","w") as f:
+    writer = csv.DictWriter(f, fieldnames=results[0].keys())
+    writer.writerows(results)
+        </div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">⚡</div>
+      <div>
+        <div class="info-title">PowerShell — Windows Security Administration</div>
+        <div class="info-desc">Native Windows administration tool — built into every Windows system. Access to all Windows objects: Active Directory, registry, event logs, Windows Defender, Group Policy, services, processes. Remote execution across many machines simultaneously. WMI/CIM interfaces for deep system access. Essential skill for Windows security operations.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># PowerShell: find all accounts inactive 90+ days</span>
+Import-Module ActiveDirectory
+
+$cutoff = (Get-Date).AddDays(-90)
+$staleAccounts = Get-ADUser -Filter * -Properties LastLogonDate |
+  Where-Object {
+    $_.LastLogonDate -lt $cutoff -and
+    $_.Enabled -eq $true
+  } |
+  Select-Object Name, SamAccountName, LastLogonDate
+
+<span class="cm"># Disable stale accounts</span>
+$staleAccounts | ForEach-Object {
+    Disable-ADAccount -Identity $_.SamAccountName
+    Write-Log "Disabled: $($_.Name) — last login: $($_.LastLogonDate)"
+}
+
+<span class="cm"># Email security team the report</span>
+Send-MailMessage -To "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5320363026213a272a13303c3e23323d2a7d303c3e">[email&#160;protected]</a>" `
+    -Subject "Stale Account Remediation Report" `
+    -Body ($staleAccounts | Out-String)
+        </div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🐚</div>
+      <div>
+        <div class="info-title">Bash / Shell — Linux Security Automation</div>
+        <div class="info-desc">Native Linux/Unix scripting. Pipe commands together for powerful analysis. Cron jobs for scheduled security tasks. Log analysis, file integrity checks, system hardening scripts. Available everywhere — any Linux system has bash. Combines powerful command-line tools: grep, awk, sed, find, netstat, ss, top.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm">#!/bin/bash</span>
+<span class="cm"># Bash: Check for rootkits and suspicious files</span>
+
+echo "=== SECURITY AUDIT $(date) ===" >> /var/log/audit.log
+
+<span class="cm"># Check for SUID/SGID files (privilege escalation risk)</span>
+find / -perm /6000 -type f 2>/dev/null | \
+  while read file; do
+    if ! grep -q "$file" /etc/approved_suid.list; then
+      echo "ALERT: Unapproved SUID: $file" >> /var/log/audit.log
+    fi
+  done
+
+<span class="cm"># Check listening ports vs approved list</span>
+ss -tlnp | awk '{print $4,$6}' | grep LISTEN | \
+  diff - /etc/approved_ports.list | grep "^<" | \
+  while read line; do
+    echo "ALERT: Unexpected port: $line" >> /var/log/audit.log
+  done
+
+<span class="cm"># Runs every hour via cron</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Scripting Benefits — Security-Specific</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Repeatability</h4>
+        <p>Script runs exactly the same way every time. No variation between runs. Post-incident investigation: can re-run the exact same check that was done before. Compliance: same check documented and repeatable for auditors.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Documentation</h4>
+        <p>Script IS the documentation. Code comments explain every step. Version controlled in Git — full history. Anyone can read the script and understand exactly what security check was performed.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Integration</h4>
+        <p>Scripts bridge gaps between tools that don't natively integrate. Pull alerts from SIEM via API, enrich with threat intel API, create ticket in ServiceNow via API — all in one script. Custom integrations not available in any commercial product.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Customization</h4>
+        <p>Commercial tools do generic things. Scripts do exactly what YOUR environment needs. Custom parsing of proprietary log formats. Custom detection logic for YOUR specific threats. Impossible with off-the-shelf tools.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Efficiency</h4>
+        <p>Tasks that take humans hours complete in minutes. Parallel execution — check 1000 hosts simultaneously. No context switching — script handles everything start to finish. Return on effort: write once, run forever.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--indigo)">Scheduling</h4>
+        <p>Cron (Linux) or Task Scheduler (Windows) run scripts automatically. Vulnerability scan every Monday at 2am — no human needed. Log analysis every 15 minutes — continuous monitoring. Compliance check before every release deployment.</p>
+      </div>
+    </div>
+
+    <h3>Security Scripting Use Cases — Specific Examples</h3>
+    <div class="code">
+<span class="cm"># Common security scripts in enterprise environments:</span>
+
+<span class="cb">1. Automated IOC blocking:</span>
+   CISA advisory published → new malicious IP list
+   Script: downloads IOC list → parses IPs/domains
+   Script: pushes to firewall blocklist via API
+   Script: pushes domains to DNS sinkhole
+   Time: <span class="cg">2 minutes (vs 45 min manual)</span>
+
+<span class="cb">2. Log anomaly detection:</span>
+   Script: reads auth.log every 5 minutes
+   Script: counts failed logins per source IP
+   If threshold exceeded: create alert + add to block list
+   Custom logic: specific to YOUR environment
+
+<span class="cb">3. Dead account hunter:</span>
+   Script: pulls all AD users via LDAP
+   Script: checks last login date
+   Script: cross-references with HR terminated list
+   Script: disables orphaned accounts automatically
+   Script: emails report to security team
+
+<span class="cb">4. Firewall rule auditor:</span>
+   Script: pulls all firewall rules via API
+   Script: identifies: any→any rules, unused rules,
+            overly broad rules, expired temp rules
+   Script: outputs prioritized remediation list
+
+<span class="cb">5. Threat hunting script:</span>
+   Script: queries SIEM API for encoded PowerShell
+   Script: queries EDR for suspicious parent-child chains
+   Script: correlates results → high-fidelity hunts
+   New hunt every morning automatically
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Python Script Saves Breach Investigation</div>
+      <div class="code">
+<span class="cm"># Incident: data exfiltration suspected — 90-day investigation scope</span>
+<span class="cm"># Manual approach: impossible — 90 days × 847 systems of logs</span>
+
+<span class="cg">Python script written (2 hours of development):</span>
+
+import elasticsearch, datetime, csv
+
+<span class="cm"># Query SIEM for all outbound transfers > 100MB</span>
+<span class="cm"># in last 90 days from finance network segment</span>
+query = {
+    "query": {"bool": {"must": [
+        {"range": {"bytes_out": {"gte": 104857600}}},
+        {"range": {"@timestamp": {"gte": "now-90d"}}},
+        {"match": {"src_zone": "finance"}}
+    ]}}
+}
+
+results = es.search(index="netflow-*", body=query, size=10000)
+
+<span class="cm"># Group by destination IP, sort by total volume</span>
+exfil_candidates = sorted(
+    results,
+    key=lambda x: x['bytes_out'],
+    reverse=True
+)[:50]  <span class="cm"># top 50 candidates</span>
+
+<span class="cm"># Enrich each with VirusTotal check</span>
+for candidate in exfil_candidates:
+    candidate['vt_score'] = check_virustotal(candidate['dst_ip'])
+
+<span class="cm"># Output prioritized list</span>
+<span class="cm">Result: 50 prioritized leads ready in 8 minutes</span>
+<span class="cg">Manual equivalent: 3 analysts × 2 weeks = impossible</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Python →</span><span>Most popular security scripting — rich library ecosystem — cross-platform</span></div>
+      <div class="er"><span class="ek">PowerShell →</span><span>Windows automation — AD, event logs, registry, remote execution</span></div>
+      <div class="er"><span class="ek">Bash →</span><span>Linux automation — pipe commands — cron scheduling — log analysis</span></div>
+      <div class="er"><span class="ek">Repeatability →</span><span>Script does same thing every time — no human variation — auditable</span></div>
+      <div class="er"><span class="ek">Integration →</span><span>Scripts bridge gaps between tools via APIs — custom connections</span></div>
+      <div class="er"><span class="ek">Scripting risk →</span><span>Poorly written scripts = security risk — test thoroughly — version control</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════ -->
+<!-- 4. SOAR             -->
+<!-- ════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">SOAR — Security Orchestration, Automation & Response</span><span class="bdg bdg-purple">Playbooks · Workflows · Response</span></div>
+  <div class="card-bd">
+    <p>SOAR platforms are <strong style="color:var(--text)">purpose-built orchestration for security operations</strong>. They connect all security tools via APIs, allow visual workflow creation (playbooks), and automate repetitive response tasks — transforming alert-heavy SOCs into efficient, fast-responding teams.</p>
+
+    <h3>SOAR Architecture</h3>
+    <div class="code">
+<span class="cm"># SOAR sits at the center — connects everything:</span>
+
+DATA SOURCES (input):
+  SIEM → alerts and correlated events
+  EDR → endpoint detections
+  Email → phishing reports
+  Firewall → traffic blocks
+  Threat intel → IOC feeds
+  Ticketing → open incidents
+  Users → manual submissions
+
+SOAR PLATFORM:
+  Receives alerts → matches to playbook
+  Executes playbook → calls APIs of other tools
+  Decision points → if/then/else logic
+  Human-in-loop → escalate when needed
+  Case management → full incident tracking
+
+OUTPUTS (actions):
+  EDR API → isolate endpoint
+  Firewall API → block IP/domain
+  AD API → disable account / reset password
+  Email API → quarantine messages
+  DNS API → sinkhole domain
+  Ticketing API → create/update ticket
+  Messaging → Slack/Teams notification
+  Phone → PagerDuty alert
+    </div>
+
+    <h3>Playbook Structure</h3>
+    <div class="code">
+<span class="cm"># Phishing playbook — complete automated response:</span>
+
+TRIGGER: Email reported as phishing OR
+         Email gateway flags as suspicious
+
+<span class="cb">STEP 1 — Extract indicators:</span>
+  Parse email headers → sender, IP, reply-to
+  Extract URLs → defang (prevent accidental clicks)
+  Extract attachments → hash + base64
+
+<span class="cb">STEP 2 — Threat intelligence lookup (parallel):</span>
+  URL reputation: VirusTotal, URLscan.io
+  Sender domain: WHOIS, MX records, domain age
+  Attachment hash: VirusTotal, internal malware DB
+  Sender IP: AbuseIPDB, geolocation
+
+<span class="cb">STEP 3 — Decision: Is it malicious?</span>
+  IF VirusTotal ≥ 5 engines malicious:
+    → CONFIRMED PHISHING → execute block actions
+  IF domain < 7 days old + suspicious URL:
+    → LIKELY PHISHING → execute block + analyst review
+  IF all indicators clean:
+    → LIKELY BENIGN → notify reporter + close ticket
+
+<span class="cb">STEP 4 — Block actions (automated):</span>
+  Block sender domain → email gateway
+  Block URLs → web proxy
+  Block sender IP → firewall
+  Sinkhole domain → DNS filter
+  Quarantine all copies → Exchange/M365 API
+  Notify recipients → automated email
+
+<span class="cb">STEP 5 — Document:</span>
+  Create incident ticket with full timeline
+  Attach all evidence (email source, screenshots)
+  Tag with MITRE ATT&CK technique
+  Update threat intel database
+
+TOTAL TIME: <span class="cg">7 seconds</span> | Manual: <span class="cr">33 minutes</span>
+    </div>
+
+    <h3>SOAR vs Manual SOC</h3>
+
+    <h3 style="border-left-color:var(--orange)">Response Time Comparison</h3>
+    <div class="timing-row"><span class="timing-label">Manual — L1 analyst</span><div class="timing-bar-wrap"><div class="timing-bar" style="width:100%;background:var(--red)">33 minutes</div></div></div>
+    <div class="timing-row"><span class="timing-label">Semi-automated</span><div class="timing-bar-wrap"><div class="timing-bar" style="width:30%;background:var(--orange)">10 min</div></div></div>
+    <div class="timing-row"><span class="timing-label">SOAR automated</span><div class="timing-bar-wrap"><div class="timing-bar" style="width:0.5%;background:var(--green);min-width:60px">7 seconds</div></div></div>
+
+    <h3>SOAR Products</h3>
+    <div class="tool-strip">
+      <div class="tool-box">
+        <div class="tool-name">Splunk SOAR</div>
+        <div class="tool-type">Formerly Phantom · Industry Leader</div>
+        <div class="tool-desc">Most widely deployed SOAR. 350+ app integrations. Visual playbook builder. Python for custom actions. Tight Splunk SIEM integration.</div>
+      </div>
+      <div class="tool-box">
+        <div class="tool-name">Microsoft Sentinel</div>
+        <div class="tool-type">Cloud-Native SOAR + SIEM</div>
+        <div class="tool-desc">Built-in SOAR via Azure Logic Apps. Best for Microsoft shops. No separate product — SOAR is part of Sentinel. Tight M365 integration.</div>
+      </div>
+      <div class="tool-box">
+        <div class="tool-name">Palo Alto XSOAR</div>
+        <div class="tool-type">Enterprise · MSSP-Friendly</div>
+        <div class="tool-desc">Strong for MSSPs managing multiple clients. Collaborative investigation. Marketplace of pre-built playbooks. Cortex XDR integration.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — SOAR Handles 3am Weekend Ransomware</div>
+      <div class="code">
+<span class="cm"># Saturday 3:14 AM — no SOC staff — SOAR on duty:</span>
+
+EDR: CrowdStrike detects ransomware behavior on 3 hosts
+SOAR: "Critical Malware Response" playbook triggered
+
+<span class="cb">T+0:00</span> Playbook starts
+<span class="cb">T+0:04</span> EDR API: HOST-01, HOST-02, HOST-03 → ISOLATED
+<span class="cb">T+0:07</span> SIEM: search all hosts for same IOC hash
+<span class="cb">T+0:12</span> SIEM: 2 more hosts with same hash → also isolated
+<span class="cb">T+0:15</span> AD: user accounts on affected hosts → LOCKED
+<span class="cb">T+0:18</span> Threat intel: extract C2 IPs and domains from malware
+<span class="cb">T+0:20</span> Firewall: C2 IPs → BLOCKED
+<span class="cb">T+0:22</span> DNS: C2 domains → SINKHOLED
+<span class="cb">T+0:25</span> Backup system: API check — backups intact? <span class="cg">YES ✓</span>
+<span class="cb">T+0:28</span> Ticket: P1 created with full timeline + IOCs
+<span class="cb">T+0:30</span> PagerDuty: IR lead, CISO, IT Manager → PAGED
+<span class="cb">T+0:35</span> Slack: #security-incidents → alert posted
+
+IR lead receives page at <span class="cb">3:14:35 AM:</span>
+  "Ransomware contained — 5 hosts isolated
+   C2 blocked — backups intact
+   Login to investigate: [link to pre-built case]"
+
+<span class="cg">Incident: contained before spreading to more hosts ✓</span>
+<span class="cg">Time to contain: 35 seconds ✓</span>
+<span class="cg">Data loss: none — backups intact ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">SOAR →</span><span>Security Orchestration Automation Response — coordinates multiple tools via playbooks</span></div>
+      <div class="er"><span class="ek">Playbook →</span><span>Automated workflow for specific alert type — steps executed in sequence</span></div>
+      <div class="er"><span class="ek">Splunk SOAR →</span><span>Most widely deployed — formerly Phantom — 350+ integrations</span></div>
+      <div class="er"><span class="ek">Human-in-loop →</span><span>Automation handles routine — humans handle complex decisions and escalations</span></div>
+      <div class="er"><span class="ek">SOAR vs SIEM →</span><span>SIEM = detect and alert / SOAR = automate response — work together</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════ -->
+<!-- 5. IaC              -->
+<!-- ════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Infrastructure as Code (IaC)</span><span class="bdg bdg-lime">Terraform · Ansible · Docker</span></div>
+  <div class="card-bd">
+    <p>Infrastructure as Code means <strong style="color:var(--text)">defining and managing infrastructure through code files rather than manual configuration</strong>. Security benefits: every infrastructure change is version controlled, reviewed, and auditable — and security configurations are consistently applied from the start.</p>
+
+    <h3>Why IaC Matters for Security</h3>
+    <div class="code">
+<span class="cm"># Traditional infrastructure — the "snowflake" problem:</span>
+
+Server 1: configured manually by Admin A in 2019
+Server 2: configured manually by Admin B in 2020
+Server 3: configured manually by Admin C in 2021
+
+Three servers, same role:
+  Server 1: SSH v2, root login disabled, firewall on
+  Server 2: SSH v1 still enabled (Admin B didn't know), weak ciphers
+  Server 3: root login enabled "temporarily" (never fixed), no firewall
+
+Vulnerability scan: finds different issues on each
+<span class="cr">= inconsistent security posture = unpredictable attack surface</span>
+
+<span class="cg"># With IaC:</span>
+server_config.yml defines EXACT configuration
+Deployed identically to ALL servers
+Ansible playbook enforces: SSH v2, no root, firewall rules
+Configuration DRIFT: auto-detected and auto-corrected
+<span class="cg">All 3 servers: identical, auditable, secure ✓</span>
+    </div>
+
+    <h3>IaC Security Benefits</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--green)">Immutable Infrastructure</h4>
+        <p>Instead of modifying running servers, replace them entirely. Compromised server? Delete it, spin up new one from clean IaC definition. Attacker's persistence wiped away. Faster recovery — IaC rebuilds in minutes not hours.</p>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Incident response with immutable infra:</span>
+Server compromised at 02:14
+  → Terminate server (don't remediate!)
+  → terraform destroy server_01
+  → terraform apply server_01
+  → New clean server from IaC: <span class="cg">online 4 min later</span>
+  → Old compromised server: gone
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Version Control</h4>
+        <p>All infrastructure changes tracked in Git. "Who opened port 22 to the internet?" — git blame. Rollback: revert to previous known-good config instantly. Pull request review — security team reviews every change before deployment.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Configuration Drift Detection</h4>
+        <p>IaC tools detect when actual state differs from desired state. Ansible/Terraform: continuously verify servers match their definitions. Someone manually changed a config? Auto-detected, auto-remediated. Prevents gradual security decay.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Security as Code</h4>
+        <p>Security policies written as code — firewall rules, IAM policies, security groups. Code reviewed, tested, version controlled. Same security rule applied consistently across all environments (dev/staging/prod). Security compliance verifiable programmatically.</p>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Terraform — security group as code:</span>
+resource "aws_security_group" "web" {
+  ingress { from_port=443 to_port=443 protocol="tcp"
+            cidr_blocks=["0.0.0.0/0"] }
+  ingress { from_port=80 to_port=80 protocol="tcp"
+            cidr_blocks=["0.0.0.0/0"] }
+  egress  { from_port=0 to_port=0 protocol="-1"
+            cidr_blocks=["0.0.0.0/0"] }
+  <span class="cm"># SSH port 22: NOT OPEN — good practice ✓</span>
+}
+        </div>
+      </div>
+    </div>
+
+    <h3>Key IaC Tools</h3>
+    <div class="tool-strip">
+      <div class="tool-box">
+        <div class="tool-name">Terraform</div>
+        <div class="tool-type">Infrastructure Provisioning · HCL</div>
+        <div class="tool-desc">Provision cloud infrastructure (AWS, Azure, GCP). Define VPCs, servers, security groups, IAM policies as code. State management — knows what exists. Plan before apply — preview changes.</div>
+      </div>
+      <div class="tool-box">
+        <div class="tool-name">Ansible</div>
+        <div class="tool-type">Configuration Management · Agentless</div>
+        <div class="tool-desc">Configure existing servers — SSH-based, no agent needed. Playbooks: define desired OS state. Idempotent — run repeatedly, same result. Patch deployment, security hardening, compliance enforcement.</div>
+      </div>
+      <div class="tool-box">
+        <div class="tool-name">Docker / Kubernetes</div>
+        <div class="tool-type">Container Orchestration</div>
+        <div class="tool-desc">Containers = immutable infrastructure. Dockerfile defines exact environment. Kubernetes manages at scale. Security: scan container images before deployment. No persistent state — replace not patch.</div>
+      </div>
+    </div>
+
+    <h3>Secure DevOps / DevSecOps Pipeline</h3>
+    <div class="flow" style="flex-direction:column;align-items:flex-start;gap:0.5rem">
+      <div style="display:flex;align-items:center;gap:0.5rem;width:100%">
+        <div class="flow-box" style="background:#dbeafe;border-color:#93c5fd;color:#1e40af;min-width:160px">Developer commits code</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:#dcfce7;border-color:#86efac;color:#166534">SAST — static scan</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:#f3e8ff;border-color:#d8b4fe;color:#6b21a8">Secrets scanner</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:#ffedd5;border-color:#fdba74;color:#9a3412">Build artifact</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.5rem;width:100%;margin-top:0.3rem">
+        <div class="flow-box" style="background:#ffedd5;border-color:#fdba74;color:#9a3412;min-width:160px">Container image built</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b">Image scan (Trivy)</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:#ccfbf1;border-color:#5eead4;color:#115e59">SCA — deps check</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:#ecfccb;border-color:#bef264;color:#3f6212">Push to registry</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.5rem;width:100%;margin-top:0.3rem">
+        <div class="flow-box" style="background:#ecfccb;border-color:#bef264;color:#3f6212;min-width:160px">Deploy via Terraform</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:#e0e7ff;border-color:#a5b4fc;color:#3730a3">DAST — live scan</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:#dcfce7;border-color:#86efac;color:#166534">Compliance check</div>
+        <span class="flow-arr">→</span>
+        <div class="flow-box" style="background:#dcfce7;border-color:#86efac;color:#166534">Production ✓</div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">IaC →</span><span>Infrastructure defined as code — version controlled, consistent, auditable</span></div>
+      <div class="er"><span class="ek">Immutable infrastructure →</span><span>Replace don't patch — compromised server deleted, clean one spun up</span></div>
+      <div class="er"><span class="ek">Config drift →</span><span>When actual state differs from desired state — IaC detects and corrects</span></div>
+      <div class="er"><span class="ek">Terraform →</span><span>Cloud infrastructure provisioning — security groups, VPCs, IAM as code</span></div>
+      <div class="er"><span class="ek">Ansible →</span><span>Configuration management — agentless — SSH-based — idempotent playbooks</span></div>
+      <div class="er"><span class="ek">DevSecOps →</span><span>Security built into CI/CD pipeline — SAST, secrets scan, image scan, DAST</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════ -->
+<!-- 6. API SECURITY     -->
+<!-- ════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">API Integration & Security</span><span class="bdg bdg-teal">APIs · REST · Authentication</span></div>
+  <div class="card-bd">
+    <p>Automation depends on APIs — Application Programming Interfaces — to connect tools and systems. <strong style="color:var(--text)">Securing the APIs used for automation is as important as the automation itself</strong>. An insecure API key is a direct path into your environment.</p>
+
+    <h3>How APIs Enable Automation</h3>
+    <div class="code">
+<span class="cm"># APIs = the connective tissue of automation</span>
+
+Without APIs:
+  Analyst: manually logs into Firewall GUI
+  Analyst: manually adds IP to block list
+  Analyst: manually logs into DNS console
+  Analyst: manually adds domain to block list
+  Time: 20 minutes, human required
+
+With APIs:
+  Script calls Firewall API:
+    PUT /api/blocklist {"ip": "185.220.101.34"}
+    Response: 200 OK → <span class="cg">IP blocked ✓ (0.2 seconds)</span>
+  
+  Script calls DNS API:
+    POST /api/sinkhole {"domain": "evil-c2.ru"}
+    Response: 200 OK → <span class="cg">domain sinkholed ✓ (0.3 seconds)</span>
+  
+  Time: <span class="cg">0.5 seconds, zero humans</span>
+
+<span class="cm"># Every security tool with an API can be automated</span>
+<span class="cm"># Firewall, SIEM, EDR, IAM, ticketing, threat intel...</span>
+    </div>
+
+    <h3>API Authentication Methods</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">API Keys</h4>
+        <p>Simple string passed in header. Most common for automation. Must be protected like passwords — not in code! Use environment variables or secrets vault. Rotate regularly. Scope keys to minimum required permissions.</p>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># WRONG — API key in code:</span>
+api_key = "sk-live-abc123xyz789"  <span class="cr">← NEVER DO THIS</span>
+
+<span class="cm"># RIGHT — from environment variable:</span>
+import os
+api_key = os.environ.get("VIRUSTOTAL_API_KEY")
+
+<span class="cm"># Or from secrets vault:</span>
+api_key = vault.get_secret("virustotal/api-key")
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">OAuth 2.0 Client Credentials</h4>
+        <p>Machine-to-machine authentication. Application has its own identity (client ID + secret). Exchanges credentials for short-lived access token. Token used for API calls. Best practice for service-to-service automation.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Mutual TLS (mTLS)</h4>
+        <p>Both client AND server present certificates. Strongest API authentication. Each automation service has unique certificate. Used for high-security environments. Zero Trust principle — both sides verify identity.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">JWT Tokens</h4>
+        <p>Short-lived signed tokens. Service authenticates → receives JWT → uses for API calls until expiry. Token contains: who, what permissions, when it expires. Stateless — server verifies signature without database lookup.</p>
+      </div>
+    </div>
+
+    <h3>API Security Best Practices for Automation</h3>
+    <div class="code">
+<span class="cm"># Securing APIs used in automation:</span>
+
+<span class="cb">1. Least privilege API permissions:</span>
+   Each automation service gets ONLY permissions it needs
+   Firewall automation: can only write to blocklist
+   Threat intel: read-only access
+   EDR: can isolate hosts, cannot delete agents
+   <span class="cg">Compromised service → limited blast radius</span>
+
+<span class="cb">2. Secrets management:</span>
+   NEVER hardcode credentials in scripts
+   Use: HashiCorp Vault, AWS Secrets Manager, Azure Key Vault
+   Rotate API keys on schedule
+   Detect keys in code: GitHub secret scanning, truffleHog
+
+<span class="cb">3. Rate limiting and throttling:</span>
+   API calls from automation can be high volume
+   Understand API rate limits: stay within bounds
+   Implement backoff: retry with increasing delays
+   Alert: rate limit exceeded = possible script bug or attack
+
+<span class="cb">4. Monitoring API access:</span>
+   Log all API calls made by automation
+   Alert on: calls at unusual times, from unusual IPs
+   API key used from new location → investigate
+   Failed API calls spike → script broken or attack
+
+<span class="cb">5. Certificate pinning for critical APIs:</span>
+   Automation connects to known, trusted API endpoint
+   Pin certificate — reject any other cert
+   Prevents MitM attack against automation itself
+    </div>
+
+    <h3>API Security Testing</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--red)">OWASP API Top 10</h4>
+        <p>APIs have specific vulnerabilities. Top risks: Broken Object Level Authorization (BOLA), Broken Authentication, Excessive Data Exposure, Rate Limiting issues. Security+ may reference API security as part of application security testing.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">API Scanning Tools</h4>
+        <p>OWASP ZAP — web API testing. Postman — API testing and documentation. Burp Suite — API proxy and testing. Nuclei templates for API vulnerabilities. API fuzz testing — send malformed requests.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">API Gateway Security</h4>
+        <p>Centralize API management. Authentication enforcement at gateway. Rate limiting at gateway. Request/response logging. WAF integration. AWS API Gateway, Kong, Apigee provide these controls centrally.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">API key security →</span><span>Never hardcode in scripts — use environment variables or secrets vault</span></div>
+      <div class="er"><span class="ek">Least privilege API →</span><span>Each automation service gets only permissions it needs</span></div>
+      <div class="er"><span class="ek">Secrets management →</span><span>HashiCorp Vault, AWS Secrets Manager — store and rotate credentials</span></div>
+      <div class="er"><span class="ek">mTLS →</span><span>Mutual TLS — both client and server authenticate — strongest API auth</span></div>
+      <div class="er"><span class="ek">API monitoring →</span><span>Log all API calls — alert on unusual patterns — detect compromised keys</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════ -->
+<!-- 7. CONSIDERATIONS   -->
+<!-- ════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Automation Considerations & Risks</span><span class="bdg bdg-red">Risks · Complexity · Governance</span></div>
+  <div class="card-bd">
+    <p>Automation is powerful but introduces its own risks. <strong style="color:var(--text)">Understanding what can go wrong</strong> is as important as understanding the benefits — the Security+ exam specifically tests on these considerations.</p>
+
+    <h3>Key Considerations — Must Know for Exam</h3>
+
+    <div class="risk-row">
+      <div class="risk-icon">⚡</div>
+      <div>
+        <div class="risk-title" style="color:var(--red)">Complexity — Automation Can Fail in Complex Ways</div>
+        <div class="risk-desc">Automated systems interact with many tools via APIs. A bug in one step can cascade failures across the entire pipeline. Complex orchestration workflows are harder to debug than simple manual processes. More integrations = more potential failure points. Requires skilled staff to build, maintain, and troubleshoot.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Automation complexity failure cascade:</span>
+Playbook step 3: query VirusTotal API
+VirusTotal: rate limit exceeded (429 error)
+Playbook: unhandled error → crashes at step 3
+Steps 4-12: NEVER EXECUTED
+
+Result: email blocked ✓ but:
+  Endpoint: NOT isolated ← missed step
+  AD account: NOT locked ← missed step
+  Ticket: NOT created ← missed step
+  Team: NOT notified ← missed step
+<span class="cr">Partial automation = false sense of security</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="risk-row">
+      <div class="risk-icon">🔒</div>
+      <div>
+        <div class="risk-title" style="color:var(--red)">Single Point of Failure</div>
+        <div class="risk-desc">SOAR platform goes down → entire automated response stops. If all security relies on automation and automation fails: blind to attacks, unable to respond, no fallback. Manual procedures must be documented and practiced even when automation exists. "What do we do if SOAR is offline?"</div>
+      </div>
+    </div>
+
+    <div class="risk-row">
+      <div class="risk-icon">⚠️</div>
+      <div>
+        <div class="risk-title" style="color:var(--orange)">False Positive Risk — Automated Blocking</div>
+        <div class="risk-desc">Automation that auto-blocks based on alerts can block legitimate traffic. A false positive that triggers an automated response could take down a business-critical service. Production database accidentally isolated — company cannot process orders. Auto-block rules must be carefully scoped and tested. Start in alert-only mode before enabling automated blocking.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Real risk: automation blocking legitimate infrastructure</span>
+Scenario: IPS signature matches AWS health check traffic
+Automation: auto-blocks AWS health check IPs
+Result: AWS load balancer removes ALL healthy instances
+Impact: <span class="cr">complete service outage — caused by automation</span>
+
+Prevention:
+  Whitelist known-good IPs from blocking rules
+  Test thoroughly before enabling auto-block
+  Start with alert-only → monitor → then block
+  Human approval for blocking production systems
+        </div>
+      </div>
+    </div>
+
+    <div class="risk-row">
+      <div class="risk-icon">🔧</div>
+      <div>
+        <div class="risk-title" style="color:var(--orange)">Maintenance Overhead</div>
+        <div class="risk-desc">Automation is not "set and forget." API versions change → scripts break. New tool versions → integrations fail. Business process changes → playbooks outdated. Security landscape changes → automation logic needs updating. Estimate: 20% of development time ongoing for maintenance. Neglected automation is worse than no automation — it creates a false sense of security.</div>
+      </div>
+    </div>
+
+    <div class="risk-row">
+      <div class="risk-icon">🧪</div>
+      <div>
+        <div class="risk-title" style="color:var(--yellow)">Testing Requirements</div>
+        <div class="risk-desc">Automation must be thoroughly tested before production use. Untested playbook activated in real incident — might make things worse. Test environments required. Regular drills to confirm automation still works. Tabletop exercises should include automation testing. "Did the isolation playbook actually isolate the host?"</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Automation testing framework:</span>
+Unit tests: each automation step tested in isolation
+Integration tests: full playbook tested in test environment
+Regression tests: run after any change to confirm nothing broke
+Chaos testing: deliberately fail components — verify resilience
+Red team drills: simulate real attacks — verify automation responds
+Scheduled dry-runs: monthly test of playbooks with mock data
+        </div>
+      </div>
+    </div>
+
+    <div class="risk-row">
+      <div class="risk-icon">🛡️</div>
+      <div>
+        <div class="risk-title" style="color:var(--purple)">Security of the Automation Itself</div>
+        <div class="risk-desc">Automation systems are high-value targets. SOAR with access to all security tools — compromise = attacker controls your defenses. Automation credentials can pivot to any connected system. Must apply strong security TO the automation: MFA on admin consoles, encrypted secrets, least privilege API permissions, audit logs, network isolation for automation servers.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Attacker compromises SOAR platform:</span>
+SOAR has API access to:
+  Firewall: can add/remove rules → <span class="cr">open all ports</span>
+  EDR: can disable agents → <span class="cr">blind all endpoints</span>
+  AD: can create admin accounts → <span class="cr">new backdoor admin</span>
+  SIEM: can delete logs → <span class="cr">cover tracks</span>
+
+<span class="co">Securing the automation:</span>
+  SOAR admin: requires hardware MFA
+  API credentials: in vault, scoped to minimum
+  SOAR network: isolated segment, no direct internet
+  Changes to automation: require pull request + approval
+  SOAR audit logs: cannot be deleted (WORM)
+        </div>
+      </div>
+    </div>
+
+    <div class="risk-row">
+      <div class="risk-icon">📋</div>
+      <div>
+        <div class="risk-title" style="color:var(--blue)">Governance and Oversight</div>
+        <div class="risk-desc">Who can create new playbooks? What testing is required before production? Who approves automated actions with high impact? Audit trail of what automation did — when, why, triggered by what? Regular review of automation effectiveness. Change management applies to automation code. Documentation requirements for all automation.</div>
+      </div>
+    </div>
+
+    <div class="risk-row">
+      <div class="risk-icon">⚖️</div>
+      <div>
+        <div class="risk-title" style="color:var(--teal)">Legal and Regulatory Considerations</div>
+        <div class="risk-desc">Automated actions that affect systems must comply with regulations. GDPR: automated processing of personal data requires legal basis. Some industries: automated blocking requires documentation. Evidence preservation: automation must maintain forensic integrity. Automated response should not destroy evidence needed for prosecution.</div>
+      </div>
+    </div>
+
+    <h3>When NOT to Automate</h3>
+    <div class="code">
+<span class="cm"># Some decisions require human judgment — don't automate these:</span>
+
+<span class="cr">Do NOT automate:</span>
+  Final decision to fire/discipline an employee (HR+Legal)
+  Decision to notify regulators of breach (Legal review required)
+  Decision to pay ransom (management + legal + insurance)
+  Permanent deletion of data (irreversible — human review)
+  Blocking of business-critical systems (too high impact)
+  Public communication about incidents (PR + Legal review)
+  Criminal referrals to law enforcement
+
+<span class="cg">Automate initial steps, escalate to humans for final decisions:</span>
+  Initial containment: automated ← fast and consistent
+  Full investigation: human ← complex judgment required
+  Remediation plan: human approved, automated execution
+  Stakeholder notification: human drafted, automated sent
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Complexity risk →</span><span>Automation failures can cascade — one error skips critical steps</span></div>
+      <div class="er"><span class="ek">False positive risk →</span><span>Auto-blocking false positives can take down production services</span></div>
+      <div class="er"><span class="ek">Single point of failure →</span><span>SOAR down = no automated response — manual procedures still required</span></div>
+      <div class="er"><span class="ek">Secure the automation →</span><span>SOAR itself is high-value target — apply same security to automation tools</span></div>
+      <div class="er"><span class="ek">Testing requirement →</span><span>Automation must be thoroughly tested — untested playbook can make things worse</span></div>
+      <div class="er"><span class="ek">Human judgment →</span><span>Automate initial response — humans make high-impact final decisions</span></div>
+      <div class="er"><span class="ek">Maintenance →</span><span>Automation needs ongoing upkeep — APIs change, processes change, alerts change</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════ -->
+<!-- 8. TOOLS            -->
+<!-- ════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Automation Tools Reference</span><span class="bdg bdg-orange">Tools · Platforms · Integration</span></div>
+  <div class="card-bd">
+    <p>Security automation spans multiple tool categories. <strong style="color:var(--text)">Knowing which tool does what</strong> is critical for both the exam and real-world security operations.</p>
+
+    <h3>Complete Tool Reference</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Tool / Platform</th><th>Category</th><th>Primary Use</th><th>Key Feature</th></tr>
+      <tr><td><strong>Splunk SOAR (Phantom)</strong></td><td><span class="tag tp">SOAR</span></td><td>Incident response automation</td><td>350+ app integrations, visual playbook builder</td></tr>
+      <tr><td><strong>Microsoft Sentinel</strong></td><td><span class="tag ti">SIEM + SOAR</span></td><td>Cloud-native detection + response</td><td>Logic Apps automation, Azure native</td></tr>
+      <tr><td><strong>Palo Alto XSOAR</strong></td><td><span class="tag tp">SOAR</span></td><td>Enterprise IR automation</td><td>MSSP-friendly, collaborative investigation</td></tr>
+      <tr><td><strong>Ansible</strong></td><td><span class="tag tl">Config Mgmt</span></td><td>Server configuration, patching</td><td>Agentless, SSH-based, idempotent playbooks</td></tr>
+      <tr><td><strong>Terraform</strong></td><td><span class="tag tl">IaC</span></td><td>Cloud infrastructure provisioning</td><td>Multi-cloud, state management, plan preview</td></tr>
+      <tr><td><strong>Jenkins / GitHub Actions</strong></td><td><span class="tag tg">CI/CD</span></td><td>Automated build and deploy pipelines</td><td>Security gates in deployment pipeline</td></tr>
+      <tr><td><strong>Python</strong></td><td><span class="tag tb">Scripting</span></td><td>Custom security tools and scripts</td><td>Rich security library ecosystem</td></tr>
+      <tr><td><strong>PowerShell</strong></td><td><span class="tag tb">Scripting</span></td><td>Windows administration automation</td><td>AD, registry, event log, remote execution</td></tr>
+      <tr><td><strong>HashiCorp Vault</strong></td><td><span class="tag to">Secrets</span></td><td>Secrets and credentials management</td><td>Dynamic secrets, auto-rotation, audit logs</td></tr>
+      <tr><td><strong>AWS Lambda / Azure Functions</strong></td><td><span class="tag ts">Serverless</span></td><td>Event-driven automation</td><td>No server management, scales automatically</td></tr>
+      <tr><td><strong>OpenCTI / MISP</strong></td><td><span class="tag tr">Threat Intel</span></td><td>Threat intelligence platform</td><td>IOC management, sharing, enrichment</td></tr>
+      <tr><td><strong>TheHive / Cortex</strong></td><td><span class="tag tp">IR Platform</span></td><td>Case management + automation</td><td>Automated analyzers, open source</td></tr>
+    </table>
+    </div>
+
+    <h3>Integration Architecture — How It All Connects</h3>
+    <div class="code">
+<span class="cm"># Modern security automation ecosystem:</span>
+
+                    [SIEM] ──── alerts ────→ [SOAR]
+                      ↑                        │
+              logs ───┤         ┌──────────────┤
+                      │         ↓              ↓
+[Firewall] ──────────→         [EDR]        [IAM/AD]
+[IDS/IPS] ──────────→    ←──── APIs ────→  [DNS Filter]
+[Email GW] ──────────→         │            [Ticketing]
+[DNS Filter] ────────→   ↑─────┘            [Messaging]
+[EDR] ───────────────→         ↑
+[Cloud] ─────────────→    [Threat Intel]
+                               │
+                          (enriches all)
+
+SOAR: receives alert from SIEM
+SOAR: calls EDR API → isolate endpoint
+SOAR: calls Firewall API → block IP
+SOAR: calls IAM API → lock account
+SOAR: calls Ticketing API → create ticket
+SOAR: calls Slack API → notify team
+All coordinated by SOAR → complete response in seconds
+    </div>
+
+    <h3>Security Automation Maturity Model</h3>
+    <div class="g4">
+      <div class="gc" style="border-color:#fca5a5">
+        <h4 style="color:var(--red)">Level 1 — Manual</h4>
+        <p style="font-size:0.72rem">All security tasks done manually. No scripts. No automation. High human effort. Inconsistent. Slow. Most organizations start here.</p>
+      </div>
+      <div class="gc" style="border-color:#fdba74">
+        <h4 style="color:var(--orange)">Level 2 — Scripts</h4>
+        <p style="font-size:0.72rem">Individual tasks automated with scripts. Cron jobs. PowerShell/Python. Still ad-hoc. No centralized orchestration. Significant improvement.</p>
+      </div>
+      <div class="gc" style="border-color:#86efac">
+        <h4 style="color:var(--green)">Level 3 — Orchestration</h4>
+        <p style="font-size:0.72rem">SOAR platform connecting tools. Playbooks for common scenarios. Consistent response. Metrics tracked. Most mature enterprises here.</p>
+      </div>
+      <div class="gc" style="border-color:#a5b4fc">
+        <h4 style="color:var(--indigo)">Level 4 — Autonomous</h4>
+        <p style="font-size:0.72rem">ML-driven decisions. Self-tuning. Predictive response. Minimal human intervention. Few organizations achieve this. Future state.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Building Security Automation from Scratch</div>
+      <div class="code">
+<span class="cm"># Small company — 200 employees — starting automation journey:</span>
+
+<span class="cb">Phase 1 (Month 1-2) — Quick wins with scripts:</span>
+  Script 1: Stale account hunter (PowerShell)
+    → Finds 47 orphaned accounts → disables them
+    → Saves: 2 hours/week of manual audit time
+  
+  Script 2: Daily patch compliance report (Python)
+    → Queries WSUS, generates HTML report, emails IT
+    → Saves: 3 hours/week of manual checking
+
+  Script 3: Certificate expiry checker (Bash)
+    → Scans all web services, alerts 30 days before expiry
+    → Prevents: outages from expired certs
+
+<span class="cb">Phase 2 (Month 3-4) — Add SOAR (Microsoft Sentinel):</span>
+  Playbook 1: Phishing response (from reported emails)
+  Playbook 2: Failed login threshold → account lock
+  Playbook 3: Malware detection → endpoint isolation
+  Investment: ~$2,000/month → saves 40+ analyst hours
+
+<span class="cb">Phase 3 (Month 5-6) — IaC and CI/CD:</span>
+  All new servers: Ansible playbook deployed
+  Cloud: Terraform manages security groups
+  CI/CD: SAST + dependency check in every pipeline
+  Result: <span class="cg">no more manual server hardening misses</span>
+
+<span class="cg">After 6 months: 60% reduction in manual security tasks</span>
+<span class="cg">MTTD reduced: 207 days → 4 hours</span>
+<span class="cg">MTTR reduced: 4 hours → 15 minutes</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Splunk SOAR →</span><span>Most deployed SOAR — formerly Phantom — visual playbooks</span></div>
+      <div class="er"><span class="ek">Ansible →</span><span>Agentless config management — idempotent — security hardening at scale</span></div>
+      <div class="er"><span class="ek">Terraform →</span><span>Cloud infrastructure as code — security groups and IAM as code</span></div>
+      <div class="er"><span class="ek">HashiCorp Vault →</span><span>Secrets management — API keys, passwords, certificates — auto-rotation</span></div>
+      <div class="er"><span class="ek">CI/CD security →</span><span>SAST + secrets scan + image scan + DAST — security gates in pipeline</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════ -->
+<!-- 9. SUMMARY          -->
+<!-- ════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-indigo">All Topics</span></div>
+  <div class="card-bd">
+
+    <h3>Core Concepts Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Concept</th><th>What It Is</th><th>Key Benefit</th><th>Exam Keyword</th></tr>
+      <tr><td><span class="tag ti">Automation</span></td><td>Single task without human</td><td>Speed + consistency</td><td>Repetitive, well-defined process</td></tr>
+      <tr><td><span class="tag tp">Orchestration</span></td><td>Coordinate multiple automated tasks</td><td>Complex multi-step workflows</td><td>SOAR = security orchestration platform</td></tr>
+      <tr><td><span class="tag tp">SOAR</span></td><td>Security automation + IR platform</td><td>Seconds vs minutes response</td><td>Playbooks — Splunk SOAR, Sentinel, XSOAR</td></tr>
+      <tr><td><span class="tag tl">IaC</span></td><td>Infrastructure defined in code</td><td>Consistent, auditable, version controlled</td><td>Terraform + Ansible + immutable</td></tr>
+      <tr><td><span class="tag tg">Scripting</span></td><td>Custom automation code</td><td>Repeatability + efficiency + integration</td><td>Python, PowerShell, Bash</td></tr>
+      <tr><td><span class="tag tb">API</span></td><td>Tool integration interface</td><td>Enables all automation</td><td>Secure keys — vault, not code</td></tr>
+      <tr><td><span class="tag tl">DevSecOps</span></td><td>Security in CI/CD pipeline</td><td>Find bugs before production</td><td>SAST + secrets scan + image scan + DAST</td></tr>
+      <tr><td><span class="tag to">Config Drift</span></td><td>State differs from desired config</td><td>IaC detects and corrects</td><td>Ansible enforces desired state</td></tr>
+      <tr><td><span class="tag tg">Immutable Infra</span></td><td>Replace don't patch</td><td>Compromised → delete, rebuild clean</td><td>Terraform destroy + apply</td></tr>
+      <tr><td><span class="tag tp">Playbook</span></td><td>Automated IR workflow</td><td>Consistent, documented response</td><td>Phishing/malware/ransomware playbooks</td></tr>
+    </table>
+    </div>
+
+    <h3>Benefits vs Considerations — Quick Reference</h3>
+    <div class="cmp" style="margin-bottom:1.5rem">
+      <div class="cmp-col" style="background:var(--s2)">
+        <div class="cmp-head" style="color:var(--green)">Benefits of Automation</div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Speed — seconds vs hours response time</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Consistency — same process every time, no variation</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Scale — handle thousands of alerts simultaneously</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Availability — 24/7 response, no shift gaps</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Audit trail — every action logged automatically</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Human focus — analysts do complex work</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Repeatability — same check, same result, always</span></div>
+      </div>
+      <div class="cmp-col" style="background:var(--s2)">
+        <div class="cmp-head" style="color:var(--red)">Risks and Considerations</div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Complexity — cascade failures, harder to debug</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>False positive risk — auto-block breaks prod systems</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Single point of failure — SOAR down = no automation</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Security of automation — SOAR itself is a target</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Maintenance — APIs change, playbooks become stale</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Testing required — untested playbooks cause damage</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Human judgment — some decisions cannot be automated</span></div>
+      </div>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Single task performed without human involvement"</span><span>→ Automation</span></div>
+      <div class="er"><span class="ek">"Coordinating multiple automated tasks across multiple tools"</span><span>→ Orchestration</span></div>
+      <div class="er"><span class="ek">"Security platform that automates incident response workflows"</span><span>→ SOAR (Security Orchestration, Automation, and Response)</span></div>
+      <div class="er"><span class="ek">"Automated workflow for responding to a phishing alert"</span><span>→ SOAR Playbook</span></div>
+      <div class="er"><span class="ek">"Most widely deployed SOAR platform"</span><span>→ Splunk SOAR (formerly Phantom)</span></div>
+      <div class="er"><span class="ek">"Phishing response reduced from 33 minutes to 7 seconds"</span><span>→ SOAR playbook automation</span></div>
+      <div class="er"><span class="ek">"Infrastructure defined in code files — version controlled"</span><span>→ Infrastructure as Code (IaC)</span></div>
+      <div class="er"><span class="ek">"Cloud infrastructure provisioned consistently from code"</span><span>→ Terraform</span></div>
+      <div class="er"><span class="ek">"Agentless server configuration management — SSH-based"</span><span>→ Ansible</span></div>
+      <div class="er"><span class="ek">"Compromised server — delete it, provision clean one"</span><span>→ Immutable infrastructure — IaC</span></div>
+      <div class="er"><span class="ek">"Actual server config differs from intended config"</span><span>→ Configuration drift — detected and corrected by IaC tools</span></div>
+      <div class="er"><span class="ek">"Most popular scripting language for security tools"</span><span>→ Python — rich security library ecosystem</span></div>
+      <div class="er"><span class="ek">"Windows administration automation — AD, event logs"</span><span>→ PowerShell</span></div>
+      <div class="er"><span class="ek">"Linux automation — cron jobs, log analysis, pipe commands"</span><span>→ Bash shell scripting</span></div>
+      <div class="er"><span class="ek">"API keys hardcoded in script — what's the risk?"</span><span>→ Credential exposure — use environment variables or secrets vault instead</span></div>
+      <div class="er"><span class="ek">"Store and auto-rotate API keys and passwords"</span><span>→ HashiCorp Vault / AWS Secrets Manager</span></div>
+      <div class="er"><span class="ek">"Security scanning built into the deployment pipeline"</span><span>→ DevSecOps — CI/CD with SAST, secrets scan, image scan, DAST</span></div>
+      <div class="er"><span class="ek">"Automation blocks production service due to false positive"</span><span>→ False positive risk of automated blocking — start in alert-only mode</span></div>
+      <div class="er"><span class="ek">"SOAR platform goes offline — what happens to security?"</span><span>→ Single point of failure — manual procedures must still exist</span></div>
+      <div class="er"><span class="ek">"Automated system doing same harmful thing 10,000 times"</span><span>→ Complexity/cascade risk — automation amplifies both good and bad actions</span></div>
+      <div class="er"><span class="ek">"Which decisions should NOT be automated?"</span><span>→ High-impact irreversible decisions — regulatory notifications, ransom payment, evidence deletion</span></div>
+      <div class="er"><span class="ek">"How to prevent automation from becoming a security risk itself"</span><span>→ Secure the automation: MFA on SOAR, least privilege API keys, audit logs, isolated network</span></div>
+      <div class="er"><span class="ek">"Automatically create accounts when HR adds employee"</span><span>→ Provisioning automation — SCIM protocol</span></div>
+      <div class="er"><span class="ek">"Certificate auto-renewed before it expires"</span><span>→ ACME protocol (Let's Encrypt) — automated certificate management</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classL

@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computing Resources Security — Security+ Domain 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #f8f9fc;
+  --s1: #ffffff;
+  --s2: #f0f2f8;
+  --s3: #e8ebf5;
+  --border: #dde1f0;
+  --text: #1a1d2e;
+  --muted: #6b7194;
+  --blue: #2563eb;
+  --green: #16a34a;
+  --red: #dc2626;
+  --orange: #d97706;
+  --purple: #7c3aed;
+  --teal: #0d9488;
+  --pink: #db2777;
+  --indigo: #4338ca;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  padding: 2rem 1.5rem;
+}
+
+.title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.2rem;
+}
+
+.domain-tag {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--muted);
+  background: var(--s2);
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  margin: 0 auto 2rem;
+  display: block;
+  width: fit-content;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.tab {
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--s1);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.tab:hover { border-color: var(--indigo); color: var(--indigo); }
+.tab.active { background: var(--indigo); color: #fff; border-color: var(--indigo); }
+
+/* SECTIONS */
+.sec { display: none; }
+.sec.on { display: block; animation: rise 0.2s ease; }
+@keyframes rise { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+/* CARD */
+.card {
+  background: var(--s1);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.card-hd {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--muted);
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+}
+
+.card-title { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+
+.bdg {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.bdg-blue { background:#dbeafe; color:#1d4ed8; border:1px solid #bfdbfe; }
+.bdg-green { background:#dcfce7; color:#15803d; border:1px solid #bbf7d0; }
+.bdg-orange { background:#ffedd5; color:#c2410c; border:1px solid #fed7aa; }
+.bdg-red { background:#fee2e2; color:#b91c1c; border:1px solid #fecaca; }
+.bdg-purple { background:#f3e8ff; color:#6d28d9; border:1px solid #e9d5ff; }
+.bdg-teal { background:#ccfbf1; color:#0f766e; border:1px solid #99f6e4; }
+.bdg-pink { background:#fce7f3; color:#be185d; border:1px solid #fbcfe8; }
+.bdg-indigo { background:#e0e7ff; color:#3730a3; border:1px solid #c7d2fe; }
+
+.card-bd { padding: 1.4rem; }
+
+p { color: var(--muted); font-size: 0.86rem; margin-bottom: 0.8rem; }
+h3 { font-size: 0.92rem; font-weight: 600; color: var(--text); margin: 1.2rem 0 0.6rem; border-left: 3px solid var(--indigo); padding-left: 0.6rem; }
+
+/* CODE */
+.code {
+  background: #1a1d2e;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  line-height: 1.85;
+  color: #e8ebf5;
+  overflow-x: auto;
+  margin: 0.8rem 0;
+}
+.cg { color: #86efac; }
+.cr { color: #fca5a5; }
+.cb { color: #93c5fd; }
+.co { color: #fcd34d; }
+.cp { color: #c4b5fd; }
+.cm { color: #6b7194; }
+.ct { color: #5eead4; }
+.ci { color: #a5b4fc; }
+.cpk { color: #f9a8d4; }
+
+/* SCENARIO */
+.scene {
+  background: #fffbeb;
+  border-left: 3px solid var(--orange);
+  border-radius: 0 8px 8px 0;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.scene-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--orange);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+/* GRIDS */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin:0.8rem 0; }
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:0.8rem; margin:0.8rem 0; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:0.7rem; margin:0.8rem 0; }
+@media(max-width:640px) { .g2,.g3,.g4 { grid-template-columns:1fr; } }
+
+.gc {
+  background: var(--s2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.gc h4 { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.4rem; }
+.gc p { font-size: 0.77rem; margin:0; }
+.gc ul { padding-left: 1rem; margin-top: 0.3rem; }
+.gc ul li { font-size: 0.77rem; color: var(--muted); margin-bottom: 0.2rem; }
+
+/* EXAM */
+.exam {
+  background: #f5f3ff;
+  border: 1.5px solid #ddd6fe;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin-top: 1rem;
+}
+.exam h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--purple);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+.er { display:flex; gap:0.5rem; margin-bottom:0.4rem; font-size:0.79rem; align-items:flex-start; }
+.ek { color:var(--purple); font-family:'JetBrains Mono',monospace; font-size:0.68rem; flex-shrink:0; font-weight:600; }
+
+/* TABLE */
+table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+th { background:var(--s2); padding:0.55rem 0.8rem; text-align:left; color:var(--muted); border-bottom:1.5px solid var(--border); font-size:0.72rem; font-weight:600; }
+td { padding:0.55rem 0.8rem; border-bottom:1px solid var(--border); }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:var(--s2); }
+
+.tag { display:inline-block; padding:0.1rem 0.45rem; border-radius:4px; font-size:0.64rem; font-family:'JetBrains Mono',monospace; font-weight:500; }
+.tg { background:#dcfce7; color:#15803d; }
+.tr { background:#fee2e2; color:#b91c1c; }
+.tb { background:#dbeafe; color:#1d4ed8; }
+.to { background:#ffedd5; color:#c2410c; }
+.tp { background:#f3e8ff; color:#6d28d9; }
+.tt { background:#ccfbf1; color:#0f766e; }
+.ti { background:#e0e7ff; color:#3730a3; }
+
+/* BASELINE ITEMS */
+.baseline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--s2);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border);
+}
+.bl-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.bl-title { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.1rem; }
+.bl-desc { font-size: 0.75rem; color: var(--muted); }
+
+/* WIFI PROTOCOLS */
+.wifi-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.4rem;
+  border: 1px solid;
+}
+
+/* MOBILE CONTROLS */
+.mdm-flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.mdm-box {
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1.5px solid;
+  text-align: center;
+}
+.mdm-arrow { color: var(--muted); font-size: 1rem; }
+
+/* APP SEC LAYERS */
+.app-layer {
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  margin-bottom: 0.4rem;
+  border-left: 4px solid;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* MONITORING TIMELINE */
+.mon-item {
+  display: flex;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.mon-item:last-child { border-bottom: none; }
+.mon-icon { font-size: 1.2rem; flex-shrink:0; }
+.mon-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.2rem; }
+.mon-desc { font-size: 0.77rem; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<div class="title">Computing Resources Security</div>
+<div class="domain-tag">Domain 4 — Security Operations · SY0-701</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Secure Baselines</button>
+  <button class="tab" onclick="go('s2',this)">2. Mobile Solutions</button>
+  <button class="tab" onclick="go('s3',this)">3. Hardening</button>
+  <button class="tab" onclick="go('s4',this)">4. Wireless Security</button>
+  <button class="tab" onclick="go('s5',this)">5. Application Security</button>
+  <button class="tab" onclick="go('s6',this)">6. Sandboxing</button>
+  <button class="tab" onclick="go('s7',this)">7. Monitoring</button>
+  <button class="tab" onclick="go('s8',this)">📊 Summary</button>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- 1. SECURE BASELINES               -->
+<!-- ═══════════════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">01</span>
+    <span class="card-title">Secure Baselines</span>
+    <span class="bdg bdg-indigo">Configuration Standard</span>
+  </div>
+  <div class="card-bd">
+    <p>A <strong style="color:var(--text)">secure baseline</strong> is a documented minimum-security configuration that every system of a given type must meet. Instead of configuring each system differently, every Windows laptop, every Linux server, every network switch gets the same hardened starting point.</p>
+
+    <h3>What Is a Baseline?</h3>
+    <div class="code">
+<span class="cm"># Without baseline:</span>
+Laptop 1:  Admin configured it → password policy: 8 chars
+Laptop 2:  Different admin → password policy: 6 chars
+Laptop 3:  No policy set → default Windows settings
+Server 1:  Telnet enabled (forgot to disable)
+Server 2:  Guest account active, default password
+Result: <span class="cr">inconsistent security across entire org ✗</span>
+
+<span class="cm"># With secure baseline:</span>
+ALL laptops deployed from SAME golden image:
+  → Password: 12+ chars, complexity required
+  → Telnet: disabled
+  → Guest account: disabled
+  → Windows Defender: enabled + configured
+  → Firewall: enabled, default-deny inbound
+  → BitLocker: enabled on all drives
+  → USB: controlled by policy
+Result: <span class="cg">every device starts with identical security posture ✓</span>
+    </div>
+
+    <h3>Baseline Sources — Industry Standards</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--indigo)">CIS Benchmarks</h4>
+        <p>Center for Internet Security — most widely used free baseline standards. Covers Windows, Linux, macOS, browsers, cloud services, network devices. Two levels:</p>
+        <ul>
+          <li>Level 1 = basic, minimal performance impact</li>
+          <li>Level 2 = comprehensive, may affect usability</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">NIST SP 800-70</h4>
+        <p>National Checklist Program — US government baseline configurations. SCAP (Security Content Automation Protocol) checklists for automated compliance checking. Required for US federal agencies.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">DISA STIGs</h4>
+        <p>Defense Information Systems Agency — Security Technical Implementation Guides. Very strict — military/government grade. Covers OS, apps, network devices. Most detailed available.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Vendor Guides</h4>
+        <p>Microsoft Security Baselines, AWS Security Hub, Azure Security Benchmark. Vendor-specific recommendations for their own products. Regularly updated as threats evolve.</p>
+      </div>
+    </div>
+
+    <h3>What a Baseline Covers</h3>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#dbeafe">🔒</div>
+      <div><div class="bl-title">Account Policies</div><div class="bl-desc">Password length, complexity, history, lockout threshold (5 attempts), lockout duration, MFA requirement, disable guest and default accounts</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#dcfce7">🛡️</div>
+      <div><div class="bl-title">Network Settings</div><div class="bl-desc">Disable unused ports/protocols, enable host firewall, disable Telnet/FTP, require SSH/HTTPS only, disable UPnP, configure NTP time sync</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#f3e8ff">📋</div>
+      <div><div class="bl-title">Audit and Logging</div><div class="bl-desc">Enable security event logging, logon/logoff events, privilege use, object access, policy changes. Log retention minimum 90 days.</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#ffedd5">⚙️</div>
+      <div><div class="bl-title">Software Settings</div><div class="bl-desc">Auto-update enabled, remove unnecessary software, disable autorun, configure browser security, enable antivirus real-time protection</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#ccfbf1">🔐</div>
+      <div><div class="bl-title">Encryption Settings</div><div class="bl-desc">BitLocker/FileVault required, TLS 1.2+ only, disable SSL/TLS 1.0/1.1, require encrypted protocols (SSH over Telnet, HTTPS over HTTP)</div></div>
+    </div>
+
+    <h3>Baseline Enforcement Methods</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--indigo)">Group Policy (GPO)</h4>
+        <p>Windows environments — push baseline settings to all domain machines from Active Directory. Enforced at login. User can't override GPO settings.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">MDM / EMM</h4>
+        <p>Mobile Device Management for phones and tablets. MDM enforces baseline: screen lock, encryption, approved apps only, remote wipe capability.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Configuration Management</h4>
+        <p>Ansible, Puppet, Chef, Salt — automate baseline enforcement on servers. Any drift from baseline automatically corrected. Infrastructure as Code.</p>
+      </div>
+    </div>
+
+    <h3>Configuration Drift</h3>
+    <div class="code">
+<span class="cm"># Configuration drift = systems slowly deviate from baseline</span>
+
+Day 1:   Server deployed from golden image <span class="cg">✓</span>
+Week 2:  Admin opens port 8080 for quick test — forgets to close
+Month 3: Developer installs Python 2.7 "temporarily"
+Month 6: Another admin enables Telnet "just for this one thing"
+Month 12: Audit shows 47 deviations from baseline <span class="cr">✗</span>
+
+<span class="cm"># Continuous compliance monitoring detects drift:</span>
+Tool scans all servers daily against baseline
+Server-42 alert: <span class="co">port 8080 open — not in baseline</span>
+Server-17 alert: <span class="co">Telnet enabled — not in baseline</span>
+Auto-remediation: <span class="cg">closes port, disables Telnet, alerts admin ✓</span>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Healthcare System Baseline Enforcement</div>
+      <p style="margin:0;color:var(--text);font-size:0.83rem">A hospital's 500 Windows workstations are all deployed from the same CIS Level 1 hardened image via GPO. When a new vulnerability requires disabling SMBv1, IT pushes ONE GPO change and within an hour all 500 workstations are updated — no manual visits required.</p>
+      <div class="code">
+<span class="cm"># WannaCry vulnerability — SMBv1 must be disabled across all 500 PCs</span>
+
+<span class="cr">Without baseline/GPO:</span>
+IT team visits each of 500 workstations
+Manual registry edit on each one
+Time: 500 × 10 minutes = 83 hours
+Risk: some missed, some done incorrectly
+
+<span class="cg">With GPO baseline enforcement:</span>
+Admin creates GPO: "Disable-SMBv1"
+Admin links GPO to All-Workstations OU
+Next login on each workstation: auto-applied
+Time: <span class="cg">2 hours (GPO creation + propagation)</span>
+Coverage: <span class="cg">100% of domain machines ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Secure baseline →</span><span>Documented minimum security config every system must meet</span></div>
+      <div class="er"><span class="ek">CIS Benchmarks →</span><span>Most widely used free baseline standard — Level 1 and Level 2</span></div>
+      <div class="er"><span class="ek">STIG →</span><span>DISA military/government grade baselines — most strict</span></div>
+      <div class="er"><span class="ek">GPO →</span><span>Group Policy Object — enforce baseline on Windows domain machines</span></div>
+      <div class="er"><span class="ek">Config drift →</span><span>Systems slowly deviate from baseline — continuous monitoring catches this</span></div>
+      <div class="er"><span class="ek">Golden image →</span><span>Pre-configured hardened OS image — all new systems deployed from this</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- 2. MOBILE SOLUTIONS               -->
+<!-- ═══════════════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">02</span>
+    <span class="card-title">Mobile Solutions</span>
+    <span class="bdg bdg-pink">MDM · MAM · BYOD</span>
+  </div>
+  <div class="card-bd">
+    <p>Mobile devices leave the controlled corporate environment, connect to unknown networks, and users have significant control over them. Organizations need policies and tools to <strong style="color:var(--text)">manage and secure mobile devices</strong> without invading user privacy.</p>
+
+    <h3>Deployment Models — Who Owns the Device?</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#bfdbfe">
+        <h4 style="color:var(--blue)">BYOD — Bring Your Own Device</h4>
+        <p>Employee owns the device. Uses personal phone/laptop for work. Most flexible for employees, most challenging for IT security.</p>
+        <ul>
+          <li>Challenge: personal and work data mixed</li>
+          <li>Solution: containerization — work apps in encrypted container</li>
+          <li>Legal: careful about MDM on personal device</li>
+          <li>Policy: acceptable use agreement required</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#bbf7d0">
+        <h4 style="color:var(--green)">COPE — Corporate-Owned, Personally Enabled</h4>
+        <p>Company owns the device. Employee can use for personal activities within policy. Most common enterprise approach.</p>
+        <ul>
+          <li>Company controls the hardware</li>
+          <li>Can fully manage with MDM</li>
+          <li>Employee gets some personal use</li>
+          <li>Remote wipe: destroys ALL data including personal</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#e9d5ff">
+        <h4 style="color:var(--purple)">CYOD — Choose Your Own Device</h4>
+        <p>Employee picks from approved list of devices. Company buys it. Balance between user preference and IT standardization.</p>
+        <ul>
+          <li>Limited approved device list</li>
+          <li>IT knows exactly what hardware to support</li>
+          <li>User has some choice</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#fed7aa">
+        <h4 style="color:var(--orange)">COBO — Corporate-Owned, Business Only</h4>
+        <p>Company owns device, ONLY business use allowed. No personal apps, no personal use. Strictest policy — used for highly sensitive roles.</p>
+        <ul>
+          <li>Complete corporate control</li>
+          <li>No personal use whatsoever</li>
+          <li>Common in financial, legal, government</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>MDM vs MAM vs MEM</h3>
+    <div class="code">
+<span class="cb">MDM — Mobile Device Management:</span>
+Controls the ENTIRE DEVICE
+Can: enforce PIN, encryption, wipe whole device
+Can: control installed apps, camera, GPS
+Can: push certificates and Wi-Fi configs
+Risk: on BYOD — employer sees personal data
+Examples: Microsoft Intune, Jamf, VMware Workspace ONE
+
+<span class="ct">MAM — Mobile Application Management:</span>
+Controls only WORK APPS — not entire device
+Work apps wrapped in secure container
+Personal apps completely untouched
+IT can wipe work apps without touching personal data
+Best for: BYOD — protects privacy
+Examples: Intune App Protection Policies
+
+<span class="cp">MEM — Microsoft Endpoint Manager:</span>
+Combines MDM + MAM + PC management
+Single console for ALL endpoints
+Phones, tablets, laptops, desktops
+Modern enterprise standard
+    </div>
+
+    <h3>MDM Capabilities — What It Can Do</h3>
+    <div class="mdm-flow">
+      <div class="mdm-box" style="background:#dbeafe;color:#1d4ed8;border-color:#bfdbfe">Enroll device</div>
+      <span class="mdm-arrow">→</span>
+      <div class="mdm-box" style="background:#dcfce7;color:#15803d;border-color:#bbf7d0">Push certificates</div>
+      <span class="mdm-arrow">→</span>
+      <div class="mdm-box" style="background:#f3e8ff;color:#6d28d9;border-color:#e9d5ff">Enforce policies</div>
+      <span class="mdm-arrow">→</span>
+      <div class="mdm-box" style="background:#ffedd5;color:#c2410c;border-color:#fed7aa">Monitor compliance</div>
+      <span class="mdm-arrow">→</span>
+      <div class="mdm-box" style="background:#fee2e2;color:#b91c1c;border-color:#fecaca">Remote wipe</div>
+    </div>
+
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--indigo)">Enforcement Policies</h4>
+        <ul>
+          <li>Require screen lock PIN/biometric</li>
+          <li>Enforce device encryption</li>
+          <li>Block rooted/jailbroken devices</li>
+          <li>Require minimum OS version</li>
+          <li>Control which apps can be installed</li>
+          <li>Block camera in sensitive areas</li>
+          <li>Enforce VPN for corporate access</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Remote Actions</h4>
+        <ul>
+          <li>Remote wipe — erase entire device</li>
+          <li>Selective wipe — erase work data only</li>
+          <li>Remote lock — lock device immediately</li>
+          <li>Location tracking — find lost device</li>
+          <li>Push software updates remotely</li>
+          <li>Revoke certificates — cut off access</li>
+          <li>Force compliance check</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Mobile Specific Threats</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--red)">Jailbreaking / Rooting</h4>
+        <p>Removes manufacturer security restrictions. Bypasses MDM controls. Disables secure boot and integrity checks. MDM should detect and block access from jailbroken devices.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Sideloading</h4>
+        <p>Installing apps outside official app store. Bypasses Apple/Google vetting process. Apps may contain malware. MDM policy should prohibit sideloading on corporate devices.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">SIM Swapping</h4>
+        <p>Attacker convinces carrier to transfer phone number. Bypasses SMS-based MFA completely. All OTP codes go to attacker. Defense: use authenticator app not SMS for MFA.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Lost Phone with Corporate Email</div>
+      <div class="code">
+<span class="cm"># Employee loses phone at airport — contains corporate email</span>
+
+<span class="cr">Without MDM:</span>
+Phone found by stranger
+All corporate emails readable
+Contacts, calendar, attachments exposed
+No way to remotely remove data
+Breach notification may be required
+
+<span class="cg">With MDM (Microsoft Intune):</span>
+Employee reports phone lost → 9:15 AM
+IT admin: <span class="ci">Intune portal → Device → Remote Wipe</span>
+9:17 AM: remote wipe command sent
+Next time phone gets signal: <span class="cg">wipe executes</span>
+All corporate data: <span class="cg">deleted ✓</span>
+Personal photos (BYOD): <span class="cg">preserved (selective wipe used)</span>
+Attacker who found phone: sees nothing
+
+<span class="cm"># Selective wipe vs Full wipe:</span>
+Selective: removes ONLY corporate apps and data (BYOD)
+Full:      wipes ENTIRE device (COPE — company owned)
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">BYOD →</span><span>Employee owns device — use MAM not MDM for privacy</span></div>
+      <div class="er"><span class="ek">COPE →</span><span>Company owns, personal use allowed — full MDM appropriate</span></div>
+      <div class="er"><span class="ek">MDM →</span><span>Controls entire device — enforce PIN, wipe, certificate push</span></div>
+      <div class="er"><span class="ek">MAM →</span><span>Controls only work apps — personal apps untouched — BYOD solution</span></div>
+      <div class="er"><span class="ek">Selective wipe →</span><span>Remove work data only — preserve personal data</span></div>
+      <div class="er"><span class="ek">Jailbreaking →</span><span>Removes security — MDM should detect and deny access</span></div>
+      <div class="er"><span class="ek">SIM swapping →</span><span>Why SMS MFA is weak — use authenticator app instead</span></div>
+      <div class="er"><span class="ek">Sideloading →</span><span>Apps outside app store — bypass vetting — policy should prohibit</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- 3. HARDENING                       -->
+<!-- ═══════════════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">03</span>
+    <span class="card-title">Hardening</span>
+    <span class="bdg bdg-teal">Reduce Attack Surface</span>
+  </div>
+  <div class="card-bd">
+    <p><strong style="color:var(--text)">Hardening</strong> is the process of securing a system by reducing its attack surface — removing unnecessary components, disabling unneeded services, and configuring security settings. Out-of-the-box systems are designed for convenience, not security.</p>
+
+    <h3>Default State Problem</h3>
+    <div class="code">
+<span class="cm"># Fresh Windows Server — what's running by default:</span>
+Services running: <span class="cr">47 services</span> (many unnecessary)
+Open ports:       <span class="cr">135, 139, 445, 3389, and more</span>
+Admin shares:     <span class="cr">C$, D$, ADMIN$ — accessible</span>
+Guest account:    <span class="cr">exists (may be enabled)</span>
+SMBv1:            <span class="cr">may be enabled (WannaCry vulnerable)</span>
+NTLMv1:           <span class="cr">may be allowed (weak authentication)</span>
+
+<span class="cm"># After hardening:</span>
+Services running: <span class="cg">12 services (only what's needed)</span>
+Open ports:       <span class="cg">443, 22 only (HTTPS + SSH)</span>
+Admin shares:     <span class="cg">disabled</span>
+Guest account:    <span class="cg">disabled and renamed</span>
+SMBv1:            <span class="cg">disabled</span>
+NTLMv1:           <span class="cg">blocked — NTLMv2+ only</span>
+    </div>
+
+    <h3>Hardening by System Type</h3>
+
+    <h3 style="border-left-color:var(--blue)">Operating System Hardening</h3>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#dbeafe">🚫</div>
+      <div><div class="bl-title">Remove Unnecessary Software</div><div class="bl-desc">Uninstall all software not required for the system's role. Every application = potential vulnerability. Web server doesn't need Office, games, media players.</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#dcfce7">🔌</div>
+      <div><div class="bl-title">Disable Unused Services</div><div class="bl-desc">Stop and disable services not needed. Telnet, FTP, NetBIOS, Print Spooler on servers that don't print. Each running service = open attack vector.</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#f3e8ff">🔐</div>
+      <div><div class="bl-title">Change Default Credentials</div><div class="bl-desc">Rename/disable Administrator account. Change ALL default passwords. Attackers know every default credential for every major system. This is basic and critical.</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#ffedd5">📦</div>
+      <div><div class="bl-title">Apply All Patches</div><div class="bl-desc">Update OS, drivers, firmware. Enable automatic updates where possible. Unpatched known vulnerabilities = easiest attack. No excuse for missing critical patches.</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#ccfbf1">🔢</div>
+      <div><div class="bl-title">Least Privilege Accounts</div><div class="bl-desc">Users run as standard user, not admin. Only admin when admin is required. Admin account ≠ daily use account. Separate admin accounts for admin tasks.</div></div>
+    </div>
+
+    <h3 style="border-left-color:var(--green)">Network Device Hardening</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--green)">Switch Hardening</h4>
+        <ul>
+          <li>Disable unused switch ports</li>
+          <li>Enable port security (MAC filtering)</li>
+          <li>Disable CDP/LLDP on untrusted ports</li>
+          <li>Enable BPDU guard (prevent rogue switches)</li>
+          <li>Disable DTP (prevent VLAN hopping)</li>
+          <li>Change native VLAN from VLAN 1</li>
+          <li>Use SSH not Telnet for management</li>
+          <li>Enable 802.1X authentication</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Router / Firewall Hardening</h4>
+        <ul>
+          <li>Change default admin credentials</li>
+          <li>Disable remote management on WAN</li>
+          <li>Disable UPnP — it opens ports automatically</li>
+          <li>Enable logging to syslog server</li>
+          <li>Apply ACLs — block RFC1918 from internet</li>
+          <li>Disable unused protocols (SNMP v1/v2)</li>
+          <li>Enable SNMPv3 only if needed</li>
+          <li>Regular firmware updates</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--orange)">Application Hardening</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--orange)">Web Server</h4>
+        <ul>
+          <li>Remove default pages (test.html, info.php)</li>
+          <li>Disable directory listing</li>
+          <li>Remove server version banner</li>
+          <li>Restrict HTTP methods (GET/POST only)</li>
+          <li>Set security headers (CSP, HSTS, X-Frame)</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Database</h4>
+        <ul>
+          <li>Remove sample databases (Northwind)</li>
+          <li>Disable xp_cmdshell (SQL Server)</li>
+          <li>Rename or disable sa account</li>
+          <li>Restrict DB to local connections only</li>
+          <li>Principle of least privilege on accounts</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Browser Hardening</h4>
+        <ul>
+          <li>Disable Java plugin</li>
+          <li>Block third-party cookies</li>
+          <li>Enable built-in malware protection</li>
+          <li>HTTPS-only mode</li>
+          <li>Block dangerous file types</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Cisco Router Default vs Hardened</div>
+      <div class="code">
+<span class="cm"># Default Cisco router — out of box:</span>
+Console password:     <span class="cr">none</span>
+Enable password:      <span class="cr">none</span>
+VTY lines:            <span class="cr">allow all IPs, Telnet enabled</span>
+SNMP:                 <span class="cr">community "public" — read access for all</span>
+HTTP server:          <span class="cr">enabled on port 80</span>
+CDP:                  <span class="cr">broadcasting device info to anyone</span>
+Unused interfaces:    <span class="cr">up/up — active and exploitable</span>
+
+<span class="cg"># After hardening:</span>
+Console password:     <span class="cg">complex password + timeout 5min</span>
+Enable password:      <span class="cg">enable secret (MD5 hash)</span>
+VTY lines:            <span class="cg">SSH only, access-list mgmt-IPs only</span>
+SNMP:                 <span class="cg">SNMPv3 with auth+encryption, or disabled</span>
+HTTP server:          <span class="cg">disabled — use SSH for management</span>
+CDP:                  <span class="cg">disabled on external interfaces</span>
+Unused interfaces:    <span class="cg">shutdown command applied</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Hardening →</span><span>Reduce attack surface — remove unnecessary, disable unused, change defaults</span></div>
+      <div class="er"><span class="ek">Default credentials →</span><span>Change immediately — attackers know every default password</span></div>
+      <div class="er"><span class="ek">Disable unused services →</span><span>Every running service = attack vector — only run what's needed</span></div>
+      <div class="er"><span class="ek">Disable unused ports →</span><span>Switch ports — shut down if not connected</span></div>
+      <div class="er"><span class="ek">Remove unnecessary software →</span><span>Every app = potential vulnerability — minimize installed software</span></div>
+      <div class="er"><span class="ek">BPDU Guard →</span><span>Prevents rogue switches from being plugged in — switch hardening</span></div>
+      <div class="er"><span class="ek">xp_cmdshell →</span><span>SQL Server feature allowing OS commands — disable in hardening</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- 4. WIRELESS SECURITY              -->
+<!-- ═══════════════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">04</span>
+    <span class="card-title">Wireless Security</span>
+    <span class="bdg bdg-blue">WPA3 · 802.1X · EAP</span>
+  </div>
+  <div class="card-bd">
+    <p>Wireless networks extend the network perimeter into thin air — anyone within range can attempt to connect. <strong style="color:var(--text)">Encryption and authentication</strong> are critical to prevent eavesdropping and unauthorized access.</p>
+
+    <h3>Wireless Protocols — Evolution of Security</h3>
+
+    <div class="wifi-row" style="background:#fee2e2;border-color:#fca5a5">
+      <div style="min-width:80px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:700;color:var(--red)">WEP</div>
+      <div style="flex:1">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--red)">❌ Completely Broken — Never Use</div>
+        <div style="font-size:0.75rem;color:var(--muted)">RC4 encryption with static keys. Cracked in minutes with freely available tools. IV reuse vulnerability. From 1997 — completely obsolete.</div>
+      </div>
+      <span class="tag tr">AVOID</span>
+    </div>
+
+    <div class="wifi-row" style="background:#fff7ed;border-color:#fed7aa">
+      <div style="min-width:80px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:700;color:var(--orange)">WPA</div>
+      <div style="flex:1">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--orange)">⚠️ Deprecated — Insecure</div>
+        <div style="font-size:0.75rem;color:var(--muted)">TKIP encryption — temporary fix for WEP. TKIP also found vulnerable. Only used as WPA/WPA2 transition. Should not be used today.</div>
+      </div>
+      <span class="tag to">DEPRECATED</span>
+    </div>
+
+    <div class="wifi-row" style="background:#eff6ff;border-color:#bfdbfe">
+      <div style="min-width:80px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:700;color:var(--blue)">WPA2</div>
+      <div style="flex:1">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--blue)">✅ Acceptable — Still Widely Used</div>
+        <div style="font-size:0.75rem;color:var(--muted)">AES-CCMP encryption — strong. KRACK vulnerability discovered 2017 but patched. Still widely deployed. Personal (PSK) and Enterprise (802.1X) modes.</div>
+      </div>
+      <span class="tag tb">ACCEPTABLE</span>
+    </div>
+
+    <div class="wifi-row" style="background:#f0fdf4;border-color:#bbf7d0">
+      <div style="min-width:80px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;font-weight:700;color:var(--green)">WPA3</div>
+      <div style="flex:1">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--green)">✅ Best — Current Standard</div>
+        <div style="font-size:0.75rem;color:var(--muted)">SAE (Simultaneous Authentication of Equals) handshake replaces PSK. GCMP-256 encryption. Forward secrecy — past traffic safe if key captured. 192-bit Enterprise mode. Protects open networks (Enhanced Open).</div>
+      </div>
+      <span class="tag tg">RECOMMENDED</span>
+    </div>
+
+    <h3>Personal vs Enterprise Mode</h3>
+    <div class="code">
+<span class="cb">WPA2/WPA3 Personal (PSK — Pre-Shared Key):</span>
+Everyone uses the SAME password
+Simple — good for home/small office
+Risk: if key compromised → EVERYONE re-keys
+     Insider can capture all traffic
+
+<span class="ct">WPA2/WPA3 Enterprise (802.1X):</span>
+Each user has OWN unique credentials
+Requires RADIUS authentication server
+User logs in with username + password (PEAP)
+OR with certificate (EAP-TLS)
+
+Benefits:
+→ One user compromised → revoke that user only
+→ Others unaffected
+→ Per-user audit trail
+→ Dynamic encryption keys per session
+→ Supports MFA integration
+
+<span class="cg">Enterprise mode = required for organizations</span>
+<span class="cm">Personal mode = home/small business only</span>
+    </div>
+
+    <h3>Wireless Attacks — Must Know</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--red)">Evil Twin Attack</h4>
+        <p>Attacker creates a fake AP with same SSID as legitimate network. Victims connect thinking it's real. Attacker performs MitM — sees all traffic. Even WPA2 users can be victims if they connect to the fake AP.</p>
+        <div class="code" style="margin-top:0.5rem;font-size:0.65rem">
+Legitimate: "CafeWifi" — real AP
+Evil Twin:  "CafeWifi" — fake AP
+Victim:     connects to stronger signal (fake)
+Attacker:   reads all victim's traffic
+Defense:    VPN, verify AP certificates
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Deauth Attack</h4>
+        <p>Sends spoofed deauthentication frames forcing clients to disconnect. When clients reconnect, attacker captures the WPA2 handshake. Then brute-forces the handshake offline to crack the password.</p>
+        <div class="code" style="margin-top:0.5rem;font-size:0.65rem">
+Step 1: Send deauth → client disconnects
+Step 2: Client reconnects → 4-way handshake
+Step 3: Capture handshake
+Step 4: Offline brute force attack
+Defense: WPA3 SAE makes this much harder
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Rogue Access Point</h4>
+        <p>Unauthorized AP connected to corporate network. Employee plugs in personal router for better coverage. Creates uncontrolled wireless entry point. No 802.1X, no monitoring, no corporate security controls.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">KRACK Attack</h4>
+        <p>Key Reinstallation Attack — WPA2 vulnerability. Manipulates WPA2 handshake to reinstall already-used encryption keys. Allows decryption of packets. Patched by OS updates — important to keep devices updated.</p>
+      </div>
+    </div>
+
+    <h3>Wireless Security Best Practices</h3>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#dcfce7">📡</div>
+      <div><div class="bl-title">Use WPA3 (or WPA2-Enterprise minimum)</div><div class="bl-desc">WPA2 Personal acceptable for home. Organizations must use Enterprise mode with 802.1X and RADIUS. WPA3 for all new deployments.</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#dbeafe">🔒</div>
+      <div><div class="bl-title">Network Segmentation — Separate Guest Wi-Fi</div><div class="bl-desc">Guest VLAN with no access to corporate network. IoT VLAN isolated from everything. Corporate VLAN with 802.1X. Never mix guests and corporate on same network.</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#f3e8ff">📍</div>
+      <div><div class="bl-title">Wireless Intrusion Detection (WIDS)</div><div class="bl-desc">Monitors Wi-Fi spectrum for rogue APs and evil twins. Alerts on deauth attacks and unauthorized devices. Many enterprise APs have WIDS built in.</div></div>
+    </div>
+    <div class="baseline-item">
+      <div class="bl-icon" style="background:#ffedd5">📶</div>
+      <div><div class="bl-title">Reduce Signal Strength</div><div class="bl-desc">Adjust AP transmit power to cover only required area. No need for signal to reach parking lot or street. Smaller coverage area = smaller attack surface.</div></div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Coffee Shop Evil Twin Attack</div>
+      <div class="code">
+<span class="cm"># Employee working at coffee shop:</span>
+
+Legitimate Wi-Fi: "CoffeeShop_Free" (-70 dBm)
+Attacker's AP:    "CoffeeShop_Free" (-65 dBm) ← stronger signal
+
+Employee's laptop connects to ATTACKER's AP
+(stronger signal chosen automatically)
+
+<span class="cr">Without VPN:</span>
+Employee accesses corporate email via HTTPS
+HTTPS encrypted but: DNS queries visible
+Attacker does SSL stripping on non-HSTS sites
+Employee credentials for unprotected site: <span class="cr">CAPTURED ✗</span>
+
+<span class="cg">With Always-On VPN:</span>
+Employee connects → VPN activates before any traffic
+All traffic tunneled through corporate gateway
+Evil twin sees: <span class="cg">encrypted VPN tunnel only ✓</span>
+Attacker gets: <span class="cg">nothing useful ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">WEP →</span><span>Completely broken — never recommend — RC4 weakness</span></div>
+      <div class="er"><span class="ek">WPA2 →</span><span>AES-CCMP — acceptable — KRACK patched — Personal vs Enterprise</span></div>
+      <div class="er"><span class="ek">WPA3 →</span><span>SAE handshake — best current — forward secrecy — Enhanced Open</span></div>
+      <div class="er"><span class="ek">Enterprise mode →</span><span>802.1X + RADIUS — per-user credentials — organizations must use this</span></div>
+      <div class="er"><span class="ek">Evil twin →</span><span>Fake AP same SSID — MitM — defense: VPN, certificate verification</span></div>
+      <div class="er"><span class="ek">Deauth attack →</span><span>Forces reconnect to capture WPA2 handshake for offline cracking</span></div>
+      <div class="er"><span class="ek">KRACK →</span><span>WPA2 key reinstallation attack — patched by updates</span></div>
+      <div class="er"><span class="ek">WIDS →</span><span>Wireless IDS — detects rogue APs and evil twins</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- 5. APPLICATION SECURITY           -->
+<!-- ═══════════════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">05</span>
+    <span class="card-title">Application Security</span>
+    <span class="bdg bdg-purple">SDLC · SAST · DAST</span>
+  </div>
+  <div class="card-bd">
+    <p>Application security means <strong style="color:var(--text)">building security into applications from the start</strong> — not adding it as an afterthought. Most breaches exploit application vulnerabilities. Secure development practices, code review, and testing catch vulnerabilities before attackers do.</p>
+
+    <h3>Secure SDLC — Security at Every Phase</h3>
+    <div class="app-layer" style="background:#eff6ff;border-color:var(--blue)">
+      <div>
+        <div style="font-weight:600;color:var(--blue);font-size:0.85rem">1. Requirements Phase</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Define security requirements upfront. "System must use TLS 1.2+." "Passwords must be hashed with bcrypt." Security requirements alongside functional requirements.</div>
+      </div>
+      <span class="tag tb">Design</span>
+    </div>
+    <div class="app-layer" style="background:#f3e8ff;border-color:var(--purple)">
+      <div>
+        <div style="font-weight:600;color:var(--purple);font-size:0.85rem">2. Design Phase</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Threat modeling — identify what could go wrong. STRIDE (Spoofing, Tampering, Repudiation, Info Disclosure, DoS, Elevation). Architecture review. Data flow diagrams.</div>
+      </div>
+      <span class="tag tp">STRIDE</span>
+    </div>
+    <div class="app-layer" style="background:#fff7ed;border-color:var(--orange)">
+      <div>
+        <div style="font-weight:600;color:var(--orange);font-size:0.85rem">3. Development Phase</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Secure coding standards. Code reviews. Input validation. No hardcoded credentials. SAST (Static Analysis) runs automatically in IDE/CI pipeline. Pair programming for sensitive code.</div>
+      </div>
+      <span class="tag to">SAST</span>
+    </div>
+    <div class="app-layer" style="background:#f0fdf4;border-color:var(--green)">
+      <div>
+        <div style="font-weight:600;color:var(--green);font-size:0.85rem">4. Testing Phase</div>
+        <div style="font-size:0.75rem;color:var(--muted)">DAST (Dynamic Analysis) — test running application. Penetration testing. Fuzzing — send unexpected inputs. IAST — real-time testing during QA. Vulnerability scanning.</div>
+      </div>
+      <span class="tag tg">DAST</span>
+    </div>
+    <div class="app-layer" style="background:#ccfbf1;border-color:var(--teal)">
+      <div>
+        <div style="font-weight:600;color:var(--teal);font-size:0.85rem">5. Deployment Phase</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Secure configuration in production. Secrets management — no credentials in code. WAF deployment. Security scanning of container images before deploy.</div>
+      </div>
+      <span class="tag tt">Deploy</span>
+    </div>
+    <div class="app-layer" style="background:#e0e7ff;border-color:var(--indigo)">
+      <div>
+        <div style="font-weight:600;color:var(--indigo);font-size:0.85rem">6. Maintenance Phase</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Patch management. Vulnerability monitoring. Dependency scanning — check third-party libraries. Bug bounty program. Incident response for discovered vulnerabilities.</div>
+      </div>
+      <span class="tag ti">Monitor</span>
+    </div>
+
+    <h3>Testing Methods — SAST vs DAST vs IAST</h3>
+    <div class="code">
+<span class="cb">SAST — Static Application Security Testing:</span>
+Tests: SOURCE CODE (not running)
+When: during development, in CI/CD pipeline
+Finds: SQL injection in code, hardcoded passwords,
+       buffer overflow potential, insecure functions
+Tools: SonarQube, Checkmarx, Veracode, Semgrep
+Analogy: reading a recipe for mistakes before cooking
+Advantage: <span class="cg">finds issues early — cheap to fix</span>
+Limitation: <span class="cr">false positives, can't find runtime issues</span>
+
+<span class="cg">DAST — Dynamic Application Security Testing:</span>
+Tests: RUNNING APPLICATION
+When: testing phase, after deployment
+Finds: XSS, SQLi in real app, auth bypasses,
+       misconfigurations, runtime vulnerabilities
+Tools: OWASP ZAP, Burp Suite, Nikto
+Analogy: actually cooking the recipe and tasting it
+Advantage: <span class="cg">tests real behavior, finds runtime issues</span>
+Limitation: <span class="cr">late in process — more expensive to fix</span>
+
+<span class="ct">IAST — Interactive Application Security Testing:</span>
+Tests: INSIDE running application (agent-based)
+When: during QA testing — hybrid approach
+Finds: combines SAST accuracy + DAST realism
+Tools: Contrast Security, Seeker
+Advantage: <span class="cg">most accurate — low false positives</span>
+Limitation: <span class="cr">requires instrumented environment</span>
+    </div>
+
+    <h3>Key Application Security Controls</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--red)">Input Validation</h4>
+        <p>Validate ALL input before processing. Never trust user input. Whitelist allowed characters. Reject or sanitize everything else. Primary defense against injection attacks.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+<span class="cm"># Bad — no validation:</span>
+query = "SELECT * FROM users WHERE id=" + userId
+<span class="cm"># userId = "1 OR 1=1" → dumps all users</span>
+
+<span class="cm"># Good — parameterized query:</span>
+query = "SELECT * FROM users WHERE id=?"
+execute(query, [userId])
+<span class="cm"># Input treated as data, not code</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Secure Coding Practices</h4>
+        <ul>
+          <li>Never hardcode credentials in source code</li>
+          <li>Use parameterized queries — prevent SQLi</li>
+          <li>Output encoding — prevent XSS</li>
+          <li>Error handling — never expose stack traces</li>
+          <li>Secrets in vault — HashiCorp Vault, AWS Secrets Manager</li>
+          <li>Dependency scanning — check for vulnerable libraries</li>
+          <li>HTTPS everywhere — never HTTP</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Code Signing</h4>
+        <p>Digitally sign application code. Users/OS verify signature before running. Proves code came from legitimate developer and hasn't been modified. Required for: iOS apps, Windows drivers, Android apps.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Fuzzing</h4>
+        <p>Send massive amounts of random, unexpected, or malformed input to application. Looking for crashes, unexpected behavior, memory leaks. Finds vulnerabilities that manual testing misses. AFL, libFuzzer, Boofuzz.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Dev Pipeline Security Gates</div>
+      <div class="code">
+<span class="cm"># Secure CI/CD pipeline — security gates at each stage:</span>
+
+Developer commits code to Git:
+  <span class="cb">Pre-commit hook:</span> <span class="ct">secrets scanner runs</span>
+  → Detects AWS key in code: <span class="cr">BLOCKED ✗</span>
+  → Developer removes key, uses vault instead ✓
+
+Code pushed to pipeline:
+  <span class="cb">SAST scan (SonarQube):</span>
+  → SQL injection found in login.js line 47: <span class="cr">BLOCKED ✗</span>
+  → Dev fixes to parameterized query ✓
+
+Code passes SAST → deploy to test env:
+  <span class="cb">DAST scan (OWASP ZAP):</span>
+  → XSS vulnerability in search field: <span class="cr">BLOCKED ✗</span>
+  → Dev adds output encoding ✓
+
+All gates pass → deploy to staging:
+  <span class="cb">Dependency check:</span>
+  → lodash 4.17.4 has known CVE: <span class="cr">WARNING ⚠</span>
+  → Updated to 4.17.21 ✓
+
+<span class="cg">All gates passed → deploy to production ✓</span>
+<span class="cm"># Vulnerabilities caught before production = $0 to fix</span>
+<span class="cm"># Vulnerabilities in production = $500k breach average</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">SAST →</span><span>Tests source code — not running — during development — early</span></div>
+      <div class="er"><span class="ek">DAST →</span><span>Tests running application — after deployment — finds runtime issues</span></div>
+      <div class="er"><span class="ek">IAST →</span><span>Agent inside running app — most accurate — during QA</span></div>
+      <div class="er"><span class="ek">Fuzzing →</span><span>Random/malformed input to find crashes and vulnerabilities</span></div>
+      <div class="er"><span class="ek">Input validation →</span><span>Whitelist allowed input — primary defense against injection</span></div>
+      <div class="er"><span class="ek">STRIDE →</span><span>Threat modeling framework — Spoofing, Tampering, Repudiation, Info Disclosure, DoS, Elevation</span></div>
+      <div class="er"><span class="ek">Code signing →</span><span>Proves code came from legitimate developer — prevents tampering</span></div>
+      <div class="er"><span class="ek">Secure SDLC →</span><span>Security at EVERY phase — not just testing at end</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- 6. SANDBOXING                     -->
+<!-- ═══════════════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">06</span>
+    <span class="card-title">Sandboxing</span>
+    <span class="bdg bdg-orange">Isolation · Containment</span>
+  </div>
+  <div class="card-bd">
+    <p>A <strong style="color:var(--text)">sandbox</strong> is an isolated, controlled environment where code or files can run without affecting the real system. Think of it as a safe testing zone with walls — malware runs inside, can't escape outside.</p>
+
+    <h3>How Sandboxing Works</h3>
+    <div class="code">
+<span class="cm"># Without sandbox:</span>
+Email arrives with suspicious attachment
+User opens attachment
+Malware executes on REAL system
+Accesses real files, real network
+Steals credentials, encrypts files → <span class="cr">BREACH ✗</span>
+
+<span class="cm"># With sandbox:</span>
+Email arrives with suspicious attachment
+Attachment automatically sent to SANDBOX first
+Sandbox: isolated virtual environment
+Malware executes in sandbox
+Sandbox monitors: file changes, network calls,
+                  registry modifications, process spawns
+Malware tries: connect to C2 server
+Sandbox logs: <span class="co">outbound connection to evil-c2.ru:4444</span>
+Sandbox verdict: <span class="cr">MALICIOUS — attachment blocked</span>
+Real system: <span class="cg">never touched ✓</span>
+
+<span class="cm"># What sandbox records:</span>
+Files created:   C:\Windows\System32\malware.exe
+Registry keys:   HKLM\Software\Run\malware.exe
+Network calls:   GET evil-c2.ru/payload.bin
+Processes:       cmd.exe spawned from winword.exe
+→ Full behavioral analysis report generated
+    </div>
+
+    <h3>Types of Sandboxes</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--orange)">Email Sandbox</h4>
+        <p>All email attachments automatically detonated in sandbox before delivery to user. Suspicious behavior = attachment quarantined. Clean = delivered normally. Built into Microsoft Defender for Office 365, Proofpoint, Mimecast.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+Email arrives → attachment extracted
+→ detonated in sandbox VM
+→ behavior monitored 3-5 minutes
+→ clean: delivered to user ✓
+→ malicious: quarantined, alert sent ✗
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Browser Sandbox</h4>
+        <p>Every browser tab runs in its own isolated sandbox. JavaScript from one tab can't access another tab's data. Malicious website can't escape browser and access OS. Chrome, Firefox, Edge all sandbox tabs.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">NGFW Sandbox</h4>
+        <p>Next-gen firewall detonates suspicious files in cloud sandbox before allowing into network. Unknown file downloaded? Execute in cloud first. Zero-day malware detected before reaching endpoints. Palo Alto WildFire, Fortinet FortiSandbox.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Development Sandbox</h4>
+        <p>Isolated development environment — test code changes without affecting production. Break things safely. Separated from real data. Common in DevOps — dev → staging → production pipeline.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Mobile App Sandbox</h4>
+        <p>iOS/Android sandbox each app completely. App can only access its own data folder. Can't read other apps' data. Must request permissions explicitly. Limits damage from malicious apps.</p>
+        <div class="code" style="font-size:0.65rem;margin-top:0.5rem">
+App A: /data/app_a/ ← only access this
+App B: /data/app_b/ ← App A cannot see
+System: requires explicit permission
+Camera: must request → user approves
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Container Sandbox</h4>
+        <p>Docker containers sandbox applications. Each container isolated from others. Limited system call access. Can't access other containers' data. Kubernetes network policies add network isolation.</p>
+      </div>
+    </div>
+
+    <h3>Sandbox Evasion Techniques</h3>
+    <div class="code">
+<span class="cm"># Sophisticated malware tries to detect sandbox:</span>
+
+<span class="cr">Time-based evasion:</span>
+Malware sleeps for 10 minutes before activating
+Many sandboxes only run for 2-3 minutes
+Malware appears benign → passes → activates later
+Defense: longer sandbox analysis time
+
+<span class="cr">User interaction check:</span>
+Malware checks: has mouse moved? Any keystrokes?
+Sandbox: no real user → no movement
+Malware: "I'm in a sandbox — stay dormant"
+Defense: simulate user interactions in sandbox
+
+<span class="cr">Environment fingerprinting:</span>
+Check: CPU count (VMs often have fewer)
+Check: RAM amount (VMs often have less)
+Check: specific sandbox artifacts (VMware registry keys)
+Defense: hardware-based sandboxes, disguise VM artifacts
+
+<span class="cr">Network connectivity check:</span>
+Real system has internet → sandbox may not
+Malware checks for internet → no internet = sandbox
+Defense: allow sandbox internet access (monitored)
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Zero-Day in Email Attachment</div>
+      <div class="code">
+<span class="cm"># Targeted attack on finance department:</span>
+
+Attacker sends: "Invoice_Q4_2024.xlsx"
+Subject: "Urgent: Outstanding payment review"
+
+<span class="co">Step 1 — Email gateway receives attachment:</span>
+Antivirus scan: <span class="cg">CLEAN</span> (zero-day — no signature)
+Sandbox: <span class="co">automatically detonating attachment...</span>
+
+<span class="co">Step 2 — Sandbox execution (3 minutes):</span>
+Excel opens → runs macro
+Macro: downloads payload from pastebin.com
+Payload: executes in memory (fileless)
+Payload: connects to 185.220.101.45:443
+Payload: runs mimikatz → credential harvesting
+All this recorded by sandbox
+
+<span class="cr">Step 3 — Sandbox verdict: MALICIOUS</span>
+Email: <span class="cg">quarantined before delivery ✓</span>
+Finance staff: <span class="cg">never saw the email ✓</span>
+Alert: security team notified with full IOCs
+
+<span class="co">Step 4 — Threat intelligence shared:</span>
+185.220.101.45 added to block list
+Macro detection rule created
+All future emails with this payload: <span class="cg">auto-blocked ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Sandbox →</span><span>Isolated environment — code runs safely without affecting real system</span></div>
+      <div class="er"><span class="ek">Email sandbox →</span><span>Attachments detonated before delivery — zero-day detection</span></div>
+      <div class="er"><span class="ek">NGFW sandbox →</span><span>WildFire (Palo Alto) — cloud sandbox for unknown files</span></div>
+      <div class="er"><span class="ek">Browser sandbox →</span><span>Each tab isolated — malicious site can't escape browser</span></div>
+      <div class="er"><span class="ek">Evasion →</span><span>Time delay, check for user interaction, VM fingerprinting</span></div>
+      <div class="er"><span class="ek">Mobile sandbox →</span><span>Each app can only access its own data — iOS/Android built-in</span></div>
+      <div class="er"><span class="ek">Sandbox value →</span><span>Catches zero-days that signature-based AV misses completely</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- 7. MONITORING                     -->
+<!-- ═══════════════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">07</span>
+    <span class="card-title">Monitoring</span>
+    <span class="bdg bdg-teal">SIEM · Logs · Alerts</span>
+  </div>
+  <div class="card-bd">
+    <p>You can't protect what you can't see. <strong style="color:var(--text)">Monitoring</strong> is the continuous collection, analysis, and alerting on system, network, and security events — to detect threats, investigate incidents, and prove compliance.</p>
+
+    <h3>What to Monitor — Log Sources</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">System Logs</h4>
+        <ul>
+          <li>Authentication events — logon/logoff/failed</li>
+          <li>Account management — created/deleted/modified</li>
+          <li>Privilege use — admin actions</li>
+          <li>Policy changes — GPO, firewall rules</li>
+          <li>System events — startup/shutdown/crashes</li>
+          <li>Object access — file/folder/registry access</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Network Logs</h4>
+        <ul>
+          <li>Firewall allow/deny logs</li>
+          <li>IDS/IPS alerts</li>
+          <li>NetFlow data — traffic patterns</li>
+          <li>DNS queries — detect C2 via DNS</li>
+          <li>DHCP logs — track IP assignments</li>
+          <li>VPN connection logs</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Application Logs</h4>
+        <ul>
+          <li>Web server access logs (Apache/IIS/Nginx)</li>
+          <li>Database query logs</li>
+          <li>Application error logs</li>
+          <li>Authentication logs (failed logins)</li>
+          <li>API request/response logs</li>
+          <li>Email gateway logs</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Security Tool Logs</h4>
+        <ul>
+          <li>Antivirus/EDR detections</li>
+          <li>DLP policy violations</li>
+          <li>WAF alerts</li>
+          <li>Vulnerability scanner results</li>
+          <li>MDM compliance status</li>
+          <li>Certificate events</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Key Monitoring Tools</h3>
+
+    <div class="mon-item">
+      <div class="mon-icon">🔍</div>
+      <div>
+        <div class="mon-title" style="color:var(--blue)">SIEM — Security Information and Event Management</div>
+        <div class="mon-desc">Central platform that <strong>collects logs from everything</strong> and correlates them to find patterns no single tool could see. Real-time alerting, historical analysis, compliance reporting. Examples: Splunk, Microsoft Sentinel, IBM QRadar, Elastic SIEM. The heart of a SOC (Security Operations Center).</div>
+        <div class="code" style="font-size:0.65rem;margin-top:0.4rem">
+<span class="cm"># SIEM correlation example:</span>
+Event 1 (AD):      user "john" failed login ×5 at 02:15
+Event 2 (VPN):     john connected from Russia at 02:16
+Event 3 (CASB):    john downloaded 10,000 files at 02:17
+Event 4 (DLP):     john uploaded to personal drive at 02:18
+
+Individual:  each event looks minor
+SIEM:        correlates all 4 → <span class="cr">HIGH PRIORITY ALERT</span>
+             "Possible account compromise + data exfil"
+        </div>
+      </div>
+    </div>
+
+    <div class="mon-item">
+      <div class="mon-icon">🖥️</div>
+      <div>
+        <div class="mon-title" style="color:var(--green)">EDR — Endpoint Detection and Response</div>
+        <div class="mon-desc">Agent installed on every endpoint monitoring behavior in real time. Records: process creation, network connections, file changes, registry modifications. Detects malware by behavior not just signature. Can automatically contain compromised endpoints. Examples: CrowdStrike Falcon, Microsoft Defender for Endpoint, Carbon Black.</div>
+      </div>
+    </div>
+
+    <div class="mon-item">
+      <div class="mon-icon">🌐</div>
+      <div>
+        <div class="mon-title" style="color:var(--orange)">NDR — Network Detection and Response</div>
+        <div class="mon-desc">Monitors network traffic for anomalies and threats. Uses ML to establish baseline, detect deviations. Catches lateral movement, C2 traffic, data exfiltration. Works even for encrypted traffic (metadata analysis). Examples: Darktrace, ExtraHop, Vectra.</div>
+      </div>
+    </div>
+
+    <div class="mon-item">
+      <div class="mon-icon">🔭</div>
+      <div>
+        <div class="mon-title" style="color:var(--purple)">XDR — Extended Detection and Response</div>
+        <div class="mon-desc">Unifies EDR + NDR + cloud + email into one platform. Single pane of glass for all threats. Automated correlation and response across all vectors. Next evolution beyond SIEM. Examples: Palo Alto Cortex XDR, Microsoft Defender XDR.</div>
+      </div>
+    </div>
+
+    <div class="mon-item">
+      <div class="mon-icon">📊</div>
+      <div>
+        <div class="mon-title" style="color:var(--teal)">UEBA — User and Entity Behavior Analytics</div>
+        <div class="mon-desc">ML-based anomaly detection. Builds baseline of "normal" for each user and entity. Alerts when behavior deviates: user downloading 1000x more than normal, login from impossible location, access at unusual hours. Detects insider threats that signature tools miss.</div>
+        <div class="code" style="font-size:0.65rem;margin-top:0.4rem">
+Normal user baseline:
+  Login: weekdays 8am-6pm, New York
+  Downloads: ~50MB/day
+  Accesses: Finance shared drive
+
+UEBA alert triggers when:
+  Login: 3am Sunday from Beijing ← impossible travel
+  Downloads: 47GB in 2 hours ← 940x normal
+  Action: accessing HR, Legal, Finance ← unusual
+        </div>
+      </div>
+    </div>
+
+    <h3>Log Management Best Practices</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Centralized Logging</h4>
+        <p>All logs sent to central syslog/SIEM. Logs on local systems can be deleted by attacker. Central logs harder to tamper with. Use syslog protocol (UDP 514 / TCP 6514 for TLS).</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Log Retention</h4>
+        <p>HIPAA: 6 years minimum. PCI-DSS: 1 year (3 months online). GDPR: as long as necessary. Internal: 90-day minimum recommended. Forensic investigations often go back 6-12 months.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Time Synchronization</h4>
+        <p>ALL systems must use NTP (Network Time Protocol) from same source. Logs from different systems must have synchronized timestamps. Without time sync: correlating events from multiple sources is impossible.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — SIEM Catches Insider Threat</div>
+      <div class="code">
+<span class="cm"># Employee resigning Friday, last day in 2 weeks:</span>
+
+<span class="co">SIEM detects unusual pattern over 3 days:</span>
+
+Day 1 Tuesday:
+  14:23 — accessed customer database (normal for role)
+  14:45 — ran unusual SELECT * query (entire table)
+  14:47 — exported 50,000 records to CSV
+  SIEM: <span class="co">DLP alert — large data export</span>
+
+Day 2 Wednesday:
+  09:10 — logged into Salesforce (normal)
+  09:15 — exported ALL customer contacts
+  09:20 — forwarded export to personal Gmail
+  SIEM: <span class="cr">DLP block — external email with attachment</span>
+  SIEM: <span class="cr">ALERT — data exfiltration attempt</span>
+
+Day 3 Thursday:
+  Security team investigation triggered
+  HR notified — employee has resignation letter
+  Legal hold placed on all user data
+  Active Directory account disabled
+  Forensic investigation begins
+
+<span class="cg">SIEM correlation revealed: classic pre-departure data theft</span>
+<span class="cg">Prevented: customer list leaving organization ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">SIEM →</span><span>Collects all logs, correlates events, central alert platform — Splunk, Sentinel</span></div>
+      <div class="er"><span class="ek">EDR →</span><span>Endpoint agent — behavior monitoring — detect + respond on device</span></div>
+      <div class="er"><span class="ek">UEBA →</span><span>User behavior analytics — detects anomalies — insider threats</span></div>
+      <div class="er"><span class="ek">XDR →</span><span>Extended — unifies EDR + network + cloud + email in one platform</span></div>
+      <div class="er"><span class="ek">NTP →</span><span>Time sync for all systems — critical for log correlation</span></div>
+      <div class="er"><span class="ek">Syslog →</span><span>Centralized logging protocol — UDP 514 / TCP 6514 (TLS)</span></div>
+      <div class="er"><span class="ek">Log retention →</span><span>HIPAA = 6 years / PCI-DSS = 1 year / minimum 90 days</span></div>
+      <div class="er"><span class="ek">SIEM correlation →</span><span>Individual events look innocent — combined reveal attack</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- 8. SUMMARY                        -->
+<!-- ═══════════════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">08</span>
+    <span class="card-title">Complete Summary — Exam Cheat Sheet</span>
+    <span class="bdg bdg-indigo">All Topics</span>
+  </div>
+  <div class="card-bd">
+
+    <h3>All Concepts Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Topic</th><th>What It Is</th><th>Key Tools/Methods</th><th>Exam Keyword</th></tr>
+      <tr><td>Secure Baseline</td><td>Min security config every system must meet</td><td>CIS Benchmarks, STIG, GPO</td><td>Config drift, golden image</td></tr>
+      <tr><td>BYOD</td><td>Employee-owned device for work</td><td>MAM, containerization</td><td>Privacy — use MAM not MDM</td></tr>
+      <tr><td>MDM</td><td>Control entire mobile device</td><td>Intune, Jamf</td><td>Remote wipe, certificate push</td></tr>
+      <tr><td>MAM</td><td>Control only work apps</td><td>App Protection Policies</td><td>BYOD privacy — selective wipe</td></tr>
+      <tr><td>Hardening</td><td>Reduce attack surface</td><td>Disable unused, remove defaults</td><td>Change defaults, disable services</td></tr>
+      <tr><td>WEP</td><td>Broken Wi-Fi protocol</td><td>—</td><td>Never use — RC4 weakness</td></tr>
+      <tr><td>WPA3</td><td>Best Wi-Fi security</td><td>SAE handshake</td><td>Forward secrecy, Enhanced Open</td></tr>
+      <tr><td>802.1X Enterprise</td><td>Per-user Wi-Fi auth</td><td>RADIUS, EAP-TLS, PEAP</td><td>Individual credentials per user</td></tr>
+      <tr><td>SAST</td><td>Test source code</td><td>SonarQube, Checkmarx</td><td>During development — early</td></tr>
+      <tr><td>DAST</td><td>Test running app</td><td>OWASP ZAP, Burp Suite</td><td>Runtime testing — after build</td></tr>
+      <tr><td>Fuzzing</td><td>Random input testing</td><td>AFL, libFuzzer</td><td>Find crashes with unexpected input</td></tr>
+      <tr><td>Sandboxing</td><td>Isolated execution environment</td><td>WildFire, Defender ATP</td><td>Zero-day detection — behavioral</td></tr>
+      <tr><td>SIEM</td><td>Central log correlation</td><td>Splunk, Sentinel, QRadar</td><td>Correlates events — SOC heart</td></tr>
+      <tr><td>EDR</td><td>Endpoint behavior monitoring</td><td>CrowdStrike, Defender</td><td>Behavior-based — not signatures</td></tr>
+      <tr><td>UEBA</td><td>User anomaly detection</td><td>Exabeam, Splunk UBA</td><td>Insider threats — baseline deviation</td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// EXAM SCENARIOS → ANSWERS</h4>
+      <div class="er"><span class="ek">"All devices have same security config"</span><span>→ Secure baseline / golden image / GPO enforcement</span></div>
+      <div class="er"><span class="ek">"Systems deviate from intended config"</span><span>→ Configuration drift — continuous compliance monitoring needed</span></div>
+      <div class="er"><span class="ek">"Employee uses personal phone for work"</span><span>→ BYOD — use MAM not MDM (protect personal data)</span></div>
+      <div class="er"><span class="ek">"Remove work data but keep personal"</span><span>→ Selective wipe (MAM) vs full wipe (MDM)</span></div>
+      <div class="er"><span class="ek">"Block jailbroken phones from accessing corporate apps"</span><span>→ MDM compliance check — deny access to non-compliant devices</span></div>
+      <div class="er"><span class="ek">"Disable everything not needed on server"</span><span>→ Hardening — reduce attack surface</span></div>
+      <div class="er"><span class="ek">"Change default router password"</span><span>→ Hardening — change default credentials</span></div>
+      <div class="er"><span class="ek">"Broken Wi-Fi security"</span><span>→ WEP (completely broken) or WPA (deprecated)</span></div>
+      <div class="er"><span class="ek">"Each employee has own Wi-Fi credentials"</span><span>→ WPA2/WPA3 Enterprise with 802.1X + RADIUS</span></div>
+      <div class="er"><span class="ek">"Fake access point same name as real"</span><span>→ Evil twin attack — defense: VPN, WIDS</span></div>
+      <div class="er"><span class="ek">"Test code for vulnerabilities during development"</span><span>→ SAST (static analysis of source code)</span></div>
+      <div class="er"><span class="ek">"Test running application for vulnerabilities"</span><span>→ DAST (dynamic — test live application)</span></div>
+      <div class="er"><span class="ek">"Send random input to find crashes"</span><span>→ Fuzzing</span></div>
+      <div class="er"><span class="ek">"Run suspicious file safely before delivery"</span><span>→ Sandboxing — email/NGFW sandbox</span></div>
+      <div class="er"><span class="ek">"Catches zero-days that AV misses"</span><span>→ Sandboxing (behavioral analysis)</span></div>
+      <div class="er"><span class="ek">"Correlate logs from multiple sources"</span><span>→ SIEM (Splunk, Sentinel, QRadar)</span></div>
+      <div class="er"><span class="ek">"Detect insider threat downloading files"</span><span>→ UEBA (behavior baseline deviation)</span></div>
+      <div class="er"><span class="ek">"Endpoint agent detecting malware behavior"</span><span>→ EDR (CrowdStrike, Defender for Endpoint)</span></div>
+      <div class="er"><span class="ek">"All logs need same timestamp for investigation"</span><span>→ NTP — time synchronization</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

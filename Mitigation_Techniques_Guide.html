@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mitigation Techniques — Security+ Domain 2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;800;900&family=DM+Mono:wght@400;500;600&family=Mulish:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+
+:root{
+  --bg:#f4f2ec;
+  --p:#fdfcf8;
+  --s:#eeebe1;
+  --t:#e4e0d4;
+  --bd:#ccc7b8;
+  --tx:#1a1810;
+  --mu:#706a54;
+  /* technique accent colours */
+  --seg:#1840c8;  /* segmentation: bold blue */
+  --acc:#c82018;  /* access control: red */
+  --cfg:#0a7848;  /* configuration: green */
+  --hrd:#b05800;  /* hardening: amber */
+  --iso:#6010b8;  /* isolation: violet */
+  --ptc:#0878b8;  /* patching: teal-blue */
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:'Mulish',sans-serif;font-size:14px;line-height:1.65;padding:1.5rem;}
+
+/* ── MASTHEAD ── */
+.mast{
+  display:grid;grid-template-columns:1fr 1fr;
+  border:2.5px solid var(--tx);
+  margin-bottom:2rem;overflow:hidden;
+}
+@media(max-width:600px){.mast{grid-template-columns:1fr;}}
+.mast-l{
+  background:var(--tx);color:var(--bg);
+  padding:1.8rem 2rem;
+  position:relative;overflow:hidden;
+}
+.mast-l::before{
+  content:'🛡';position:absolute;right:-0.5rem;bottom:-1rem;
+  font-size:9rem;opacity:0.04;line-height:1;
+}
+.mast-kicker{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.18em;opacity:0.45;text-transform:uppercase;margin-bottom:0.5rem;}
+.mast-title{font-family:'Unbounded',sans-serif;font-size:2.4rem;font-weight:900;line-height:0.9;letter-spacing:-0.03em;margin-bottom:0.4rem;}
+.mast-title .hi{color:#7ad4ff;}
+.mast-rule{height:2px;background:rgba(255,255,255,0.25);margin:0.6rem 0;}
+.mast-desc{font-size:0.8rem;opacity:0.65;line-height:1.55;}
+.mast-r{padding:1.5rem 1.6rem;display:flex;flex-direction:column;justify-content:space-between;gap:0.8rem;}
+.tech-pills{display:flex;flex-direction:column;gap:0.3rem;}
+.tpill{
+  display:flex;align-items:center;gap:0.6rem;
+  padding:0.38rem 0.75rem;border:1.5px solid var(--bd);background:var(--p);
+  font-family:'DM Mono',monospace;font-size:0.6rem;font-weight:600;letter-spacing:0.04em;cursor:pointer;
+  transition:all 0.13s;text-transform:uppercase;
+}
+.tpill:hover{transform:translateX(3px);}
+.tpill-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+.mast-meta{display:flex;gap:1.5rem;padding-top:0.8rem;border-top:1px solid var(--bd);}
+.meta-val{font-family:'Unbounded',sans-serif;font-size:1.2rem;font-weight:900;color:var(--tx);line-height:1;}
+.meta-lbl{font-family:'DM Mono',monospace;font-size:0.55rem;color:var(--mu);letter-spacing:0.08em;text-transform:uppercase;}
+
+/* ── TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:1.6rem;}
+.tab{padding:0.38rem 0.88rem;border:1.5px solid var(--bd);background:var(--p);color:var(--mu);cursor:pointer;font-family:'DM Mono',monospace;font-size:0.6rem;font-weight:600;transition:all 0.12s;letter-spacing:0.02em;border-radius:3px;}
+.tab:hover,.tab.active{color:#fff;}
+
+/* ── MODELS / SECS ── */
+.model{display:none;}.model.on{display:block;animation:rise 0.16s ease;}
+.sec{display:none;}.sec.on{display:block;}
+@keyframes rise{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+/* ── CARD ── */
+.card{background:var(--p);border:1.5px solid var(--bd);border-radius:6px;margin-bottom:1.2rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.7rem;padding:0.85rem 1.3rem;border-bottom:1.5px solid var(--bd);background:var(--s);}
+.card-num{font-family:'DM Mono',monospace;font-size:0.57rem;color:var(--mu);background:var(--t);border:1px solid var(--bd);border-radius:2px;padding:0.1rem 0.3rem;}
+.card-title{font-family:'Unbounded',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:-0.02em;}
+.bdg{margin-left:auto;font-family:'DM Mono',monospace;font-size:0.55rem;padding:0.12rem 0.5rem;border-radius:2px;white-space:nowrap;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.card-bd{padding:1.3rem;}
+p{color:var(--mu);font-size:0.84rem;margin-bottom:0.7rem;line-height:1.72;}
+h3{font-family:'Unbounded',sans-serif;font-size:0.72rem;font-weight:700;color:var(--tx);margin:1.2rem 0 0.5rem;padding-left:0.75rem;border-left:4px solid;letter-spacing:-0.01em;text-transform:uppercase;}
+
+/* ── CODE ── */
+.code{background:var(--tx);color:#f0edd8;border-radius:4px;padding:0.9rem 1.1rem;font-family:'DM Mono',monospace;font-size:0.66rem;line-height:1.92;overflow-x:auto;margin:0.7rem 0;}
+.cg{color:#68efaa;}.cr{color:#ff8080;}.cb{color:#68c8ff;}.co{color:#ffd070;}.cp{color:#d090ff;}.cm{color:var(--mu);}.ct{color:#60eee0;}
+
+/* ── EXAM ── */
+.exam{background:#faf5ff;border:1.5px solid #d4b8f4;border-radius:5px;padding:0.9rem 1.1rem;margin-top:0.9rem;}
+.exam h4{font-family:'DM Mono',monospace;font-size:0.56rem;color:var(--iso);margin-bottom:0.5rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+.er{display:flex;gap:0.45rem;margin-bottom:0.35rem;font-size:0.78rem;align-items:flex-start;}
+.ek{color:var(--iso);font-family:'DM Mono',monospace;font-size:0.62rem;flex-shrink:0;font-weight:700;}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin:0.7rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;margin:0.7rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;margin:0.7rem 0;}
+@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.gc{background:var(--s);border:1.5px solid var(--bd);border-radius:5px;padding:0.9rem;}
+.gc h4{font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;margin-bottom:0.35rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.76rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.25rem;}
+.gc li{font-size:0.75rem;color:var(--mu);margin-bottom:0.22rem;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:0.77rem;}
+th{background:var(--s);padding:0.45rem 0.75rem;text-align:left;color:var(--mu);border-bottom:1.5px solid var(--bd);font-size:0.59rem;font-weight:700;font-family:'DM Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.45rem 0.75rem;border-bottom:1px solid var(--bd);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s);}
+
+.tag{display:inline-block;padding:0.09rem 0.44rem;border-radius:2px;font-size:0.59rem;font-family:'DM Mono',monospace;font-weight:700;}
+.tg{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.tr{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.tb{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.to{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.tp{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.tt{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.ty{background:#fef9c3;color:#713f12;border:1px solid #fde047;}
+.ts{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;}
+
+/* ── MIT ROW ── */
+.mit{display:flex;align-items:flex-start;gap:0.9rem;padding:0.5rem 0.85rem;background:var(--s);border:1px solid var(--bd);border-radius:4px;margin-bottom:0.3rem;}
+.mit-t{font-family:'DM Mono',monospace;font-size:0.62rem;font-weight:700;min-width:155px;flex-shrink:0;}
+.mit-f{font-size:0.75rem;color:var(--mu);flex:1;}
+
+/* ── TECHNIQUE BAND ── */
+.tband{
+  display:flex;align-items:center;gap:1.2rem;
+  padding:1.2rem 1.4rem;
+  border-radius:6px 6px 0 0;
+  border:1.5px solid var(--bd);
+  border-bottom:none;
+  margin-bottom:0;
+}
+.tband-ico{font-size:2rem;line-height:1;}
+.tband-title{font-family:'Unbounded',sans-serif;font-size:1.6rem;font-weight:900;letter-spacing:-0.03em;line-height:0.92;}
+.tband-sub{font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--mu);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.2rem;}
+.tband-right{margin-left:auto;text-align:right;}
+.tband-tag{font-family:'DM Mono',monospace;font-size:0.58rem;font-weight:700;padding:0.15rem 0.6rem;border-radius:2px;text-transform:uppercase;letter-spacing:0.06em;}
+
+/* ── INFO ROW ── */
+.info{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s);border:1.5px solid var(--bd);border-radius:5px;margin-bottom:0.5rem;}
+.info-ico{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Unbounded',sans-serif;font-size:0.7rem;font-weight:700;margin-bottom:0.1rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--mu);}
+
+/* ── SCENARIO ── */
+.scene{background:#fffef0;border-left:4px solid var(--hrd);border-radius:0 5px 5px 0;padding:0.9rem 1.1rem;margin:0.9rem 0;}
+.scene-lbl{font-family:'DM Mono',monospace;font-size:0.56rem;color:var(--hrd);margin-bottom:0.35rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+
+/* ── COMPARISON STRIP ── */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1.5px solid var(--bd);border-radius:5px;overflow:hidden;margin:0.8rem 0;}
+@media(max-width:520px){.vs{grid-template-columns:1fr;}}
+.vs-side{padding:1rem;}
+.vs-side+.vs-side{border-left:1px solid var(--bd);}
+.vs-lbl{font-family:'DM Mono',monospace;font-size:0.58rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.3rem;}
+.vs-title{font-family:'Unbounded',sans-serif;font-size:0.75rem;font-weight:700;margin-bottom:0.3rem;letter-spacing:-0.01em;}
+.vs-body{font-size:0.75rem;color:var(--mu);line-height:1.6;}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="mast">
+  <div class="mast-l">
+    <div class="mast-kicker">Security+ SY0-701 · Domain 2 · Threats, Vulnerabilities &amp; Mitigations · 22%</div>
+    <div class="mast-title">Mitigation<br><span class="hi">Techniques</span></div>
+    <div class="mast-rule"></div>
+    <div class="mast-desc">How defenders reduce risk — segmentation, access control, configuration enforcement, hardening, isolation, and patching applied across every layer of the enterprise.</div>
+  </div>
+  <div class="mast-r">
+    <div class="tech-pills">
+      <div class="tpill" onclick="S('seg',this)"><div class="tpill-dot" style="background:var(--seg)"></div>Segmentation</div>
+      <div class="tpill" onclick="S('acc',this)"><div class="tpill-dot" style="background:var(--acc)"></div>Access Control</div>
+      <div class="tpill" onclick="S('cfg',this)"><div class="tpill-dot" style="background:var(--cfg)"></div>Configuration Enforcement</div>
+      <div class="tpill" onclick="S('hrd',this)"><div class="tpill-dot" style="background:var(--hrd)"></div>Hardening</div>
+      <div class="tpill" onclick="S('iso',this)"><div class="tpill-dot" style="background:var(--iso)"></div>Isolation</div>
+      <div class="tpill" onclick="S('ptc',this)"><div class="tpill-dot" style="background:var(--ptc)"></div>Patching</div>
+      <div class="tpill" onclick="S('sum',this)"><div class="tpill-dot" style="background:var(--mu)"></div>Summary</div>
+    </div>
+    <div class="mast-meta">
+      <div><div class="meta-val">6</div><div class="meta-lbl">Techniques</div></div>
+      <div><div class="meta-val">22%</div><div class="meta-lbl">Exam Weight</div></div>
+      <div><div class="meta-val">Domain 2</div><div class="meta-lbl">Section</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- SEGMENTATION                       -->
+<!-- ══════════════════════════════════ -->
+<div class="model on" id="m-seg">
+  <div class="tband" style="background:linear-gradient(135deg,rgba(24,64,200,0.06),rgba(244,242,236,0));">
+    <span class="tband-ico">🔀</span>
+    <div>
+      <div class="tband-title" style="color:var(--seg)">Segmentation</div>
+      <div class="tband-sub">Network · VLAN · Micro-seg · Zero Trust</div>
+    </div>
+    <div class="tband-right">
+      <div class="tband-tag" style="background:#dbeafe;color:var(--seg);border:1px solid #93c5fd">Limits Lateral Movement</div>
+    </div>
+  </div>
+
+  <div class="tabs" id="t-seg">
+    <button class="tab active" onclick="T('seg','sg1',this)">Why Segment?</button>
+    <button class="tab" onclick="T('seg','sg2',this)">Network Zones</button>
+    <button class="tab" onclick="T('seg','sg3',this)">VLAN &amp; Micro-seg</button>
+    <button class="tab" onclick="T('seg','sg4',this)">Zero Trust Segmentation</button>
+    <button class="tab" onclick="T('seg','sg5',this)">Exam Notes</button>
+  </div>
+
+  <div class="sec on" id="sg1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SEG</span><span class="card-title" style="color:var(--seg)">Why Network Segmentation Matters</span><span class="bdg" style="background:#dbeafe;color:var(--seg);border:1px solid #93c5fd">Defense in Depth</span></div>
+    <div class="card-bd">
+      <p>Segmentation divides a network into isolated zones with <strong style="color:var(--tx)">controlled communication between them</strong>. Its primary security value is limiting <strong style="color:var(--tx)">lateral movement</strong> — an attacker who compromises one segment cannot freely reach all others.</p>
+      <div class="code">
+<span class="cm"># Flat network vs segmented — the security difference:</span>
+
+<span class="cr">FLAT (no segmentation):</span>
+  IoT thermostat → CAN reach domain controller
+  Marketing laptop → CAN ping finance database
+  Attacker on ANY device: free to reach everything
+  Lateral movement: trivial — one hop to crown jewels
+
+<span class="cg">SEGMENTED:</span>
+  IoT VLAN:     only reaches HVAC controller
+  Corp VLAN:    only reaches permitted apps via firewall
+  Finance VLAN: isolated — only finance apps + audit logging
+  Server VLAN:  only reachable from authorized sources
+
+  Attacker compromises IoT thermostat:
+    → <span class="cg">Stuck in IoT VLAN ✓</span>
+    → Cannot reach AD, finance DB, servers
+    → Blast radius: the thermostat
+
+<span class="cm"># Segmentation is a CORRECTIVE and PREVENTIVE control:</span>
+Preventive: blocks unauthorized cross-segment traffic
+Corrective: contains damage when a segment IS breached
+    </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Segmentation purpose →</span><span>Limit lateral movement — contain breaches — reduce blast radius</span></div>
+        <div class="er"><span class="ek">Flat network risk →</span><span>No barriers — compromise any device = potential access to everything</span></div>
+        <div class="er"><span class="ek">Lateral movement →</span><span>Attacker moving from initial foothold to other systems — segmentation blocks paths</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="sg2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SEG</span><span class="card-title" style="color:var(--seg)">Network Zones Architecture</span><span class="bdg" style="background:#dbeafe;color:var(--seg);border:1px solid #93c5fd">DMZ · Internal · Restricted · Guest</span></div>
+    <div class="card-bd">
+      <div style="overflow-x:auto;margin:0.8rem 0">
+      <table>
+        <tr><th>Zone</th><th>Trust Level</th><th>Contains</th><th>Traffic Rules</th></tr>
+        <tr>
+          <td><span class="tag tr">Internet</span></td>
+          <td>None — untrusted</td>
+          <td>Public internet, external users</td>
+          <td>All inbound blocked by default — only specific allowed</td>
+        </tr>
+        <tr>
+          <td><span class="tag to">DMZ</span></td>
+          <td>Semi-trusted buffer</td>
+          <td>Web servers, email relay, DNS, reverse proxy</td>
+          <td>Internet → DMZ allowed (specific ports). DMZ → internal: DENY by default</td>
+        </tr>
+        <tr>
+          <td><span class="tag ty">Corporate</span></td>
+          <td>Trusted (but not blindly)</td>
+          <td>Employee workstations, printers, corp services</td>
+          <td>Sub-segmented: Finance VLAN, HR VLAN, Engineering VLAN</td>
+        </tr>
+        <tr>
+          <td><span class="tag tr">Restricted</span></td>
+          <td>High control</td>
+          <td>Financial systems, PCI scope, security infra</td>
+          <td>Only authorized systems — MFA + approval required — full audit logging</td>
+        </tr>
+        <tr>
+          <td><span class="tag tg">Guest / IoT</span></td>
+          <td>Untrusted internal</td>
+          <td>Guest WiFi, IoT devices, BYOD</td>
+          <td>Internet only — cannot reach any corporate resource</td>
+        </tr>
+        <tr>
+          <td><span class="tag tb">OT / ICS</span></td>
+          <td>Isolated</td>
+          <td>Industrial controls, SCADA, medical devices</td>
+          <td>Strict isolation — ideally air-gapped from corporate</td>
+        </tr>
+      </table>
+      </div>
+      <h3 style="border-left-color:var(--seg)">DMZ — The Classic Buffer Zone</h3>
+      <div class="info">
+        <div class="info-ico">🏰</div>
+        <div>
+          <div class="info-title">DMZ — Demilitarized Zone</div>
+          <div class="info-desc">Buffer zone between untrusted internet and trusted internal network. Hosts publicly accessible servers (web, email relay, DNS). Two-firewall DMZ: one between internet and DMZ, another between DMZ and internal network. Compromise of a DMZ server does NOT automatically grant access to internal network — the inner firewall blocks it. One-firewall DMZ (three-legged): single firewall with three interfaces — cheaper but less secure. The compromised web server in the DMZ cannot pivot to the internal AD server because the inner firewall denies it.</div>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">DMZ →</span><span>Buffer zone between internet and internal — houses public-facing servers — compromise ≠ internal access</span></div>
+        <div class="er"><span class="ek">Two-firewall DMZ →</span><span>Firewall 1: internet→DMZ / Firewall 2: DMZ→internal — most secure architecture</span></div>
+        <div class="er"><span class="ek">Guest VLAN →</span><span>Internet access only — cannot reach corporate resources — IoT isolation</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="sg3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SEG</span><span class="card-title" style="color:var(--seg)">VLANs &amp; Micro-Segmentation</span><span class="bdg" style="background:#dbeafe;color:var(--seg);border:1px solid #93c5fd">Layer 2 · SDN · Workload-Level</span></div>
+    <div class="card-bd">
+      <div class="vs">
+        <div class="vs-side">
+          <div class="vs-lbl" style="color:var(--seg)">VLAN</div>
+          <div class="vs-title">Virtual LAN — Logical Segmentation</div>
+          <div class="vs-body">Divides one physical network into multiple isolated broadcast domains. Configured on managed switches via port assignment. Inter-VLAN traffic must pass through Layer 3 device (router/firewall) — security controls applied there. 802.1Q tagging carries VLAN ID across trunk links. VLAN hopping: attacker sends double-tagged 802.1Q frames to jump VLANs — defense: native VLAN != data VLANs, disable DTP. Cost-effective — same physical hardware, multiple logical networks.</div>
+        </div>
+        <div class="vs-side">
+          <div class="vs-lbl" style="color:var(--iso)">Micro-Segmentation</div>
+          <div class="vs-title">Workload-Level Isolation</div>
+          <div class="vs-body">Takes segmentation to individual workload level — each server, VM, container has its own security policy. Controls east-west traffic between workloads — not just at VLAN boundary. Software-defined: policy in software, scales to thousands of workloads. VMware NSX, Illumio, Guardicore. Zero Trust networks implement micro-seg. Even if attacker reaches a server, cannot reach adjacent servers without explicit policy allow. More granular than VLANs but more complex to manage.</div>
+        </div>
+      </div>
+      <div class="code">
+<span class="cm"># VLAN segmentation example — inter-VLAN through firewall only:</span>
+
+Switch config:
+  Port 1-20:  VLAN 10 (Corporate users)
+  Port 21-30: VLAN 20 (Finance systems)
+  Port 31-40: VLAN 30 (IoT devices)
+  Port 41:    VLAN 99 (IT Management trunk)
+
+Firewall ACL rules (inter-VLAN):
+  VLAN 10 → VLAN 20: <span class="cr">DENY</span>  (users can't reach finance directly)
+  VLAN 10 → internet: <span class="cg">ALLOW</span> via proxy
+  VLAN 30 → any:     <span class="cr">DENY</span>  except HVAC controller IP
+  VLAN 20 → internet: <span class="cr">DENY</span>  (finance never touches internet)
+
+Result: even inside the "trusted" corporate network,
+        Finance data is protected from all other users
+        IoT devices are completely isolated
+    </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">VLAN →</span><span>Logical segment on same physical hardware — inter-VLAN through firewall only — managed switches</span></div>
+        <div class="er"><span class="ek">VLAN hopping →</span><span>Double-tagged 802.1Q frame jumps VLANs — fix: native VLAN ≠ data VLANs, disable DTP</span></div>
+        <div class="er"><span class="ek">Micro-segmentation →</span><span>Workload-level isolation — east-west control — VMware NSX, Illumio — Zero Trust networks</span></div>
+        <div class="er"><span class="ek">East-west traffic →</span><span>Traffic between systems inside the network — micro-seg controls this — traditional firewalls only do north-south</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="sg4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SEG</span><span class="card-title" style="color:var(--seg)">Zero Trust Segmentation</span><span class="bdg" style="background:#dbeafe;color:var(--seg);border:1px solid #93c5fd">Never Trust · Always Verify · ZTNA</span></div>
+    <div class="card-bd">
+      <p>Zero Trust treats <strong style="color:var(--tx)">segmentation as identity-based, not network-location-based</strong>. Access is granted to specific applications based on verified identity and device health — not based on which network segment you're on.</p>
+      <div class="g2">
+        <div class="gc" style="border-color:#93c5fd">
+          <h4 style="color:var(--seg)">Traditional Segmentation</h4>
+          <p>Perimeter-based. Inside corporate VLAN = some trust. Segmentation controls which VLAN can reach which VLAN. Once inside a VLAN, relatively free within it. Problem: lateral movement within a VLAN is unrestricted. Weakness: VPN connected = trusted network = access to the whole segment.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--iso)">Zero Trust Segmentation</h4>
+          <p>Identity-based. Network location is irrelevant. Access decision: who are you + device health + context. ZTNA (Zero Trust Network Access): replaces VPN — grants access to specific app, not network. Micro-seg at workload level. Even inside your segment: you only reach what you're explicitly authorized to reach.</p>
+        </div>
+      </div>
+      <h3 style="border-left-color:var(--seg)">Segmentation in OT / ICS Environments</h3>
+      <div class="info">
+        <div class="info-ico">🏭</div>
+        <div>
+          <div class="info-title">Purdue Model — OT Network Segmentation</div>
+          <div class="info-desc">Industrial Control Systems (ICS) use the Purdue Model to segment OT from IT. Level 0-2: physical process, sensors, PLCs. Level 3: manufacturing operations. Level 4-5: enterprise IT. Each level separated — traffic strictly controlled. Air gap between Level 3 and Level 4: no direct network connection between OT and IT. Data diode: one-way data flow — OT data goes to IT for monitoring but IT cannot send commands to OT. Stuxnet exploited gaps in this segmentation — crossed from internet to air-gapped ICS via USB.</div>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Zero Trust →</span><span>Identity not location — every request verified — micro-seg at workload level</span></div>
+        <div class="er"><span class="ek">ZTNA →</span><span>Zero Trust Network Access — app-level access not network access — replaces VPN</span></div>
+        <div class="er"><span class="ek">Purdue Model →</span><span>OT/ICS segmentation — levels 0-5 — air gap between OT and IT networks</span></div>
+        <div class="er"><span class="ek">Data diode →</span><span>One-way traffic — OT data goes out to IT — no commands can come back in</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="sg5">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">SEG</span><span class="card-title" style="color:var(--seg)">Segmentation Exam Summary</span><span class="bdg" style="background:#dbeafe;color:var(--seg);border:1px solid #93c5fd">All Key Points</span></div>
+    <div class="card-bd">
+      <div class="exam"><h4>// All Segmentation Exam Points</h4>
+        <div class="er"><span class="ek">Primary purpose →</span><span>Limit lateral movement — contain breaches — reduce blast radius</span></div>
+        <div class="er"><span class="ek">DMZ →</span><span>Buffer zone — public servers — compromise ≠ internal access — two-firewall = most secure</span></div>
+        <div class="er"><span class="ek">VLAN →</span><span>Logical segmentation — managed switches — inter-VLAN through firewall only</span></div>
+        <div class="er"><span class="ek">VLAN hopping →</span><span>Double-tagged frames — disable DTP — native VLAN ≠ data VLANs</span></div>
+        <div class="er"><span class="ek">Micro-segmentation →</span><span>Workload level — east-west control — VMware NSX / Illumio</span></div>
+        <div class="er"><span class="ek">ZTNA →</span><span>App-level access — identity verified — replaces VPN</span></div>
+        <div class="er"><span class="ek">Guest VLAN →</span><span>Internet only — no corporate access — IoT + BYOD isolation</span></div>
+        <div class="er"><span class="ek">Purdue Model →</span><span>OT/ICS — levels 0-5 — air gap OT from IT</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end seg -->
+
+<!-- ══════════════════════════════════ -->
+<!-- ACCESS CONTROL                     -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-acc">
+  <div class="tband" style="background:linear-gradient(135deg,rgba(200,32,24,0.06),rgba(244,242,236,0));">
+    <span class="tband-ico">🔒</span>
+    <div>
+      <div class="tband-title" style="color:var(--acc)">Access Control</div>
+      <div class="tband-sub">Identity · Least Privilege · MFA · IAM · PAM</div>
+    </div>
+    <div class="tband-right">
+      <div class="tband-tag" style="background:#fee2e2;color:var(--acc);border:1px solid #fca5a5">Identity-Based Defence</div>
+    </div>
+  </div>
+
+  <div class="tabs" id="t-acc">
+    <button class="tab active" onclick="T('acc','ac1',this)">Principles</button>
+    <button class="tab" onclick="T('acc','ac2',this)">Identity &amp; MFA</button>
+    <button class="tab" onclick="T('acc','ac3',this)">Access Models</button>
+    <button class="tab" onclick="T('acc','ac4',this)">Privileged Access</button>
+    <button class="tab" onclick="T('acc','ac5',this)">Allow / Deny Lists</button>
+  </div>
+
+  <div class="sec on" id="ac1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ACC</span><span class="card-title" style="color:var(--acc)">Access Control Principles</span><span class="bdg" style="background:#fee2e2;color:var(--acc);border:1px solid #fca5a5">Least Privilege · Need-to-Know · SoD</span></div>
+    <div class="card-bd">
+      <div class="g3">
+        <div class="gc" style="border-color:#fca5a5">
+          <h4 style="color:var(--acc)">Least Privilege</h4>
+          <p>Every user, process, and system gets only the minimum access required to perform its function — nothing more. Reduce blast radius: if account is compromised, attacker only has what the account had. Apply to: user accounts, service accounts, API keys, firewall rules, IAM policies, database permissions.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--acc)">Need-to-Know</h4>
+          <p>Even with appropriate clearance level, a user should only access data relevant to their current task. Extension of least privilege into data sensitivity. Common in: government / classified, healthcare (HIPAA), finance. "You have Secret clearance but don't need this specific project file."</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--acc)">Separation of Duties</h4>
+          <p>No single person controls a critical process end-to-end. Developer cannot deploy to production without approval. Finance: person who creates payments cannot approve them. Prevents: insider fraud, accidental errors, reduces impact of compromised accounts. Technical enforcement: RBAC, workflow approvals, two-person integrity.</p>
+        </div>
+      </div>
+      <div class="code">
+<span class="cm"># Least privilege applied everywhere:</span>
+
+Web server service account:
+  Needs: read web files, write logs
+  DOES NOT need: admin rights, DB write access, network admin
+  If compromised: attacker gets → web files + logs only
+
+Database service account:
+  Needs: SELECT on specific tables app uses
+  DOES NOT need: CREATE, DROP, full DBA access
+  If SQLi: attacker can only read permitted tables
+
+Developer in production:
+  Needs: read-only access to troubleshoot
+  DOES NOT need: write access, admin, deployment rights
+  Production changes: via approved pipeline + second approval
+
+<span class="cm"># Privilege creep: users accumulate permissions over time</span>
+<span class="cm"># Fix: quarterly access reviews — remove what's no longer needed</span>
+<span class="cm"># Certification campaigns: managers attest to what team still needs</span>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Least privilege →</span><span>Minimum access needed — reduces blast radius — apply everywhere including service accounts</span></div>
+        <div class="er"><span class="ek">Need-to-know →</span><span>Even with clearance — only access data relevant to current task</span></div>
+        <div class="er"><span class="ek">Separation of duties →</span><span>No single person controls critical process — developer ≠ deployer — creator ≠ approver</span></div>
+        <div class="er"><span class="ek">Privilege creep →</span><span>Accumulated permissions over time — quarterly access reviews fix — recertification campaigns</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="ac2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ACC</span><span class="card-title" style="color:var(--acc)">Identity &amp; Multi-Factor Authentication</span><span class="bdg" style="background:#fee2e2;color:var(--acc);border:1px solid #fca5a5">MFA · SSO · Federation</span></div>
+    <div class="card-bd">
+      <div class="info">
+        <div class="info-ico">🎫</div>
+        <div>
+          <div class="info-title">MFA — The Single Most Effective Access Control</div>
+          <div class="info-desc">Requiring two or more different authentication factor types before granting access. Microsoft: MFA blocks 99.9% of automated account attacks. Factor types: something you KNOW (password), something you HAVE (TOTP, hardware key), something you ARE (biometric). MFA strength: SMS OTP (weakest — SIM swapping risk) → TOTP app → FIDO2/WebAuthn hardware key (strongest — phishing-resistant, bound to site). Even if attacker steals password: useless without second factor.</div>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="gc">
+          <h4 style="color:var(--acc)">SSO — Single Sign-On</h4>
+          <p>Authenticate once → access many applications. Protocols: SAML 2.0 (XML, enterprise federation), OIDC/OAuth 2.0 (web/mobile), Kerberos (on-prem AD). Benefit: reduces password fatigue, centralizes access control, easier to enforce MFA everywhere. Risk: SSO compromise = all apps compromised — make SSO the most protected system with strongest MFA.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--acc)">Identity Federation</h4>
+          <p>Trust identities from another organization's identity provider. Company A trusts Company B's IdP — B's employees can access A's systems using their own credentials. SAML, OIDC enable federation. B2B partnerships, cloud provider access. Defense: federation agreements define trust boundaries — control what federated users can access.</p>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">MFA →</span><span>Two+ different factor types — blocks 99.9% automated attacks — FIDO2 is phishing-resistant</span></div>
+        <div class="er"><span class="ek">SMS MFA weakness →</span><span>SIM swapping can intercept SMS codes — use TOTP app or hardware key instead</span></div>
+        <div class="er"><span class="ek">FIDO2 / WebAuthn →</span><span>Phishing-resistant — bound to specific site — hardware security key</span></div>
+        <div class="er"><span class="ek">SSO →</span><span>Authenticate once — many apps — SAML / OIDC — must be most protected system</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="ac3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ACC</span><span class="card-title" style="color:var(--acc)">Access Control Models</span><span class="bdg" style="background:#fee2e2;color:var(--acc);border:1px solid #fca5a5">DAC · MAC · RBAC · ABAC</span></div>
+    <div class="card-bd">
+      <div style="overflow-x:auto;margin:0.8rem 0">
+      <table>
+        <tr><th>Model</th><th>Who Controls Access</th><th>Based On</th><th>Security</th><th>Used In</th></tr>
+        <tr><td><span class="tag tb">DAC</span> Discretionary</td><td>Resource owner</td><td>Owner's discretion</td><td>Low (most flexible)</td><td>Windows NTFS, Linux chmod</td></tr>
+        <tr><td><span class="tag tr">MAC</span> Mandatory</td><td>Central authority</td><td>Classification labels</td><td>High (most secure)</td><td>Government, military, SELinux</td></tr>
+        <tr><td><span class="tag tg">RBAC</span> Role-Based</td><td>IT/Security admin</td><td>Job role / function</td><td>Medium</td><td>Enterprise AD, most SaaS</td></tr>
+        <tr><td><span class="tag to">ABAC</span> Attribute-Based</td><td>Policy engine</td><td>User + resource + environment attributes</td><td>Very granular</td><td>Zero Trust, cloud IAM</td></tr>
+      </table>
+      </div>
+      <div class="g2">
+        <div class="gc">
+          <h4 style="color:var(--acc)">RBAC — Most Common Enterprise</h4>
+          <p>Users assigned to roles → roles have permissions → users inherit. Change a role → all members updated instantly. Roles: Finance-User, IT-Admin, HR-Manager, Developer. Principle of least privilege per role. Problem: role explosion — too many granular roles → management burden.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--acc)">ABAC — Zero Trust Foundation</h4>
+          <p>"Finance-User in UK, business hours, managed device, can access EU reports." Combines: who (identity attributes), what (resource sensitivity), where/when (environmental context). Most granular — implements complex conditional policies. Foundation of Zero Trust and cloud IAM (AWS IAM conditions, Azure Conditional Access).</p>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">DAC →</span><span>Owner decides — Windows NTFS — flexible but least secure</span></div>
+        <div class="er"><span class="ek">MAC →</span><span>Labels — Top Secret/Secret/Confidential — central authority — government/military</span></div>
+        <div class="er"><span class="ek">RBAC →</span><span>Job role determines access — most common enterprise — easy to manage at scale</span></div>
+        <div class="er"><span class="ek">ABAC →</span><span>Multiple attributes — user + resource + environment — Zero Trust foundation — most granular</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="ac4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ACC</span><span class="card-title" style="color:var(--acc)">Privileged Access Management (PAM)</span><span class="bdg" style="background:#fee2e2;color:var(--acc);border:1px solid #fca5a5">Admin Accounts · JIT · Session Recording</span></div>
+    <div class="card-bd">
+      <p>Admin and privileged accounts are <strong style="color:var(--tx)">the most targeted credentials in any environment</strong>. PAM solutions enforce controls around who can use privileged credentials, when, and how.</p>
+      <div class="code">
+<span class="cm"># PAM capabilities:</span>
+
+<span class="cb">Credential vaulting:</span>
+  Store privileged credentials (admin passwords, root keys) in secure vault
+  Users request access → vault provides → session ends → password rotated
+  Admins never see the actual password
+  Even if admin's workstation is compromised: no stored creds to steal
+
+<span class="cb">Just-in-Time (JIT) access:</span>
+  Admin access granted ONLY when needed → automatically revoked after session
+  No persistent admin accounts sitting idle = no persistent target
+  Workflow: request access → approval → time-limited grant → auto-revoke
+
+<span class="cb">Session recording:</span>
+  All privileged sessions recorded: every keystroke, screen action
+  Non-repudiation: admin cannot deny what they did
+  Forensics: replay session during investigation
+  Deterrent: "you know everything is recorded"
+
+<span class="cb">Privileged Access Workstations (PAW):</span>
+  Dedicated hardened workstation ONLY used for admin tasks
+  No internet browsing, email, or general use from PAW
+  Reduces risk of admin credential theft via phishing on admin's regular PC
+    </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">PAM →</span><span>Privileged Access Management — vaults credentials — JIT access — session recording</span></div>
+        <div class="er"><span class="ek">JIT access →</span><span>Just-in-Time — granted only when needed — auto-revoked — no persistent admin</span></div>
+        <div class="er"><span class="ek">Credential vault →</span><span>Admin never sees actual password — vault rotates after use — can't steal what you don't know</span></div>
+        <div class="er"><span class="ek">PAW →</span><span>Privileged Access Workstation — hardened dedicated device — admin tasks only — no browsing</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="ac5">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ACC</span><span class="card-title" style="color:var(--acc)">Allow Lists &amp; Deny Lists</span><span class="bdg" style="background:#fee2e2;color:var(--acc);border:1px solid #fca5a5">Whitelist · Blacklist · App Control</span></div>
+    <div class="card-bd">
+      <div class="vs">
+        <div class="vs-side" style="background:#f0fff8">
+          <div class="vs-lbl" style="color:var(--cfg)">Allow List (Whitelist)</div>
+          <div class="vs-title">Default: DENY</div>
+          <div class="vs-body">Only explicitly approved items permitted. Everything else: blocked. Most secure — unknown = blocked. Use for: application control (AppLocker/WDAC), firewall rules, trusted email senders. Harder to manage: must approve everything upfront. Attacker must get approved — very difficult.</div>
+        </div>
+        <div class="vs-side" style="background:#fff8f8">
+          <div class="vs-lbl" style="color:var(--acc)">Deny List (Blacklist)</div>
+          <div class="vs-title">Default: ALLOW</div>
+          <div class="vs-body">Only explicitly blocked items denied. Everything else: permitted. Less secure — unknown = allowed. Use for: known malicious IPs/domains, AV signatures. Easier to manage: only block known bad. Attacker just needs to use something not yet listed.</div>
+        </div>
+      </div>
+      <div class="info" style="margin-top:0.8rem">
+        <div class="info-ico">🛡️</div>
+        <div>
+          <div class="info-title">Application Allow Listing — AppLocker / WDAC</div>
+          <div class="info-desc">Only approved, digitally signed applications may execute. Windows: AppLocker (Group Policy) and WDAC (Windows Defender Application Control). Any unknown executable — including ransomware — is blocked automatically. Blocks living-off-the-land attacks if specific LOLBins are excluded from approved list. Change management: adding new approved software requires formal change request with security review. Emergency: ECAB approval to add application to allow list.</div>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Allow list →</span><span>Default deny — most secure — unknown = blocked — AppLocker/WDAC for apps</span></div>
+        <div class="er"><span class="ek">Deny list →</span><span>Default allow — known bad blocked — easier but less secure — misses new threats</span></div>
+        <div class="er"><span class="ek">Application allow listing →</span><span>Only approved signed apps execute — blocks ransomware + unknown malware</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end acc -->
+
+<!-- ══════════════════════════════════ -->
+<!-- CONFIGURATION ENFORCEMENT          -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-cfg">
+  <div class="tband" style="background:linear-gradient(135deg,rgba(10,120,72,0.06),rgba(244,242,236,0));">
+    <span class="tband-ico">⚙️</span>
+    <div>
+      <div class="tband-title" style="color:var(--cfg)">Configuration Enforcement</div>
+      <div class="tband-sub">Baselines · Drift Detection · Compliance Automation</div>
+    </div>
+    <div class="tband-right">
+      <div class="tband-tag" style="background:#dcfce7;color:var(--cfg);border:1px solid #86efac">Consistency at Scale</div>
+    </div>
+  </div>
+
+  <div class="tabs" id="t-cfg">
+    <button class="tab active" onclick="T('cfg','cf1',this)">Baselines &amp; Standards</button>
+    <button class="tab" onclick="T('cfg','cf2',this)">Drift Detection</button>
+    <button class="tab" onclick="T('cfg','cf3',this)">Automation Tools</button>
+    <button class="tab" onclick="T('cfg','cf4',this)">Cloud Config</button>
+  </div>
+
+  <div class="sec on" id="cf1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">CFG</span><span class="card-title" style="color:var(--cfg)">Security Baselines &amp; Standards</span><span class="bdg" style="background:#dcfce7;color:var(--cfg);border:1px solid #86efac">CIS · STIG · Hardening</span></div>
+    <div class="card-bd">
+      <p>A <strong style="color:var(--tx)">security baseline</strong> is a documented, minimum acceptable configuration for a system type. Every system of that type must meet the baseline — deviation requires documented exception with compensating controls.</p>
+      <div class="g2">
+        <div class="gc" style="border-color:#86efac">
+          <h4 style="color:var(--cfg)">CIS Benchmarks</h4>
+          <p>Consensus-based configuration standards for 100+ technologies. Level 1: basic security — minimal performance/usability impact. Level 2: more restrictive — may affect usability. Scored: every control has automated pass/fail check. Free download. Covers: Windows, Linux, AWS, Azure, Docker, Kubernetes, network devices. Gold standard for system hardening across all major platforms.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--cfg)">STIG — Security Technical Implementation Guide</h4>
+          <p>US DoD hardening guidance — more restrictive than CIS. Required for DoD systems and many federal contractors. Automated checking: STIG Viewer, Evaluate-STIG. SCAP (Security Content Automation Protocol): machine-readable compliance checking enables automated assessment. XCCDF and OVAL formats for automated scanning. Very specific, prescriptive — leaves little room for interpretation.</p>
+        </div>
+      </div>
+      <div class="code">
+<span class="cm"># What a baseline defines (examples from CIS Windows L1):</span>
+
+Password policy:
+  Minimum length: 14 characters
+  Maximum age: 60 days (optional — NIST now recommends against rotation)
+  Complexity: enabled
+  
+Account policy:
+  Account lockout threshold: 5 attempts
+  Lockout duration: 30 minutes
+
+Audit policy:
+  Account logon: Success and Failure
+  Privilege use: Failure
+  System events: Success and Failure
+
+Services to disable:
+  Telnet, FTP, SMBv1, NetBIOS, LLMNR, Print Spooler (on non-printers)
+
+Registry settings:
+  LAN Manager authentication: NTLMv2 only (not NTLMv1/LM)
+  UAC: enabled for all administrators
+    </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Security baseline →</span><span>Documented minimum config — every system must comply — exceptions require approval + compensating controls</span></div>
+        <div class="er"><span class="ek">CIS benchmark →</span><span>Consensus-based hardening standard — Level 1 (low impact) / Level 2 (more restrictive)</span></div>
+        <div class="er"><span class="ek">STIG →</span><span>DoD hardening guides — more restrictive than CIS — federal/military systems</span></div>
+        <div class="er"><span class="ek">SCAP →</span><span>Security Content Automation Protocol — machine-readable compliance checking</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="cf2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">CFG</span><span class="card-title" style="color:var(--cfg)">Configuration Drift Detection</span><span class="bdg" style="background:#dcfce7;color:var(--cfg);border:1px solid #86efac">CMDB · FIM · CSPM</span></div>
+    <div class="card-bd">
+      <p>Configuration drift occurs when <strong style="color:var(--tx)">a system's actual configuration diverges from its approved baseline</strong>. Drift can be: accidental (admin made a change without proper process), malicious (attacker modified configuration), or systemic (software update changed settings).</p>
+      <div class="g3">
+        <div class="gc">
+          <h4 style="color:var(--cfg)">CMDB</h4>
+          <p>Configuration Management Database — authoritative inventory of all configuration items (CIs) and their relationships. Updated after every approved change. Drift: actual config ≠ CMDB record → unauthorized change detected. Every change tracked from baseline through all versions.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--cfg)">FIM — File Integrity Monitoring</h4>
+          <p>Hash every critical file at baseline. Continuously compare current hash to baseline. Any change to config file, binary, or system file → immediate alert. Tools: Tripwire, OSSEC, Wazuh. Critical files: /etc/passwd, web server configs, application binaries. On Windows: key registry keys monitored.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--cfg)">CSPM — Cloud Posture</h4>
+          <p>Cloud Security Posture Management — continuously checks cloud configs against security benchmarks. Alerts when: S3 bucket becomes public, security group allows 0.0.0.0/0, MFA disabled on root account, encryption disabled on storage. AWS Security Hub, Prisma Cloud, Azure Defender. Real-time drift detection for cloud resources.</p>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Configuration drift →</span><span>Actual config diverges from approved baseline — unauthorized change or accidental modification</span></div>
+        <div class="er"><span class="ek">FIM →</span><span>File Integrity Monitoring — hash baseline files — alert on change — Tripwire, OSSEC, Wazuh</span></div>
+        <div class="er"><span class="ek">CMDB →</span><span>Configuration Management Database — authoritative record — drift = actual ≠ CMDB</span></div>
+        <div class="er"><span class="ek">CSPM →</span><span>Cloud Security Posture Management — continuous cloud config compliance — alerts on misconfig</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="cf3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">CFG</span><span class="card-title" style="color:var(--cfg)">Configuration Automation Tools</span><span class="bdg" style="background:#dcfce7;color:var(--cfg);border:1px solid #86efac">IaC · Ansible · Group Policy</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#86efac">
+          <h4 style="color:var(--cfg)">Infrastructure as Code (IaC)</h4>
+          <p>Define infrastructure in code (Terraform, CloudFormation) — configuration is version-controlled, reviewed, tested. Security benefit: every config change goes through pull request review. Drift prevention: if someone manually changes a resource, IaC can detect and revert (immutable infrastructure). Security scanning: tfsec, Checkov scan IaC code for misconfigs before deployment.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--cfg)">Configuration Management Tools</h4>
+          <p>Ansible, Puppet, Chef: enforce desired system state continuously. If system drifts from desired state → tool automatically corrects. Ansible playbook: "ensure SMBv1 is disabled on all Windows servers" → runs against all servers → non-compliant ones fixed. Agent-based (Puppet) or agentless (Ansible). Idempotent: running twice = same result as running once.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--cfg)">Group Policy (GPO)</h4>
+          <p>Windows: enforce configuration on all domain-joined systems via Active Directory Group Policy Objects. Password policy, screen lock, USB restrictions, firewall rules, software installation, audit settings — all enforced centrally. Cannot be changed by local admin on domain-joined machines (domain policy overrides). Regular GPO audits ensure policies still align with security baseline.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--cfg)">MDM — Mobile Device Management</h4>
+          <p>Enforce configuration on mobile devices and endpoints. Policies: require PIN, enable encryption, install EDR agent, block camera, prohibit sideloading, enforce OS version. Corporate-owned: full MDM control. BYOD: MAM (application management only). Compliance check: device must meet policy before accessing corporate resources.</p>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">IaC →</span><span>Config in code — version controlled — reviewed — drift detection — tfsec/Checkov scan</span></div>
+        <div class="er"><span class="ek">Ansible / Puppet →</span><span>Enforce desired state — auto-remediate drift — idempotent</span></div>
+        <div class="er"><span class="ek">Group Policy →</span><span>Windows domain config enforcement — centrally managed — overrides local admin</span></div>
+        <div class="er"><span class="ek">MDM →</span><span>Mobile config enforcement — compliance before access — MDM = device / MAM = apps only</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="cf4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">CFG</span><span class="card-title" style="color:var(--cfg)">Cloud Configuration Enforcement</span><span class="bdg" style="background:#dcfce7;color:var(--cfg);border:1px solid #86efac">CSPM · SCPs · Policy as Code</span></div>
+    <div class="card-bd">
+      <div class="code">
+<span class="cm"># Cloud configuration enforcement layers:</span>
+
+<span class="cb">1. Preventive (prevent misconfiguration from being created):</span>
+   AWS Service Control Policies (SCPs): restrict what accounts can do
+     "No account may create publicly accessible S3 buckets"
+   Azure Policy: deny non-compliant resources at creation
+     "Deny VM creation without encryption enabled"
+   GCP Organization Policy: enforce at org level
+   
+   Result: misconfiguration cannot be deployed — blocked at creation
+
+<span class="cb">2. Detective (find existing misconfigurations):</span>
+   CSPM tools: continuously scan all resources against benchmarks
+   AWS Security Hub: aggregates findings from GuardDuty, Inspector, Config
+   AWS Config Rules: "S3 bucket should not be publicly readable" → FAIL alert
+   
+   Result: existing misconfigs found and alerted — remediate quickly
+
+<span class="cb">3. Responsive (auto-remediate when misconfiguration detected):</span>
+   AWS Config + Lambda: detect non-compliant resource → auto-fix
+   SOAR: misconfiguration alert → playbook runs → resource remediated
+   
+   Result: time-to-fix measured in minutes not days
+    </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">SCP (AWS) →</span><span>Service Control Policy — guardrails at org level — prevent misconfiguration creation</span></div>
+        <div class="er"><span class="ek">AWS Config →</span><span>Continuously evaluates resource configs against rules — alerts on drift</span></div>
+        <div class="er"><span class="ek">Preventive vs detective cloud →</span><span>SCP/Azure Policy prevent creation vs CSPM/Config detect existing issues</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end cfg -->
+
+<!-- ══════════════════════════════════ -->
+<!-- HARDENING                          -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-hrd">
+  <div class="tband" style="background:linear-gradient(135deg,rgba(176,88,0,0.06),rgba(244,242,236,0));">
+    <span class="tband-ico">💪</span>
+    <div>
+      <div class="tband-title" style="color:var(--hrd)">Hardening</div>
+      <div class="tband-sub">OS · Application · Network Devices · Firmware</div>
+    </div>
+    <div class="tband-right">
+      <div class="tband-tag" style="background:#ffedd5;color:var(--hrd);border:1px solid #fdba74">Reduce Attack Surface</div>
+    </div>
+  </div>
+
+  <div class="tabs" id="t-hrd">
+    <button class="tab active" onclick="T('hrd','hd1',this)">OS Hardening</button>
+    <button class="tab" onclick="T('hrd','hd2',this)">Application Hardening</button>
+    <button class="tab" onclick="T('hrd','hd3',this)">Network Devices</button>
+    <button class="tab" onclick="T('hrd','hd4',this)">Endpoint &amp; Firmware</button>
+  </div>
+
+  <div class="sec on" id="hd1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">HRD</span><span class="card-title" style="color:var(--hrd)">Operating System Hardening</span><span class="bdg" style="background:#ffedd5;color:var(--hrd);border:1px solid #fdba74">Remove · Disable · Restrict · Monitor</span></div>
+    <div class="card-bd">
+      <p>OS hardening follows one principle: <strong style="color:var(--tx)">remove or disable everything not needed, secure everything that remains</strong>. Hardening reduces attack surface by eliminating potential entry points.</p>
+      <div class="code">
+<span class="cm"># OS hardening checklist (per CIS Benchmark):</span>
+
+<span class="cb">Remove unused components:</span>
+  Uninstall: unused packages, compilers on prod, sample apps
+  Remove: default accounts (Guest, default admin names)
+  Delete: help files, documentation not needed at runtime
+
+<span class="cb">Disable unused services:</span>
+  SMBv1: disable (EternalBlue target)
+  Telnet: disable — use SSH
+  FTP: disable — use SFTP
+  LLMNR / NBNS: disable (credential poisoning target)
+  Print Spooler: disable on non-print servers (PrintNightmare)
+  NetBIOS: disable where not needed
+
+<span class="cb">Configure secure settings:</span>
+  NTLM: require NTLMv2 minimum (or disable entirely, use Kerberos)
+  UAC: enable for all administrator accounts
+  Windows Firewall: enable with default deny inbound
+  Secure boot: enable in UEFI
+  BitLocker: enable on all drives
+  Audit logging: configure comprehensive audit policy
+
+<span class="cb">File system permissions:</span>
+  Principle of least privilege on all directories
+  No world-writable directories in system paths
+  Protect: SAM database, shadow passwords
+
+<span class="cm"># Linux-specific:</span>
+  Root SSH login: disabled (PermitRootLogin no)
+  SSH: key-based auth only (disable password auth)
+  SELinux / AppArmor: enable mandatory access control
+  SUID/SGID binaries: audit and minimize
+    </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">OS hardening →</span><span>Remove unused — disable unneeded services — restrict permissions — enable logging</span></div>
+        <div class="er"><span class="ek">Disable SMBv1 →</span><span>EternalBlue vector — no legitimate reason to run it — disable immediately</span></div>
+        <div class="er"><span class="ek">Disable LLMNR/NBNS →</span><span>Credential poisoning attack vector — disable both on all Windows systems</span></div>
+        <div class="er"><span class="ek">SELinux / AppArmor →</span><span>Mandatory access control on Linux — limits what processes can do even if exploited</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="hd2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">HRD</span><span class="card-title" style="color:var(--hrd)">Application Hardening</span><span class="bdg" style="background:#ffedd5;color:var(--hrd);border:1px solid #fdba74">Web Server · Database · Browser</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#fdba74">
+          <h4 style="color:var(--hrd)">Web Server Hardening</h4>
+          <ul>
+            <li>Disable directory listing (reveals file structure)</li>
+            <li>Remove: default pages, sample apps, README files</li>
+            <li>Disable verbose error messages (reveals stack traces)</li>
+            <li>Enable security headers: HSTS, CSP, X-Frame-Options, X-Content-Type-Options</li>
+            <li>Run as low-privilege user (www-data not root)</li>
+            <li>TLS 1.2+ only — disable old versions and weak ciphers</li>
+            <li>WAF in front of web application</li>
+          </ul>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--hrd)">Database Hardening</h4>
+          <ul>
+            <li>Rename/delete default accounts (sa, root, admin)</li>
+            <li>Enable authentication — no blank passwords</li>
+            <li>Least privilege DB accounts — no DBA for app accounts</li>
+            <li>Disable xp_cmdshell (MSSQL — OS command execution)</li>
+            <li>Encrypt data at rest (TDE) and in transit (TLS)</li>
+            <li>Enable audit logging of all queries and access</li>
+            <li>Bind to localhost or specific IP — not all interfaces</li>
+          </ul>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--hrd)">Browser Hardening (Enterprise)</h4>
+          <ul>
+            <li>Deploy via Group Policy with security settings</li>
+            <li>Block: known malicious categories (proxy bypass)</li>
+            <li>Disable: Java plugin, Flash (EOL), unnecessary extensions</li>
+            <li>Enable: Safe Browsing, phishing protection</li>
+            <li>Control DNS-over-HTTPS (can bypass DNS filtering)</li>
+            <li>Certificate pinning for internal apps</li>
+          </ul>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--hrd)">Change Defaults Everywhere</h4>
+          <p>Default credentials are the #1 IoT and device attack vector. Admin/admin, admin/password — all must be changed immediately on deployment. Default service names reveal software versions. Change: admin portals, SNMP community strings, WiFi PSKs, management interfaces. Document: every non-default credential change in credential vault.</p>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Remove defaults →</span><span>Default accounts, pages, sample apps — change all default credentials immediately</span></div>
+        <div class="er"><span class="ek">Security headers →</span><span>HSTS, CSP, X-Frame-Options, X-Content-Type-Options — web server hardening</span></div>
+        <div class="er"><span class="ek">xp_cmdshell →</span><span>MSSQL OS command execution — disable — attack escalation path</span></div>
+        <div class="er"><span class="ek">TDE →</span><span>Transparent Data Encryption — database at-rest encryption — hardening control</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="hd3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">HRD</span><span class="card-title" style="color:var(--hrd)">Network Device Hardening</span><span class="bdg" style="background:#ffedd5;color:var(--hrd);border:1px solid #fdba74">Routers · Switches · Firewalls</span></div>
+    <div class="card-bd">
+      <div class="code">
+<span class="cm"># Universal network device hardening:</span>
+
+<span class="cb">Access security:</span>
+  Change default credentials immediately
+  SSH (not Telnet) for remote management
+  HTTPS (not HTTP) for web management console
+  Restrict management access: only from management VLAN
+  MFA where supported
+  
+<span class="cb">Service reduction (attack surface):</span>
+  Disable: CDP/LLDP on external-facing ports (reveals topology)
+  Disable: unused services (HTTP, finger, echo)
+  Disable: unused ports → shutdown state
+  Assign unused ports to "dead" VLAN (not VLAN 1)
+
+<span class="cb">Switch hardening:</span>
+  Port security: limit MAC addresses per port (max 1-3)
+  BPDU Guard: prevent rogue switches (disable on access ports)
+  DHCP snooping: only trusted ports can send DHCP offers
+  Dynamic ARP Inspection (DAI): validate ARP against DHCP table
+  IP Source Guard: validate source IP against DHCP binding
+  Disable: DTP (Dynamic Trunking Protocol — VLAN hopping attack)
+  Native VLAN: set to unused VLAN (not VLAN 1)
+
+<span class="cb">Logging and monitoring:</span>
+  Syslog: forward to SIEM
+  NTP: time sync (critical for log correlation)
+  SNMPv3: management with authentication + encryption (not v1/v2)
+  NetFlow: traffic analytics for anomaly detection
+    </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Network device hardening →</span><span>Change defaults — SSH not Telnet — disable CDP on external ports — management VLAN only</span></div>
+        <div class="er"><span class="ek">BPDU Guard →</span><span>Prevents rogue switches — disable on access ports — enabled by default on some platforms</span></div>
+        <div class="er"><span class="ek">DHCP snooping →</span><span>Only trusted ports send DHCP offers — prevents rogue DHCP server</span></div>
+        <div class="er"><span class="ek">DAI →</span><span>Dynamic ARP Inspection — validates against DHCP snooping table — prevents ARP poisoning</span></div>
+        <div class="er"><span class="ek">Disable DTP →</span><span>Prevents VLAN hopping — set trunk ports explicitly — no auto-negotiation</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="hd4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">HRD</span><span class="card-title" style="color:var(--hrd)">Endpoint &amp; Firmware Hardening</span><span class="bdg" style="background:#ffedd5;color:var(--hrd);border:1px solid #fdba74">EDR · Secure Boot · UEFI</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#fdba74">
+          <h4 style="color:var(--hrd)">Endpoint Hardening</h4>
+          <ul>
+            <li>EDR: behavioral endpoint detection and response</li>
+            <li>Application allow listing: AppLocker/WDAC</li>
+            <li>Full disk encryption: BitLocker (Windows) / FileVault (macOS)</li>
+            <li>Disable AutoRun/AutoPlay (USB malware vector)</li>
+            <li>Disable USB storage (allow charging — block data)</li>
+            <li>Screen lock timeout: 5-10 minutes unattended</li>
+            <li>Credential Guard: isolate LSASS from credential theft</li>
+            <li>Windows Defender Attack Surface Reduction (ASR) rules</li>
+          </ul>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--hrd)">Firmware Hardening</h4>
+          <ul>
+            <li>Enable UEFI Secure Boot: verifies bootloader signature</li>
+            <li>Set BIOS password: prevents boot order changes</li>
+            <li>Disable boot from USB/CD: prevents offline attacks</li>
+            <li>TPM 2.0: enable — used by BitLocker, measured boot</li>
+            <li>Disable unused UEFI features: unused legacy options</li>
+            <li>Update firmware: UEFI vulnerabilities patched</li>
+            <li>Measured boot: TPM records boot chain — detects tampering</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Secure Boot →</span><span>UEFI verifies bootloader signature before executing — prevents bootkit</span></div>
+        <div class="er"><span class="ek">Measured Boot + TPM →</span><span>Records every boot component — detects modification — used by BitLocker</span></div>
+        <div class="er"><span class="ek">Credential Guard →</span><span>Isolates LSASS in protected enclave — prevents pass-the-hash / Mimikatz</span></div>
+        <div class="er"><span class="ek">Disable AutoRun →</span><span>USB malware vector — AutoRun/AutoPlay disabled prevents USB drop auto-execution</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end hrd -->
+
+<!-- ══════════════════════════════════ -->
+<!-- ISOLATION                          -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-iso">
+  <div class="tband" style="background:linear-gradient(135deg,rgba(96,16,184,0.06),rgba(244,242,236,0));">
+    <span class="tband-ico">🏝️</span>
+    <div>
+      <div class="tband-title" style="color:var(--iso)">Isolation</div>
+      <div class="tband-sub">Air Gap · Sandboxing · Quarantine · Deception</div>
+    </div>
+    <div class="tband-right">
+      <div class="tband-tag" style="background:#f3e8ff;color:var(--iso);border:1px solid #d8b4fe">Complete Separation</div>
+    </div>
+  </div>
+
+  <div class="tabs" id="t-iso">
+    <button class="tab active" onclick="T('iso','is1',this)">Air Gap &amp; Physical</button>
+    <button class="tab" onclick="T('iso','is2',this)">Sandboxing</button>
+    <button class="tab" onclick="T('iso','is3',this)">Quarantine &amp; Deception</button>
+    <button class="tab" onclick="T('iso','is4',this)">Compensating Isolation</button>
+  </div>
+
+  <div class="sec on" id="is1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ISO</span><span class="card-title" style="color:var(--iso)">Air Gap &amp; Physical Isolation</span><span class="bdg" style="background:#f3e8ff;color:var(--iso);border:1px solid #d8b4fe">No Network Connection · Maximum Security</span></div>
+    <div class="card-bd">
+      <p>An <strong style="color:var(--tx)">air gap</strong> is complete physical isolation — no network connection of any kind between the isolated system and any other network. The ultimate isolation technique.</p>
+      <div class="g2">
+        <div class="gc" style="border-color:#d8b4fe">
+          <h4 style="color:var(--iso)">Air Gap</h4>
+          <p>Physical separation — no network cables, no WiFi, no Bluetooth. Used for: classified systems, nuclear plant controls, offline CA root keys, high-value backup systems. Data transfer: only via physical media (USB, CD) under strict procedures. Attack: Stuxnet (2010) crossed an air gap via USB — infected Iranian nuclear centrifuge PLCs. Defense: strict removable media policy, media scanning before use, personnel vetting.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--iso)">Data Diode</h4>
+          <p>Hardware-enforced one-way data flow. Data can only flow in one direction — physically impossible to send data back. OT to IT: industrial control systems send monitoring data to IT → IT cannot send commands back to OT. Prevents: attacker from using monitoring connection to pivot into OT. Unidirectional Security Gateway (e.g., Waterfall Security, Owl Cyber Defense).</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--iso)">VLAN-Based Isolation</h4>
+          <p>Logical isolation — systems on same physical hardware but in separate broadcast domains. Less absolute than air gap but practical for most environments. IoT VLAN: devices isolated from corporate network. Guest VLAN: internet only. OT VLAN: industrial devices isolated with very restricted access. All inter-VLAN traffic through firewall.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--iso)">Jump Server / Bastion Host</h4>
+          <p>Hardened intermediary for administrative access to sensitive networks. Admin must authenticate to jump server (MFA required) → then SSH to production servers. Production: only accepts connections from jump server IP. Session recording on jump server. Reduces: attack surface of admin access. Limits lateral movement from admin compromise.</p>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Air gap →</span><span>Complete physical isolation — no network — Stuxnet crossed via USB — strictest media policy</span></div>
+        <div class="er"><span class="ek">Data diode →</span><span>Hardware-enforced one-way data flow — OT → IT but not back — prevents pivot from monitoring</span></div>
+        <div class="er"><span class="ek">Jump server →</span><span>Hardened intermediary for admin access — prod only accepts from jump server IP — session recording</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="is2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ISO</span><span class="card-title" style="color:var(--iso)">Sandboxing</span><span class="bdg" style="background:#f3e8ff;color:var(--iso);border:1px solid #d8b4fe">Email · Browser · Application</span></div>
+    <div class="card-bd">
+      <p>A sandbox is an <strong style="color:var(--tx)">isolated execution environment where untrusted code can run without affecting the host system or network</strong>. If malware executes in a sandbox: the sandbox is damaged, not the production environment.</p>
+      <div class="g3">
+        <div class="gc" style="border-color:#d8b4fe">
+          <h4 style="color:var(--iso)">Email Sandboxing</h4>
+          <p>Detonate email attachments in isolated VM before delivery. Execute the attachment: does it call out to C2? Does it modify system files? Does it spawn suspicious processes? Safe: deliver. Malicious: quarantine. Catches zero-day malware that AV signatures miss. Microsoft Defender ATP, Proofpoint, Mimecast. Small delivery delay (~1-5 min) is the tradeoff.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--iso)">Browser Isolation</h4>
+          <p>Execute web page rendering in isolated container on remote server — only pixels streamed to user's browser. User clicks link → content renders in cloud sandbox → screenshot sent to user's screen. Malware in web page: executes in sandbox → cannot reach user's device. Remote Browser Isolation (RBI): Menlo Security, Zscaler. Eliminates browser-based drive-by downloads entirely.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--iso)">Application Sandbox</h4>
+          <p>Isolate applications from each other and from the OS. iOS/Android: each app runs in own sandbox — cannot read other apps' data. Windows: Windows Sandbox (disposable VM for testing). macOS: Gatekeeper + App Sandbox. Browser: each tab in separate process. If one tab is exploited: cannot access other tabs' cookies or passwords.</p>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Email sandbox →</span><span>Detonate attachments in isolated VM before delivery — catches zero-day malware</span></div>
+        <div class="er"><span class="ek">Browser isolation (RBI) →</span><span>Web content renders in cloud sandbox — only pixels sent to user — eliminates drive-by downloads</span></div>
+        <div class="er"><span class="ek">App sandbox →</span><span>Each app isolated — cannot read other apps' data — iOS/Android default model</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="is3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ISO</span><span class="card-title" style="color:var(--iso)">Quarantine &amp; Deception Technology</span><span class="bdg" style="background:#f3e8ff;color:var(--iso);border:1px solid #d8b4fe">Isolate Infected · Honeypot</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#d8b4fe">
+          <h4 style="color:var(--iso)">Endpoint Quarantine</h4>
+          <p>When EDR detects compromise: automatically isolate the endpoint from the network immediately. Quarantined device: cannot communicate with other internal systems — only to the security team's management infrastructure. Stops lateral movement in its tracks. Forensic investigation proceeds on isolated device. Automated quarantine: seconds from detection to isolation — manual would take minutes/hours. Network quarantine: NAC places non-compliant device on remediation VLAN.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--iso)">Honeypot &amp; Honeynet</h4>
+          <p>Decoy systems placed in isolated network segments to attract and detect attackers. Honeypot: single decoy — any access = alert (zero false positives). Honeynet: network of honeypots. Honeytokens: fake credentials/data — use triggers alert. Honeyfiles: decoy files ("salaries.xlsx") — access triggers alert. DNS sinkhole: redirect malicious domain lookups to controlled server. Value: detect attackers who've already breached perimeter, study techniques, waste attacker time.</p>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">EDR quarantine →</span><span>Auto-isolate compromised endpoint — seconds to isolation — stops lateral movement</span></div>
+        <div class="er"><span class="ek">NAC quarantine →</span><span>Non-compliant device → remediation VLAN — enforce posture before full network access</span></div>
+        <div class="er"><span class="ek">Honeypot →</span><span>Decoy system — any access = zero-false-positive alert — legitimate users never touch it</span></div>
+        <div class="er"><span class="ek">Honeytoken →</span><span>Fake credential/data — use triggers alert — fake AWS key, fake password in dump</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="is4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">ISO</span><span class="card-title" style="color:var(--iso)">Isolation as a Compensating Control</span><span class="bdg" style="background:#f3e8ff;color:var(--iso);border:1px solid #d8b4fe">Legacy Systems · EOL · Unpatched</span></div>
+    <div class="card-bd">
+      <p>When a system <strong style="color:var(--tx)">cannot be patched, upgraded, or replaced</strong> — isolation becomes the primary compensating control to reduce risk to an acceptable level.</p>
+      <div class="scene">
+        <div class="scene-lbl">// Scenario — Legacy Medical Device Isolation</div>
+        <div class="code">
+<span class="cm"># Hospital: patient monitoring device running Windows XP</span>
+<span class="cm"># Cannot be patched — FDA certification required for any change</span>
+<span class="cm"># Cannot be replaced — 18-month procurement process</span>
+
+Isolation compensating controls applied:
+  1. Dedicated VLAN:   device on isolated VLAN with no internet
+  2. Firewall ACL:     only allows traffic to/from nursing station IP
+  3. IDS monitoring:   any unusual traffic from device → immediate alert
+  4. No USB:          USB ports physically blocked with port blockers
+  5. Physical access: server room lock — only biomedical engineering
+  6. Exception doc:   formally documented in risk register, CISO-approved
+
+What this achieves:
+  <span class="cg">Cannot be reached from internet ✓</span>
+  <span class="cg">Cannot be used to pivot to corporate network ✓</span>
+  <span class="cg">Any attack on the device: detected immediately ✓</span>
+  <span class="cg">Blast radius: only the device itself ✓</span>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Isolation as compensating →</span><span>Cannot patch? Isolate on dedicated VLAN + enhanced monitoring + physical access control</span></div>
+        <div class="er"><span class="ek">Legacy system controls →</span><span>Network isolation + IDS + firewall ACL + physical USB block + documented exception</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end iso -->
+
+<!-- ══════════════════════════════════ -->
+<!-- PATCHING                           -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-ptc">
+  <div class="tband" style="background:linear-gradient(135deg,rgba(8,120,184,0.06),rgba(244,242,236,0));">
+    <span class="tband-ico">🩹</span>
+    <div>
+      <div class="tband-title" style="color:var(--ptc)">Patching</div>
+      <div class="tband-sub">Vulnerability Management · SLAs · CISA KEV · EOL</div>
+    </div>
+    <div class="tband-right">
+      <div class="tband-tag" style="background:#ccfbf1;color:var(--ptc);border:1px solid #5eead4">Close Known Vulnerabilities</div>
+    </div>
+  </div>
+
+  <div class="tabs" id="t-ptc">
+    <button class="tab active" onclick="T('ptc','pt1',this)">Patch Management</button>
+    <button class="tab" onclick="T('ptc','pt2',this)">Prioritization</button>
+    <button class="tab" onclick="T('ptc','pt3',this)">Testing &amp; Deployment</button>
+    <button class="tab" onclick="T('ptc','pt4',this)">EOL &amp; Virtual Patching</button>
+  </div>
+
+  <div class="sec on" id="pt1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">PTC</span><span class="card-title" style="color:var(--ptc)">Patch Management Process</span><span class="bdg" style="background:#ccfbf1;color:var(--ptc);border:1px solid #5eead4">Identify · Test · Deploy · Verify</span></div>
+    <div class="card-bd">
+      <p>Patch management is the process of <strong style="color:var(--tx)">systematically identifying, testing, and applying updates to systems to close known vulnerabilities</strong>. Without it, every known CVE is an open door attackers can freely exploit.</p>
+      <div class="code">
+<span class="cm"># Patch management lifecycle:</span>
+
+<span class="cb">1. Discovery:</span>
+   Inventory: know every asset (can't patch what you don't know about)
+   Vulnerability scanner: Nessus, Qualys, OpenVAS — identify CVEs on assets
+   Asset management: CMDB keeps inventory current
+   Shadow IT risk: untracked assets never patched
+
+<span class="cb">2. Prioritization (see next tab for full detail):</span>
+   CVSS score + CISA KEV status + asset criticality + exploitability
+   Critical/High on internet-facing: patch within 7-14 days
+   CISA KEV: patch within 2 weeks (federal) or ASAP
+
+<span class="cb">3. Testing:</span>
+   Test environment that mirrors production
+   Deploy patch → run functional tests → check compatibility
+   Critical systems: extended testing period
+   Emergency patches: abbreviated test — risk vs risk tradeoff
+
+<span class="cb">4. Deployment:</span>
+   Change management: RFC submitted, approved
+   Change window: off-hours, maintenance window
+   Staged rollout: pilot group → broader → all
+   Rollback plan: documented before starting
+
+<span class="cb">5. Verification:</span>
+   Re-scan after patching: confirm vulnerability closed
+   Patch not applied: patch didn't install, reboot needed
+   Reboot may be required: kernel patches especially
+   Documentation: CMDB updated, change record closed
+
+<span class="cm"># Key metric: Mean Time to Patch (MTTP)</span>
+<span class="cm"># Measure per severity level — track trend over time</span>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Patch management lifecycle →</span><span>Identify → prioritize → test → deploy → verify — ongoing cycle</span></div>
+        <div class="er"><span class="ek">Asset inventory →</span><span>Cannot patch what you don't know exists — shadow IT = unpatched assets</span></div>
+        <div class="er"><span class="ek">Verify after patching →</span><span>Re-scan to confirm vulnerability closed — patch not active without reboot for kernel patches</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="pt2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">PTC</span><span class="card-title" style="color:var(--ptc)">Patch Prioritization</span><span class="bdg" style="background:#ccfbf1;color:var(--ptc);border:1px solid #5eead4">CVSS · CISA KEV · Risk-Based</span></div>
+    <div class="card-bd">
+      <div class="code">
+<span class="cm"># CVSS score alone is insufficient for prioritization:</span>
+
+CVSS 9.8 on internal dev server with no internet exposure:
+  → Lower priority than CVSS 7.2 on public-facing web app
+  
+Prioritization factors:
+  1. Exploitability: is exploit code publicly available?
+  2. Exposure: internet-facing vs internal-only
+  3. CISA KEV: is it actively exploited in the wild?
+  4. Asset criticality: crown jewel vs test server
+  5. CVSS score: severity of the vulnerability itself
+
+<span class="co">CISA Known Exploited Vulnerabilities (KEV):</span>
+  Catalog of CVEs actively exploited in real attacks
+  Federal agencies: must patch within 2-3 weeks
+  Best practice: treat KEV as highest priority — patch NOW
+  Reasoning: if attackers are actively using it against real targets
+             every day you don't patch = window of active exploitation
+
+<span class="cb">Practical SLA targets (industry standard):</span>
+  Critical + internet-facing + KEV:  48-72 hours
+  Critical + internet-facing:        7 days
+  Critical + internal:               14 days
+  High + internet-facing:            14 days
+  High + internal:                   30 days
+  Medium:                            60-90 days
+  Low:                               best effort / next major maintenance
+
+<span class="cm"># Context-based prioritization &gt; pure CVSS score</span>
+    </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">CISA KEV →</span><span>Known Exploited Vulnerabilities — actively exploited in wild — patch immediately / within 2 weeks</span></div>
+        <div class="er"><span class="ek">CVSS →</span><span>Severity score 0-10 — important but NOT sufficient alone — context determines actual priority</span></div>
+        <div class="er"><span class="ek">Internet-facing critical →</span><span>Patch within 7 days — reduces window of exploitation from internet</span></div>
+        <div class="er"><span class="ek">Risk-based patching →</span><span>Exploitability + exposure + criticality + CVSS together = prioritization decision</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="pt3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">PTC</span><span class="card-title" style="color:var(--ptc)">Testing &amp; Deployment</span><span class="bdg" style="background:#ccfbf1;color:var(--ptc);border:1px solid #5eead4">Staged Rollout · Change Window · Rollback</span></div>
+    <div class="card-bd">
+      <div class="g2">
+        <div class="gc" style="border-color:#5eead4">
+          <h4 style="color:var(--ptc)">Testing Requirements</h4>
+          <ul>
+            <li>Test environment mirrors production as closely as possible</li>
+            <li>Functional testing: does patch break existing functionality?</li>
+            <li>Regression testing: run full test suite after patch</li>
+            <li>Compatibility: check critical applications still work</li>
+            <li>Security validation: confirm CVE actually closed (re-scan)</li>
+            <li>Emergency patch: abbreviated testing — documented risk acceptance</li>
+          </ul>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--ptc)">Deployment Strategy</h4>
+          <ul>
+            <li>Staged rollout: 5% pilot → 25% → 50% → all (detect problems early)</li>
+            <li>Change window: off-hours, agreed with business stakeholders</li>
+            <li>Rollback plan: documented before starting — tested</li>
+            <li>Communication: notify users before downtime</li>
+            <li>Monitoring: heightened monitoring after deployment</li>
+            <li>Reboot: kernel patches inactive until reboot — schedule reboot</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">Staged rollout →</span><span>Pilot group first — detect problems before affecting everyone</span></div>
+        <div class="er"><span class="ek">Rollback plan →</span><span>Required before patching — how to revert if patch breaks something</span></div>
+        <div class="er"><span class="ek">Reboot requirement →</span><span>Kernel patches not active until reboot — vulnerability still open until system restarts</span></div>
+        <div class="er"><span class="ek">Change window →</span><span>Off-hours maintenance window — agreed with stakeholders — sufficient duration</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="sec" id="pt4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">PTC</span><span class="card-title" style="color:var(--ptc)">EOL Systems &amp; Virtual Patching</span><span class="bdg" style="background:#ccfbf1;color:var(--ptc);border:1px solid #5eead4">End-of-Life · WAF · IPS Rules</span></div>
+    <div class="card-bd">
+      <div class="vs">
+        <div class="vs-side" style="background:#f0fcfa">
+          <div class="vs-lbl" style="color:var(--ptc)">Ideal Solution</div>
+          <div class="vs-title">Upgrade or Replace EOL System</div>
+          <div class="vs-body">End-of-life OS/software: vendor no longer provides patches. Every future CVE has no fix available. WinXP, Win7, Server 2003, 2008 — still widely found. Best answer: upgrade to supported version. Second best: replace with modern equivalent. Both require: change management, testing, budget approval.</div>
+        </div>
+        <div class="vs-side">
+          <div class="vs-lbl" style="color:var(--iso)">Compensating: Virtual Patching</div>
+          <div class="vs-title">WAF/IPS Rules Block the Exploit</div>
+          <div class="vs-body">Cannot patch the underlying vulnerability? Deploy WAF/IPS rule that blocks the specific exploit pattern at network level. Web app vuln: WAF rule blocks the malicious request. OS vuln: IPS rule blocks the exploit traffic. "Virtual patch" — doesn't fix the vulnerability but prevents exploitation. Temporary — use until real patch available. Document as compensating control.</div>
+        </div>
+      </div>
+      <div class="code">
+<span class="cm"># EOL system risk management approach:</span>
+
+Option 1 (best): Upgrade/replace → real patch available
+Option 2 (acceptable short-term): Virtual patching
+  WAF rule: blocks exploitation of web app CVE
+  IPS rule: blocks network-based exploit
+  Limitation: only blocks known exploit patterns
+              zero-day variants may bypass
+
+Option 3 (compensating if can't patch or virtual patch):
+  Network isolation → reduce exposure
+  Enhanced monitoring → detect if exploited
+  Physical security → reduce attack vectors
+  Documented exception → formal risk acceptance
+
+Option 4 (never acceptable):
+  "We'll get to it eventually" with no compensating controls
+  <span class="cr">This is how WannaCry spread via unpatched Windows XP/7 in 2017</span>
+      </div>
+      <div class="exam"><h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek">EOL system →</span><span>No patches available — upgrade/replace ideal — isolation + virtual patching as compensating controls</span></div>
+        <div class="er"><span class="ek">Virtual patching →</span><span>WAF/IPS rule blocks exploit pattern — temp fix while awaiting real patch — document as compensating</span></div>
+        <div class="er"><span class="ek">Compensating controls for EOL →</span><span>Isolation + virtual patching + enhanced monitoring + documented risk acceptance</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end ptc -->
+
+<!-- ══════════════════════════════════ -->
+<!-- SUMMARY                            -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-sum">
+<div class="card">
+  <div class="card-hd"><span class="card-num">ALL</span><span class="card-title">Complete Exam Cheat Sheet</span><span class="bdg" style="background:var(--s);color:var(--tx);border:1px solid var(--bd)">Domain 2 · Mitigation Techniques</span></div>
+  <div class="card-bd">
+
+    <h3 style="border-left-color:var(--seg)">Technique Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.2rem">
+    <table>
+      <tr><th>Technique</th><th>Primary Goal</th><th>Key Controls</th><th>Exam Trigger Words</th></tr>
+      <tr>
+        <td><span class="tag tb">Segmentation</span></td>
+        <td>Limit lateral movement</td>
+        <td>VLANs, DMZ, micro-seg, ZTNA, Purdue model</td>
+        <td>Lateral movement, blast radius, DMZ, VLAN, east-west traffic</td>
+      </tr>
+      <tr>
+        <td><span class="tag tr">Access Control</span></td>
+        <td>Who can access what</td>
+        <td>Least privilege, MFA, RBAC/ABAC, PAM, allow lists</td>
+        <td>Least privilege, MFA, need-to-know, PAM, JIT, separation of duties</td>
+      </tr>
+      <tr>
+        <td><span class="tag tg">Config Enforcement</span></td>
+        <td>Consistent secure config</td>
+        <td>CIS benchmark, STIG, FIM, CMDB, GPO, MDM, CSPM</td>
+        <td>Drift, baseline, FIM, CIS, STIG, misconfiguration</td>
+      </tr>
+      <tr>
+        <td><span class="tag to">Hardening</span></td>
+        <td>Reduce attack surface</td>
+        <td>Disable unused services, change defaults, UEFI Secure Boot</td>
+        <td>Disable SMBv1, LLMNR, defaults, attack surface, Secure Boot</td>
+      </tr>
+      <tr>
+        <td><span class="tag tp">Isolation</span></td>
+        <td>Complete separation</td>
+        <td>Air gap, sandbox, quarantine, honeypot, jump server</td>
+        <td>Air gap, sandbox, quarantine, honeytoken, legacy system</td>
+      </tr>
+      <tr>
+        <td><span class="tag tt">Patching</span></td>
+        <td>Close known vulnerabilities</td>
+        <td>Patch SLAs, CISA KEV, virtual patching, EOL management</td>
+        <td>CISA KEV, CVSS, EOL, virtual patch, patch window, reboot</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--iso)">Master Exam Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// 40 Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Divide network to prevent attacker from reaching all systems"</span><span>→ Network segmentation — VLANs + DMZ + micro-segmentation</span></div>
+      <div class="er"><span class="ek">"Buffer zone between internet and internal network"</span><span>→ DMZ (Demilitarized Zone)</span></div>
+      <div class="er"><span class="ek">"Logical network segment on same physical hardware"</span><span>→ VLAN — inter-VLAN traffic through firewall only</span></div>
+      <div class="er"><span class="ek">"Workload-level isolation — east-west traffic control"</span><span>→ Micro-segmentation — VMware NSX, Illumio</span></div>
+      <div class="er"><span class="ek">"Double-tagged 802.1Q frame jumps between VLANs"</span><span>→ VLAN hopping — fix: disable DTP, native VLAN ≠ data VLANs</span></div>
+      <div class="er"><span class="ek">"OT/ICS segmentation — levels 0-5 — industrial systems"</span><span>→ Purdue Model — air gap between OT and IT</span></div>
+      <div class="er"><span class="ek">"App-level access — identity verified — replaces VPN"</span><span>→ ZTNA (Zero Trust Network Access)</span></div>
+      <div class="er"><span class="ek">"Hardware-enforced one-way data flow"</span><span>→ Data diode — OT monitoring data to IT but no commands back</span></div>
+      <div class="er"><span class="ek">"Minimum access required for job function"</span><span>→ Least privilege — reduces blast radius when account compromised</span></div>
+      <div class="er"><span class="ek">"No single person controls entire critical process"</span><span>→ Separation of duties — developer ≠ deployer — creator ≠ approver</span></div>
+      <div class="er"><span class="ek">"Accumulated permissions over time — users have too much"</span><span>→ Privilege creep — quarterly access reviews + recertification</span></div>
+      <div class="er"><span class="ek">"Two or more different authentication factor types"</span><span>→ MFA — blocks 99.9% automated attacks</span></div>
+      <div class="er"><span class="ek">"Phishing-resistant MFA — bound to specific site"</span><span>→ FIDO2 / WebAuthn hardware security key</span></div>
+      <div class="er"><span class="ek">"Admin credentials stored in secure vault — never seen by admin"</span><span>→ PAM credential vaulting — password rotated after each use</span></div>
+      <div class="er"><span class="ek">"Admin access granted only when needed — auto-revoked"</span><span>→ Just-in-Time (JIT) access — PAM capability</span></div>
+      <div class="er"><span class="ek">"All privileged sessions recorded — keystroke + screen"</span><span>→ PAM session recording — non-repudiation + forensics</span></div>
+      <div class="er"><span class="ek">"Job role determines system access"</span><span>→ RBAC (Role-Based Access Control)</span></div>
+      <div class="er"><span class="ek">"Classification labels — Top Secret/Secret/Confidential"</span><span>→ MAC (Mandatory Access Control) — government/military</span></div>
+      <div class="er"><span class="ek">"Access decision: identity + device health + time + location"</span><span>→ ABAC (Attribute-Based Access Control) — Zero Trust foundation</span></div>
+      <div class="er"><span class="ek">"Default deny — only approved apps may execute"</span><span>→ Application allow listing — AppLocker / WDAC</span></div>
+      <div class="er"><span class="ek">"Documented minimum acceptable configuration for system type"</span><span>→ Security baseline — CIS Benchmark / STIG</span></div>
+      <div class="er"><span class="ek">"Level 1 = minimal impact / Level 2 = more restrictive"</span><span>→ CIS Benchmark levels</span></div>
+      <div class="er"><span class="ek">"System configuration diverges from approved baseline"</span><span>→ Configuration drift — FIM + CMDB detect it</span></div>
+      <div class="er"><span class="ek">"Hash critical files — alert on any change"</span><span>→ FIM (File Integrity Monitoring) — Tripwire, OSSEC, Wazuh</span></div>
+      <div class="er"><span class="ek">"Continuously check cloud configs against benchmarks"</span><span>→ CSPM (Cloud Security Posture Management)</span></div>
+      <div class="er"><span class="ek">"Enforce desired system state — auto-remediate drift"</span><span>→ Ansible / Puppet / Chef — configuration management tools</span></div>
+      <div class="er"><span class="ek">"Centrally enforce Windows config on all domain machines"</span><span>→ Group Policy Objects (GPO)</span></div>
+      <div class="er"><span class="ek">"Remove unused services — disable defaults — restrict permissions"</span><span>→ System hardening — OS hardening per CIS benchmark</span></div>
+      <div class="er"><span class="ek">"Disable LLMNR and NBNS on all Windows systems"</span><span>→ Hardening — removes credential poisoning attack vectors</span></div>
+      <div class="er"><span class="ek">"UEFI verifies bootloader signature before OS loads"</span><span>→ Secure Boot — hardening — prevents bootkit</span></div>
+      <div class="er"><span class="ek">"Isolates LSASS — prevents Mimikatz credential dump"</span><span>→ Windows Credential Guard — endpoint hardening</span></div>
+      <div class="er"><span class="ek">"Complete physical network separation — no cables — no WiFi"</span><span>→ Air gap — most secure isolation — USB is remaining attack vector</span></div>
+      <div class="er"><span class="ek">"Execute email attachment in isolated VM before delivery"</span><span>→ Email sandboxing — catches zero-day malware</span></div>
+      <div class="er"><span class="ek">"Web content renders in cloud — only pixels sent to user"</span><span>→ Remote Browser Isolation (RBI)</span></div>
+      <div class="er"><span class="ek">"EDR automatically cuts infected device from network"</span><span>→ Endpoint quarantine — stops lateral movement in seconds</span></div>
+      <div class="er"><span class="ek">"Decoy system — legitimate users never access it"</span><span>→ Honeypot — any access = zero-false-positive alert</span></div>
+      <div class="er"><span class="ek">"Fake credential that triggers alert when used"</span><span>→ Honeytoken — planted in code repos / databases</span></div>
+      <div class="er"><span class="ek">"Actively exploited in the wild — patch immediately"</span><span>→ CISA KEV — highest patch priority</span></div>
+      <div class="er"><span class="ek">"WAF/IPS rule blocks exploit while awaiting real patch"</span><span>→ Virtual patching — compensating control for EOL/unpatched systems</span></div>
+      <div class="er"><span class="ek">"Patch applied but vulnerability still exploitable"</span><span>→ Reboot required — kernel patches not active until reboot</span></div>
+    </div>
+
+  </div>
+</div>
+</div><!-- end sum -->
+
+<script>
+var TC={seg:'#1840c8',acc:'#c82018',cfg:'#0a7848',hrd:'#b05800',iso:'#6010b8',ptc:'#0878b8',sum:'#706a54'};
+
+function S(id,el){
+  document.querySelectorAll('.model').forEach(function(m){m.classList.remove('on');});
+  document.getElementById('m-'+id).classList.add('on');
+  var tabs=document.getElementById('t-'+id);
+  var c=TC[id];
+  if(tabs){
+    var at=tabs.querySelector('.tab.active');
+    if(at){at.style.background=c;at.style.borderColor=c;at.style.color='#fdfcf8';}
+    tabs.querySelectorAll('.tab').forEach(function(t){
+      t.onmouseover=function(){if(!t.classList.contains('active')){t.style.background=c;t.style.borderColor=c;t.style.color='#fdfcf8';}};
+      t.onmouseout=function(){if(!t.classList.contains('active')){t.style.background='';t.style.borderColor='';t.style.color='';}};
+    });
+  }
+  window.scrollTo(0,0);
+}
+
+function T(cat,secId,btn){
+  var m=document.getElementById('m-'+cat);
+  var tabs=document.getElementById('t-'+cat);
+  if(!m||!tabs)return;
+  m.querySelectorAll('.sec').forEach(function(s){s.classList.remove('on');});
+  tabs.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');t.style.background='';t.style.borderColor='';t.style.color='';});
+  document.getElementById(secId).classList.add('on');
+  btn.classList.add('active');
+  var c=TC[cat];
+  btn.style.background=c;btn.style.borderColor=c;btn.style.color='#fdfcf8';
+  window.scrollTo(0,0);
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  // Init first tab of visible model
+  var a=document.querySelector('#t-seg .tab.active');
+  if(a){a.style.background='#1840c8';a.style.borderColor='#1840c8';a.style.color='#fdfcf8';}
+  // Make pills clickable with visual feedback
+  document.querySelectorAll('.tpill').forEach(function(p){
+    var id=p.textContent.trim().toLowerCase().replace(/[^a-z]/g,'').substring(0,3);
+    var map={'seg':'seg','acc':'acc','con':'cfg','har':'hrd','iso':'iso','pat':'ptc','sum':'sum'};
+    p.style.cursor='pointer';
+  });
+});
+</script>
+</body>
+</html>

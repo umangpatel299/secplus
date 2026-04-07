@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resilience & Recovery — Security+ Visual Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg: #0c0c0f;
+  --s1: #13131a;
+  --s2: #1a1a24;
+  --s3: #21212e;
+  --border: #2a2a3a;
+  --text: #e8e8f0;
+  --muted: #7070a0;
+  --blue: #4d9fff;
+  --green: #3ddc84;
+  --red: #ff5f5f;
+  --orange: #ffaa40;
+  --purple: #c084fc;
+  --teal: #2dd4bf;
+  --yellow: #fbbf24;
+  --pink: #f472b6;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  padding: 2rem 1.5rem;
+  min-height: 100vh;
+}
+
+.title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+}
+
+.sub {
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.tab {
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--s1);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  transition: all 0.15s;
+}
+.tab:hover { border-color: var(--teal); color: var(--teal); }
+.tab.active { background: var(--teal); color: #000; border-color: var(--teal); font-weight: 700; }
+
+/* SECTIONS */
+.sec { display: none; }
+.sec.on { display: block; animation: up 0.2s ease; }
+@keyframes up { from { opacity:0; transform:translateY(5px); } to { opacity:1; } }
+
+/* CARD */
+.card {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.card-hd {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--muted);
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+}
+
+.card-title { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+
+.bdg {
+  margin-left: auto;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+}
+.bdg-blue { background:#1e3a5f; color:var(--blue); border:1px solid #2a4f7f; }
+.bdg-green { background:#1a3d28; color:var(--green); border:1px solid #2a5538; }
+.bdg-orange { background:#3d2a10; color:var(--orange); border:1px solid #5a3d18; }
+.bdg-red { background:#3d1515; color:var(--red); border:1px solid #5a2020; }
+.bdg-purple { background:#2a1a40; color:var(--purple); border:1px solid #3d2a5a; }
+.bdg-teal { background:#0f2d2a; color:var(--teal); border:1px solid #1a4040; }
+
+.card-bd { padding: 1.4rem; }
+
+p { color: var(--muted); font-size: 0.86rem; margin-bottom: 0.8rem; }
+h3 { font-size: 0.9rem; font-weight: 600; color: var(--text); margin: 1.2rem 0 0.6rem; }
+
+/* CODE */
+.code {
+  background: #08080c;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  line-height: 1.8;
+  color: var(--text);
+  overflow-x: auto;
+  margin: 0.8rem 0;
+}
+.cg { color: var(--green); }
+.cr { color: var(--red); }
+.cb { color: var(--blue); }
+.co { color: var(--orange); }
+.cp { color: var(--purple); }
+.cm { color: var(--muted); }
+.ct { color: var(--teal); }
+.cy { color: var(--yellow); }
+
+/* SCENARIO */
+.scene {
+  background: #1e1a10;
+  border-left: 3px solid var(--orange);
+  border-radius: 0 8px 8px 0;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.scene-lbl {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--orange);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.06em;
+}
+
+/* GRID CARDS */
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin:0.8rem 0; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:0.8rem; margin:0.8rem 0; }
+@media(max-width:600px) { .grid2,.grid3 { grid-template-columns:1fr; } }
+
+.gc {
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.gc h4 { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.4rem; }
+.gc p { font-size: 0.76rem; margin:0; }
+
+/* SITE COMPARISON */
+.sites { display:grid; grid-template-columns:repeat(4,1fr); gap:0.6rem; margin:1rem 0; }
+@media(max-width:600px) { .sites { grid-template-columns:1fr 1fr; } }
+
+.site-card {
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  border: 2px solid;
+}
+
+/* TIMELINE */
+.timeline { position:relative; padding-left:1.5rem; margin:1rem 0; }
+.timeline::before { content:''; position:absolute; left:0.4rem; top:0; bottom:0; width:2px; background:var(--border); }
+
+.tl-item { position:relative; margin-bottom:1.2rem; }
+.tl-dot {
+  position:absolute; left:-1.1rem; top:0.2rem;
+  width:10px; height:10px; border-radius:50%; border:2px solid;
+}
+.tl-title { font-size:0.85rem; font-weight:600; margin-bottom:0.2rem; }
+.tl-desc { font-size:0.78rem; color:var(--muted); }
+
+/* EXAM BOX */
+.exam {
+  background: #1a1030;
+  border: 1px solid #3d2a5a;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin-top: 1rem;
+}
+.exam h4 {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--purple);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.06em;
+}
+.er { display:flex; gap:0.5rem; margin-bottom:0.4rem; font-size:0.79rem; }
+.ek { color:var(--purple); font-family:'Space Mono',monospace; font-size:0.7rem; flex-shrink:0; }
+
+/* TABLE */
+table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+th { background:var(--s2); padding:0.55rem 0.8rem; text-align:left; color:var(--muted); border-bottom:1px solid var(--border); font-size:0.72rem; font-weight:600; }
+td { padding:0.55rem 0.8rem; border-bottom:1px solid var(--border); }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:var(--s2); }
+
+.tag { display:inline-block; padding:0.1rem 0.45rem; border-radius:4px; font-size:0.64rem; font-family:'Space Mono',monospace; }
+.tg { background:#1a3d28; color:var(--green); }
+.tr { background:#3d1515; color:var(--red); }
+.tb { background:#1e3a5f; color:var(--blue); }
+.to { background:#3d2a10; color:var(--orange); }
+.tp { background:#2a1a40; color:var(--purple); }
+.tt { background:#0f2d2a; color:var(--teal); }
+
+/* NINES TABLE */
+.nines { margin:1rem 0; }
+.nine-row {
+  display:flex;
+  align-items:center;
+  gap:0.8rem;
+  padding:0.6rem 0.8rem;
+  border-radius:8px;
+  margin-bottom:0.4rem;
+  border:1px solid var(--border);
+  background:var(--s2);
+}
+.nine-pct { font-family:'Space Mono',monospace; font-size:0.85rem; font-weight:700; min-width:70px; }
+.nine-bar-wrap { flex:1; background:var(--s3); border-radius:4px; height:8px; overflow:hidden; }
+.nine-bar { height:100%; border-radius:4px; }
+.nine-info { font-family:'Space Mono',monospace; font-size:0.68rem; color:var(--muted); min-width:120px; text-align:right; }
+
+/* BACKUP VIZ */
+.backup-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:0.3rem; margin:1rem 0; }
+.bday {
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:0.5rem 0.3rem;
+  text-align:center;
+  font-size:0.65rem;
+}
+.bday-lbl { font-family:'Space Mono',monospace; font-size:0.6rem; color:var(--muted); margin-bottom:0.3rem; }
+.bday-full { border-color:var(--blue); }
+.bday-incr { border-color:var(--green); }
+.bday-diff { border-color:var(--orange); }
+
+/* POWER TIMELINE */
+.power-flow {
+  display:flex;
+  align-items:center;
+  gap:0;
+  margin:1rem 0;
+  overflow-x:auto;
+}
+.pf-box {
+  border-radius:8px;
+  padding:0.8rem 0.6rem;
+  text-align:center;
+  min-width:100px;
+  font-size:0.72rem;
+  flex-shrink:0;
+}
+.pf-arrow {
+  color:var(--muted);
+  font-size:1rem;
+  padding:0 0.3rem;
+  flex-shrink:0;
+}
+</style>
+</head>
+<body>
+
+<div class="title">Resilience & Recovery</div>
+<p class="sub">// CompTIA Security+ SY0-701 — HA · Sites · Testing · Power · Diversity · Backups · COOP</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. High Availability</button>
+  <button class="tab" onclick="go('s2',this)">2. Site Considerations</button>
+  <button class="tab" onclick="go('s3',this)">3. Testing</button>
+  <button class="tab" onclick="go('s4',this)">4. Power</button>
+  <button class="tab" onclick="go('s5',this)">5. Platform Diversity</button>
+  <button class="tab" onclick="go('s6',this)">6. Backups</button>
+  <button class="tab" onclick="go('s7',this)">7. COOP</button>
+  <button class="tab" onclick="go('s8',this)">📊 Summary</button>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- 1. HIGH AVAILABILITY              -->
+<!-- ══════════════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">01</span>
+    <span class="card-title">High Availability</span>
+    <span class="bdg bdg-blue">Availability · Uptime</span>
+  </div>
+  <div class="card-bd">
+    <p>High Availability (HA) means designing systems to <strong style="color:var(--text)">stay operational continuously</strong> by eliminating single points of failure. If one component fails — the system keeps running without users noticing.</p>
+
+    <h3>The Nines — Uptime Percentages</h3>
+    <div class="nines">
+      <div class="nine-row">
+        <span class="nine-pct" style="color:var(--red)">99%</span>
+        <div class="nine-bar-wrap"><div class="nine-bar" style="width:99%;background:var(--red)"></div></div>
+        <span class="nine-info" style="color:var(--red)">3.65 days/year down</span>
+      </div>
+      <div class="nine-row">
+        <span class="nine-pct" style="color:var(--orange)">99.9%</span>
+        <div class="nine-bar-wrap"><div class="nine-bar" style="width:99.9%;background:var(--orange)"></div></div>
+        <span class="nine-info" style="color:var(--orange)">8.76 hrs/year down</span>
+      </div>
+      <div class="nine-row">
+        <span class="nine-pct" style="color:var(--yellow)">99.99%</span>
+        <div class="nine-bar-wrap"><div class="nine-bar" style="width:99.99%;background:var(--yellow)"></div></div>
+        <span class="nine-info" style="color:var(--yellow)">52.6 min/year down</span>
+      </div>
+      <div class="nine-row">
+        <span class="nine-pct" style="color:var(--green)">99.999%</span>
+        <div class="nine-bar-wrap"><div class="nine-bar" style="width:100%;background:var(--green)"></div></div>
+        <span class="nine-info" style="color:var(--green)">5.26 min/year ⭐</span>
+      </div>
+    </div>
+
+    <h3>Key HA Concepts</h3>
+    <div class="grid2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Load Balancing</h4>
+        <p>Distributes traffic across multiple servers. No single server overwhelmed. If one fails — others absorb traffic automatically. Users notice nothing.</p>
+        <div class="code" style="margin-top:0.6rem">
+User request → Load Balancer
+  → Server A (40% load) <span class="cg">✓</span>
+  → Server B (35% load) <span class="cg">✓</span>
+  → Server C (25% load) <span class="cg">✓</span>
+Server A dies → LB routes to B+C
+Zero downtime for users
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Active/Active vs Active/Passive</h4>
+        <p>Active/Active: ALL nodes handle traffic simultaneously. Best performance + redundancy. Active/Passive: ONE active, ONE standby — takes over only on failure.</p>
+        <div class="code" style="margin-top:0.6rem">
+<span class="ct">Active/Active:</span>
+Node1 <span class="cg">ACTIVE</span> — handling traffic
+Node2 <span class="cg">ACTIVE</span> — handling traffic
+Both share load
+
+<span class="ct">Active/Passive:</span>
+Node1 <span class="cg">ACTIVE</span> — handling traffic
+Node2 <span class="co">STANDBY</span> — waiting
+Node1 fails → Node2 takes over
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Clustering</h4>
+        <p>Multiple servers grouped as one logical unit. Work together, cover for each other. Database clusters most common — primary replicates to secondary in real time.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Redundancy</h4>
+        <p>Duplicate everything critical — dual power supplies, dual NICs, dual ISPs, RAID storage. No single hardware failure takes system down.</p>
+      </div>
+    </div>
+
+    <h3>Key HA Metrics — Must Know All Three</h3>
+    <div class="grid3">
+      <div class="gc" style="border-color:var(--blue);border-width:1px">
+        <h4 style="color:var(--blue)">MTTR</h4>
+        <p>Mean Time To <strong style="color:var(--text)">Repair</strong><br>How long to FIX failed component<br><br>Lower = better<br>Goal: fix fast</p>
+      </div>
+      <div class="gc" style="border-color:var(--green);border-width:1px">
+        <h4 style="color:var(--green)">MTBF</h4>
+        <p>Mean Time Between <strong style="color:var(--text)">Failures</strong><br>How long until NEXT failure<br><br>Higher = better<br>Goal: last long</p>
+      </div>
+      <div class="gc" style="border-color:var(--orange);border-width:1px">
+        <h4 style="color:var(--orange)">MTTF</h4>
+        <p>Mean Time To <strong style="color:var(--text)">Failure</strong><br>Expected lifespan of component<br><br>Higher = better<br>Non-repairable items</p>
+      </div>
+    </div>
+
+    <div class="code">
+<span class="cm"># Availability formula:</span>
+Availability = MTBF / (MTBF + MTTR)
+
+<span class="cm"># Example:</span>
+Server fails every 1000 hours (MTBF = 1000)
+Takes 4 hours to fix    (MTTR = 4)
+Availability = 1000 / (1000 + 4) = <span class="cg">99.6%</span>
+
+<span class="cm"># To improve availability:</span>
+Lower MTTR → faster repairs (spare parts, skilled staff)
+Higher MTBF → better hardware (quality components)
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — E-Commerce Black Friday</div>
+      <p style="margin:0;color:var(--text);font-size:0.83rem">An online retailer needs 99.999% uptime on Black Friday. They deploy 6 web servers behind a load balancer, active/active clustering for the database, and redundant ISP connections. When server 3 fails at 2am, traffic automatically redistributes. Zero customer impact.</p>
+      <div class="code">
+<span class="cm"># Black Friday — server 3 hardware failure:</span>
+02:14:33 — Server3 disk controller fails
+02:14:33 — Health check detects failure (immediate)
+02:14:33 — Load balancer removes Server3 from pool
+02:14:34 — Traffic redistributed to Servers 1,2,4,5,6
+02:14:34 — Customers: <span class="cg">zero impact ✓</span>
+02:14:35 — Alert sent to on-call engineer
+02:47:00 — Engineer replaces hardware
+02:49:00 — Server3 back in rotation
+Total downtime: <span class="cg">0 seconds for customers</span>
+MTTR: 35 minutes (hardware replacement)
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">MTTR →</span><span>Repair time — lower is better</span></div>
+      <div class="er"><span class="ek">MTBF →</span><span>Time between failures — higher is better</span></div>
+      <div class="er"><span class="ek">Five nines →</span><span>99.999% = only 5.26 minutes downtime per year — gold standard</span></div>
+      <div class="er"><span class="ek">Active/Active →</span><span>All nodes serving traffic simultaneously</span></div>
+      <div class="er"><span class="ek">Active/Passive →</span><span>One standby — only activates on failure</span></div>
+      <div class="er"><span class="ek">Load balancer →</span><span>Eliminates single point of failure + distributes load</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- 2. SITE CONSIDERATIONS            -->
+<!-- ══════════════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">02</span>
+    <span class="card-title">Site Considerations</span>
+    <span class="bdg bdg-orange">Hot · Warm · Cold</span>
+  </div>
+  <div class="card-bd">
+    <p>When disaster strikes the primary location — where do operations move? Site considerations define <strong style="color:var(--text)">backup locations</strong> and how quickly they become operational.</p>
+
+    <div class="sites">
+      <div class="site-card" style="background:#1a1000;border-color:var(--red)">
+        <div style="font-size:1.4rem;margin-bottom:0.4rem">🔥</div>
+        <div style="font-weight:700;color:var(--red);font-size:0.9rem;margin-bottom:0.6rem">HOT SITE</div>
+        <div style="font-size:0.73rem;color:var(--muted);margin-bottom:0.5rem;line-height:1.5">
+          Fully operational NOW<br>Real-time data sync<br>Staff works immediately
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.65rem;margin-bottom:0.3rem">
+          <span style="color:var(--green)">Failover:</span> <span style="color:var(--text)">Minutes</span>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.65rem;margin-bottom:0.3rem">
+          <span style="color:var(--red)">Cost:</span> <span style="color:var(--text)">$$$$$</span>
+        </div>
+        <div style="font-size:0.7rem;color:var(--muted)">Banks · Hospitals<br>Stock exchanges</div>
+      </div>
+
+      <div class="site-card" style="background:#1a1200;border-color:var(--orange)">
+        <div style="font-size:1.4rem;margin-bottom:0.4rem">🌡️</div>
+        <div style="font-weight:700;color:var(--orange);font-size:0.9rem;margin-bottom:0.6rem">WARM SITE</div>
+        <div style="font-size:0.73rem;color:var(--muted);margin-bottom:0.5rem;line-height:1.5">
+          Hardware ready<br>Data partially synced<br>Some setup needed
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.65rem;margin-bottom:0.3rem">
+          <span style="color:var(--green)">Failover:</span> <span style="color:var(--text)">Hours–Days</span>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.65rem;margin-bottom:0.3rem">
+          <span style="color:var(--red)">Cost:</span> <span style="color:var(--text)">$$$</span>
+        </div>
+        <div style="font-size:0.7rem;color:var(--muted)">Most organizations<br>Best balance</div>
+      </div>
+
+      <div class="site-card" style="background:#0a0a18;border-color:var(--blue)">
+        <div style="font-size:1.4rem;margin-bottom:0.4rem">❄️</div>
+        <div style="font-weight:700;color:var(--blue);font-size:0.9rem;margin-bottom:0.6rem">COLD SITE</div>
+        <div style="font-size:0.73rem;color:var(--muted);margin-bottom:0.5rem;line-height:1.5">
+          Empty building<br>Power + network only<br>No hardware/data
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.65rem;margin-bottom:0.3rem">
+          <span style="color:var(--green)">Failover:</span> <span style="color:var(--text)">Days–Weeks</span>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.65rem;margin-bottom:0.3rem">
+          <span style="color:var(--red)">Cost:</span> <span style="color:var(--text)">$</span>
+        </div>
+        <div style="font-size:0.7rem;color:var(--muted)">Budget orgs<br>Low priority systems</div>
+      </div>
+
+      <div class="site-card" style="background:#0a1a1a;border-color:var(--teal)">
+        <div style="font-size:1.4rem;margin-bottom:0.4rem">☁️</div>
+        <div style="font-weight:700;color:var(--teal);font-size:0.9rem;margin-bottom:0.6rem">CLOUD SITE</div>
+        <div style="font-size:0.73rem;color:var(--muted);margin-bottom:0.5rem;line-height:1.5">
+          Scale up on demand<br>Pay only during disaster<br>Global flexibility
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.65rem;margin-bottom:0.3rem">
+          <span style="color:var(--green)">Failover:</span> <span style="color:var(--text)">Minutes</span>
+        </div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.65rem;margin-bottom:0.3rem">
+          <span style="color:var(--red)">Cost:</span> <span style="color:var(--text)">$$ (on-demand)</span>
+        </div>
+        <div style="font-size:0.7rem;color:var(--muted)">Modern orgs<br>Cloud-first</div>
+      </div>
+    </div>
+
+    <h3>Geographic Considerations</h3>
+    <div class="grid2">
+      <div class="gc">
+        <h4 style="color:var(--teal)">Geographic Dispersal</h4>
+        <p>Spread operations across multiple physical locations. Hurricane hits East Coast → West Coast continues. Earthquake in one city → other city unaffected. Different power grids = different outage risk.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Distance Rules</h4>
+        <p><strong style="color:var(--red)">Too close</strong> — same natural disaster, same power grid, same flood plain — affects both.<br><strong style="color:var(--green)">Too far</strong> — replication latency increases, data becomes stale.<br><strong style="color:var(--green)">Sweet spot</strong> — different city, different region, same country.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Hurricane Destroys Primary Data Center</div>
+      <div class="code">
+<span class="cm"># Category 4 hurricane heading to Tampa HQ:</span>
+
+<span class="co">Company with COLD SITE (Atlanta):</span>
+Hurricane hits → Tampa DC destroyed
+Team flies to Atlanta
+Unpacks shipped hardware (3 days)
+Installs OS + software (2 days)
+Restores from backup tapes (1 day)
+Total: <span class="cr">6 days before operations resume</span>
+Revenue loss: $2.4M at $50k/day
+
+<span class="cg">Company with HOT SITE (Atlanta):</span>
+Hurricane warning issued Friday
+Failover initiated Friday evening
+Atlanta site: already fully operational
+Monday: <span class="cg">all operations running from Atlanta ✓</span>
+Customers: zero impact
+Revenue loss: <span class="cg">$0</span>
+Extra cost: Hot site was $500k/year
+<span class="cg">ROI: one hurricane = hot site pays for 4+ years</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Hot site →</span><span>Minutes failover — fully operational — most expensive</span></div>
+      <div class="er"><span class="ek">Warm site →</span><span>Hours-days failover — hardware ready — most common choice</span></div>
+      <div class="er"><span class="ek">Cold site →</span><span>Days-weeks failover — empty building — cheapest</span></div>
+      <div class="er"><span class="ek">Cloud site →</span><span>On-demand scaling — pay only during disaster — modern</span></div>
+      <div class="er"><span class="ek">Geographic dispersal →</span><span>Different city/region — different power grid — different disaster risk</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- 3. TESTING                        -->
+<!-- ══════════════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">03</span>
+    <span class="card-title">DR Testing Types</span>
+    <span class="bdg bdg-purple">Prove It Works</span>
+  </div>
+  <div class="card-bd">
+    <p>An untested DR plan is just a theory. Testing proves resilience <strong style="color:var(--text)">actually works</strong> — and finds gaps before a real disaster does. Five test types from safest to most realistic.</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--green);border-color:var(--green)"></div>
+        <div class="tl-title" style="color:var(--green)">1. Tabletop Exercise</div>
+        <div class="tl-desc">Discussion only — no systems touched. Team sits in room and talks through disaster scenario verbally. Facilitator presents: "It's 3am, data center on fire — walk me through your response." Finds plan gaps and communication issues. Zero risk, very cheap.</div>
+        <div class="code" style="margin-top:0.5rem">
+Risk: <span class="cg">ZERO</span>  Cost: <span class="cg">$</span>  Systems affected: <span class="cg">NONE</span>
+Best for: finding plan gaps, testing communication
+Frequency: Quarterly recommended
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--blue);border-color:var(--blue)"></div>
+        <div class="tl-title" style="color:var(--blue)">2. Walkthrough / Structured Walkthrough</div>
+        <div class="tl-desc">Team physically walks through every DR procedure step by step. Verify procedures are accurate and up to date. Check contact info is correct. Ensure staff knows where documentation is. Still no systems touched.</div>
+        <div class="code" style="margin-top:0.5rem">
+Risk: <span class="cg">ZERO</span>  Cost: <span class="cg">$</span>  Systems affected: <span class="cg">NONE</span>
+Best for: verifying procedures are current and accurate
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--teal);border-color:var(--teal)"></div>
+        <div class="tl-title" style="color:var(--teal)">3. Simulation Test</div>
+        <div class="tl-desc">Test specific components without full failover. "Let's actually restore this server from backup." "Let's test database failover to replica." Proves specific procedures work in practice.</div>
+        <div class="code" style="margin-top:0.5rem">
+Risk: <span class="co">LOW</span>   Cost: <span class="co">$$</span>  Systems affected: <span class="co">PARTIAL</span>
+Best for: verifying specific recovery procedures work
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--orange);border-color:var(--orange)"></div>
+        <div class="tl-title" style="color:var(--orange)">4. Parallel Test (Full Interruption — Safe)</div>
+        <div class="tl-desc">Activate backup site while primary STAYS RUNNING. Both sites operational simultaneously. Compare outputs — are they identical? Primary never goes down. Proves backup site actually works without risking real downtime.</div>
+        <div class="code" style="margin-top:0.5rem">
+Risk: <span class="co">LOW</span>   Cost: <span class="co">$$$</span> Systems affected: <span class="co">BOTH RUNNING</span>
+Primary: continues normal operations ✓
+Backup:  activated and verified ✓
+Best for: proving backup site works safely
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--red);border-color:var(--red)"></div>
+        <div class="tl-title" style="color:var(--red)">5. Full Interruption / Cutover Test</div>
+        <div class="tl-desc">Actually SHUT DOWN primary site and switch entirely to backup. Real users, real transactions on backup site. Most realistic test possible. If backup fails — you have a real outage. Only do annually at most.</div>
+        <div class="code" style="margin-top:0.5rem">
+Risk: <span class="cr">HIGH</span>  Cost: <span class="cr">$$$$</span> Systems affected: <span class="cr">PRIMARY SHUT DOWN</span>
+If backup fails → REAL OUTAGE OCCURS
+Best for: absolute proof the plan works end-to-end
+Frequency: Annually maximum
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Hospital DR Test Program</div>
+      <div class="code">
+<span class="cm"># Hospital annual DR testing schedule:</span>
+
+<span class="cb">Q1: Tabletop Exercise</span>
+Scenario: "Ransomware encrypted all servers at 2am"
+Attendees: CIO, IT Director, Security team, Dept heads
+Outcome: discovered 3 gaps in communication plan
+         updated emergency contact list
+         clarified who has authority to declare DR
+
+<span class="ct">Q2: Simulation Test</span>
+Test: restore patient database from backup
+Result: restore completed in 4.2 hours
+        RPO verified: max 1 hour data loss ✓
+        RTO issue found: exceeded 4hr target by 12min
+        Fixed: added faster restore procedure
+
+<span class="co">Q3: Parallel Test</span>
+Activated warm site in Chicago
+Both sites running simultaneously
+Verified: all systems sync'd correctly
+Found: VoIP phones didn't failover → fixed
+
+<span class="cr">Q4: Full Interruption (1am Sunday)</span>
+Primary DC shut down
+All operations moved to Chicago warm site
+Result: 47-minute full failover
+        All systems operational ✓
+        Tested failback to primary: 2 hours
+        Board informed: DR plan validated ✓
+      </div>
+    </div>
+
+    <h3>Quick Comparison</h3>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Test Type</th><th>Systems Affected</th><th>Risk Level</th><th>Realism</th><th>Cost</th></tr>
+      <tr><td>Tabletop</td><td><span class="tag tg">None</span></td><td><span class="tag tg">None</span></td><td><span class="tag tr">Low</span></td><td><span class="tag tg">$</span></td></tr>
+      <tr><td>Walkthrough</td><td><span class="tag tg">None</span></td><td><span class="tag tg">None</span></td><td><span class="tag tr">Low</span></td><td><span class="tag tg">$</span></td></tr>
+      <tr><td>Simulation</td><td><span class="tag to">Partial</span></td><td><span class="tag to">Low</span></td><td><span class="tag to">Medium</span></td><td><span class="tag to">$$</span></td></tr>
+      <tr><td>Parallel</td><td><span class="tag to">Both running</span></td><td><span class="tag to">Low</span></td><td><span class="tag tb">High</span></td><td><span class="tag to">$$$</span></td></tr>
+      <tr><td>Full Interruption</td><td><span class="tag tr">Primary shut down</span></td><td><span class="tag tr">High</span></td><td><span class="tag tg">Highest</span></td><td><span class="tag tr">$$$$</span></td></tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Tabletop →</span><span>Discussion only — zero systems, zero risk — find plan gaps</span></div>
+      <div class="er"><span class="ek">Simulation →</span><span>Test specific components — restore from backup</span></div>
+      <div class="er"><span class="ek">Parallel →</span><span>Both sites running — safe way to prove backup works</span></div>
+      <div class="er"><span class="ek">Full interruption →</span><span>Primary shut down — highest realism — highest risk</span></div>
+      <div class="er"><span class="ek">Untested plan →</span><span>Worth nothing — always test before disaster strikes</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- 4. POWER                          -->
+<!-- ══════════════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">04</span>
+    <span class="card-title">Power Resilience</span>
+    <span class="bdg bdg-yellow">UPS · Generator · Dual Feed</span>
+  </div>
+  <div class="card-bd">
+    <p>Everything depends on power. No power = no systems = complete outage. Power resilience keeps systems running through <strong style="color:var(--text)">grid failures, brownouts, and extended outages</strong>.</p>
+
+    <h3>Power Failure Timeline — What Happens</h3>
+    <div class="power-flow">
+      <div class="pf-box" style="background:#1a1000;border:1px solid var(--red);color:var(--red)">
+        ⚡ Grid fails<br><span style="font-family:'Space Mono',monospace;font-size:0.6rem">00:00:00</span>
+      </div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-box" style="background:#0f1a10;border:1px solid var(--green);color:var(--green)">
+        UPS activates<br><span style="font-family:'Space Mono',monospace;font-size:0.6rem">milliseconds</span>
+      </div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-box" style="background:#1a1000;border:1px solid var(--orange);color:var(--orange)">
+        Generator starts<br><span style="font-family:'Space Mono',monospace;font-size:0.6rem">00:00:30</span>
+      </div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-box" style="background:#0a1520;border:1px solid var(--blue);color:var(--blue)">
+        Transfer switch<br><span style="font-family:'Space Mono',monospace;font-size:0.6rem">00:02:00</span>
+      </div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-box" style="background:#0f1a10;border:1px solid var(--green);color:var(--green)">
+        Generator running<br><span style="font-family:'Space Mono',monospace;font-size:0.6rem">indefinitely</span>
+      </div>
+      <div class="pf-arrow">→</div>
+      <div class="pf-box" style="background:#1a1a10;border:1px solid var(--yellow);color:var(--yellow)">
+        UPS recharges<br><span style="font-family:'Space Mono',monospace;font-size:0.6rem">while gen runs</span>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="gc">
+        <h4 style="color:var(--green)">UPS — Uninterruptible Power Supply</h4>
+        <p><strong style="color:var(--text)">Purpose:</strong> INSTANT power bridge when grid fails — activates in milliseconds. Bridges gap until generator starts (usually 30-120 seconds).</p>
+        <div class="code" style="margin-top:0.5rem">
+<span class="ct">UPS Types:</span>
+Standby:    switches to battery (tiny delay)
+Line-interactive: conditions power constantly
+Online/Double: ALWAYS on battery ← best
+               Grid charges battery
+               Battery powers everything
+               Zero switchover delay
+
+<span class="cg">Without UPS:</span> 2-min gap = servers crash
+<span class="cg">With UPS:</span> zero interruption ✓
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Generator</h4>
+        <p><strong style="color:var(--text)">Purpose:</strong> Long-term power for extended outages. Diesel or natural gas. Runs indefinitely with fuel supply.</p>
+        <div class="code" style="margin-top:0.5rem">
+<span class="ct">Key considerations:</span>
+Fuel supply: how many hours of diesel?
+Automatic Transfer Switch (ATS):
+  auto-starts on power failure
+  auto-transfers load
+Testing: run monthly under load
+Maintenance: oil, filters, coolant
+Multiple generators: redundancy
+Fuel contracts: guaranteed delivery
+
+<span class="cm"># Never assume generator works</span>
+<span class="cm"># Test it regularly under real load</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Dual Power Feeds</h4>
+        <p>Critical servers have TWO power supplies from DIFFERENT circuits, UPS units, and generators. Both must fail simultaneously to lose server — astronomically unlikely.</p>
+        <div class="code" style="margin-top:0.5rem">
+Server PSU1 ← Circuit A ← UPS-A ← Generator-A
+Server PSU2 ← Circuit B ← UPS-B ← Generator-B
+
+If entire Generator-A fails:
+Server still running on Generator-B ✓
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">PDU — Power Distribution Unit</h4>
+        <p>Distributes power from UPS/generator to individual servers. Smart PDUs allow remote monitoring and control of each outlet. Can see power consumption per server remotely.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Data Center Power Outage</div>
+      <div class="code">
+<span class="cm"># Major power grid failure — entire city block:</span>
+
+14:32:15 — City power grid fails
+14:32:15 — UPS systems activate instantly (milliseconds)
+           All servers continue running on battery
+14:32:17 — Monitoring detects grid failure
+           Automatic Transfer Switch signals generators
+14:32:45 — Generator A starts and warms up
+14:33:10 — Generator A reaches stable output
+           ATS transfers load to Generator A
+14:33:12 — UPS batteries begin recharging
+14:33:12 — All servers: <span class="cg">running normally ✓</span>
+           Users: <span class="cg">zero impact noticed ✓</span>
+
+<span class="co">17:45:00 — Grid still down — fuel check:</span>
+Generator A: 280 gallons remaining (8.2 hours)
+Generator B: 295 gallons remaining (8.7 hours)
+Action: emergency fuel delivery ordered ✓
+
+<span class="cm"># City grid restored 22:15 — 7.7 hours total</span>
+<span class="cg"># Data center: 100% uptime throughout ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">UPS →</span><span>Instant bridge — milliseconds — not long-term power</span></div>
+      <div class="er"><span class="ek">Generator →</span><span>Long-term — needs fuel — test monthly</span></div>
+      <div class="er"><span class="ek">Online UPS →</span><span>Always on battery — zero switchover delay — best type</span></div>
+      <div class="er"><span class="ek">Dual power feed →</span><span>Two PSUs from different circuits — both must fail to lose server</span></div>
+      <div class="er"><span class="ek">ATS →</span><span>Automatic Transfer Switch — auto-starts generator on grid failure</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- 5. PLATFORM DIVERSITY             -->
+<!-- ══════════════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">05</span>
+    <span class="card-title">Platform Diversity</span>
+    <span class="bdg bdg-teal">Reduce Blast Radius</span>
+  </div>
+  <div class="card-bd">
+    <p>Using <strong style="color:var(--text)">different technologies, vendors, and platforms</strong> so one vulnerability, bug, or failure doesn't affect everything simultaneously. Avoids putting all eggs in one basket.</p>
+
+    <div class="code">
+<span class="cm"># No diversity — dangerous:</span>
+All servers: Windows Server 2022
+All network: Cisco only
+All cloud:   AWS only
+All storage: NetApp only
+
+Critical Windows zero-day discovered →
+<span class="cr">ALL servers vulnerable simultaneously ✗</span>
+AWS outage →
+<span class="cr">ALL cloud services down simultaneously ✗</span>
+
+<span class="cm"># With platform diversity:</span>
+50% servers: Windows Server
+50% servers: Linux (RHEL/Ubuntu)
+Network: Cisco core + Juniper edge
+Cloud: AWS primary + Azure secondary
+Storage: NetApp primary + Pure secondary
+
+Windows zero-day →
+<span class="cg">Linux servers completely unaffected ✓</span>
+AWS outage →
+<span class="cg">Azure failover activates ✓</span>
+    </div>
+
+    <h3>Types of Platform Diversity</h3>
+    <div class="grid2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">OS Diversity</h4>
+        <p>Mix of Windows and Linux. Vulnerability in one OS doesn't affect the other. Critical services duplicated across both OS types where possible.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Vendor Diversity</h4>
+        <p>Multiple vendors for critical components. Cisco + Juniper for network. Palo Alto + Fortinet for firewalls. One vendor's critical bug doesn't compromise everything.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Cloud Provider Diversity</h4>
+        <p>Multi-cloud strategy. AWS primary + Azure secondary. GCP for specific services. Major provider outage doesn't take down everything. Avoids vendor lock-in.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Geographic Diversity</h4>
+        <p>Data centers in different cities, regions, countries. Different power grids, different natural disaster risks, different network routes. One location disaster = others unaffected.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Technology Diversity</h4>
+        <p>Different technologies for similar functions. Not all Microsoft or all open-source. Web servers: Apache + Nginx. Databases: SQL Server + PostgreSQL. Reduces monoculture risk.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Crypto Diversity</h4>
+        <p>Multiple cryptographic algorithms. If one algorithm is broken, not all data is exposed. RSA + ECDSA for signatures. AES + ChaCha20 for encryption.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Log4Shell (Log4j) Attack 2021</div>
+      <div class="code">
+<span class="cm"># Log4Shell: critical Java library vulnerability</span>
+<span class="cm"># Affected: any application using Log4j</span>
+
+<span class="cr">Company A — No platform diversity:</span>
+All 47 applications: Java-based
+All using: Log4j logging library
+Log4Shell discovered:
+→ ALL 47 applications vulnerable ✗
+→ Emergency patches for everything
+→ 2-week remediation effort
+→ Some services offline during patching
+
+<span class="cg">Company B — Platform diversity:</span>
+12 applications: Java (use Log4j)
+18 applications: Python
+10 applications: Node.js
+7 applications: Go
+
+Log4Shell discovered:
+→ Only 12 Java apps need attention ✓
+→ 35 apps completely unaffected ✓
+→ 3-day targeted remediation
+→ No service interruptions
+→ Blast radius: 25% instead of 100%
+    </div>
+    </div>
+
+    <h3>Trade-offs</h3>
+    <div class="grid2">
+      <div class="gc" style="border-color:#1a3d28">
+        <h4 style="color:var(--green)">Benefits</h4>
+        <p>Reduced blast radius of vulnerabilities. No vendor lock-in. Resilience against targeted attacks. Regulatory compliance. Negotiating leverage with vendors.</p>
+      </div>
+      <div class="gc" style="border-color:#3d1515">
+        <h4 style="color:var(--red)">Challenges</h4>
+        <p>Increased management complexity. Staff needs expertise across multiple platforms. Higher licensing costs. Integration between different systems harder. More potential failure points.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Platform diversity →</span><span>Different vendors/OS/tech — one vulnerability doesn't hit everything</span></div>
+      <div class="er"><span class="ek">Blast radius →</span><span>How much is affected by one failure — diversity reduces this</span></div>
+      <div class="er"><span class="ek">Monoculture risk →</span><span>All same technology = all fail together</span></div>
+      <div class="er"><span class="ek">Multi-cloud →</span><span>AWS + Azure — cloud provider diversity</span></div>
+      <div class="er"><span class="ek">Trade-off →</span><span>More secure but more complex — increased management overhead</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- 6. BACKUPS                        -->
+<!-- ══════════════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">06</span>
+    <span class="card-title">Backup Types & Strategy</span>
+    <span class="bdg bdg-green">3-2-1 Rule</span>
+  </div>
+  <div class="card-bd">
+    <p>Backups are copies of data stored separately — allowing recovery when data is <strong style="color:var(--text)">lost, corrupted, encrypted by ransomware, or accidentally deleted</strong>. RAID is NOT a backup.</p>
+
+    <h3>Backup Types — Visual Comparison</h3>
+
+    <div style="margin:1rem 0">
+      <div style="font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem">FULL BACKUP — copy everything every time</div>
+      <div class="backup-grid">
+        <div class="bday bday-full"><div class="bday-lbl">MON</div><span style="color:var(--blue);font-size:0.65rem">FULL</span><br><span style="font-size:0.6rem;color:var(--muted)">100GB</span></div>
+        <div class="bday bday-full"><div class="bday-lbl">TUE</div><span style="color:var(--blue);font-size:0.65rem">FULL</span><br><span style="font-size:0.6rem;color:var(--muted)">102GB</span></div>
+        <div class="bday bday-full"><div class="bday-lbl">WED</div><span style="color:var(--blue);font-size:0.65rem">FULL</span><br><span style="font-size:0.6rem;color:var(--muted)">103GB</span></div>
+        <div class="bday bday-full"><div class="bday-lbl">THU</div><span style="color:var(--blue);font-size:0.65rem">FULL</span><br><span style="font-size:0.6rem;color:var(--muted)">104GB</span></div>
+        <div class="bday bday-full"><div class="bday-lbl">FRI</div><span style="color:var(--blue);font-size:0.65rem">FULL</span><br><span style="font-size:0.6rem;color:var(--muted)">105GB</span></div>
+        <div class="bday bday-full"><div class="bday-lbl">SAT</div><span style="color:var(--blue);font-size:0.65rem">FULL</span><br><span style="font-size:0.6rem;color:var(--muted)">106GB</span></div>
+        <div class="bday bday-full"><div class="bday-lbl">SUN</div><span style="color:var(--blue);font-size:0.65rem">FULL</span><br><span style="font-size:0.6rem;color:var(--muted)">107GB</span></div>
+      </div>
+      <div style="font-size:0.72rem;color:var(--muted)">Restore: use ONE backup file — simplest restore. Storage: 714GB total — most expensive. Backup speed: slowest.</div>
+    </div>
+
+    <div style="margin:1rem 0">
+      <div style="font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem">INCREMENTAL — only changes since LAST backup</div>
+      <div class="backup-grid">
+        <div class="bday bday-full"><div class="bday-lbl">MON</div><span style="color:var(--blue);font-size:0.65rem">FULL</span><br><span style="font-size:0.6rem;color:var(--muted)">100GB</span></div>
+        <div class="bday bday-incr"><div class="bday-lbl">TUE</div><span style="color:var(--green);font-size:0.65rem">INCR</span><br><span style="font-size:0.6rem;color:var(--muted)">2GB</span></div>
+        <div class="bday bday-incr"><div class="bday-lbl">WED</div><span style="color:var(--green);font-size:0.65rem">INCR</span><br><span style="font-size:0.6rem;color:var(--muted)">3GB</span></div>
+        <div class="bday bday-incr"><div class="bday-lbl">THU</div><span style="color:var(--green);font-size:0.65rem">INCR</span><br><span style="font-size:0.6rem;color:var(--muted)">1GB</span></div>
+        <div class="bday bday-incr"><div class="bday-lbl">FRI</div><span style="color:var(--green);font-size:0.65rem">INCR</span><br><span style="font-size:0.6rem;color:var(--muted)">4GB</span></div>
+        <div class="bday bday-incr"><div class="bday-lbl">SAT</div><span style="color:var(--green);font-size:0.65rem">INCR</span><br><span style="font-size:0.6rem;color:var(--muted)">2GB</span></div>
+        <div class="bday bday-incr"><div class="bday-lbl">SUN</div><span style="color:var(--green);font-size:0.65rem">INCR</span><br><span style="font-size:0.6rem;color:var(--muted)">3GB</span></div>
+      </div>
+      <div style="font-size:0.72rem;color:var(--muted)">Restore Friday: need MON + TUE + WED + THU + FRI — all 5 backups. Storage: 115GB total — cheapest. Backup speed: fastest.</div>
+    </div>
+
+    <div style="margin:1rem 0">
+      <div style="font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem">DIFFERENTIAL — changes since LAST FULL backup</div>
+      <div class="backup-grid">
+        <div class="bday bday-full"><div class="bday-lbl">MON</div><span style="color:var(--blue);font-size:0.65rem">FULL</span><br><span style="font-size:0.6rem;color:var(--muted)">100GB</span></div>
+        <div class="bday bday-diff"><div class="bday-lbl">TUE</div><span style="color:var(--orange);font-size:0.65rem">DIFF</span><br><span style="font-size:0.6rem;color:var(--muted)">2GB</span></div>
+        <div class="bday bday-diff"><div class="bday-lbl">WED</div><span style="color:var(--orange);font-size:0.65rem">DIFF</span><br><span style="font-size:0.6rem;color:var(--muted)">5GB</span></div>
+        <div class="bday bday-diff"><div class="bday-lbl">THU</div><span style="color:var(--orange);font-size:0.65rem">DIFF</span><br><span style="font-size:0.6rem;color:var(--muted)">6GB</span></div>
+        <div class="bday bday-diff"><div class="bday-lbl">FRI</div><span style="color:var(--orange);font-size:0.65rem">DIFF</span><br><span style="font-size:0.6rem;color:var(--muted)">10GB</span></div>
+        <div class="bday bday-diff"><div class="bday-lbl">SAT</div><span style="color:var(--orange);font-size:0.65rem">DIFF</span><br><span style="font-size:0.6rem;color:var(--muted)">13GB</span></div>
+        <div class="bday bday-diff"><div class="bday-lbl">SUN</div><span style="color:var(--orange);font-size:0.65rem">DIFF</span><br><span style="font-size:0.6rem;color:var(--muted)">15GB</span></div>
+      </div>
+      <div style="font-size:0.72rem;color:var(--muted)">Restore Friday: need MON (full) + FRI (diff) — only 2 backups. Storage: 151GB total. Backup speed: medium.</div>
+    </div>
+
+    <h3>3-2-1 Backup Rule — Must Know</h3>
+    <div class="code">
+<span class="cb">3</span> — Three COPIES of data
+<span class="co">2</span> — Two DIFFERENT media types
+<span class="cg">1</span> — One copy OFFSITE
+
+Example:
+Copy 1: Production server (local SAN)
+Copy 2: NAS backup device (local — different media)
+Copy 3: <span class="cg">Cloud backup (offsite) ← most critical</span>
+
+If fire destroys building:
+→ Copies 1 and 2: destroyed
+→ Copy 3 in cloud: <span class="cg">SAFE ✓</span>
+
+<span class="cp">Modern extension — 3-2-1-1-0:</span>
+<span class="cp">+1</span> — One OFFLINE/AIR-GAPPED copy
+         Ransomware can't reach offline storage!
+<span class="cg">+0</span> — Zero ERRORS (test restores regularly!)
+         Untested backup = worthless backup
+    </div>
+
+    <h3>Backup Security</h3>
+    <div class="grid3">
+      <div class="gc">
+        <h4 style="color:var(--red)">Immutable Backups</h4>
+        <p>Cannot be modified or deleted — even by admins. WORM storage (Write Once Read Many). Ransomware tries to delete → refused. Critical modern protection.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Encrypted Backups</h4>
+        <p>Backup data as sensitive as production data. Encrypt everything. Stolen backup tape → unreadable without key. AES-256 minimum.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Test Restores</h4>
+        <p>Actually restore monthly. Verify data integrity. Measure restore time against RTO. An untested backup is NOT a backup — it's a hope.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Ransomware Attacks Backups</div>
+      <div class="code">
+<span class="cm"># Ransomware hits organization:</span>
+
+<span class="cr">Company A — Online backups only:</span>
+Ransomware encrypts: production data ✗
+Ransomware finds:    backup server ✗
+Ransomware encrypts: ALL online backups ✗
+Result: EVERYTHING encrypted
+Forced to pay $2.4M ransom OR lose everything
+
+<span class="cg">Company B — 3-2-1-1-0 with immutable + offline:</span>
+Ransomware encrypts: production data ✗
+Ransomware finds:    NAS backup ✗
+Ransomware tries to: encrypt NAS
+Immutable backup:    <span class="cg">REFUSES deletion ✓</span>
+Offline tape backup: <span class="cg">physically disconnected — unreachable ✓</span>
+Cloud backup:        <span class="cg">immutable object storage ✓</span>
+Result: restore from clean backup
+        <span class="cg">Total downtime: 4 hours</span>
+        <span class="cg">Ransom paid: $0</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">Full →</span><span>Slowest backup, fastest restore — one file needed</span></div>
+      <div class="er"><span class="ek">Incremental →</span><span>Fastest backup, slowest restore — entire chain needed</span></div>
+      <div class="er"><span class="ek">Differential →</span><span>Medium backup speed, medium restore — only need full + latest diff</span></div>
+      <div class="er"><span class="ek">3-2-1 rule →</span><span>3 copies, 2 media, 1 offsite — exam standard</span></div>
+      <div class="er"><span class="ek">Immutable →</span><span>Cannot be deleted — ransomware protection — WORM storage</span></div>
+      <div class="er"><span class="ek">RAID ≠ backup →</span><span>RAID = hardware failure only / Backup = ransomware, deletion, disaster</span></div>
+      <div class="er"><span class="ek">Test restores →</span><span>Untested backup is worthless — test monthly</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- 7. COOP                           -->
+<!-- ══════════════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">07</span>
+    <span class="card-title">Continuity of Operations (COOP)</span>
+    <span class="bdg bdg-red">BIA · RTO · RPO · MTD</span>
+  </div>
+  <div class="card-bd">
+    <p>COOP is the plan and capability to <strong style="color:var(--text)">continue essential business functions</strong> during and after ANY disruption — cyberattack, natural disaster, pandemic, or hardware failure.</p>
+
+    <h3>Key Metrics — Must Know All Four</h3>
+    <div class="grid2">
+      <div class="gc" style="border-color:#2a4f7f">
+        <h4 style="color:var(--blue)">RTO — Recovery Time Objective</h4>
+        <p>Maximum acceptable time to <strong style="color:var(--text)">restore a service</strong> after failure.</p>
+        <div class="code" style="margin-top:0.5rem">
+"We must be back online
+ within 4 hours of failure"
+
+Shorter RTO = more expensive
+(requires more redundancy)
+
+Drives: redundancy planning
+        failover architecture
+        </div>
+      </div>
+      <div class="gc" style="border-color:#2a5538">
+        <h4 style="color:var(--green)">RPO — Recovery Point Objective</h4>
+        <p>Maximum acceptable <strong style="color:var(--text)">data loss</strong> measured in time.</p>
+        <div class="code" style="margin-top:0.5rem">
+"We can lose no more than
+ 1 hour of data"
+
+RPO = 1hr → backups every hour
+RPO = 24hr → daily backups OK
+RPO = 0 → real-time replication
+
+Drives: backup frequency
+        replication strategy
+        </div>
+      </div>
+      <div class="gc" style="border-color:#5a3d18">
+        <h4 style="color:var(--orange)">MTD — Maximum Tolerable Downtime</h4>
+        <p>Absolute maximum time before <strong style="color:var(--text)">irreversible harm</strong> to organization.</p>
+        <div class="code" style="margin-top:0.5rem">
+Hospital patient monitors: MTD = 30 sec
+Online retailer Black Friday: MTD = 5 min
+HR system: MTD = 72 hours
+
+<span class="cr">CRITICAL RULE:</span>
+RTO must ALWAYS be LESS than MTD
+If RTO > MTD → business fails
+before recovery completes!
+        </div>
+      </div>
+      <div class="gc" style="border-color:#3d2a5a">
+        <h4 style="color:var(--purple)">BIA — Business Impact Analysis</h4>
+        <p>Identifies <strong style="color:var(--text)">critical business functions</strong> and the impact of disrupting each one. Foundation of all continuity planning.</p>
+        <div class="code" style="margin-top:0.5rem">
+BIA output example:
+Payment system: $50k/hr loss
+  RTO: 15 min  RPO: 5 min
+Email:          $5k/hr loss
+  RTO: 4 hrs   RPO: 1 hr
+HR system:      $500/hr loss
+  RTO: 48 hrs  RPO: 24 hrs
+
+Do BIA FIRST — everything
+else follows from BIA results
+        </div>
+      </div>
+    </div>
+
+    <h3>RTO vs RPO — Easy Memory Aid</h3>
+    <div class="code">
+RTO = Recovery <span class="cb">TIME</span> Objective
+  → About TIME to restore SERVICE
+  → "How fast back online?"
+  → Determines REDUNDANCY needed
+
+RPO = Recovery <span class="cg">POINT</span> Objective
+  → About data POINT in time
+  → "How much DATA LOSS is OK?"
+  → Determines BACKUP FREQUENCY
+
+<span class="cm">Disaster strikes at 3:00 PM:</span>
+RPO = 1 hour → last backup at 2:00 PM acceptable ✓
+RTO = 4 hours → back online by 7:00 PM ✓
+MTD = 6 hours → if not online by 9:00 PM → catastrophic
+    </div>
+
+    <h3>COOP Documents</h3>
+    <div class="grid2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">BCP — Business Continuity Plan</h4>
+        <p>BROAD — covers the entire business. People, processes, facilities, communication, vendors. "How do we keep serving customers during disruption?"</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">DRP — Disaster Recovery Plan</h4>
+        <p>NARROW — restoring IT systems specifically. Servers, data, applications, infrastructure. "How do we get systems back online?" DRP is a subset of BCP.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">IRP — Incident Response Plan</h4>
+        <p>SECURITY incidents specifically. Cyberattacks, breaches, malware. Who to call, steps to contain, evidence preservation, regulatory notifications.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Communication Plan</h4>
+        <p>Who tells who what during crisis. Internal: staff chain of command. External: customers, regulators, media, vendors. Pre-approved messages ready.</p>
+      </div>
+    </div>
+
+    <h3>Order of Restoration — Critical for Exam</h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--red);border-color:var(--red)"></div>
+        <div class="tl-title" style="color:var(--red)">1. Network Infrastructure</div>
+        <div class="tl-desc">Can't do anything without network. Core switches, routers, firewalls first.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--orange);border-color:var(--orange)"></div>
+        <div class="tl-title" style="color:var(--orange)">2. Security Systems</div>
+        <div class="tl-desc">Restore securely — firewalls, IPS, authentication systems before adding more systems.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--yellow);border-color:var(--yellow)"></div>
+        <div class="tl-title" style="color:var(--yellow)">3. Directory Services</div>
+        <div class="tl-desc">Active Directory — identity and access. Without this, users can't authenticate to anything.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--green);border-color:var(--green)"></div>
+        <div class="tl-title" style="color:var(--green)">4. Critical Business Applications</div>
+        <div class="tl-desc">ERP, payment systems, core business apps — highest revenue/operational impact first.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--blue);border-color:var(--blue)"></div>
+        <div class="tl-title" style="color:var(--blue)">5. Communication Systems</div>
+        <div class="tl-desc">Email, phone — staff can communicate internally and with customers.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--muted);border-color:var(--muted)"></div>
+        <div class="tl-title" style="color:var(--muted)">6. Supporting Systems</div>
+        <div class="tl-desc">HR, reporting, non-critical apps — restore last when critical systems stable.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// SCENARIO — Ransomware COOP Activation</div>
+      <div class="code">
+<span class="cm"># Ransomware detected Monday 3am:</span>
+
+<span class="cr">03:00</span> — Security team detects ransomware spreading
+<span class="cr">03:05</span> — CISO declares incident — IRP activated
+<span class="cr">03:10</span> — Network segmentation: isolate infected systems
+<span class="cr">03:15</span> — BCP activated: DR coordinator notified
+<span class="cr">03:30</span> — Assessment: 40% of servers encrypted
+
+<span class="co">Recovery priority (from BIA):</span>
+<span class="cb">04:00</span> — Network infrastructure restored from clean config
+<span class="cb">04:30</span> — Firewalls and security systems restored
+<span class="cb">05:00</span> — Active Directory restored from backup (3am backup)
+<span class="cb">06:00</span> — Payment processing restored — <span class="cg">RTO: 3hrs ✓</span>
+<span class="cb">08:00</span> — Email restored for staff communications
+<span class="co">09:00</span> — Customers notified via pre-approved communication
+<span class="cb">12:00</span> — All critical systems operational
+
+<span class="cg">RPO achieved: 1 hour data loss (3am backup used)</span>
+<span class="cg">RTO achieved: 3 hours for payment (target: 4hrs) ✓</span>
+<span class="cg">MTD: not breached — business continuity maintained</span>
+    </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="er"><span class="ek">RTO →</span><span>How FAST to restore service — time objective</span></div>
+      <div class="er"><span class="ek">RPO →</span><span>How much DATA LOSS acceptable — point in time objective</span></div>
+      <div class="er"><span class="ek">MTD →</span><span>Maximum tolerable downtime — RTO must ALWAYS be less than MTD</span></div>
+      <div class="er"><span class="ek">BIA →</span><span>Done FIRST — identifies critical functions and their impact</span></div>
+      <div class="er"><span class="ek">BCP →</span><span>Broad — entire business continuity</span></div>
+      <div class="er"><span class="ek">DRP →</span><span>Narrow — IT systems recovery — subset of BCP</span></div>
+      <div class="er"><span class="ek">Order →</span><span>Network → Security → Directory → Critical Apps → Email → Supporting</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- 8. SUMMARY                        -->
+<!-- ══════════════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd">
+    <span class="card-num">08</span>
+    <span class="card-title">Complete Summary — Exam Cheat Sheet</span>
+    <span class="bdg bdg-teal">All Topics</span>
+  </div>
+  <div class="card-bd">
+
+    <h3>All Concepts at a Glance</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Topic</th><th>Key Concept</th><th>Exam Keyword</th></tr>
+      <tr><td>High Availability</td><td>Eliminate single points of failure</td><td>MTTR ↓, MTBF ↑, five nines, load balancing</td></tr>
+      <tr><td>Hot Site</td><td>Fully operational, real-time sync</td><td>Minutes failover — most expensive</td></tr>
+      <tr><td>Warm Site</td><td>Hardware ready, partial sync</td><td>Hours-days failover — most common</td></tr>
+      <tr><td>Cold Site</td><td>Empty building, power only</td><td>Days-weeks — cheapest</td></tr>
+      <tr><td>Tabletop</td><td>Discussion only</td><td>Zero risk, zero systems, find gaps</td></tr>
+      <tr><td>Parallel test</td><td>Both sites running</td><td>Safe way to prove backup site works</td></tr>
+      <tr><td>Full interruption</td><td>Primary shut down</td><td>Highest realism, highest risk</td></tr>
+      <tr><td>UPS</td><td>Instant bridge (ms)</td><td>Not long-term — bridges to generator</td></tr>
+      <tr><td>Generator</td><td>Long-term power</td><td>Needs fuel — test monthly</td></tr>
+      <tr><td>Platform diversity</td><td>Different vendors/OS</td><td>Reduce blast radius — monoculture risk</td></tr>
+      <tr><td>3-2-1 Rule</td><td>3 copies, 2 media, 1 offsite</td><td>Backup standard — add 1 offline, 0 errors</td></tr>
+      <tr><td>Immutable backup</td><td>Cannot be deleted</td><td>Ransomware protection — WORM</td></tr>
+      <tr><td>Full backup</td><td>Everything, every time</td><td>Slowest backup, fastest restore</td></tr>
+      <tr><td>Incremental</td><td>Changes since last backup</td><td>Fastest backup, slowest restore, chain needed</td></tr>
+      <tr><td>Differential</td><td>Changes since last FULL</td><td>Medium — only need full + latest diff</td></tr>
+      <tr><td>BIA</td><td>Identify critical functions first</td><td>Foundation of BCP/DRP — do this first</td></tr>
+      <tr><td>RTO</td><td>How fast to restore service</td><td>Time — determines redundancy needed</td></tr>
+      <tr><td>RPO</td><td>How much data loss OK</td><td>Point in time — determines backup frequency</td></tr>
+      <tr><td>MTD</td><td>Max before irreversible harm</td><td>RTO must ALWAYS be less than MTD</td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// EXAM SCENARIOS</h4>
+      <div class="er"><span class="ek">"Zero customer impact when server dies"</span><span>→ High availability, load balancing, active/active clustering</span></div>
+      <div class="er"><span class="ek">"Backup site ready in minutes"</span><span>→ Hot site</span></div>
+      <div class="er"><span class="ek">"Backup site ready in hours-days"</span><span>→ Warm site</span></div>
+      <div class="er"><span class="ek">"Empty building, cheap backup"</span><span>→ Cold site</span></div>
+      <div class="er"><span class="ek">"Test DR plan — no systems touched"</span><span>→ Tabletop exercise</span></div>
+      <div class="er"><span class="ek">"Both sites running simultaneously"</span><span>→ Parallel test</span></div>
+      <div class="er"><span class="ek">"Primary shut down for testing"</span><span>→ Full interruption test</span></div>
+      <div class="er"><span class="ek">"Power stays on during outage"</span><span>→ UPS (immediate) + Generator (long-term)</span></div>
+      <div class="er"><span class="ek">"Ransomware can't delete backup"</span><span>→ Immutable backup / WORM storage</span></div>
+      <div class="er"><span class="ek">"Fastest backup speed"</span><span>→ Incremental</span></div>
+      <div class="er"><span class="ek">"Fastest restore speed"</span><span>→ Full backup</span></div>
+      <div class="er"><span class="ek">"How fast must we recover?"</span><span>→ RTO (Recovery Time Objective)</span></div>
+      <div class="er"><span class="ek">"How much data loss is acceptable?"</span><span>→ RPO (Recovery Point Objective)</span></div>
+      <div class="er"><span class="ek">"Max downtime before catastrophe"</span><span>→ MTD (Maximum Tolerable Downtime)</span></div>
+      <div class="er"><span class="ek">"Done first before writing DR plan"</span><span>→ BIA (Business Impact Analysis)</span></div>
+      <div class="er"><span class="ek">"One vendor vuln hits everything"</span><span>→ No platform diversity — monoculture risk</span></div>
+      <div class="er"><span class="ek">"RAID protects against ransomware?"</span><span>→ NO — RAID ≠ backup — ransomware encrypts RAID too</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

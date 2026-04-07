@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk Management — Security+ Domain 5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anybody:wght@300;400;500;600;700;800;900&family=Inconsolata:wght@400;500;600;700&family=Mulish:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg:#0b0c0f;
+  --s1:#111215;
+  --s2:#18191e;
+  --s3:#1f2028;
+  --border:#2a2b35;
+  --text:#e0e2f0;
+  --muted:#6a6e90;
+  --red:#ff4d4d;
+  --orange:#ff8c42;
+  --yellow:#ffc444;
+  --green:#3de87a;
+  --blue:#4db8ff;
+  --purple:#b87aff;
+  --teal:#2ee8d8;
+  --pink:#ff6ec7;
+  --indigo:#7a8fff;
+  --lime:#aaee44;
+  --sky:#44ccff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Mulish',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+/* HEADER */
+.hdr{
+  text-align:center;
+  margin-bottom:2.5rem;
+  padding:1.5rem 0;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.hdr-domain{
+  font-family:'Inconsolata',monospace;
+  font-size:0.62rem;
+  letter-spacing:0.22em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:0.6rem;
+}
+.hdr-title{
+  font-family:'Anybody',sans-serif;
+  font-size:3.2rem;
+  font-weight:900;
+  letter-spacing:-0.03em;
+  line-height:0.95;
+  margin-bottom:0.5rem;
+}
+.hdr-title .r{color:var(--orange);}
+.hdr-title .w{color:var(--text);}
+.hdr-sub{
+  font-family:'Inconsolata',monospace;
+  font-size:0.66rem;
+  color:var(--muted);
+  letter-spacing:0.05em;
+}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.4rem 0.85rem;
+  border-radius:5px;
+  border:1px solid var(--border);
+  background:var(--s1);
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'Inconsolata',monospace;
+  font-size:0.63rem;
+  font-weight:600;
+  transition:all 0.14s;
+  letter-spacing:0.03em;
+}
+.tab:hover{border-color:var(--orange);color:var(--orange);}
+.tab.active{background:var(--orange);color:#0b0c0f;border-color:var(--orange);font-weight:700;}
+
+/* SECTIONS */
+.sec{display:none;}
+.sec.on{display:block;animation:up 0.2s ease;}
+@keyframes up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* CARD */
+.card{
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:10px;
+  margin-bottom:1.5rem;
+  overflow:hidden;
+}
+.card-hd{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:1rem 1.4rem;
+  border-bottom:1px solid var(--border);
+  background:var(--s2);
+}
+.card-num{
+  font-family:'Inconsolata',monospace;
+  font-size:0.58rem;
+  color:var(--muted);
+  background:var(--s3);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:0.12rem 0.38rem;
+}
+.card-title{
+  font-family:'Anybody',sans-serif;
+  font-size:1.1rem;
+  font-weight:700;
+  letter-spacing:-0.02em;
+}
+.bdg{
+  margin-left:auto;
+  font-family:'Inconsolata',monospace;
+  font-size:0.58rem;
+  padding:0.16rem 0.55rem;
+  border-radius:999px;
+  white-space:nowrap;
+  font-weight:600;
+}
+.bdg-red{background:#2d0a0a;color:var(--red);border:1px solid #4a1010;}
+.bdg-orange{background:#281000;color:var(--orange);border:1px solid #401800;}
+.bdg-yellow{background:#242000;color:var(--yellow);border:1px solid #3a3000;}
+.bdg-green{background:#082a14;color:var(--green);border:1px solid #104020;}
+.bdg-blue{background:#082040;color:var(--blue);border:1px solid #103060;}
+.bdg-purple{background:#1a0830;color:var(--purple);border:1px solid #280d48;}
+.bdg-teal{background:#062220;color:var(--teal);border:1px solid #0e3835;}
+.bdg-indigo{background:#101840;color:var(--indigo);border:1px solid #182860;}
+.bdg-lime{background:#162000;color:var(--lime);border:1px solid #203000;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.7;}
+h3{
+  font-family:'Anybody',sans-serif;
+  font-size:0.9rem;
+  font-weight:700;
+  color:var(--text);
+  margin:1.3rem 0 0.6rem;
+  padding-left:0.7rem;
+  border-left:3px solid var(--orange);
+  letter-spacing:-0.01em;
+}
+
+/* CODE */
+.code{
+  background:#060708;
+  border:1px solid var(--border);
+  border-radius:7px;
+  padding:1rem 1.2rem;
+  font-family:'Inconsolata',monospace;
+  font-size:0.68rem;
+  line-height:1.9;
+  color:var(--text);
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.cg{color:var(--green);} .cr{color:var(--red);} .cb{color:var(--blue);}
+.co{color:var(--orange);} .cp{color:var(--purple);} .cm{color:var(--muted);}
+.ct{color:var(--teal);} .ci{color:var(--indigo);} .cy{color:var(--yellow);}
+.cl{color:var(--lime);} .cpk{color:var(--pink);} .cs{color:var(--sky);}
+
+/* SCENE */
+.scene{
+  background:#1a0e00;
+  border-left:3px solid var(--orange);
+  border-radius:0 8px 8px 0;
+  padding:1rem 1.2rem;
+  margin:1rem 0;
+}
+.scene-lbl{
+  font-family:'Inconsolata',monospace;
+  font-size:0.58rem;
+  color:var(--orange);
+  margin-bottom:0.4rem;
+  letter-spacing:0.12em;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:1rem;
+}
+.gc h4{
+  font-family:'Anybody',sans-serif;
+  font-size:0.84rem;
+  font-weight:700;
+  margin-bottom:0.4rem;
+  letter-spacing:-0.01em;
+}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{
+  background:#100818;
+  border:1px solid #280d48;
+  border-radius:8px;
+  padding:1rem 1.2rem;
+  margin-top:1rem;
+}
+.exam h4{
+  font-family:'Inconsolata',monospace;
+  font-size:0.58rem;
+  color:var(--purple);
+  margin-bottom:0.6rem;
+  letter-spacing:0.12em;
+  font-weight:700;
+  text-transform:uppercase;
+}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'Inconsolata',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{
+  background:var(--s2);padding:0.52rem 0.8rem;text-align:left;
+  color:var(--muted);border-bottom:1px solid var(--border);
+  font-size:0.64rem;font-weight:700;
+  font-family:'Inconsolata',monospace;letter-spacing:0.06em;text-transform:uppercase;
+}
+td{padding:0.52rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.08rem 0.42rem;border-radius:4px;font-size:0.6rem;font-family:'Inconsolata',monospace;font-weight:700;}
+.tg{background:#082a14;color:var(--green);}
+.tr{background:#2d0a0a;color:var(--red);}
+.tb{background:#082040;color:var(--blue);}
+.to{background:#281000;color:var(--orange);}
+.tp{background:#1a0830;color:var(--purple);}
+.tt{background:#062220;color:var(--teal);}
+.ti{background:#101840;color:var(--indigo);}
+.ty{background:#242000;color:var(--yellow);}
+.tl{background:#162000;color:var(--lime);}
+.ts{background:#082030;color:var(--sky);}
+
+/* INFO ROW */
+.info-row{
+  display:flex;align-items:flex-start;gap:0.8rem;
+  padding:0.8rem 1rem;background:var(--s2);
+  border:1px solid var(--border);border-radius:7px;margin-bottom:0.5rem;
+}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{
+  font-family:'Anybody',sans-serif;font-size:0.84rem;
+  font-weight:700;margin-bottom:0.12rem;letter-spacing:-0.01em;
+}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* RISK MATRIX */
+.matrix-wrap{margin:1rem 0;overflow-x:auto;}
+.risk-matrix{
+  display:grid;
+  grid-template-columns:60px repeat(5,1fr);
+  gap:3px;
+  min-width:400px;
+}
+.rm-cell{
+  border-radius:4px;
+  padding:0.5rem 0.3rem;
+  text-align:center;
+  font-family:'Inconsolata',monospace;
+  font-size:0.65rem;
+  font-weight:700;
+  line-height:1.3;
+}
+.rm-header{background:var(--s3);color:var(--muted);font-size:0.6rem;}
+.rm-label{
+  background:var(--s2);color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.6rem;writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  border-radius:4px;
+}
+.rm-low{background:#0d2a10;color:#3de87a;border:1px solid #1a4020;}
+.rm-med{background:#2a2200;color:#ffc444;border:1px solid #403200;}
+.rm-high{background:#2a1200;color:#ff8c42;border:1px solid #401800;}
+.rm-crit{background:#2a0808;color:#ff4d4d;border:1px solid #401010;}
+
+/* STRATEGY CARDS */
+.strat-card{
+  border-radius:8px;padding:1.1rem;
+  border:1px solid;
+  margin-bottom:0.6rem;
+  display:flex;gap:1rem;align-items:flex-start;
+}
+.strat-icon{font-size:1.5rem;flex-shrink:0;}
+.strat-title{
+  font-family:'Anybody',sans-serif;
+  font-size:0.9rem;font-weight:700;margin-bottom:0.2rem;letter-spacing:-0.01em;
+}
+.strat-body{font-size:0.77rem;color:var(--muted);}
+
+/* RISK REGISTER */
+.rr-row{
+  display:grid;
+  grid-template-columns:200px 60px 60px 80px 1fr;
+  gap:0.5rem;align-items:center;
+  padding:0.55rem 0.8rem;
+  border-radius:6px;
+  margin-bottom:0.3rem;
+  font-size:0.74rem;
+  border:1px solid var(--border);
+}
+.rr-hdr{background:var(--s2);font-family:'Inconsolata',monospace;font-size:0.6rem;color:var(--muted);font-weight:700;letter-spacing:0.06em;text-transform:uppercase;}
+@media(max-width:600px){.rr-row{grid-template-columns:1fr;}}
+
+/* FLOW */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.flow-box{
+  border-radius:6px;padding:0.5rem 0.8rem;
+  font-family:'Inconsolata',monospace;font-size:0.65rem;font-weight:700;
+  border:1px solid;text-align:center;min-width:80px;letter-spacing:0.02em;
+}
+.flow-arr{color:var(--muted);font-size:0.9rem;}
+
+/* BIA TABLE */
+.bia-row{
+  display:flex;align-items:center;gap:1rem;
+  padding:0.65rem 0.9rem;
+  background:var(--s2);border:1px solid var(--border);border-radius:6px;
+  margin-bottom:0.4rem;
+}
+.bia-term{
+  font-family:'Inconsolata',monospace;
+  font-size:0.72rem;font-weight:700;
+  min-width:65px;flex-shrink:0;
+}
+.bia-full{font-size:0.8rem;font-weight:700;min-width:220px;flex-shrink:0;}
+.bia-def{font-size:0.74rem;color:var(--muted);flex:1;}
+
+/* TOLERANCE GAUGE */
+.gauge-wrap{margin:1rem 0;}
+.gauge-bar{
+  height:32px;border-radius:6px;
+  background:linear-gradient(to right,#082a14,#0d3300,#242000,#281000,#2d0808);
+  position:relative;
+  display:flex;align-items:center;
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+.gauge-label{
+  font-family:'Inconsolata',monospace;font-size:0.6rem;font-weight:700;
+  flex:1;text-align:center;color:rgba(255,255,255,0.6);
+}
+.gauge-needle{
+  position:absolute;
+  top:0;bottom:0;width:3px;
+  background:#fff;border-radius:2px;
+}
+.gauge-desc{
+  display:flex;justify-content:space-between;
+  font-family:'Inconsolata',monospace;font-size:0.6rem;
+  color:var(--muted);margin-top:0.3rem;
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-domain">Security+ SY0-701 · Domain 5 · Security Program Management &amp; Oversight · Subtopic 2</div>
+  <div class="hdr-title">
+    <span class="r">Risk</span><br>
+    <span class="w">Management</span>
+  </div>
+  <div class="hdr-sub">// Identification · Assessment · Analysis · Register · Tolerance · Appetite · Strategies · BIA</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Identification</button>
+  <button class="tab" onclick="go('s3',this)">3. Assessment & Analysis</button>
+  <button class="tab" onclick="go('s4',this)">4. Risk Matrix</button>
+  <button class="tab" onclick="go('s5',this)">5. Register & Reporting</button>
+  <button class="tab" onclick="go('s6',this)">6. Tolerance & Appetite</button>
+  <button class="tab" onclick="go('s7',this)">7. Response Strategies</button>
+  <button class="tab" onclick="go('s8',this)">8. BIA</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ═══════════════════ -->
+<!-- 1. OVERVIEW        -->
+<!-- ═══════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Risk Management Overview</span><span class="bdg bdg-orange">Identify · Assess · Treat · Monitor</span></div>
+  <div class="card-bd">
+    <p>Risk management is the <strong style="color:var(--text)">systematic process of identifying, analyzing, and responding to threats that could harm the organization</strong>. Security is fundamentally about risk — you can't eliminate all risk, so you must understand which risks to accept, reduce, transfer, or avoid.</p>
+
+    <h3>Core Risk Concepts</h3>
+    <div class="code">
+<span class="cm"># Three foundational components of risk:</span>
+
+RISK = THREAT × VULNERABILITY × IMPACT
+
+THREAT:         Something that could cause harm
+                (attacker, natural disaster, hardware failure)
+
+VULNERABILITY:  Weakness that a threat can exploit
+                (unpatched system, weak password, no MFA)
+
+IMPACT:         Damage caused if threat exploits vulnerability
+                (data breach, downtime, financial loss, reputation)
+
+<span class="cm"># Examples:</span>
+Threat: ransomware attacker
+Vulnerability: unpatched Windows Server (EternalBlue)
+Impact: all servers encrypted, 3-day outage
+Risk: HIGH — all three factors present
+
+Threat: earthquake
+Vulnerability: single data center in fault zone
+Impact: complete loss of infrastructure
+Risk: depends on likelihood of earthquake in your region
+
+<span class="cm"># Reducing risk means reducing threat, vulnerability, OR impact</span>
+<span class="cg">Control:    reduces vulnerability → lowers risk</span>
+<span class="cg">Insurance:  reduces financial impact → lowers risk</span>
+<span class="cg">Off-site DR: reduces outage impact → lowers risk</span>
+    </div>
+
+    <h3>Key Risk Terminology</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--orange)">Inherent Risk</h4>
+        <p>The level of risk that EXISTS before any controls are applied. Raw risk. What you're naturally exposed to. Always the starting point of any risk assessment.</p>
+        <div class="code" style="font-size:0.63rem;margin-top:0.4rem">
+Inherent risk:
+  System: Windows Server 2016
+  Internet-facing: yes
+  Contains: customer PII
+  Controls: NONE YET
+  Inherent risk: CRITICAL
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Residual Risk</h4>
+        <p>The risk that REMAINS after controls are applied. Can never be zero. Organization must decide if residual risk is acceptable. If residual risk > risk appetite → need more controls.</p>
+        <div class="code" style="font-size:0.63rem;margin-top:0.4rem">
+After controls:
+  Patched: yes → reduces exploitability
+  WAF: deployed → reduces attack surface
+  MFA: enabled → reduces credential attacks
+  DLP: running → reduces data exfil impact
+  Residual risk: MEDIUM (still some risk)
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Control Risk</h4>
+        <p>Risk that a control will fail or be bypassed. Controls are not perfect — they can fail, be misconfigured, or be circumvented. Example: MFA control risk = user approves MFA fatigue attack. Must account for control failure probability.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Risk Exposure</h4>
+        <p>The total potential impact if a risk materializes. Financial, operational, reputational, legal dimensions. Quantified as: Annualized Loss Expectancy (ALE) for financial measurement. Used to justify security investment.</p>
+      </div>
+    </div>
+
+    <h3>The Risk Management Lifecycle</h3>
+    <div class="flow">
+      <div class="flow-box" style="background:#082040;border-color:#103060;color:var(--blue)">Identify<br>Risks</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#281000;border-color:#401800;color:var(--orange)">Assess<br>& Analyze</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#242000;border-color:#403200;color:var(--yellow)">Evaluate<br>& Prioritize</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#1a0830;border-color:#280d48;color:var(--purple)">Treat<br>(Strategy)</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#082a14;border-color:#104020;color:var(--green)">Monitor<br>& Review</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#062220;border-color:#0e3835;color:var(--teal)">Report<br>& Document</div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Risk →</span><span>Threat × Vulnerability × Impact — probability of harm × magnitude of harm</span></div>
+      <div class="er"><span class="ek">Inherent risk →</span><span>Risk BEFORE controls applied — raw, unmitigated risk</span></div>
+      <div class="er"><span class="ek">Residual risk →</span><span>Risk AFTER controls applied — always some remains — must be within appetite</span></div>
+      <div class="er"><span class="ek">Control risk →</span><span>Risk that a security control will fail or be bypassed</span></div>
+      <div class="er"><span class="ek">Risk management goal →</span><span>Not eliminate risk — reduce to acceptable level within risk appetite</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════ -->
+<!-- 2. IDENTIFICATION  -->
+<!-- ═══════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">Risk Identification</span><span class="bdg bdg-blue">Assets · Threats · Vulnerabilities</span></div>
+  <div class="card-bd">
+    <p>You can't manage risks you don't know about. Risk identification is the <strong style="color:var(--text)">systematic process of discovering all potential threats, vulnerabilities, and their associated assets</strong> before they become incidents.</p>
+
+    <h3>What to Identify — Three Layers</h3>
+    <div class="code">
+<span class="cm"># Layer 1 — ASSETS (what needs protecting):</span>
+  Information assets:  customer data, intellectual property, financial records
+  System assets:       servers, workstations, network devices, cloud instances
+  People assets:       key employees, contractors, leadership
+  Physical assets:     data centers, offices, equipment
+  Process assets:      business processes, supply chains, third parties
+
+<span class="cm"># Layer 2 — THREATS (what could harm them):</span>
+  External:    hackers, APTs, nation states, competitors, criminals
+  Internal:    disgruntled employees, negligent users, contractors
+  Natural:     earthquakes, floods, hurricanes, fire
+  Technical:   hardware failure, software bugs, power outages
+  Third-party: vendor breach, supply chain attack, partner compromise
+
+<span class="cm"># Layer 3 — VULNERABILITIES (weaknesses to exploit):</span>
+  Technical:   unpatched systems, misconfigurations, weak crypto
+  Process:     no change management, no security awareness training
+  People:      untrained staff, weak passwords, over-privileged accounts
+  Physical:    unlocked doors, no badge access, no CCTV coverage
+    </div>
+
+    <h3>Risk Identification Methods</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Asset Inventory</h4>
+        <p>You can't protect what you don't know you have. Full inventory of hardware, software, data, cloud resources, and people. CMDB (Configuration Management Database). Automated discovery tools. Basis for all risk identification.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Vulnerability Scans</h4>
+        <p>Automated identification of technical vulnerabilities. Nessus, Qualys, OpenVAS. Compares system configs against known CVE database. Shows exact weaknesses attackers could exploit. Regular cadence — weekly/monthly minimum.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Penetration Testing</h4>
+        <p>Authorized exploitation of vulnerabilities. Finds what automated scans miss. Shows real-world exploitability not just theoretical. Results: proof-of-concept attacks with remediation guidance. Annual minimum for most organizations.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Threat Intelligence</h4>
+        <p>External knowledge of active threats. CISA alerts, vendor threat reports, ISAC feeds, dark web monitoring. "Are attackers actively targeting organizations like us?" Contextualizes which vulnerabilities matter most right now.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Audit Findings</h4>
+        <p>Internal and external audits identify control gaps. Compliance audits reveal where policy isn't being followed. Third-party risk assessments reveal vendor vulnerabilities. Audit findings → risk register entries.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--yellow)">Interviews & Workshops</h4>
+        <p>Subject matter experts often know about risks that aren't documented anywhere. Business process owners, IT staff, executives. Structured interviews and risk workshops surface hidden operational and process risks.</p>
+      </div>
+    </div>
+
+    <h3>Risk Categories</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Category</th><th>Examples</th><th>Primary Controls</th></tr>
+      <tr><td><span class="tag tr">Strategic</span></td><td>Competitive disruption, technology obsolescence, regulatory change</td><td>Business continuity planning, market monitoring</td></tr>
+      <tr><td><span class="tag to">Operational</span></td><td>Process failure, supply chain disruption, key person dependency</td><td>Process controls, vendor management, succession planning</td></tr>
+      <tr><td><span class="tag tb">Technical/IT</span></td><td>Cyberattacks, system failures, data breaches, software bugs</td><td>Security controls, DR/BCP, patch management</td></tr>
+      <tr><td><span class="tag tp">Financial</span></td><td>Fraud, currency risk, budget overrun, loss of revenue</td><td>Financial controls, insurance, audits</td></tr>
+      <tr><td><span class="tag tg">Compliance</span></td><td>Regulatory violations, data protection failures, audit failures</td><td>Compliance programs, legal review, policies</td></tr>
+      <tr><td><span class="tag ty">Reputational</span></td><td>Data breach disclosure, negative press, social media crisis</td><td>Crisis management, PR plan, security controls</td></tr>
+      <tr><td><span class="tag tt">Physical/Environmental</span></td><td>Natural disaster, fire, theft, power failure</td><td>Physical security, redundancy, DR sites</td></tr>
+    </table>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Risk Identification Workshop Output</div>
+      <div class="code">
+<span class="cm"># Hospital risk identification workshop — key findings:</span>
+
+Asset: Electronic Health Records (EHR) system
+  Hosts: 12,000 patient records daily
+  Availability requirement: 99.9% (critical — life safety)
+
+Threats identified:
+  <span class="cr">T1: Ransomware attack targeting healthcare</span>
+  <span class="cr">T2: Insider data theft (employee selling patient data)</span>
+  <span class="co">T3: Natural disaster (facility in flood zone)</span>
+  <span class="co">T4: Power failure (no UPS on secondary systems)</span>
+  <span class="cy">T5: Vendor breach (EHR vendor has admin access)</span>
+
+Vulnerabilities identified:
+  <span class="cr">V1: EHR server OS unpatched for 8 months</span>
+  <span class="cr">V2: No MFA on EHR admin accounts</span>
+  <span class="co">V3: Single data center — no DR site</span>
+  <span class="co">V4: Vendor has permanent VPN access (no JIT)</span>
+  <span class="cy">V5: Staff can export entire patient database to USB</span>
+
+Risk combinations:
+  T1 + V1/V2 = <span class="cr">CRITICAL ransomware risk</span>
+  T2 + V5   = <span class="co">HIGH insider data theft risk</span>
+  T3 + V3   = <span class="cr">CRITICAL availability risk</span>
+  T5 + V4   = <span class="co">HIGH supply chain risk</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Asset inventory →</span><span>Foundation of risk identification — can't protect what you don't know you have</span></div>
+      <div class="er"><span class="ek">Threat →</span><span>Any potential cause of harm — external, internal, natural, technical</span></div>
+      <div class="er"><span class="ek">Vulnerability →</span><span>Weakness that a threat can exploit — technical, process, people, physical</span></div>
+      <div class="er"><span class="ek">Pen test →</span><span>Active exploitation — finds what scanners miss — shows real-world impact</span></div>
+      <div class="er"><span class="ek">Threat intelligence →</span><span>External data on active threats — contextualizes which risks matter most NOW</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 3. ASSESSMENT & ANALYSIS  -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">Risk Assessment & Analysis</span><span class="bdg bdg-yellow">Qualitative · Quantitative · SLE · ALE</span></div>
+  <div class="card-bd">
+    <p>Risk assessment determines <strong style="color:var(--text)">the probability of a risk occurring and its potential impact</strong>. Two fundamental approaches: qualitative (descriptive) and quantitative (numerical). Both have strengths and are used in different contexts.</p>
+
+    <h3>Qualitative Risk Analysis</h3>
+    <div class="code">
+<span class="cm"># Qualitative = descriptive categories, not exact numbers</span>
+
+Likelihood ratings:       Impact ratings:
+  Rare       (1)             Negligible   (1)
+  Unlikely   (2)             Minor        (2)
+  Possible   (3)             Moderate     (3)
+  Likely     (4)             Major        (4)
+  Almost Certain (5)         Catastrophic (5)
+
+Risk level = Likelihood × Impact
+
+Examples:
+  Ransomware (healthcare org):
+    Likelihood: Likely (4) — healthcare targeted frequently
+    Impact: Catastrophic (5) — patient safety + HIPAA + revenue
+    Risk score: 20 → <span class="cr">CRITICAL</span>
+
+  Coffee machine power failure:
+    Likelihood: Possible (3)
+    Impact: Negligible (1)
+    Risk score: 3 → <span class="cg">LOW</span>
+
+<span class="cm"># Advantages:</span>
+  → Fast and easy — no financial data needed
+  → Works when numbers are hard to estimate
+  → Good for initial prioritization
+
+<span class="cm"># Disadvantages:</span>
+  → Subjective — "likely" means different things to different people
+  → Can't directly compare to cost of controls
+  → "Major" impact doesn't tell you how many dollars
+    </div>
+
+    <h3>Quantitative Risk Analysis</h3>
+    <div class="code">
+<span class="cm"># Quantitative = real dollar figures — must know these formulas:</span>
+
+<span class="co">AV  — Asset Value</span>
+    The monetary value of the asset being protected
+    Example: CRM database = $2,000,000 (replacement + lost business)
+
+<span class="co">EF  — Exposure Factor</span>
+    Percentage of asset value LOST if threat materializes (0-100%)
+    Ransomware on CRM: 40% (data encrypted but backup exists)
+    Complete hardware destruction: 100% (total loss)
+
+<span class="cy">SLE — Single Loss Expectancy</span>
+    Expected loss from ONE occurrence of a risk
+    Formula: <span class="cy">SLE = AV × EF</span>
+    Example: $2,000,000 × 40% = <span class="cy">SLE = $800,000</span>
+
+<span class="co">ARO — Annualized Rate of Occurrence</span>
+    How many times expected per YEAR (can be fraction)
+    ARO = 1.0 → expected once per year
+    ARO = 0.5 → expected once every two years
+    ARO = 2.0 → expected twice per year
+    Ransomware in healthcare: ARO = 0.3 (once every ~3 years)
+
+<span class="cy">ALE — Annualized Loss Expectancy</span>
+    Expected annual financial loss from a specific risk
+    Formula: <span class="cy">ALE = SLE × ARO</span>
+    Example: $800,000 × 0.3 = <span class="cy">ALE = $240,000</span>
+
+<span class="cg">Using ALE to justify security investment:</span>
+    Current ALE (ransomware):       $240,000/year
+    Backup solution + EDR cost:      $50,000/year
+    New ALE with controls:           $30,000/year (EF reduced to 5%)
+    ALE reduction:                  $210,000/year
+    Cost of control:                 $50,000/year
+    Net benefit:                    <span class="cg">$160,000/year savings ✓</span>
+    </div>
+
+    <h3>Quantitative Formulas — Exam Must-Know</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Term</th><th>Full Name</th><th>Formula</th><th>What It Means</th></tr>
+      <tr>
+        <td><span class="tag ty">AV</span></td>
+        <td>Asset Value</td>
+        <td>Assessed/estimated</td>
+        <td>Dollar value of the asset</td>
+      </tr>
+      <tr>
+        <td><span class="tag to">EF</span></td>
+        <td>Exposure Factor</td>
+        <td>0% to 100%</td>
+        <td>% of asset value lost per incident</td>
+      </tr>
+      <tr>
+        <td><span class="tag ty">SLE</span></td>
+        <td>Single Loss Expectancy</td>
+        <td><strong>SLE = AV × EF</strong></td>
+        <td>Loss from one occurrence</td>
+      </tr>
+      <tr>
+        <td><span class="tag to">ARO</span></td>
+        <td>Annualized Rate of Occurrence</td>
+        <td>Events per year</td>
+        <td>How often per year (can be fraction)</td>
+      </tr>
+      <tr>
+        <td><span class="tag ty">ALE</span></td>
+        <td>Annualized Loss Expectancy</td>
+        <td><strong>ALE = SLE × ARO</strong></td>
+        <td>Expected annual financial loss</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3>Qualitative vs Quantitative — When to Use Each</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#403200">
+        <h4 style="color:var(--yellow)">Qualitative — Use When:</h4>
+        <ul>
+          <li>Quick initial prioritization needed</li>
+          <li>Financial data hard to estimate</li>
+          <li>Intangible impacts (reputation, morale)</li>
+          <li>Strategic-level decisions</li>
+          <li>Non-technical stakeholders involved</li>
+          <li>Time constraints — fast assessment needed</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#103060">
+        <h4 style="color:var(--blue)">Quantitative — Use When:</h4>
+        <ul>
+          <li>Justifying security investment to finance/board</li>
+          <li>Comparing control cost to risk reduction</li>
+          <li>Insurance coverage decisions</li>
+          <li>Regulatory compliance documentation</li>
+          <li>Detailed risk analysis for major decisions</li>
+          <li>Financial impact must be precise</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Using ALE to Justify Security Budget</div>
+      <div class="code">
+<span class="cm"># CISO presents to CFO: "Why should we spend $200K on security?"</span>
+
+Without numbers: "Ransomware is a serious threat and we need to invest"
+CFO: <span class="cr">"That's vague — rejected"</span>
+
+With ALE calculation:
+
+<span class="cb">Risk: Ransomware attack on financial systems</span>
+AV  = $5,000,000 (financial system value + recovery costs)
+EF  = 60% (most data recoverable but 2 weeks downtime)
+SLE = $5,000,000 × 60% = $3,000,000
+
+ARO = 0.25 (industry data: 1 attack per 4 years for firms our size)
+ALE = $3,000,000 × 0.25 = <span class="cr">$750,000/year expected loss</span>
+
+<span class="cb">Proposed controls: EDR + backups + training = $200,000/year</span>
+New EF: 10% (fast recovery from immutable backups)
+New ARO: 0.1 (better detection reduces successful attacks)
+New SLE: $5,000,000 × 10% = $500,000
+New ALE: $500,000 × 0.1 = <span class="cg">$50,000/year</span>
+
+ALE reduction: $750,000 - $50,000 = <span class="cg">$700,000/year saved</span>
+Control cost:  $200,000/year
+<span class="cg">ROI: 350% — pay back in 4 months ✓</span>
+
+CFO: <span class="cg">"Approved"</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">SLE = AV × EF →</span><span>Single Loss Expectancy — loss from one incident</span></div>
+      <div class="er"><span class="ek">ALE = SLE × ARO →</span><span>Annualized Loss Expectancy — expected annual financial loss — KEY FORMULA</span></div>
+      <div class="er"><span class="ek">EF →</span><span>Exposure Factor — percentage of asset value lost per incident (0-100%)</span></div>
+      <div class="er"><span class="ek">ARO →</span><span>Annualized Rate of Occurrence — frequency per year — 0.5 = once every 2 years</span></div>
+      <div class="er"><span class="ek">Qualitative →</span><span>Descriptive — High/Med/Low — fast, subjective, no numbers needed</span></div>
+      <div class="er"><span class="ek">Quantitative →</span><span>Dollar figures — ALE, SLE — justifies budget — objective but data-intensive</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════ -->
+<!-- 4. RISK MATRIX     -->
+<!-- ═══════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Risk Matrix & Prioritization</span><span class="bdg bdg-red">Likelihood × Impact</span></div>
+  <div class="card-bd">
+    <p>The risk matrix (also called a heat map) is a <strong style="color:var(--text)">visual tool that plots risks by likelihood and impact</strong> to quickly communicate risk levels and prioritize treatment. It's one of the most commonly used governance tools in security programs.</p>
+
+    <h3>5×5 Risk Matrix</h3>
+    <div class="matrix-wrap">
+      <div style="font-family:'Inconsolata',monospace;font-size:0.65rem;color:var(--muted);margin-bottom:0.5rem;text-align:center;">IMPACT →</div>
+      <div class="risk-matrix">
+        <div class="rm-cell rm-header" style="grid-column:1;display:flex;align-items:center;justify-content:center;font-size:0.6rem;writing-mode:vertical-rl;transform:rotate(180deg);min-height:160px;">LIKELIHOOD ↑</div>
+        <div class="rm-cell rm-header">Negligible</div>
+        <div class="rm-cell rm-header">Minor</div>
+        <div class="rm-cell rm-header">Moderate</div>
+        <div class="rm-cell rm-header">Major</div>
+        <div class="rm-cell rm-header">Catastrophic</div>
+        <!-- Row 5 - Almost Certain -->
+        <div class="rm-cell rm-label">Almost Certain</div>
+        <div class="rm-cell rm-med">MED<br>5</div>
+        <div class="rm-cell rm-high">HIGH<br>10</div>
+        <div class="rm-cell rm-high">HIGH<br>15</div>
+        <div class="rm-cell rm-crit">CRIT<br>20</div>
+        <div class="rm-cell rm-crit">CRIT<br>25</div>
+        <!-- Row 4 - Likely -->
+        <div class="rm-cell rm-label">Likely</div>
+        <div class="rm-cell rm-low">LOW<br>4</div>
+        <div class="rm-cell rm-med">MED<br>8</div>
+        <div class="rm-cell rm-high">HIGH<br>12</div>
+        <div class="rm-cell rm-high">HIGH<br>16</div>
+        <div class="rm-cell rm-crit">CRIT<br>20</div>
+        <!-- Row 3 - Possible -->
+        <div class="rm-cell rm-label">Possible</div>
+        <div class="rm-cell rm-low">LOW<br>3</div>
+        <div class="rm-cell rm-med">MED<br>6</div>
+        <div class="rm-cell rm-med">MED<br>9</div>
+        <div class="rm-cell rm-high">HIGH<br>12</div>
+        <div class="rm-cell rm-high">HIGH<br>15</div>
+        <!-- Row 2 - Unlikely -->
+        <div class="rm-cell rm-label">Unlikely</div>
+        <div class="rm-cell rm-low">LOW<br>2</div>
+        <div class="rm-cell rm-low">LOW<br>4</div>
+        <div class="rm-cell rm-med">MED<br>6</div>
+        <div class="rm-cell rm-med">MED<br>8</div>
+        <div class="rm-cell rm-high">HIGH<br>10</div>
+        <!-- Row 1 - Rare -->
+        <div class="rm-cell rm-label">Rare</div>
+        <div class="rm-cell rm-low">LOW<br>1</div>
+        <div class="rm-cell rm-low">LOW<br>2</div>
+        <div class="rm-cell rm-low">LOW<br>3</div>
+        <div class="rm-cell rm-low">LOW<br>4</div>
+        <div class="rm-cell rm-med">MED<br>5</div>
+      </div>
+      <div style="display:flex;gap:0.5rem;margin-top:0.7rem;flex-wrap:wrap;">
+        <span class="rm-cell rm-low" style="padding:0.2rem 0.6rem;font-size:0.6rem">LOW (1-4): Accept or monitor</span>
+        <span class="rm-cell rm-med" style="padding:0.2rem 0.6rem;font-size:0.6rem">MEDIUM (5-9): Reduce or monitor closely</span>
+        <span class="rm-cell rm-high" style="padding:0.2rem 0.6rem;font-size:0.6rem">HIGH (10-16): Reduce — immediate attention</span>
+        <span class="rm-cell rm-crit" style="padding:0.2rem 0.6rem;font-size:0.6rem">CRITICAL (17-25): Immediate action required</span>
+      </div>
+    </div>
+
+    <h3>Plotting Real Risks on the Matrix</h3>
+    <div class="code">
+<span class="cm"># Example organization — risk heat map analysis:</span>
+
+Risk                     Likelihood  Impact    Score   Level
+─────────────────────────────────────────────────────────────
+Ransomware (healthcare)    Likely(4)  Catas(5)   20   <span class="cr">CRITICAL</span>
+No DR site                 Poss(3)    Catas(5)   15   <span class="cr">CRITICAL</span>
+SQL injection (web app)    Likely(4)  Major(4)   16   <span class="co">HIGH</span>
+Phishing attack            Almost(5)  Mod(3)     15   <span class="co">HIGH</span>
+Employee USB theft         Poss(3)    Major(4)   12   <span class="co">HIGH</span>
+Office fire                Unlik(2)   Major(4)    8   <span class="cy">MEDIUM</span>
+DDoS attack                Poss(3)    Mod(3)      9   <span class="cy">MEDIUM</span>
+Password spraying          Poss(3)    Minor(2)    6   <span class="cy">MEDIUM</span>
+Developer deletes prod DB  Unlik(2)   Minor(2)    4   <span class="cg">LOW</span>
+Lost smartphone            Likely(4)  Neglig(1)   4   <span class="cg">LOW</span>
+
+<span class="cm"># Treatment priorities:</span>
+CRITICAL: immediate risk treatment required
+HIGH:     treat within 30 days
+MEDIUM:   treat within 90 days
+LOW:      monitor, accept, or treat opportunistically
+    </div>
+
+    <h3>Risk Prioritization Factors</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--orange)">Severity × Exploitability</h4>
+        <p>Not just theoretical impact — how easily can this actually be exploited? A critical vulnerability in an isolated system may be lower priority than a medium vulnerability in an internet-facing system. EPSS (Exploit Prediction Scoring System) helps — probability of exploitation in the wild.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Asset Criticality</h4>
+        <p>Same vulnerability in a dev server vs production CRM has different priority. Asset criticality ranking determines which systems get patched first. Crown jewels (most critical assets) get priority treatment regardless of risk score.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Regulatory Exposure</h4>
+        <p>Risks in regulated environments (cardholder data, PHI) get elevated priority due to legal consequences. A medium-risk control gap in PCI-DSS scope may be treated like HIGH due to compliance implications.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Threat Intelligence Context</h4>
+        <p>CISA KEV (Known Exploited Vulnerabilities) — if a CVE is actively exploited in the wild, treat it as higher priority than its CVSS score suggests. Current threat landscape affects prioritization.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Risk matrix →</span><span>Likelihood × Impact grid — visual prioritization tool — heat map</span></div>
+      <div class="er"><span class="ek">Risk score →</span><span>Likelihood rating × Impact rating — higher score = higher priority</span></div>
+      <div class="er"><span class="ek">Critical risk →</span><span>Requires immediate action — high likelihood AND high impact</span></div>
+      <div class="er"><span class="ek">CVSS →</span><span>Common Vulnerability Scoring System — 0-10 severity — NOT the same as risk</span></div>
+      <div class="er"><span class="ek">CISA KEV →</span><span>Known Exploited Vulnerabilities — actively exploited in wild — treat urgently</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 5. REGISTER & REPORTING   -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Risk Register & Reporting</span><span class="bdg bdg-teal">Document · Track · Communicate</span></div>
+  <div class="card-bd">
+    <p>The risk register is the <strong style="color:var(--text)">central document that records all identified risks, their assessments, treatment decisions, and status</strong>. It's the living record of the organization's risk posture — updated continuously as new risks emerge and existing risks change.</p>
+
+    <h3>Risk Register Structure</h3>
+    <div class="rr-row rr-hdr">
+      <div>Risk Description</div><div>Prob</div><div>Impact</div><div>Score</div><div>Treatment / Owner / Status</div>
+    </div>
+    <div class="rr-row" style="background:#1a0808;border-color:#401010">
+      <div style="font-size:0.74rem"><strong>Ransomware — no immutable backup</strong></div>
+      <div><span class="tag tr">4/5</span></div>
+      <div><span class="tag tr">5/5</span></div>
+      <div><span class="tag tr">20 CRIT</span></div>
+      <div style="font-size:0.72rem;color:var(--muted)">Reduce: deploy immutable backup. Owner: IT Mgr. Due: 30 days. Status: IN PROGRESS</div>
+    </div>
+    <div class="rr-row" style="background:#1a0a00;border-color:#401800">
+      <div style="font-size:0.74rem"><strong>No DR site — single data center</strong></div>
+      <div><span class="tag to">3/5</span></div>
+      <div><span class="tag tr">5/5</span></div>
+      <div><span class="tag tr">15 HIGH</span></div>
+      <div style="font-size:0.72rem;color:var(--muted)">Reduce: AWS DR site. Owner: CTO. Due: 90 days. Status: PLANNING</div>
+    </div>
+    <div class="rr-row" style="background:#1a1000;border-color:#403200">
+      <div style="font-size:0.74rem"><strong>Phishing — no email sandboxing</strong></div>
+      <div><span class="tag ty">5/5</span></div>
+      <div><span class="tag to">3/5</span></div>
+      <div><span class="tag to">15 HIGH</span></div>
+      <div style="font-size:0.72rem;color:var(--muted)">Reduce: deploy Defender for O365. Owner: SecOps. Due: 14 days. Status: APPROVED</div>
+    </div>
+    <div class="rr-row" style="background:#081a0e;border-color:#104020">
+      <div style="font-size:0.74rem"><strong>Legacy system — Win Server 2008 R2</strong></div>
+      <div><span class="tag to">3/5</span></div>
+      <div><span class="tag to">3/5</span></div>
+      <div><span class="tag ty">9 MED</span></div>
+      <div style="font-size:0.72rem;color:var(--muted)">Transfer/Reduce: cyber ins. + segment network. Owner: App Owner. Due: 60 days. Status: ACCEPTED w/ exception</div>
+    </div>
+    <div class="rr-row">
+      <div style="font-size:0.74rem"><strong>Lost mobile device (employee)</strong></div>
+      <div><span class="tag ty">4/5</span></div>
+      <div><span class="tag tg">1/5</span></div>
+      <div><span class="tag tg">4 LOW</span></div>
+      <div style="font-size:0.72rem;color:var(--muted)">Accept: MDM enables remote wipe. Owner: IT. Due: N/A. Status: ACCEPTED</div>
+    </div>
+
+    <h3>Risk Register Fields — What to Document</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Core Fields</h4>
+        <ul>
+          <li>Risk ID (unique identifier)</li>
+          <li>Risk description</li>
+          <li>Category (technical, operational, etc.)</li>
+          <li>Threat and vulnerability</li>
+          <li>Affected assets</li>
+          <li>Likelihood rating</li>
+          <li>Impact rating</li>
+          <li>Risk score and level</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Treatment Fields</h4>
+        <ul>
+          <li>Risk response strategy (mitigate/transfer/accept/avoid)</li>
+          <li>Current controls in place</li>
+          <li>Planned treatment actions</li>
+          <li>Risk owner (accountable person)</li>
+          <li>Treatment due date</li>
+          <li>Residual risk after treatment</li>
+          <li>Review date</li>
+          <li>Status (open/in progress/closed)</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Risk Reporting — Audience-Specific Communication</h3>
+    <div class="code">
+<span class="cm"># Different audiences need different risk reports:</span>
+
+<span class="cp">Board of Directors (quarterly):</span>
+  Format: 1-2 page executive summary + heat map
+  Content: top 5 risks, overall posture trending,
+           major incidents, regulatory exposure,
+           investment needed vs. risk reduction
+  Language: business impact — dollars, reputation,
+            compliance — NOT technical details
+
+<span class="cb">CISO / Executive team (monthly):</span>
+  Format: risk dashboard + metrics
+  Content: risk register status, new risks this month,
+           control gaps, remediation progress,
+           threat intelligence summary
+
+<span class="cg">Security team (weekly):</span>
+  Format: operational risk metrics
+  Content: vulnerability count by severity,
+           open risk exceptions, overdue remediations,
+           control monitoring dashboards
+
+<span class="cy">Regulators / Auditors (as required):</span>
+  Format: formal risk assessment documentation
+  Content: comprehensive risk methodology,
+           all identified risks, control mapping,
+           audit evidence — formal language
+    </div>
+
+    <h3>Risk Exceptions — When You Can't Fix Everything Now</h3>
+    <div class="info-row">
+      <div class="info-icon">📝</div>
+      <div>
+        <div class="info-title">Risk Exception / Acceptance Documentation</div>
+        <div class="info-desc">When a risk cannot be immediately remediated (budget, legacy system, technical constraints), the organization formally documents a risk exception. Must include: risk description, why it cannot be remediated, compensating controls in place, residual risk level, business owner acknowledgment, review date, and CISO/executive approval. Exceptions accepted above risk appetite require executive or board sign-off.</div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Risk register →</span><span>Central living document — all identified risks, assessments, treatment, owners, status</span></div>
+      <div class="er"><span class="ek">Risk owner →</span><span>Person accountable for treating a specific risk — must be named individual</span></div>
+      <div class="er"><span class="ek">Risk exception →</span><span>Formally documented acceptance of a risk that can't be immediately remediated</span></div>
+      <div class="er"><span class="ek">Board reporting →</span><span>Business language — dollars, compliance, reputation — no technical jargon</span></div>
+      <div class="er"><span class="ek">Residual risk →</span><span>Risk remaining after treatment — must be documented in register</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 6. TOLERANCE & APPETITE   -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Risk Tolerance & Appetite</span><span class="bdg bdg-purple">How Much Risk is OK?</span></div>
+  <div class="card-bd">
+    <p>Risk appetite and tolerance define <strong style="color:var(--text)">how much risk an organization is willing to accept</strong>. These are strategic governance decisions made at the board level — they drive everything from security investment to risk treatment priorities.</p>
+
+    <h3>Risk Appetite vs Risk Tolerance — The Distinction</h3>
+    <div class="code">
+<span class="cm"># Risk Appetite — broad strategic statement:</span>
+  "The AMOUNT of risk an organization is WILLING to accept
+   in pursuit of its objectives."
+  
+  Board-level decision. Strategic. Broad.
+  Example: "We have LOW appetite for risks that could
+           expose customer PII or result in regulatory fines."
+  Example: "We have MODERATE appetite for operational
+           risks to support business innovation speed."
+
+<span class="cm"># Risk Tolerance — specific acceptable deviation:</span>
+  "The DEGREE of variation around the risk appetite
+   that is acceptable in day-to-day operations."
+  
+  More specific. Measurable. Operational.
+  Example: "We will not accept more than 5% of systems
+           with critical unpatched vulnerabilities older
+           than 30 days."
+  Example: "Maximum acceptable downtime: 4 hours/year."
+  Example: "No more than $50,000 in uninsured risk
+           for any single risk event."
+
+<span class="cm"># Analogy:</span>
+Risk Appetite: "We are health-conscious people" (broad statement)
+Risk Tolerance: "We will eat dessert max 2x/week" (specific limit)
+
+<span class="cm"># When residual risk > tolerance → must take action</span>
+<span class="cm"># When residual risk < tolerance → within acceptable range</span>
+    </div>
+
+    <h3>Risk Appetite Spectrum</h3>
+    <div class="gauge-wrap">
+      <div style="font-family:'Inconsolata',monospace;font-size:0.62rem;color:var(--muted);margin-bottom:0.3rem;letter-spacing:0.08em;text-transform:uppercase;">Risk Appetite Levels:</div>
+      <div class="gauge-bar">
+        <div class="gauge-label" style="color:rgba(61,232,122,0.8)">Risk Averse</div>
+        <div class="gauge-label" style="color:rgba(255,196,68,0.8)">Risk Neutral</div>
+        <div class="gauge-label" style="color:rgba(255,140,66,0.8)">Risk Tolerant</div>
+        <div class="gauge-label" style="color:rgba(255,77,77,0.8)">Risk Seeking</div>
+      </div>
+      <div class="gauge-desc">
+        <span>Minimal risk, maximum controls</span>
+        <span>Balance risk and opportunity</span>
+        <span>Accept more risk for growth</span>
+        <span>High risk, high reward</span>
+      </div>
+    </div>
+
+    <h3>Risk Appetite by Organization Type</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#082a14">
+        <h4 style="color:var(--green)">Risk Averse (Low Appetite)</h4>
+        <p>Healthcare, financial services, government, critical infrastructure. Strict regulations. Any breach = massive fines + patient/customer harm. Small risk tolerance. Heavy investment in controls. May sacrifice speed/innovation for safety.</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
+Statement: "We do not accept any
+risk to patient safety or PHI
+privacy regardless of business
+benefit."
+        </div>
+      </div>
+      <div class="gc" style="border-color:#242000">
+        <h4 style="color:var(--yellow)">Risk Neutral (Moderate)</h4>
+        <p>Typical mid-size enterprise. Balances security investment with business agility. Accepts some calculated risks. Prioritizes by potential impact. Most common organizational position.</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
+Statement: "We accept risks where
+cost of control exceeds potential
+loss, if residual risk is below
+$100K ALE."
+        </div>
+      </div>
+      <div class="gc" style="border-color:#281000">
+        <h4 style="color:var(--orange)">Risk Tolerant (Higher Appetite)</h4>
+        <p>Startups, fast-growing tech companies, high-growth environments. Speed prioritized over perfect security. Accepts more risk to move fast. Still has limits — compliance floor. Compensates with agile response capability.</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
+Statement: "We accept moderate
+technical risks to maintain
+development velocity — we
+respond quickly to incidents."
+        </div>
+      </div>
+    </div>
+
+    <h3>Risk Threshold — The Bright Lines</h3>
+    <div class="code">
+<span class="cm"># Risk thresholds = hard limits that cannot be crossed:</span>
+
+These risks are NEVER acceptable (zero tolerance):
+  <span class="cr">× Child safety violations</span>
+  <span class="cr">× Knowingly violating data protection laws</span>
+  <span class="cr">× Actions creating life-safety risk (hospital, utility)</span>
+  <span class="cr">× Reputational risks that could destroy the business</span>
+  <span class="cr">× Risks that exceed cyber insurance coverage</span>
+
+Even if cost of control > ALE for these — we still control them
+Business units cannot override these thresholds
+Executive approval required for any exception
+
+<span class="cm"># Everything else has a threshold — "we'll accept X but not X+1":</span>
+Patching SLA: Critical vulns remediated within <span class="cy">14 days</span>
+             (threshold: no more than 2% exceptions per quarter)
+Availability: 99.9% uptime target
+             (threshold: no single outage > 4 hours)
+Data breach:  Financial impact < <span class="cy">$500,000</span> per event
+             (above this triggers board notification)
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Risk appetite →</span><span>Broad statement of how much risk org is WILLING to accept — board-level decision</span></div>
+      <div class="er"><span class="ek">Risk tolerance →</span><span>Specific measurable acceptable deviation from appetite — operational level</span></div>
+      <div class="er"><span class="ek">Risk threshold →</span><span>Hard limit — risks above this must be treated — cannot be accepted</span></div>
+      <div class="er"><span class="ek">Risk averse →</span><span>Low appetite — healthcare, finance, government — strict controls</span></div>
+      <div class="er"><span class="ek">Appetite > residual risk →</span><span>Risk is within acceptable range — can be accepted or monitored</span></div>
+      <div class="er"><span class="ek">Residual risk > appetite →</span><span>Must take additional treatment action — unacceptable risk level</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 7. RESPONSE STRATEGIES  -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Risk Response Strategies</span><span class="bdg bdg-green">Avoid · Transfer · Mitigate · Accept</span></div>
+  <div class="card-bd">
+    <p>Once risks are identified and assessed, the organization must decide <strong style="color:var(--text)">how to respond</strong>. There are four fundamental strategies — and knowing which one applies when is directly tested on Security+.</p>
+
+    <div class="strat-card" style="background:#0d2a1a;border-color:#1a4428">
+      <span class="strat-icon">🚫</span>
+      <div>
+        <div class="strat-title" style="color:var(--green)">Strategy 1 — AVOID (Avoidance)</div>
+        <div class="strat-body">Eliminate the risk entirely by not doing the risky activity at all. "Don't store credit card data → no PCI-DSS scope." "Don't connect that system to the internet → no remote attack surface." Most effective — risk gone completely. But may mean giving up business opportunities. Used when risk > benefit of the activity.</div>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+Examples:
+  Don't accept credit cards → no PCI-DSS risk
+  Don't store SSNs → no identity theft risk for that data
+  Don't connect legacy SCADA to internet → no remote attack
+  Stop using vulnerable software → eliminate that CVE
+
+When to use:
+  Risk is too high and activity is optional
+  Regulatory exposure exceeds business value
+  No cost-effective way to reduce the risk
+        </div>
+      </div>
+    </div>
+
+    <div class="strat-card" style="background:#082040;border-color:#103060">
+      <span class="strat-icon">📤</span>
+      <div>
+        <div class="strat-title" style="color:var(--blue)">Strategy 2 — TRANSFER (Transference)</div>
+        <div class="strat-body">Shift the financial impact of the risk to a third party. Doesn't eliminate the risk — just who pays if it materializes. Cyber insurance is the classic example. Also: outsourcing to a vendor (they take on operational risk). Note: transferring financial risk doesn't transfer reputational risk. Still your problem if a breach occurs — just someone else pays.</div>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+Examples:
+  Cyber insurance: insurer pays breach costs
+  Cloud provider SLA: provider responsible for infrastructure
+  Outsource payroll: vendor assumes data security risk
+  Contract clause: vendor liable for their breach
+
+Important nuance:
+  <span class="cr">Transfer ≠ eliminate responsibility</span>
+  GDPR: you're still liable for your data processors
+  Reputation: customers blame YOU, not your insurer
+  Transfer = financial protection, not risk elimination
+        </div>
+      </div>
+    </div>
+
+    <div class="strat-card" style="background:#242000;border-color:#403200">
+      <span class="strat-icon">🔧</span>
+      <div>
+        <div class="strat-title" style="color:var(--yellow)">Strategy 3 — MITIGATE (Reduction)</div>
+        <div class="strat-body">Reduce the likelihood OR impact of the risk through security controls. Most common strategy in security. Doesn't eliminate risk — reduces it to an acceptable level. Controls can reduce: likelihood (MFA makes credential attacks less likely) or impact (backup reduces ransomware impact). Cost of control should be less than the ALE reduction achieved.</div>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+Reduce LIKELIHOOD:
+  Patch management: reduces exploitability of CVEs
+  MFA: reduces successful credential attacks
+  Security awareness training: reduces phishing success
+  Web Application Firewall: reduces SQL injection success
+
+Reduce IMPACT:
+  Immutable backups: reduces ransomware damage
+  Network segmentation: limits lateral movement blast radius
+  DLP: reduces volume of data that can be exfiltrated
+  Cyber insurance: reduces financial impact (also transfer)
+  Incident response plan: reduces recovery time
+
+When to use:
+  Most security controls are mitigation
+  Cost of control &lt; ALE reduction
+  Risk can't be avoided or is too large to accept
+        </div>
+      </div>
+    </div>
+
+    <div class="strat-card" style="background:#101840;border-color:#182860">
+      <span class="strat-icon">✅</span>
+      <div>
+        <div class="strat-title" style="color:var(--indigo)">Strategy 4 — ACCEPT (Acceptance)</div>
+        <div class="strat-body">Acknowledge the risk exists and consciously decide to take no action — or minimal action. Appropriate when: cost of control exceeds potential loss, risk is within appetite, or risk is unavoidable. Must be a DOCUMENTED, CONSCIOUS decision — not just ignoring the risk. Two types: active acceptance (monitor it) and passive acceptance (just accept). Requires documented risk exception for anything above risk appetite.</div>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+Examples:
+  Acknowledge small DDoS risk to public blog
+  Accept risk of single laptop theft (MDM = remote wipe)
+  Accept CVE in internal-only, non-critical system
+
+Requirements for proper acceptance:
+  <span class="cg">✓</span> Documented in risk register
+  <span class="cg">✓</span> Risk owner formally acknowledges
+  <span class="cg">✓</span> Within risk appetite (or exception approved)
+  <span class="cg">✓</span> Review date set — not permanent
+  <span class="cr">✗</span> "We just haven't gotten to it yet" = NOT acceptance
+        </div>
+      </div>
+    </div>
+
+    <h3>Choosing the Right Strategy</h3>
+    <div class="code">
+<span class="cm"># Decision framework:</span>
+
+Is the risky activity ESSENTIAL to the business?
+  NO → <span class="cg">AVOID</span> (eliminate the activity)
+  YES → continue...
+
+Is the risk ABOVE risk appetite?
+  NO → <span class="ci">ACCEPT</span> (document in register)
+  YES → continue...
+
+Can the financial impact be shifted?
+  YES → <span class="cb">TRANSFER</span> (insurance, contract)
+  Partially → combine transfer + mitigate
+
+Is there a cost-effective control?
+  YES → <span class="cy">MITIGATE</span> (implement control)
+  NO → escalate for executive acceptance
+
+<span class="cm"># Most risks use MULTIPLE strategies:</span>
+Ransomware risk:
+  MITIGATE: EDR + immutable backup + patching (reduce likelihood + impact)
+  TRANSFER: cyber insurance (reduce financial impact)
+  ACCEPT: residual risk (after controls, remaining risk is within appetite)
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Legacy System Risk Decision</div>
+      <div class="code">
+<span class="cm"># Windows Server 2003 running critical manufacturing app — end of life 2015</span>
+<span class="cm"># Cannot be patched — vendor won't update — but app is critical</span>
+
+Risk assessment:
+  Likelihood: HIGH (unpatched, many known exploits)
+  Impact: CRITICAL (manufacturing line stops = $50K/hour)
+  Score: CRITICAL
+
+Strategy evaluation:
+
+AVOID: don't use the server
+  Can't — the manufacturing app only runs on this OS
+  Replacement project: 18-month timeline, $2M cost
+
+TRANSFER: cyber insurance
+  Insurance won't cover known unpatched systems
+  Not viable for this risk
+
+MITIGATE (compensating controls):
+  Isolate server: air-gapped VLAN with no internet
+  Firewall: strict ACLs — only required ports to/from
+  Monitor: IDS on the network segment
+  Accounts: only one service account, no interactive login
+  Physical: locked server room, limited physical access
+  
+ACCEPT (residual risk after mitigation):
+  Risk reduced from CRITICAL to MEDIUM
+  Residual risk within tolerance for 18-month timeframe
+  Exception documented + approved by CISO + CTO
+  Review: quarterly + when replacement project completes
+
+<span class="cg">Outcome: Accept with compensating controls + exception approval ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Risk avoidance →</span><span>Eliminate the risk by stopping the risky activity — don't store cards = no PCI risk</span></div>
+      <div class="er"><span class="ek">Risk transfer →</span><span>Shift financial impact to third party — cyber insurance, SLAs, contracts</span></div>
+      <div class="er"><span class="ek">Risk mitigation →</span><span>Reduce likelihood OR impact via controls — most common security strategy</span></div>
+      <div class="er"><span class="ek">Risk acceptance →</span><span>Documented conscious decision to accept risk — not just ignoring it</span></div>
+      <div class="er"><span class="ek">Transfer ≠ eliminate →</span><span>Insurance pays but organization still bears reputational and regulatory consequences</span></div>
+      <div class="er"><span class="ek">Compensating controls →</span><span>Alternative controls used when primary control can't be implemented (legacy system)</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 8. BIA                 -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Business Impact Analysis (BIA)</span><span class="bdg bdg-red">RTO · RPO · MTTR · MTBF</span></div>
+  <div class="card-bd">
+    <p>The Business Impact Analysis (BIA) identifies <strong style="color:var(--text)">which business functions are most critical, how quickly they must be restored, and the financial/operational impact if they're disrupted</strong>. BIA is the foundation of Business Continuity Planning (BCP) and Disaster Recovery (DR).</p>
+
+    <h3>BIA Core Purpose</h3>
+    <div class="code">
+<span class="cm"># BIA answers three fundamental questions:</span>
+
+1. WHAT business functions exist?
+   All critical processes: order processing, patient care,
+   payroll, customer service, manufacturing, trading...
+
+2. WHAT HAPPENS if each function stops?
+   Financial impact per hour/day of downtime
+   Regulatory/legal exposure from outage
+   Reputational damage potential
+   Cascading effects on other functions
+
+3. HOW QUICKLY must each function be restored?
+   Not everything needs to come back immediately
+   Prioritize: most critical first
+   Resources allocated: based on BIA priorities
+
+<span class="cm"># Output: prioritized list of critical business functions</span>
+<span class="cm"># with specific recovery time requirements</span>
+<span class="cm"># and quantified impact of downtime</span>
+    </div>
+
+    <h3>Key BIA Terms — Exam Critical</h3>
+
+    <div class="bia-row">
+      <span class="bia-term" style="color:var(--red)">RTO</span>
+      <span class="bia-full">Recovery Time Objective</span>
+      <span class="bia-def">Maximum acceptable time a system can be DOWN. "We can survive this function being unavailable for X hours." Sets the target recovery time. RTO = 4 hours means systems MUST be restored within 4 hours. Drives: backup frequency, DR site capability, staffing during incidents.</span>
+    </div>
+    <div class="bia-row">
+      <span class="bia-term" style="color:var(--orange)">RPO</span>
+      <span class="bia-full">Recovery Point Objective</span>
+      <span class="bia-def">Maximum acceptable data LOSS measured in time. "We can afford to lose up to X hours/minutes of data." RPO = 1 hour means backups must happen at least every hour. Drives: backup frequency, replication strategy. RPO = 15 min requires near-continuous replication. RPO = 24 hours allows nightly backups.</span>
+    </div>
+    <div class="bia-row">
+      <span class="bia-term" style="color:var(--yellow)">MTTR</span>
+      <span class="bia-full">Mean Time To Recover/Repair</span>
+      <span class="bia-def">Average time to restore a system after failure. MTTR = how long it actually TAKES to fix things. Compare to RTO: if MTTR > RTO → you're not meeting your recovery objective. Used to measure DR capability and set realistic RTOs. Lower MTTR = better recovery capability.</span>
+    </div>
+    <div class="bia-row">
+      <span class="bia-term" style="color:var(--blue)">MTBF</span>
+      <span class="bia-full">Mean Time Between Failures</span>
+      <span class="bia-def">Average time a component WORKS before failing. Used for: hardware reliability planning, predicting when replacements needed, availability calculations. Higher MTBF = more reliable hardware. Used in availability SLA calculations: Availability = MTBF / (MTBF + MTTR).</span>
+    </div>
+    <div class="bia-row">
+      <span class="bia-term" style="color:var(--green)">MTTF</span>
+      <span class="bia-full">Mean Time To Failure</span>
+      <span class="bia-def">Average lifespan of a non-repairable component before it fails completely. Used for: disposable components, HDDs, batteries. Unlike MTBF, MTTF is for items you replace not repair. Drives hardware replacement cycles and inventory planning.</span>
+    </div>
+    <div class="bia-row">
+      <span class="bia-term" style="color:var(--purple)">MTD</span>
+      <span class="bia-full">Maximum Tolerable Downtime</span>
+      <span class="bia-def">Absolute maximum time a business function can be unavailable before the organization suffers catastrophic, unrecoverable harm. "After this point, we may not survive as a business." MTD is always ≥ RTO. RTO is the target; MTD is the hard deadline.</span>
+    </div>
+
+    <h3>RTO vs RPO — The Critical Distinction</h3>
+    <div class="code">
+<span class="cm"># Most tested BIA concepts — know the difference:</span>
+
+                TIME →
+  Incident      Last backup    Restore complete
+  occurs        point          
+    │               │               │
+    ▼               ▼               ▼
+────────────────────────────────────────
+    │← ──── RPO ──── →│               │
+    │                 │               │
+    │← ──────────── RTO ──────────── →│
+
+RPO: How much data do we lose?
+     (time between last backup and incident)
+RTO: How long are we down?
+     (time from incident to full recovery)
+
+<span class="cm"># Example — Hospital EHR System:</span>
+Incident: ransomware at 02:14 AM Monday
+
+RPO = 15 minutes:
+  Last backup: 02:00 AM → 14 minutes of data lost ✓ within RPO
+
+RTO = 4 hours:
+  Recovery complete: 06:00 AM → 3 hrs 46 min ✓ within RTO
+
+<span class="cm"># Key relationship:</span>
+RTO + RPO determine: backup frequency + DR infrastructure cost
+Lower RTO/RPO = more expensive to achieve
+Financial system: RPO=0, RTO=minutes (very expensive)
+Archive system: RPO=24hr, RTO=72hr (very cheap)
+    </div>
+
+    <h3>BIA Output — Business Criticality Tiers</h3>
+    <div class="code">
+<span class="cm"># BIA produces tiered criticality — drives DR investment:</span>
+
+TIER 1 — Mission Critical (RTO: &lt;1hr, RPO: &lt;15min):
+  Patient monitoring systems (hospital)
+  Trading platform (bank)
+  911 dispatch system
+  E-commerce checkout (Black Friday)
+  Cost: highest — requires hot standby / active-active DR
+
+TIER 2 — Business Critical (RTO: &lt;4hr, RPO: &lt;1hr):
+  EHR system (hospital)
+  Email system
+  CRM system
+  Core banking application
+  Cost: high — warm standby DR site
+
+TIER 3 — Important (RTO: &lt;24hr, RPO: &lt;4hr):
+  HR system
+  Expense reporting
+  Internal wiki / intranet
+  File sharing
+  Cost: moderate — daily backup + cloud DR
+
+TIER 4 — Non-Critical (RTO: &lt;72hr, RPO: &lt;24hr):
+  Development/test systems
+  Archive systems
+  Internal training platform
+  Cost: low — backup only, rebuild if needed
+    </div>
+
+    <h3>BIA Process Steps</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Step 1-3: Identify & Quantify</h4>
+        <ol style="padding-left:1rem;">
+          <li style="font-size:0.75rem;color:var(--muted);margin-bottom:0.3rem">Identify all business functions</li>
+          <li style="font-size:0.75rem;color:var(--muted);margin-bottom:0.3rem">Interview process owners — what happens if this stops?</li>
+          <li style="font-size:0.75rem;color:var(--muted)">Quantify impact: $/hour of downtime, regulatory exposure, customer impact, cascading effects</li>
+        </ol>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Step 4-6: Define & Plan</h4>
+        <ol style="padding-left:1rem;">
+          <li style="font-size:0.75rem;color:var(--muted);margin-bottom:0.3rem">Set RTO and RPO for each function</li>
+          <li style="font-size:0.75rem;color:var(--muted);margin-bottom:0.3rem">Assign criticality tiers</li>
+          <li style="font-size:0.75rem;color:var(--muted)">Feed results into BCP/DR planning — determine infrastructure required to meet RTO/RPO</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — BIA Saves the Day During Ransomware</div>
+      <div class="code">
+<span class="cm"># Hospital ransomware attack — BIA determines recovery sequence:</span>
+
+Without BIA:
+  IT team recovers systems in alphabetical order
+  Recovered first: "Archive-old-files server"
+  Still down at hour 6: Patient monitoring, EHR, pharmacy
+  Patients: moved to paper charts — dangerous, slow
+  Cost: $50,000/hour × 8 hours = <span class="cr">$400,000 + patient risk</span>
+
+With BIA (recovery in criticality order):
+  Hour 1: Patient monitoring (Tier 1 — RTO &lt;1hr) ✓
+  Hour 2: ICU systems, emergency systems (Tier 1) ✓
+  Hour 3: EHR system (Tier 2 — RTO &lt;4hr) ✓
+  Hour 4: Pharmacy system (Tier 2) ✓
+  Hour 8: Email, HR, admin systems (Tier 3-4) ✓
+
+Pre-tested DR runbook from BIA:
+  Each system: documented recovery procedure
+  Responsible person: named in BIA
+  Dependencies: mapped (need AD before EHR)
+  Data from: immutable S3 backup (RPO = 15min met)
+
+Cost: $50,000/hour × 1 hour = <span class="cg">$50,000 (critical systems restored fast)</span>
+<span class="cg">BIA saves $350,000 and prevents patient harm ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">RTO →</span><span>Recovery Time Objective — max acceptable DOWNTIME — how long we can be offline</span></div>
+      <div class="er"><span class="ek">RPO →</span><span>Recovery Point Objective — max acceptable DATA LOSS measured in time — backup frequency</span></div>
+      <div class="er"><span class="ek">MTTR →</span><span>Mean Time To Recover — average actual recovery time — compare to RTO</span></div>
+      <div class="er"><span class="ek">MTBF →</span><span>Mean Time Between Failures — hardware reliability — higher = more reliable</span></div>
+      <div class="er"><span class="ek">MTD →</span><span>Maximum Tolerable Downtime — catastrophic threshold — always ≥ RTO</span></div>
+      <div class="er"><span class="ek">BIA output →</span><span>Prioritized business functions with RTO/RPO/criticality — drives DR planning</span></div>
+      <div class="er"><span class="ek">RTO vs RPO →</span><span>RTO = time offline / RPO = data loss — both drive backup strategy and DR costs</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════ -->
+<!-- 9. SUMMARY         -->
+<!-- ═══════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-orange">Domain 5 · Risk Management</span></div>
+  <div class="card-bd">
+
+    <h3>Quantitative Formulas — Must Know</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Term</th><th>Formula</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td><span class="tag ty">AV</span></td><td>Assessed value</td><td>Dollar value of the asset</td><td>CRM database = $2M</td></tr>
+      <tr><td><span class="tag to">EF</span></td><td>% of AV lost</td><td>Exposure Factor — 0-100%</td><td>Ransomware with backup = 40%</td></tr>
+      <tr><td><span class="tag ty">SLE</span></td><td><strong>AV × EF</strong></td><td>Loss from one incident</td><td>$2M × 40% = $800K</td></tr>
+      <tr><td><span class="tag to">ARO</span></td><td>Events/year</td><td>How often per year (fraction OK)</td><td>0.25 = once every 4 years</td></tr>
+      <tr><td><span class="tag ty">ALE</span></td><td><strong>SLE × ARO</strong></td><td>Expected annual financial loss</td><td>$800K × 0.25 = $200K/yr</td></tr>
+    </table>
+    </div>
+
+    <h3>BIA Terms Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Term</th><th>Full Name</th><th>Measures</th><th>Key Point</th></tr>
+      <tr><td><span class="tag tr">RTO</span></td><td>Recovery Time Objective</td><td>Max acceptable downtime</td><td>How long system can be DOWN</td></tr>
+      <tr><td><span class="tag to">RPO</span></td><td>Recovery Point Objective</td><td>Max acceptable data loss (time)</td><td>How old backup can be (= backup frequency)</td></tr>
+      <tr><td><span class="tag ty">MTTR</span></td><td>Mean Time To Recover</td><td>Actual average recovery time</td><td>Compare to RTO — MTTR must be &lt; RTO</td></tr>
+      <tr><td><span class="tag tb">MTBF</span></td><td>Mean Time Between Failures</td><td>Hardware reliability</td><td>Higher = more reliable component</td></tr>
+      <tr><td><span class="tag tg">MTTF</span></td><td>Mean Time To Failure</td><td>Non-repairable component lifespan</td><td>For items replaced not repaired</td></tr>
+      <tr><td><span class="tag tp">MTD</span></td><td>Maximum Tolerable Downtime</td><td>Absolute maximum outage</td><td>Always ≥ RTO — catastrophic threshold</td></tr>
+    </table>
+    </div>
+
+    <h3>Risk Strategies Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Strategy</th><th>What It Means</th><th>Example</th><th>When to Use</th></tr>
+      <tr><td><span class="tag tg">Avoid</span></td><td>Stop the risky activity entirely</td><td>Don't store credit cards → no PCI</td><td>Risk > benefit of activity</td></tr>
+      <tr><td><span class="tag tb">Transfer</span></td><td>Shift financial impact to third party</td><td>Cyber insurance, SLAs</td><td>Can't reduce to acceptable level</td></tr>
+      <tr><td><span class="tag ty">Mitigate</span></td><td>Reduce likelihood or impact</td><td>MFA, patching, backups</td><td>Cost of control &lt; ALE reduction</td></tr>
+      <tr><td><span class="tag ti">Accept</span></td><td>Consciously document and accept the risk</td><td>Accept low/medium risk within appetite</td><td>Cost of control &gt; risk, within appetite</td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Risk before any controls are applied"</span><span>→ Inherent risk</span></div>
+      <div class="er"><span class="ek">"Risk remaining after controls are applied"</span><span>→ Residual risk — can never be zero</span></div>
+      <div class="er"><span class="ek">"Risk that a security control will fail"</span><span>→ Control risk</span></div>
+      <div class="er"><span class="ek">"Dollar loss expected from ONE occurrence of a risk"</span><span>→ SLE (Single Loss Expectancy) = AV × EF</span></div>
+      <div class="er"><span class="ek">"Expected annual financial loss from a risk"</span><span>→ ALE (Annualized Loss Expectancy) = SLE × ARO</span></div>
+      <div class="er"><span class="ek">"How often a risk event occurs per year"</span><span>→ ARO (Annualized Rate of Occurrence) — 0.5 = once every 2 years</span></div>
+      <div class="er"><span class="ek">"% of asset value lost if threat occurs"</span><span>→ EF (Exposure Factor) — 0-100%</span></div>
+      <div class="er"><span class="ek">"Risk assessment using High/Medium/Low — no numbers"</span><span>→ Qualitative risk analysis</span></div>
+      <div class="er"><span class="ek">"Risk assessment using dollar figures and formulas"</span><span>→ Quantitative risk analysis</span></div>
+      <div class="er"><span class="ek">"Visual tool plotting likelihood vs impact"</span><span>→ Risk matrix (heat map)</span></div>
+      <div class="er"><span class="ek">"Central document tracking all risks, owners, and treatment"</span><span>→ Risk register</span></div>
+      <div class="er"><span class="ek">"Formal documentation of a risk that can't be remediated now"</span><span>→ Risk exception / risk acceptance documentation</span></div>
+      <div class="er"><span class="ek">"Broad statement of how much risk the org will accept"</span><span>→ Risk appetite (board-level decision)</span></div>
+      <div class="er"><span class="ek">"Specific measurable limit on acceptable risk deviation"</span><span>→ Risk tolerance</span></div>
+      <div class="er"><span class="ek">"Don't store credit cards to avoid PCI scope"</span><span>→ Risk avoidance strategy</span></div>
+      <div class="er"><span class="ek">"Cyber insurance — insurer pays breach costs"</span><span>→ Risk transfer (doesn't eliminate — just who pays)</span></div>
+      <div class="er"><span class="ek">"MFA deployed to reduce successful credential attacks"</span><span>→ Risk mitigation — reduces likelihood</span></div>
+      <div class="er"><span class="ek">"Immutable backups reduce ransomware damage"</span><span>→ Risk mitigation — reduces impact</span></div>
+      <div class="er"><span class="ek">"Legacy system risk — can't patch, document and proceed"</span><span>→ Risk acceptance + compensating controls</span></div>
+      <div class="er"><span class="ek">"Max acceptable time a system can be offline"</span><span>→ RTO (Recovery Time Objective)</span></div>
+      <div class="er"><span class="ek">"Max acceptable amount of data loss (in time)"</span><span>→ RPO (Recovery Point Objective) — drives backup frequency</span></div>
+      <div class="er"><span class="ek">"How long it actually takes to restore after failure"</span><span>→ MTTR (Mean Time To Recover)</span></div>
+      <div class="er"><span class="ek">"Average time hardware works before failing"</span><span>→ MTBF (Mean Time Between Failures)</span></div>
+      <div class="er"><span class="ek">"Identifies most critical functions + quantifies downtime impact"</span><span>→ Business Impact Analysis (BIA)</span></div>
+      <div class="er"><span class="ek">"Absolute maximum outage before unrecoverable damage"</span><span>→ MTD (Maximum Tolerable Downtime) — always ≥ RTO</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

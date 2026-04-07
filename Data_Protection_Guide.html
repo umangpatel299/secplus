@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Protection — Security+ Visual Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --surface2: #f4f3ef;
+  --border: #e2e0d8;
+  --text: #1a1a18;
+  --muted: #6b6a64;
+  --accent: #c2410c;
+  --blue: #1d4ed8;
+  --green: #166534;
+  --red: #991b1b;
+  --orange: #92400e;
+  --purple: #5b21b6;
+  --teal: #0f766e;
+  --yellow: #92400e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  padding: 2rem 1.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.03em;
+}
+
+.page-sub {
+  text-align: center;
+  color: var(--muted);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.tab {
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.tab:hover { border-color: var(--accent); color: var(--accent); }
+.tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* SECTIONS */
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; } }
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.68rem;
+  color: var(--muted);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+}
+
+.card-title { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.01em; }
+
+.badge {
+  margin-left: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.66rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.badge-red { background: #fef2f2; color: var(--red); border: 1px solid #fecaca; }
+.badge-orange { background: #fff7ed; color: var(--orange); border: 1px solid #fed7aa; }
+.badge-blue { background: #eff6ff; color: var(--blue); border: 1px solid #bfdbfe; }
+.badge-green { background: #f0fdf4; color: var(--green); border: 1px solid #bbf7d0; }
+.badge-purple { background: #f5f3ff; color: var(--purple); border: 1px solid #ddd6fe; }
+.badge-teal { background: #f0fdfa; color: var(--teal); border: 1px solid #99f6e4; }
+
+.card-body { padding: 1.5rem; }
+
+p { color: var(--muted); font-size: 0.88rem; margin-bottom: 0.8rem; }
+
+/* CODE */
+.code {
+  background: #1a1a18;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.73rem;
+  line-height: 1.75;
+  color: #e5e5e0;
+  margin: 0.8rem 0;
+  overflow-x: auto;
+}
+.cg { color: #86efac; }
+.cr { color: #fca5a5; }
+.cb { color: #93c5fd; }
+.co { color: #fcd34d; }
+.cp { color: #c4b5fd; }
+.cm { color: #6b6a64; }
+.ct { color: #5eead4; }
+
+/* SCENARIO */
+.scenario {
+  background: #fff7ed;
+  border-left: 3px solid #f97316;
+  border-radius: 0 8px 8px 0;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.scenario-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.68rem;
+  color: #c2410c;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+/* CLASSIFICATION LEVELS */
+.classify-grid {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+
+.classify-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 1fr;
+  gap: 0.8rem;
+  align-items: start;
+}
+
+@media (max-width: 600px) { .classify-row { grid-template-columns: 1fr; } }
+
+.classify-label {
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.classify-info {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.classify-info strong { color: var(--text); display: block; margin-bottom: 0.2rem; font-size: 0.78rem; }
+
+/* STATES DIAGRAM */
+.states-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+@media (max-width: 600px) { .states-grid { grid-template-columns: 1fr; } }
+
+.state-card {
+  border-radius: 10px;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+}
+
+/* PROTECTION METHODS */
+.protect-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+
+@media (max-width: 500px) { .protect-grid { grid-template-columns: 1fr; } }
+
+.protect-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.protect-card h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.protect-card p { margin: 0; font-size: 0.78rem; }
+
+/* EXAM BOX */
+.exam {
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin-top: 1rem;
+}
+
+.exam h4 {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.68rem;
+  color: var(--purple);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.05em;
+}
+
+.exam-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.exam-key { color: var(--purple); font-family: 'Fira Code', monospace; flex-shrink: 0; font-size: 0.75rem; }
+
+/* DIAGRAM WRAP */
+.dw {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+/* SUMMARY TABLE */
+table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+th { background: var(--surface2); padding: 0.6rem 0.8rem; text-align: left; color: var(--muted); border-bottom: 2px solid var(--border); font-weight: 600; font-size: 0.75rem; }
+td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface2); }
+
+.tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.68rem; font-family: 'Fira Code', monospace; }
+.tag-r { background: #fef2f2; color: var(--red); }
+.tag-o { background: #fff7ed; color: var(--orange); }
+.tag-b { background: #eff6ff; color: var(--blue); }
+.tag-g { background: #f0fdf4; color: var(--green); }
+.tag-p { background: #f5f3ff; color: var(--purple); }
+.tag-t { background: #f0fdfa; color: var(--teal); }
+
+h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin: 1.2rem 0 0.5rem; }
+</style>
+</head>
+<body>
+
+<div class="page-title">Data Protection</div>
+<p class="page-sub">// CompTIA Security+ SY0-701 — Classification · States · Protection Methods</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('t1',this)">1. Data Classification</button>
+  <button class="tab" onclick="show('t2',this)">2. Govt. Classification</button>
+  <button class="tab" onclick="show('t3',this)">3. States of Data</button>
+  <button class="tab" onclick="show('t4',this)">4. Encryption</button>
+  <button class="tab" onclick="show('t5',this)">5. DLP</button>
+  <button class="tab" onclick="show('t6',this)">6. Access Controls</button>
+  <button class="tab" onclick="show('t7',this)">7. Other Methods</button>
+  <button class="tab" onclick="show('t8',this)">📊 Summary</button>
+</div>
+
+<!-- ════════════════════════════════════ -->
+<!-- TAB 1: DATA CLASSIFICATION          -->
+<!-- ════════════════════════════════════ -->
+<div class="section active" id="t1">
+<div class="card">
+  <div class="card-header">
+    <span class="card-num">01</span>
+    <span class="card-title">Data Classification — Corporate</span>
+    <span class="badge badge-blue">Foundation</span>
+  </div>
+  <div class="card-body">
+    <p>Data classification assigns a <strong style="color:var(--text)">sensitivity label</strong> to data so the organization knows how to protect it. Different data needs different levels of protection — you can't treat everything the same way.</p>
+
+    <div class="classify-grid">
+
+      <div class="classify-row">
+        <div class="classify-label" style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca">
+          🔴 Critical / Restricted
+        </div>
+        <div class="classify-info">
+          <strong>What it is</strong>
+          Most sensitive data — exposure causes severe, irreversible harm. Highest protection required at all times.
+        </div>
+        <div class="classify-info">
+          <strong>Examples</strong>
+          Encryption keys, source code, biometric data, nuclear facility plans, trade secrets, authentication credentials
+        </div>
+      </div>
+
+      <div class="classify-row">
+        <div class="classify-label" style="background:#fff7ed;color:#92400e;border:1px solid #fed7aa">
+          🟠 Confidential / Private
+        </div>
+        <div class="classify-info">
+          <strong>What it is</strong>
+          Sensitive business data — exposure damages company competitively or legally. Shared only on need-to-know basis.
+        </div>
+        <div class="classify-info">
+          <strong>Examples</strong>
+          Customer PII, financial records, employee salaries, M&amp;A plans, HR records, medical records, legal strategy
+        </div>
+      </div>
+
+      <div class="classify-row">
+        <div class="classify-label" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe">
+          🔵 Internal / Sensitive
+        </div>
+        <div class="classify-info">
+          <strong>What it is</strong>
+          Internal use only — not for public. Exposure is embarrassing or mildly harmful but not catastrophic.
+        </div>
+        <div class="classify-info">
+          <strong>Examples</strong>
+          Internal policies, org charts, meeting notes, project plans, internal emails, staff directories
+        </div>
+      </div>
+
+      <div class="classify-row">
+        <div class="classify-label" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">
+          🟢 Public
+        </div>
+        <div class="classify-info">
+          <strong>What it is</strong>
+          Intended for public consumption. No harm if disclosed. Minimal protection needed.
+        </div>
+        <div class="classify-info">
+          <strong>Examples</strong>
+          Marketing materials, press releases, product brochures, public website content, published annual reports
+        </div>
+      </div>
+
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-label">// SCENARIO — Hospital Data Classification</div>
+      <p style="margin:0;color:var(--text);font-size:0.83rem">A hospital classifies all its data. When a nurse opens a patient record, the system enforces controls based on the classification automatically.</p>
+      <div class="code">
+<span class="cm"># Hospital data classification in action</span>
+
+Patient medical record:     <span class="cr">RESTRICTED</span>
+  → Encrypted at rest + in transit
+  → Access log required for every view
+  → Cannot be emailed without encryption
+  → MFA required to access
+
+Employee salary data:        <span class="co">CONFIDENTIAL</span>
+  → HR dept access only
+  → Cannot be printed without approval
+  → Watermarked on every page
+
+Internal shift schedule:     <span class="cb">INTERNAL</span>
+  → All staff can view
+  → Cannot share externally
+  → No special encryption required
+
+Hospital location/hours:    <span class="cg">PUBLIC</span>
+  → Posted on website
+  → No access controls
+  → Anyone can see it
+      </div>
+    </div>
+
+    <div class="dw">
+      <svg width="100%" viewBox="0 0 620 200" font-family="DM Sans, sans-serif">
+        <!-- Triangle pyramid -->
+        <polygon points="310,20 560,180 60,180" fill="none" stroke="#e2e0d8" stroke-width="1"/>
+        <!-- Sections filled -->
+        <polygon points="310,20 390,100 230,100" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+        <polygon points="390,100 460,140 230,100 300,140" fill="#fff7ed" stroke="#fed7aa" stroke-width="0.5"/>
+        <polygon points="230,100 300,140 460,140 530,180 90,180 160,140" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+        <polygon points="90,180 530,180 560,180 60,180" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="0.5"/>
+
+        <!-- Labels -->
+        <text x="310" y="72" text-anchor="middle" fill="#991b1b" font-size="12" font-weight="600">CRITICAL</text>
+        <text x="310" y="87" text-anchor="middle" fill="#991b1b" font-size="9">encryption keys · credentials</text>
+
+        <text x="310" y="128" text-anchor="middle" fill="#92400e" font-size="12" font-weight="600">CONFIDENTIAL</text>
+        <text x="310" y="142" text-anchor="middle" fill="#92400e" font-size="9">PII · financial · HR · medical</text>
+
+        <text x="310" y="164" text-anchor="middle" fill="#1d4ed8" font-size="11" font-weight="600">INTERNAL</text>
+        <text x="310" y="176" text-anchor="middle" fill="#1d4ed8" font-size="9">policies · org charts · internal docs</text>
+
+        <!-- Arrows on sides -->
+        <text x="35" y="100" fill="#166534" font-size="9" text-anchor="middle">PUBLIC</text>
+        <text x="35" y="112" fill="#166534" font-size="8" text-anchor="middle">at base</text>
+
+        <text x="30" y="60" fill="#6b6a64" font-size="8">MORE</text>
+        <text x="30" y="70" fill="#6b6a64" font-size="8">SENSITIVE</text>
+        <line x1="45" y1="50" x2="45" y2="190" stroke="#e2e0d8" stroke-width="0.5" marker-end="url(#au)"/>
+        <defs><marker id="au" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,6L3,0L6,6" fill="none" stroke="#e2e0d8" stroke-width="1"/></marker></defs>
+      </svg>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="exam-row"><span class="exam-key">Critical →</span><span>Highest protection — encryption keys, credentials, source code</span></div>
+      <div class="exam-row"><span class="exam-key">Confidential →</span><span>PII, financial, medical, HR — need-to-know basis</span></div>
+      <div class="exam-row"><span class="exam-key">Internal →</span><span>Employees only — org charts, policies, meeting notes</span></div>
+      <div class="exam-row"><span class="exam-key">Public →</span><span>Anyone can see — press releases, marketing, website</span></div>
+      <div class="exam-row"><span class="exam-key">Purpose →</span><span>Different classifications = different controls = right protection for right data</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════ -->
+<!-- TAB 2: GOVERNMENT CLASSIFICATION    -->
+<!-- ════════════════════════════════════ -->
+<div class="section" id="t2">
+<div class="card">
+  <div class="card-header">
+    <span class="card-num">02</span>
+    <span class="card-title">Government / Military Classification</span>
+    <span class="badge badge-red">Government</span>
+  </div>
+  <div class="card-body">
+    <p>Governments use a <strong style="color:var(--text)">formal, legally defined</strong> classification system with strict rules about who can access data and how it must be handled. The US government system is the most commonly tested.</p>
+
+    <div class="classify-grid">
+
+      <div class="classify-row">
+        <div class="classify-label" style="background:#fef2f2;color:#991b1b;border:2px solid #991b1b">
+          ⬛ TOP SECRET
+        </div>
+        <div class="classify-info">
+          <strong>Definition</strong>
+          Unauthorized disclosure would cause EXCEPTIONALLY GRAVE damage to national security. Highest classification level.
+        </div>
+        <div class="classify-info">
+          <strong>Examples + Access</strong>
+          Intelligence sources/methods, nuclear weapons plans, covert operations. Requires TS clearance + need-to-know + SCI access.
+        </div>
+      </div>
+
+      <div class="classify-row">
+        <div class="classify-label" style="background:#fff7ed;color:#92400e;border:2px solid #c2410c">
+          🔴 SECRET
+        </div>
+        <div class="classify-info">
+          <strong>Definition</strong>
+          Unauthorized disclosure would cause SERIOUS damage to national security. Second highest level.
+        </div>
+        <div class="classify-info">
+          <strong>Examples + Access</strong>
+          Military plans, weapons systems capabilities, foreign government intelligence. Requires Secret clearance + need-to-know.
+        </div>
+      </div>
+
+      <div class="classify-row">
+        <div class="classify-label" style="background:#fff7ed;color:#b45309;border:2px solid #d97706">
+          🟡 CONFIDENTIAL
+        </div>
+        <div class="classify-info">
+          <strong>Definition</strong>
+          Unauthorized disclosure would cause DAMAGE to national security. Lowest classified level.
+        </div>
+        <div class="classify-info">
+          <strong>Examples + Access</strong>
+          Troop movement data, procurement plans, vulnerabilities in systems. Requires Confidential clearance.
+        </div>
+      </div>
+
+      <div class="classify-row">
+        <div class="classify-label" style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0">
+          🟢 UNCLASSIFIED
+        </div>
+        <div class="classify-info">
+          <strong>Definition</strong>
+          No classification — but may still have handling restrictions (CUI — Controlled Unclassified Information).
+        </div>
+        <div class="classify-info">
+          <strong>Examples + Access</strong>
+          Public government reports, general policy documents. CUI = sensitive but unclassified — has specific handling rules.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-label">// SCENARIO — Intelligence Analyst Access</div>
+      <div class="code">
+<span class="cm"># Analyst with SECRET clearance tries to access:</span>
+
+Document: <span class="cg">UNCLASSIFIED</span> — Army recruitment brochure
+Access: <span class="cg">GRANTED ✓</span> — clearance exceeds requirement
+
+Document: <span class="cb">CONFIDENTIAL</span> — troop movement report
+Access: <span class="cg">GRANTED ✓</span> — SECRET clears CONFIDENTIAL
+
+Document: <span class="co">SECRET</span> — foreign intelligence report
+Access: <span class="cg">GRANTED ✓</span> — matches clearance level
+         BUT: also needs NEED-TO-KNOW for this specific document
+
+Document: <span class="cr">TOP SECRET</span> — covert operation plan
+Access: <span class="cr">DENIED ✗</span> — insufficient clearance
+         Even if analyst "needs to know" — clearance insufficient
+
+<span class="cm"># Key rule: clearance is necessary but NOT sufficient</span>
+<span class="cm"># Must ALSO have need-to-know for the specific document</span>
+      </div>
+    </div>
+
+    <h3>Special Handling — SCI and SAP</h3>
+    <div class="protect-grid">
+      <div class="protect-card">
+        <h4 style="color:var(--red)">SCI — Sensitive Compartmented Info</h4>
+        <p>Above Top Secret. Intelligence sources and methods. Access requires Top Secret clearance PLUS special SCI access approval. Stored in SCIFs (Sensitive Compartmented Information Facilities).</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--red)">SAP — Special Access Program</h4>
+        <p>Even more restricted than SCI. Black programs — their existence may be classified. Very small number of people with access. Includes stealth aircraft programs, advanced weapons.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--blue)">CUI — Controlled Unclassified Info</h4>
+        <p>Sensitive but NOT classified. Examples: PII in government systems, law enforcement data, financial regulation data. Has specific handling requirements but no classification marking.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--blue)">SCIF — Secure Facility</h4>
+        <p>Room or facility where classified info processed. No phones allowed. Shielded walls (TEMPEST). Access strictly controlled. Where SCI and TS documents are read and worked on.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="exam-row"><span class="exam-key">Top Secret →</span><span>Exceptionally grave damage — highest level — TS clearance required</span></div>
+      <div class="exam-row"><span class="exam-key">Secret →</span><span>Serious damage — military plans, weapons systems</span></div>
+      <div class="exam-row"><span class="exam-key">Confidential →</span><span>Damage — lowest classified level</span></div>
+      <div class="exam-row"><span class="exam-key">CUI →</span><span>Controlled Unclassified — sensitive but not classified, still has rules</span></div>
+      <div class="exam-row"><span class="exam-key">Clearance ≠ Access →</span><span>Must have clearance AND need-to-know — both required</span></div>
+      <div class="exam-row"><span class="exam-key">SCIF →</span><span>Secure facility for classified work — no phones, shielded</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════ -->
+<!-- TAB 3: STATES OF DATA               -->
+<!-- ════════════════════════════════════ -->
+<div class="section" id="t3">
+<div class="card">
+  <div class="card-header">
+    <span class="card-num">03</span>
+    <span class="card-title">Three States of Data</span>
+    <span class="badge badge-teal">Must Know All Three</span>
+  </div>
+  <div class="card-body">
+    <p>Data exists in <strong style="color:var(--text)">three states</strong> — and each state has different vulnerabilities and requires different protection. Knowing which state data is in tells you which controls to apply.</p>
+
+    <div class="states-grid">
+
+      <div class="state-card" style="background:#eff6ff;border-color:#bfdbfe">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">💾</div>
+        <div style="font-weight:600;color:var(--blue);margin-bottom:0.4rem;font-size:0.95rem">Data at Rest</div>
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.6rem">Stored on a device — not moving</div>
+        <div style="font-size:0.78rem;color:var(--text);margin-bottom:0.3rem"><strong>Where:</strong></div>
+        <div style="font-size:0.75rem;color:var(--muted)">Hard drives, SSDs, databases, backup tapes, USB drives, cloud storage buckets, file servers</div>
+        <div style="font-size:0.78rem;color:var(--text);margin-top:0.5rem;margin-bottom:0.3rem"><strong>Primary threat:</strong></div>
+        <div style="font-size:0.75rem;color:var(--red)">Physical theft of device or storage media</div>
+        <div style="font-size:0.78rem;color:var(--text);margin-top:0.5rem;margin-bottom:0.3rem"><strong>Protection:</strong></div>
+        <div style="font-size:0.75rem;color:var(--muted)">Encryption (AES-256), access controls, physical security, BitLocker/FileVault</div>
+      </div>
+
+      <div class="state-card" style="background:#fff7ed;border-color:#fed7aa">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">📡</div>
+        <div style="font-weight:600;color:var(--orange);margin-bottom:0.4rem;font-size:0.95rem">Data in Transit</div>
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.6rem">Moving across a network</div>
+        <div style="font-size:0.78rem;color:var(--text);margin-bottom:0.3rem"><strong>Where:</strong></div>
+        <div style="font-size:0.75rem;color:var(--muted)">Emails, web traffic, file transfers, API calls, VPN tunnels, streaming, messaging apps</div>
+        <div style="font-size:0.78rem;color:var(--text);margin-top:0.5rem;margin-bottom:0.3rem"><strong>Primary threat:</strong></div>
+        <div style="font-size:0.75rem;color:var(--red)">Man-in-the-Middle interception — someone reading traffic between A and B</div>
+        <div style="font-size:0.78rem;color:var(--text);margin-top:0.5rem;margin-bottom:0.3rem"><strong>Protection:</strong></div>
+        <div style="font-size:0.75rem;color:var(--muted)">TLS/HTTPS, VPN, IPSec, SSH, SFTP, encrypted email (S/MIME)</div>
+      </div>
+
+      <div class="state-card" style="background:#f0fdf4;border-color:#bbf7d0">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem">⚙️</div>
+        <div style="font-weight:600;color:var(--green);margin-bottom:0.4rem;font-size:0.95rem">Data in Use</div>
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.6rem">Actively being processed in RAM</div>
+        <div style="font-size:0.78rem;color:var(--text);margin-bottom:0.3rem"><strong>Where:</strong></div>
+        <div style="font-size:0.75rem;color:var(--muted)">CPU registers, RAM, cache memory, application memory, virtual machines, browser tabs</div>
+        <div style="font-size:0.78rem;color:var(--text);margin-top:0.5rem;margin-bottom:0.3rem"><strong>Primary threat:</strong></div>
+        <div style="font-size:0.75rem;color:var(--red)">Memory scraping, cold boot attacks, process injection, screen capture — must be DECRYPTED to use</div>
+        <div style="font-size:0.78rem;color:var(--text);margin-top:0.5rem;margin-bottom:0.3rem"><strong>Protection:</strong></div>
+        <div style="font-size:0.75rem;color:var(--muted)">Secure enclaves (Intel SGX), memory encryption, access controls, endpoint protection</div>
+      </div>
+
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-label">// SCENARIO — Customer Database Journey</div>
+      <div class="code">
+<span class="cm"># Follow customer data through all three states:</span>
+
+<span class="cb">AT REST:</span> Customer records stored in database
+Location: MySQL database on server hard drive
+State: <span class="cb">Data at Rest</span>
+Threat: Server stolen → data exposed
+Protection: <span class="cg">AES-256 encryption on disk</span>
+            Even if drive stolen → unreadable without key
+
+<span class="co">IN TRANSIT:</span> Customer places order online
+Data travels: Browser → HTTPS → Web Server → DB
+State: <span class="co">Data in Transit</span>
+Threat: MitM intercepts credit card number
+Protection: <span class="cg">TLS 1.3 encrypts connection</span>
+            Intercepted traffic = unreadable gibberish
+
+<span class="cg">IN USE:</span> Server processes payment
+Data loaded into RAM for processing
+State: <span class="cg">Data in Use</span>
+Threat: RAM scraping malware (like Target POS attack!)
+        Data decrypted in memory → malware reads it
+Protection: <span class="cg">Secure enclave, memory encryption</span>
+            Limited time in memory, clear after use
+
+<span class="cm"># All three states need protection simultaneously</span>
+<span class="cm"># Weakest state = weakest link in data security</span>
+      </div>
+    </div>
+
+    <div class="dw">
+      <svg width="100%" viewBox="0 0 620 160" font-family="DM Sans, sans-serif">
+        <!-- Rest -->
+        <rect x="20" y="30" width="150" height="80" rx="10" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+        <text x="95" y="60" text-anchor="middle" fill="#1d4ed8" font-size="12" font-weight="600">Data at Rest</text>
+        <text x="95" y="76" text-anchor="middle" fill="#6b6a64" font-size="9">hard drive · DB · tape</text>
+        <text x="95" y="90" text-anchor="middle" fill="#1d4ed8" font-size="9">AES-256 encryption</text>
+        <text x="95" y="104" text-anchor="middle" fill="#6b6a64" font-size="8">BitLocker · FileVault</text>
+
+        <!-- Arrow rest to transit -->
+        <line x1="170" y1="70" x2="215" y2="70" stroke="#e2e0d8" stroke-width="1.5" marker-end="url(#a1)"/>
+        <defs><marker id="a1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0L6,3L0,6" fill="none" stroke="#e2e0d8" stroke-width="1.5"/></marker></defs>
+        <text x="192" y="64" text-anchor="middle" fill="#6b6a64" font-size="7.5">send</text>
+
+        <!-- Transit -->
+        <rect x="217" y="30" width="180" height="80" rx="10" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+        <text x="307" y="60" text-anchor="middle" fill="#92400e" font-size="12" font-weight="600">Data in Transit</text>
+        <text x="307" y="76" text-anchor="middle" fill="#6b6a64" font-size="9">network · email · API</text>
+        <text x="307" y="90" text-anchor="middle" fill="#92400e" font-size="9">TLS · VPN · IPSec</text>
+        <text x="307" y="104" text-anchor="middle" fill="#6b6a64" font-size="8">HTTPS · SSH · SFTP</text>
+
+        <!-- Arrow transit to use -->
+        <line x1="397" y1="70" x2="442" y2="70" stroke="#e2e0d8" stroke-width="1.5" marker-end="url(#a1)"/>
+        <text x="419" y="64" text-anchor="middle" fill="#6b6a64" font-size="7.5">process</text>
+
+        <!-- Use -->
+        <rect x="444" y="30" width="160" height="80" rx="10" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
+        <text x="524" y="60" text-anchor="middle" fill="#166534" font-size="12" font-weight="600">Data in Use</text>
+        <text x="524" y="76" text-anchor="middle" fill="#6b6a64" font-size="9">RAM · CPU · cache</text>
+        <text x="524" y="90" text-anchor="middle" fill="#166534" font-size="9">Secure enclaves</text>
+        <text x="524" y="104" text-anchor="middle" fill="#6b6a64" font-size="8">Intel SGX · memory enc.</text>
+
+        <!-- Threat labels below -->
+        <text x="95" y="145" text-anchor="middle" fill="#991b1b" font-size="8">Theft of device</text>
+        <text x="307" y="145" text-anchor="middle" fill="#991b1b" font-size="8">MitM interception</text>
+        <text x="524" y="145" text-anchor="middle" fill="#991b1b" font-size="8">Memory scraping</text>
+      </svg>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="exam-row"><span class="exam-key">At Rest →</span><span>Stored on device — protect with encryption (AES-256, BitLocker)</span></div>
+      <div class="exam-row"><span class="exam-key">In Transit →</span><span>Moving across network — protect with TLS, VPN, IPSec</span></div>
+      <div class="exam-row"><span class="exam-key">In Use →</span><span>Active in RAM — hardest to protect — secure enclaves, memory encryption</span></div>
+      <div class="exam-row"><span class="exam-key">Hardest state →</span><span>Data in Use — must be decrypted to process — vulnerable in memory</span></div>
+      <div class="exam-row"><span class="exam-key">Target breach →</span><span>BlackPOS attacked Data in Use — scraped RAM of POS terminals</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════ -->
+<!-- TAB 4: ENCRYPTION                   -->
+<!-- ════════════════════════════════════ -->
+<div class="section" id="t4">
+<div class="card">
+  <div class="card-header">
+    <span class="card-num">04</span>
+    <span class="card-title">Encryption — Primary Data Protection</span>
+    <span class="badge badge-purple">Most Important</span>
+  </div>
+  <div class="card-body">
+    <p>Encryption converts readable data (plaintext) into unreadable ciphertext. Even if data is stolen, encrypted data is <strong style="color:var(--text)">useless without the decryption key</strong>. Primary protection for all three data states.</p>
+
+    <div class="protect-grid">
+      <div class="protect-card">
+        <h4 style="color:var(--blue)">💾 Encryption at Rest</h4>
+        <p><strong style="color:var(--text)">Full Disk Encryption (FDE):</strong> BitLocker (Windows), FileVault (macOS), LUKS (Linux). Encrypts entire drive — if laptop stolen, data unreadable.</p>
+        <p style="margin-top:0.4rem"><strong style="color:var(--text)">Database Encryption:</strong> Transparent Data Encryption (TDE) — encrypts database files at OS level. Application reads normally — files on disk encrypted.</p>
+        <p style="margin-top:0.4rem"><strong style="color:var(--text)">File-level encryption:</strong> Encrypt individual files — EFS (Windows), GPG, PGP. More granular than FDE.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--orange)">📡 Encryption in Transit</h4>
+        <p><strong style="color:var(--text)">TLS/HTTPS:</strong> Port 443. Encrypts all web traffic. TLS 1.3 = current standard. Never use SSL or TLS 1.0/1.1.</p>
+        <p style="margin-top:0.4rem"><strong style="color:var(--text)">VPN / IPSec:</strong> Encrypts all traffic in a tunnel. IKEv2/IPSec = most secure VPN protocol.</p>
+        <p style="margin-top:0.4rem"><strong style="color:var(--text)">SSH:</strong> Encrypted remote access. Replaces Telnet. Port 22. Also used for SFTP.</p>
+        <p style="margin-top:0.4rem"><strong style="color:var(--text)">S/MIME / PGP:</strong> End-to-end email encryption. Content encrypted before sending.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--green)">⚙️ Encryption in Use</h4>
+        <p><strong style="color:var(--text)">Intel SGX:</strong> Software Guard Extensions. Creates secure encrypted enclave in RAM. Code and data inside encrypted even from OS.</p>
+        <p style="margin-top:0.4rem"><strong style="color:var(--text)">AMD SME/SEV:</strong> Secure Memory Encryption. Encrypts RAM contents. Protects VMs from hypervisor.</p>
+        <p style="margin-top:0.4rem"><strong style="color:var(--text)">Homomorphic Encryption:</strong> Compute on encrypted data without decrypting. Still emerging technology.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--purple)">🔑 Key Management</h4>
+        <p><strong style="color:var(--text)">HSM (Hardware Security Module):</strong> Dedicated hardware that stores and manages encryption keys. Keys never leave HSM in plaintext.</p>
+        <p style="margin-top:0.4rem"><strong style="color:var(--text)">Key rotation:</strong> Regularly replace encryption keys. Old keys retired. Limits damage if key compromised.</p>
+        <p style="margin-top:0.4rem"><strong style="color:var(--text)">Key escrow:</strong> Copies of keys held by trusted third party. Recovery if key lost.</p>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-label">// SCENARIO — Laptop Theft at Airport</div>
+      <div class="code">
+<span class="cm"># Employee leaves laptop at airport — stolen</span>
+
+<span class="cr">WITHOUT BitLocker (no encryption):</span>
+Thief removes hard drive
+Connects to another computer
+All files immediately readable:
+  - Customer database backup: <span class="cr">EXPOSED ✗</span>
+  - Employee spreadsheet: <span class="cr">EXPOSED ✗</span>
+  - Source code: <span class="cr">EXPOSED ✗</span>
+Cost: regulatory fines + breach notification + reputation
+
+<span class="cg">WITH BitLocker (full disk encryption):</span>
+Thief removes hard drive
+Connects to another computer
+Drive shows as encrypted volume
+Without TPM + PIN: <span class="cg">UNREADABLE ✓</span>
+All data: <span class="cg">PROTECTED ✓</span>
+
+<span class="cm"># TPM (Trusted Platform Module) role:</span>
+BitLocker key stored IN TPM chip
+Only releases key if boot measurements match
+Different computer → measurements differ
+TPM refuses to release key → drive stays locked
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="exam-row"><span class="exam-key">BitLocker →</span><span>Windows FDE — uses TPM — protects data at rest on laptops</span></div>
+      <div class="exam-row"><span class="exam-key">TLS 1.3 →</span><span>Current encryption standard for data in transit — HTTPS</span></div>
+      <div class="exam-row"><span class="exam-key">AES-256 →</span><span>Gold standard symmetric encryption algorithm — used for data at rest</span></div>
+      <div class="exam-row"><span class="exam-key">HSM →</span><span>Hardware key storage — keys never exposed in plaintext</span></div>
+      <div class="exam-row"><span class="exam-key">TDE →</span><span>Transparent Data Encryption — database files encrypted at OS level</span></div>
+      <div class="exam-row"><span class="exam-key">Intel SGX →</span><span>Secure enclave — protects data in use / in memory</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════ -->
+<!-- TAB 5: DLP                          -->
+<!-- ════════════════════════════════════ -->
+<div class="section" id="t5">
+<div class="card">
+  <div class="card-header">
+    <span class="card-num">05</span>
+    <span class="card-title">DLP — Data Loss Prevention</span>
+    <span class="badge badge-orange">Prevent Exfiltration</span>
+  </div>
+  <div class="card-body">
+    <p>DLP monitors and controls data movement to <strong style="color:var(--text)">prevent unauthorized data leaving the organization</strong>. It watches what data is being copied, emailed, uploaded, or printed — and stops policy violations.</p>
+
+    <h3>How DLP Works</h3>
+    <div class="protect-grid">
+      <div class="protect-card">
+        <h4 style="color:var(--red)">Content Inspection</h4>
+        <p>Reads the actual content of files and communications. Recognizes patterns: credit card numbers (16 digits), SSNs (XXX-XX-XXXX), medical record numbers, classified keywords.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--blue)">Policy Enforcement</h4>
+        <p>When sensitive data detected: BLOCK the transfer, QUARANTINE the file, ALERT the security team, ENCRYPT before allowing, LOG the attempt for audit.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--green)">Network DLP</h4>
+        <p>Monitors network traffic — email, web uploads, FTP. Sits inline on network. Can block emails containing credit card numbers before they leave the company.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--purple)">Endpoint DLP</h4>
+        <p>Software on each device. Controls USB drives, printing, clipboard, screenshots. Blocks copying customer database to USB. Prevents screen capture of sensitive data.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--teal)">Cloud DLP</h4>
+        <p>Monitors cloud services — Microsoft 365, Google Drive, Salesforce. Prevents employees uploading sensitive files to personal cloud accounts. CASB integration.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--orange)">Storage DLP</h4>
+        <p>Scans files already stored — finds sensitive data that shouldn't be where it is. "Discovery mode" — locates PII in wrong location without blocking.</p>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-label">// SCENARIO — Healthcare DLP in Action</div>
+      <div class="code">
+<span class="cm"># Hospital DLP system catches multiple violations:</span>
+
+<span class="cr">Attempt 1: Nurse emails patient list home</span>
+Email to: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d1bfa4a3a2b4ffa1b4a3a2bebfb0bd91b6bcb0b8bdffb2bebc">[email&#160;protected]</a>
+Attachment: patient-list.xlsx
+DLP scans: <span class="co">487 patient names + DOBs detected</span>
+DLP action: <span class="cr">BLOCKED ✗</span> — HIPAA violation prevented
+Alert: sent to security team + nurse's manager
+
+<span class="cr">Attempt 2: Employee copies to USB drive</span>
+File: customer_database_backup.sql
+USB inserted into workstation
+DLP endpoint: <span class="co">database backup detected on USB transfer</span>
+DLP action: <span class="cr">BLOCKED ✗</span>
+            USB port write access denied
+
+<span class="co">Attempt 3: Accidental — doctor drafts email with chart</span>
+Email to: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0c68636f78637e226f636060696d6b79694c64637f7c65786d60226f6361">[email&#160;protected]</a>
+Attachment: patient-chart.pdf (INTERNAL recipient)
+DLP scans: PHI detected but recipient is internal
+DLP action: <span class="cg">ALLOWED ✓</span> — internal healthcare recipient
+            <span class="cm">+ logged for audit trail</span>
+
+<span class="cr">Attempt 4: Ransomware exfiltration</span>
+Malware: bulk downloading 50,000 files rapidly
+DLP: <span class="co">anomalous bulk file movement detected</span>
+DLP action: <span class="cr">BLOCKED ✗ + ALERT ✗</span>
+            Process terminated, IR team notified
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="exam-row"><span class="exam-key">DLP purpose →</span><span>Prevent sensitive data leaving organization unauthorized</span></div>
+      <div class="exam-row"><span class="exam-key">Network DLP →</span><span>Monitors email and web traffic — blocks before leaving network</span></div>
+      <div class="exam-row"><span class="exam-key">Endpoint DLP →</span><span>On each device — controls USB, print, clipboard, screenshots</span></div>
+      <div class="exam-row"><span class="exam-key">Cloud DLP →</span><span>Monitors cloud services — works with CASB</span></div>
+      <div class="exam-row"><span class="exam-key">Actions →</span><span>Block, quarantine, alert, encrypt, log — depends on policy</span></div>
+      <div class="exam-row"><span class="exam-key">Scenario tip →</span><span>"Employee emailed customer list" → DLP should have caught this</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════ -->
+<!-- TAB 6: ACCESS CONTROLS              -->
+<!-- ════════════════════════════════════ -->
+<div class="section" id="t6">
+<div class="card">
+  <div class="card-header">
+    <span class="card-num">06</span>
+    <span class="card-title">Access Controls for Data</span>
+    <span class="badge badge-blue">Who Can See What</span>
+  </div>
+  <div class="card-body">
+    <p>Access controls ensure only <strong style="color:var(--text)">authorized people</strong> can access specific data — and only in the way they're permitted. Tied directly to data classification.</p>
+
+    <h3>Access Control Models — Quick Reference</h3>
+    <div class="dw" style="padding:1rem">
+      <table>
+        <tr>
+          <th>Model</th><th>How Access Decided</th><th>Who Controls</th><th>Use Case</th>
+        </tr>
+        <tr>
+          <td><strong>DAC</strong> — Discretionary</td>
+          <td>Resource OWNER decides</td>
+          <td>Data owner</td>
+          <td>Standard file systems — you share your own files</td>
+        </tr>
+        <tr>
+          <td><strong>MAC</strong> — Mandatory</td>
+          <td>Security LABELS (clearance levels)</td>
+          <td>System enforces</td>
+          <td>Military/government — clearance + need-to-know</td>
+        </tr>
+        <tr>
+          <td><strong>RBAC</strong> — Role-Based</td>
+          <td>User's JOB ROLE</td>
+          <td>Administrator</td>
+          <td>Most enterprises — Finance role → finance data only</td>
+        </tr>
+        <tr>
+          <td><strong>ABAC</strong> — Attribute-Based</td>
+          <td>Multiple ATTRIBUTES (dept + time + location)</td>
+          <td>Policy engine</td>
+          <td>Cloud/Zero Trust — most granular</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>Data-Specific Access Controls</h3>
+    <div class="protect-grid">
+      <div class="protect-card">
+        <h4 style="color:var(--blue)">Need-to-Know Principle</h4>
+        <p>Access only to data REQUIRED for job function. Even with high clearance — can't access data outside their role. HR can't see source code. Developers can't see HR records.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--green)">Least Privilege</h4>
+        <p>Minimum permissions necessary. Read-only access when read-only is enough. No admin when user access is sufficient. Reduces blast radius if account compromised.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--purple)">Separation of Duties</h4>
+        <p>No single person controls entire critical process. Finance: one person requests payment, another approves, another executes. Prevents fraud and errors.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--teal)">Database Access Controls</h4>
+        <p>Column-level security: hide SSN column from most users. Row-level security: HR staff only see their region's employees. View-based access: show summary not raw data.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--orange)">Data Masking</h4>
+        <p>Show partial data only: credit card 4321-XXXX-XXXX-1234. SSN XXX-XX-6789. Developers work with masked production data. Support agents see masked card numbers.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--red)">Tokenization</h4>
+        <p>Replace sensitive data with non-sensitive token. Original: 4532-1234-5678-9012 → Token: TKN-8823-XKPL. Token maps to original in secure vault. Credit card processing.</p>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-label">// SCENARIO — Bank Access Controls</div>
+      <div class="code">
+<span class="cm"># Bank implements tiered data access by role:</span>
+
+<span class="cb">Bank Teller role:</span>
+  Can see: customer name, account balance summary
+  Cannot see: full SSN (masked: XXX-XX-1234)
+  Cannot see: other branch customers
+  Cannot see: internal credit scores
+  Action limit: transactions under $10,000 only
+
+<span class="co">Branch Manager role:</span>
+  Can see: all teller data +
+  Can see: full customer profiles (own branch)
+  Can see: internal credit scores
+  Action limit: transactions under $100,000
+
+<span class="cp">Fraud Analyst role:</span>
+  Can see: transaction patterns across ALL accounts
+  Cannot see: account holder PII (privacy wall)
+  Can see: anomalous activity flags
+  Read-only: no transaction capability
+
+<span class="cg">Compliance Officer:</span>
+  Can see: audit logs for everything
+  Cannot modify: any account or transaction
+  Purpose: oversight only — cannot change data
+
+<span class="cm"># Same database — different views per role</span>
+<span class="cm"># RBAC + column/row level security</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="exam-row"><span class="exam-key">Need-to-know →</span><span>Access only to data required for specific job function</span></div>
+      <div class="exam-row"><span class="exam-key">Data masking →</span><span>Show partial data — XXXX replacing sensitive digits</span></div>
+      <div class="exam-row"><span class="exam-key">Tokenization →</span><span>Replace real data with token — original in secure vault</span></div>
+      <div class="exam-row"><span class="exam-key">MAC →</span><span>Label-based — clearance level must match classification</span></div>
+      <div class="exam-row"><span class="exam-key">RBAC →</span><span>Role determines access — most common enterprise model</span></div>
+      <div class="exam-row"><span class="exam-key">Masking vs Tokenization →</span><span>Masking = partial display / Tokenization = full replacement with token</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════ -->
+<!-- TAB 7: OTHER METHODS                -->
+<!-- ════════════════════════════════════ -->
+<div class="section" id="t7">
+<div class="card">
+  <div class="card-header">
+    <span class="card-num">07</span>
+    <span class="card-title">Other Data Protection Methods</span>
+    <span class="badge badge-teal">Complete Picture</span>
+  </div>
+  <div class="card-body">
+
+    <h3>Data Backup and Recovery</h3>
+    <div class="protect-grid">
+      <div class="protect-card">
+        <h4 style="color:var(--blue)">3-2-1 Backup Rule</h4>
+        <p>3 copies of data, 2 different media types, 1 offsite. Modern addition: 1 offline/air-gapped (ransomware can't reach it), 0 errors (test restores regularly).</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--green)">Immutable Backups</h4>
+        <p>Backups that CANNOT be modified or deleted — even by admins. Ransomware tries to delete backups → refused. WORM storage (Write Once Read Many).</p>
+      </div>
+    </div>
+
+    <h3>Data Integrity</h3>
+    <div class="protect-grid">
+      <div class="protect-card">
+        <h4 style="color:var(--purple)">Hashing</h4>
+        <p>SHA-256 hash verifies data hasn't changed. File hash before = file hash after → untampered. Used for: file integrity, digital signatures, password storage.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--teal)">Digital Signatures</h4>
+        <p>Cryptographic proof data came from specific sender AND hasn't been modified. Non-repudiation — sender can't deny sending. Uses asymmetric cryptography (RSA/ECDSA).</p>
+      </div>
+    </div>
+
+    <h3>Data Lifecycle Management</h3>
+    <div class="protect-grid">
+      <div class="protect-card">
+        <h4 style="color:var(--red)">Data Retention</h4>
+        <p>How long to keep data. Legal requirements: HIPAA = 6 years minimum. GDPR = only as long as necessary. PCI-DSS = cardholder data purged after transaction. Retention policy defines this.</p>
+      </div>
+      <div class="protect-card">
+        <h4 style="color:var(--orange)">Data Destruction / Sanitization</h4>
+        <p>Secure deletion when no longer needed. Methods by sensitivity: Clearing (overwrite), Purging (degaussing), Destroying (physical shredding/incineration). Certificates of destruction for compliance.</p>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-label">// SCENARIO — Data Destruction Methods</div>
+      <div class="code">
+<span class="cm"># Different data requires different destruction:</span>
+
+<span class="cb">PUBLIC data on old hard drive:</span>
+Method: <span class="cg">Clearing</span> — overwrite with zeros/ones
+Tool: DBAN (Darik's Boot and Nuke)
+Suitable for: reusing or selling drive
+
+<span class="co">CONFIDENTIAL data on SSD:</span>
+Method: <span class="cg">Purging</span> — manufacturer secure erase
+SSD note: overwriting may not fully work (wear leveling)
+Use: ATA Secure Erase command instead
+Suitable for: decommissioned drives
+
+<span class="cr">TOP SECRET data on any media:</span>
+Method: <span class="cr">Destroying</span>
+Options:
+  - Physical shredding (certified shredder)
+  - Degaussing (magnetic destruction)
+  - Incineration
+  - Disintegration
+Certificate: <span class="cg">Certificate of Destruction issued</span>
+Suitable for: when drive must be disposed of
+
+<span class="cm"># Simply deleting files ≠ data destruction</span>
+<span class="cm"># Deleted files recoverable with forensic tools</span>
+<span class="cm"># Even formatted drives recoverable!</span>
+      </div>
+    </div>
+
+    <h3>Information Rights Management (IRM)</h3>
+    <div class="protect-card" style="margin-bottom:0.8rem">
+      <h4 style="color:var(--purple)">What Is IRM?</h4>
+      <p>Technology that controls what recipients can DO with a document — even after they receive it. Controls: view, print, copy, forward, screenshot, edit, expiry date.</p>
+      <div class="code">
+<span class="cm"># IRM protected document:</span>
+Document: Q4_Financial_Results.docx
+IRM policy:
+  Print: <span class="cr">DISABLED</span>
+  Copy text: <span class="cr">DISABLED</span>
+  Forward: <span class="cr">DISABLED</span>
+  Screenshot: <span class="cr">DISABLED</span>
+  Expiry: <span class="co">Auto-expires in 30 days</span>
+  Watermark: <span class="co">Shows viewer's name on every page</span>
+  Access: <span class="cg">Finance department only</span>
+
+Even if forwarded to wrong person:
+→ They cannot open without authorization
+→ Document enforces its own controls
+      </div>
+    </div>
+
+    <h3>Steganography — Hiding Data in Data</h3>
+    <p>Hiding secret data inside innocent-looking files. A photo may contain hidden text. An audio file may contain hidden data. Used for both watermarking and covert communication.</p>
+
+    <div class="exam">
+      <h4>// EXAM KEYWORDS</h4>
+      <div class="exam-row"><span class="exam-key">Clearing →</span><span>Overwrite data — suitable for reuse in same org</span></div>
+      <div class="exam-row"><span class="exam-key">Purging →</span><span>Degaussing — more thorough than clearing</span></div>
+      <div class="exam-row"><span class="exam-key">Destroying →</span><span>Physical shredding/incineration — most secure — TOP SECRET</span></div>
+      <div class="exam-row"><span class="exam-key">IRM →</span><span>Controls what recipients can DO with document — print, copy, forward</span></div>
+      <div class="exam-row"><span class="exam-key">Immutable backup →</span><span>Cannot be deleted even by admin — ransomware protection</span></div>
+      <div class="exam-row"><span class="exam-key">SSD destruction →</span><span>Overwriting may not work — use ATA Secure Erase or physical destruction</span></div>
+      <div class="exam-row"><span class="exam-key">Data retention →</span><span>HIPAA = 6 years / GDPR = only as long as necessary</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════ -->
+<!-- TAB 8: SUMMARY                      -->
+<!-- ════════════════════════════════════ -->
+<div class="section" id="t8">
+<div class="card">
+  <div class="card-header">
+    <span class="card-num">08</span>
+    <span class="card-title">Complete Summary — Exam Cheat Sheet</span>
+    <span class="badge badge-purple">Exam Ready</span>
+  </div>
+  <div class="card-body">
+
+    <h3>Data Classification — Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Level</th><th>Corporate Name</th><th>Govt Name</th><th>Examples</th><th>Protection</th></tr>
+      <tr>
+        <td><span class="tag tag-r">Highest</span></td>
+        <td>Critical / Restricted</td>
+        <td>Top Secret</td>
+        <td>Encryption keys, nuclear plans</td>
+        <td>Maximum — AES-256, HSM, MFA, physical</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-o">High</span></td>
+        <td>Confidential / Private</td>
+        <td>Secret</td>
+        <td>PII, financial, medical, HR</td>
+        <td>Encryption, RBAC, DLP, audit logs</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-b">Medium</span></td>
+        <td>Internal / Sensitive</td>
+        <td>Confidential</td>
+        <td>Policies, org charts, meeting notes</td>
+        <td>Access controls, employee-only</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-g">Low</span></td>
+        <td>Public</td>
+        <td>Unclassified</td>
+        <td>Press releases, website content</td>
+        <td>Minimal — integrity only</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3>States of Data — Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>State</th><th>Where</th><th>Primary Threat</th><th>Protection</th></tr>
+      <tr>
+        <td><span class="tag tag-b">At Rest</span></td>
+        <td>Hard drives, databases, USB, tapes</td>
+        <td>Physical theft of media</td>
+        <td>AES-256, BitLocker, FileVault, TDE</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-o">In Transit</span></td>
+        <td>Network, email, API, streaming</td>
+        <td>MitM interception</td>
+        <td>TLS 1.3, VPN/IPSec, SSH, S/MIME</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-g">In Use</span></td>
+        <td>RAM, CPU, cache, application memory</td>
+        <td>Memory scraping, cold boot</td>
+        <td>Secure enclaves (SGX), memory encryption</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3>Protection Methods — Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Method</th><th>Purpose</th><th>Exam Scenario</th></tr>
+      <tr>
+        <td><span class="tag tag-p">Encryption</span></td>
+        <td>Make data unreadable without key</td>
+        <td>"Laptop stolen but data safe" → BitLocker</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-r">DLP</span></td>
+        <td>Prevent data leaving organization</td>
+        <td>"Employee emailed customer list" → DLP failed</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-b">Access Control</span></td>
+        <td>Only authorized users access data</td>
+        <td>"Who can see patient records" → RBAC + need-to-know</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-o">Data Masking</span></td>
+        <td>Show partial data only</td>
+        <td>Support sees XXXX-XXXX-XXXX-1234</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-t">Tokenization</span></td>
+        <td>Replace real data with token</td>
+        <td>Payment processing — token sent not real card</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-g">IRM</span></td>
+        <td>Control what recipient can do with doc</td>
+        <td>Document can't be printed or forwarded</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-b">Hashing</span></td>
+        <td>Verify data integrity</td>
+        <td>SHA-256 proves file not tampered with</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-p">Digital Signature</span></td>
+        <td>Prove sender + integrity</td>
+        <td>Non-repudiation — sender can't deny</td>
+      </tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// TOP EXAM SCENARIOS → ANSWERS</h4>
+      <div class="exam-row"><span class="exam-key">"Laptop stolen — data safe"</span><span>→ Full disk encryption (BitLocker/FileVault)</span></div>
+      <div class="exam-row"><span class="exam-key">"Employee copying DB to USB"</span><span>→ DLP (endpoint) + port security</span></div>
+      <div class="exam-row"><span class="exam-key">"Credit card shown as XXXX"</span><span>→ Data masking</span></div>
+      <div class="exam-row"><span class="exam-key">"Payment token instead of real card"</span><span>→ Tokenization</span></div>
+      <div class="exam-row"><span class="exam-key">"File untampered proof"</span><span>→ Hashing (SHA-256)</span></div>
+      <div class="exam-row"><span class="exam-key">"Document can't be printed after emailed"</span><span>→ IRM (Information Rights Management)</span></div>
+      <div class="exam-row"><span class="exam-key">"Backup ransomware can't delete"</span><span>→ Immutable backup / WORM storage</span></div>
+      <div class="exam-row"><span class="exam-key">"Most sensitive data state to protect"</span><span>→ Data in Use (must decrypt to process)</span></div>
+      <div class="exam-row"><span class="exam-key">"Destroy TOP SECRET data on drive"</span><span>→ Physical destruction / degaussing</span></div>
+      <div class="exam-row"><span class="exam-key">"Military clearance + still denied"</span><span>→ Has clearance but not need-to-know</span></div>
+      <div class="exam-row"><span class="exam-key">"Secure enclave protects what"</span><span>→ Data in Use (Intel SGX encrypts RAM)</span></div>
+      <div class="exam-row"><span class="exam-key">"Keys stored in dedicated hardware"</span><span>→ HSM (Hardware Security Module)</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static

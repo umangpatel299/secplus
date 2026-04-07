@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Third-Party Risk — Security+ Domain 5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=Source+Code+Pro:wght@400;500;600&display=swap');
+
+:root {
+  --bg:#fdfcf8;
+  --s1:#ffffff;
+  --s2:#f4f2ec;
+  --s3:#ece9e0;
+  --border:#dad7cc;
+  --text:#1c1a10;
+  --muted:#706d5c;
+  --blue:#1040b0;
+  --green:#0c6830;
+  --red:#a81010;
+  --orange:#a84000;
+  --purple:#5c10a0;
+  --teal:#0a6860;
+  --yellow:#7a5800;
+  --indigo:#2410c0;
+  --lime:#386000;
+  --rose:#901040;
+  --sky:#0858a8;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Source Serif 4',serif;
+  font-size:14px;
+  line-height:1.7;
+  padding:2rem 1.5rem;
+}
+
+/* MASTHEAD */
+.mast{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:1rem;
+  align-items:end;
+  margin-bottom:2rem;
+  padding-bottom:1.5rem;
+  border-bottom:3px double var(--text);
+}
+@media(max-width:600px){.mast{grid-template-columns:1fr;}}
+.mast-left .eyebrow{
+  font-family:'Source Code Pro',monospace;
+  font-size:0.6rem;
+  letter-spacing:0.2em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:0.4rem;
+}
+.mast-title{
+  font-family:'Oswald',sans-serif;
+  font-size:3.4rem;
+  font-weight:700;
+  letter-spacing:-0.01em;
+  line-height:0.92;
+  margin-bottom:0.4rem;
+}
+.mast-title .accent{color:var(--indigo);}
+.mast-deck{
+  font-family:'Source Serif 4',serif;
+  font-style:italic;
+  font-size:0.88rem;
+  color:var(--muted);
+}
+.mast-right{
+  text-align:right;
+  font-family:'Source Code Pro',monospace;
+  font-size:0.6rem;
+  color:var(--muted);
+  line-height:1.8;
+}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.38rem 0.85rem;
+  border-radius:3px;
+  border:1.5px solid var(--border);
+  background:var(--s1);
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'Source Code Pro',monospace;
+  font-size:0.62rem;
+  font-weight:600;
+  transition:all 0.13s;
+  letter-spacing:0.03em;
+}
+.tab:hover{border-color:var(--indigo);color:var(--indigo);}
+.tab.active{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+
+/* SECTIONS */
+.sec{display:none;}
+.sec.on{display:block;animation:rise 0.2s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* CARD */
+.card{
+  background:var(--s1);
+  border:1.5px solid var(--border);
+  border-radius:6px;
+  margin-bottom:1.5rem;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.card-hd{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.9rem 1.4rem;
+  border-bottom:1.5px solid var(--border);
+  background:var(--s2);
+}
+.card-num{
+  font-family:'Source Code Pro',monospace;
+  font-size:0.58rem;
+  color:var(--muted);
+  background:var(--s3);
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:0.12rem 0.38rem;
+}
+.card-title{
+  font-family:'Oswald',sans-serif;
+  font-size:1.2rem;
+  font-weight:500;
+  letter-spacing:0.01em;
+}
+.bdg{
+  margin-left:auto;
+  font-family:'Source Code Pro',monospace;
+  font-size:0.57rem;
+  padding:0.14rem 0.52rem;
+  border-radius:2px;
+  white-space:nowrap;
+  font-weight:600;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+}
+.bdg-blue{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.bdg-green{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.bdg-orange{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.bdg-red{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.bdg-purple{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.bdg-teal{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.bdg-indigo{background:#e0e7ff;color:#3730a3;border:1px solid #a5b4fc;}
+.bdg-yellow{background:#fef9c3;color:#713f12;border:1px solid #fde047;}
+.bdg-lime{background:#ecfccb;color:#3f6212;border:1px solid #bef264;}
+.bdg-rose{background:#ffe4e6;color:#9f1239;border:1px solid #fecdd3;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.86rem;margin-bottom:0.8rem;line-height:1.75;}
+h3{
+  font-family:'Oswald',sans-serif;
+  font-size:1rem;
+  font-weight:500;
+  color:var(--text);
+  margin:1.3rem 0 0.6rem;
+  padding-left:0.75rem;
+  border-left:4px solid var(--indigo);
+  letter-spacing:0.01em;
+}
+
+/* CODE */
+.code{
+  background:var(--text);
+  color:#f0edd8;
+  border-radius:4px;
+  padding:1rem 1.2rem;
+  font-family:'Source Code Pro',monospace;
+  font-size:0.68rem;
+  line-height:1.9;
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.cg{color:#86efac;} .cr{color:#fca5a5;} .cb{color:#93c5fd;}
+.co{color:#fde68a;} .cp{color:#d8b4fe;} .cm{color:#706d5c;}
+.ct{color:#5eead4;} .ci{color:#a5b4fc;} .cy{color:#fef08a;}
+.cl{color:#bef264;} .cpk{color:#f9a8d4;} .cs{color:#7dd3fc;}
+
+/* SCENE */
+.scene{
+  background:#fffbeb;
+  border-left:4px solid var(--orange);
+  border-radius:0 5px 5px 0;
+  padding:1rem 1.2rem;
+  margin:1rem 0;
+}
+.scene-lbl{
+  font-family:'Source Code Pro',monospace;
+  font-size:0.58rem;
+  color:var(--orange);
+  margin-bottom:0.4rem;
+  letter-spacing:0.12em;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{background:var(--s2);border:1.5px solid var(--border);border-radius:5px;padding:1rem;}
+.gc h4{font-family:'Oswald',sans-serif;font-size:0.95rem;font-weight:500;margin-bottom:0.4rem;letter-spacing:0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{background:#f0eeff;border:1.5px solid #c4b5fd;border-radius:5px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{
+  font-family:'Source Code Pro',monospace;
+  font-size:0.58rem;color:var(--purple);
+  margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;
+}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'Source Code Pro',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{
+  background:var(--s2);padding:0.5rem 0.8rem;text-align:left;
+  color:var(--muted);border-bottom:1.5px solid var(--border);
+  font-size:0.63rem;font-weight:700;
+  font-family:'Source Code Pro',monospace;letter-spacing:0.06em;text-transform:uppercase;
+}
+td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--border);font-size:0.82rem;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.08rem 0.42rem;border-radius:2px;font-size:0.6rem;font-family:'Source Code Pro',monospace;font-weight:700;}
+.tg{background:#dcfce7;color:#166534;}
+.tr{background:#fee2e2;color:#991b1b;}
+.tb{background:#dbeafe;color:#1e40af;}
+.to{background:#ffedd5;color:#9a3412;}
+.tp{background:#f3e8ff;color:#6b21a8;}
+.tt{background:#ccfbf1;color:#115e59;}
+.ti{background:#e0e7ff;color:#3730a3;}
+.ty{background:#fef9c3;color:#713f12;}
+.tl{background:#ecfccb;color:#3f6212;}
+.ts{background:#e0f2fe;color:#075985;}
+.trs{background:#ffe4e6;color:#9f1239;}
+
+/* VENDOR TIER CARDS */
+.tier-card{
+  border-radius:5px;padding:1rem;
+  border:1.5px solid;margin-bottom:0.6rem;
+  display:flex;gap:1rem;align-items:flex-start;
+}
+.tier-icon{font-size:1.4rem;flex-shrink:0;}
+.tier-title{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:500;margin-bottom:0.2rem;letter-spacing:0.01em;}
+.tier-body{font-size:0.77rem;color:var(--muted);}
+
+/* AGREEMENT STRIP */
+.agree-row{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:0.8rem 1rem;
+  background:var(--s2);border:1.5px solid var(--border);
+  border-radius:5px;margin-bottom:0.45rem;
+}
+.agree-abbr{
+  font-family:'Source Code Pro',monospace;
+  font-size:0.75rem;font-weight:700;
+  min-width:55px;flex-shrink:0;
+  text-align:center;
+}
+.agree-name{font-size:0.84rem;font-weight:700;min-width:200px;flex-shrink:0;font-family:'Oswald',sans-serif;font-weight:500;}
+.agree-desc{font-size:0.76rem;color:var(--muted);}
+
+/* QUESTIONNAIRE */
+.q-section{background:var(--s2);border:1.5px solid var(--border);border-radius:5px;margin-bottom:0.6rem;overflow:hidden;}
+.q-hd{
+  display:flex;align-items:center;gap:0.7rem;
+  padding:0.65rem 1rem;
+  background:var(--s3);border-bottom:1px solid var(--border);
+}
+.q-hd-title{font-family:'Oswald',sans-serif;font-size:0.88rem;font-weight:500;letter-spacing:0.02em;}
+.q-items{padding:0.7rem 1rem;}
+.q-item{
+  display:flex;gap:0.6rem;
+  padding:0.35rem 0;
+  border-bottom:1px solid var(--border);
+  font-size:0.77rem;color:var(--muted);
+  align-items:flex-start;
+}
+.q-item:last-child{border-bottom:none;}
+.q-num{font-family:'Source Code Pro',monospace;font-size:0.65rem;font-weight:700;flex-shrink:0;color:var(--text);min-width:20px;}
+
+/* LIFECYCLE */
+.lifecycle{display:flex;flex-wrap:wrap;gap:0;margin:1rem 0;border:1.5px solid var(--border);border-radius:6px;overflow:hidden;}
+.lc{
+  flex:1;min-width:110px;
+  padding:1rem 0.7rem;
+  text-align:center;
+  border-right:1px solid var(--border);
+  position:relative;
+}
+.lc:last-child{border-right:none;}
+.lc-num{
+  font-family:'Oswald',sans-serif;
+  font-size:1.4rem;font-weight:700;
+  opacity:0.15;margin-bottom:0.3rem;
+}
+.lc-title{font-family:'Oswald',sans-serif;font-size:0.78rem;font-weight:500;margin-bottom:0.2rem;letter-spacing:0.02em;}
+.lc-desc{font-size:0.65rem;color:var(--muted);line-height:1.4;}
+
+/* INFO ROW */
+.info-row{
+  display:flex;align-items:flex-start;gap:0.8rem;
+  padding:0.8rem 1rem;background:var(--s2);
+  border:1.5px solid var(--border);border-radius:5px;margin-bottom:0.5rem;
+}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:500;margin-bottom:0.12rem;letter-spacing:0.01em;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* MONITORING ROW */
+.mon-row{
+  display:flex;align-items:center;gap:1rem;
+  padding:0.55rem 0.9rem;
+  background:var(--s2);border:1px solid var(--border);border-radius:5px;
+  margin-bottom:0.35rem;
+}
+.mon-freq{
+  font-family:'Source Code Pro',monospace;font-size:0.65rem;font-weight:700;
+  min-width:85px;flex-shrink:0;
+}
+.mon-activity{font-size:0.8rem;font-weight:600;flex:1;}
+.mon-why{font-size:0.73rem;color:var(--muted);flex:2;}
+
+/* ROE */
+.roe-row{
+  display:flex;gap:1rem;padding:0.7rem 0;
+  border-bottom:1px solid var(--border);align-items:flex-start;
+}
+.roe-row:last-child{border-bottom:none;}
+.roe-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.roe-title{font-size:0.84rem;font-weight:700;margin-bottom:0.15rem;font-family:'Oswald',sans-serif;font-weight:500;letter-spacing:0.01em;}
+.roe-desc{font-size:0.76rem;color:var(--muted);}
+
+/* RISK LEVELS */
+.risk-pill{
+  display:inline-flex;align-items:center;gap:0.3rem;
+  padding:0.2rem 0.6rem;border-radius:3px;
+  font-family:'Source Code Pro',monospace;font-size:0.65rem;font-weight:700;
+}
+</style>
+</head>
+<body>
+
+<div class="mast">
+  <div class="mast-left">
+    <div class="eyebrow">Security+ SY0-701 · Domain 5 · Security Program Management · Subtopic 3</div>
+    <div class="mast-title">Third-<span class="accent">Party</span><br>Risk</div>
+    <div class="mast-deck">Vendor assessment, selection, agreements, monitoring, questionnaires, and rules of engagement</div>
+  </div>
+  <div class="mast-right">
+    Domain 5<br>20% of exam<br>Subtopic 3 / 4<br>TPRM · Supply Chain
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Vendor Assessment</button>
+  <button class="tab" onclick="go('s3',this)">3. Vendor Selection</button>
+  <button class="tab" onclick="go('s4',this)">4. Agreements</button>
+  <button class="tab" onclick="go('s5',this)">5. Questionnaires</button>
+  <button class="tab" onclick="go('s6',this)">6. Monitoring</button>
+  <button class="tab" onclick="go('s7',this)">7. Rules of Engagement</button>
+  <button class="tab" onclick="go('s8',this)">8. Supply Chain</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 1. OVERVIEW             -->
+<!-- ═══════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Third-Party Risk Overview</span><span class="bdg bdg-indigo">TPRM · Supply Chain · Vendors</span></div>
+  <div class="card-bd">
+    <p>Third-party risk management (TPRM) is the process of <strong style="color:var(--text)">identifying, assessing, and controlling the security risks that arise from vendors, suppliers, contractors, and other external parties</strong> that have access to your systems, data, or that influence your security posture.</p>
+
+    <h3>Why Third-Party Risk Is So Critical</h3>
+    <div class="code">
+<span class="cm"># The uncomfortable truth about third-party risk:</span>
+
+Your security posture = YOUR controls + ALL YOUR VENDORS' controls
+
+You might have:  perfect firewall, EDR on every endpoint,
+                 MFA on everything, 24/7 SOC...
+
+...but if your IT support vendor has:
+  shared admin password "Summer2019!"
+  no MFA on the VPN they use to manage your systems
+  phishing email clicked by their employee
+  
+→ Attacker is inside YOUR network anyway
+
+<span class="cm"># Real breaches caused by third-party failure:</span>
+Target 2013:      HVAC vendor → compromised → POS malware
+SolarWinds 2020:  Software update → 18,000 orgs compromised
+Kaseya 2021:      MSP software → 1,500 downstream victims
+MOVEit 2023:      File transfer software → 1000+ orgs breached
+Okta 2023:        Support vendor → customer tenant access
+
+<span class="cm"># Key insight:</span>
+"A chain is only as strong as its weakest link"
+Your weakest link might be a vendor you didn't even audit
+    </div>
+
+    <h3>The TPRM Lifecycle</h3>
+    <div class="lifecycle">
+      <div class="lc" style="background:#eff6ff">
+        <div class="lc-num" style="color:var(--blue)">1</div>
+        <div class="lc-title" style="color:var(--blue)">Identify</div>
+        <div class="lc-desc">Inventory all third parties + classify by risk</div>
+      </div>
+      <div class="lc" style="background:#fff7ed">
+        <div class="lc-num" style="color:var(--orange)">2</div>
+        <div class="lc-title" style="color:var(--orange)">Assess</div>
+        <div class="lc-desc">Due diligence questionnaires, audits, reviews</div>
+      </div>
+      <div class="lc" style="background:#f3e8ff">
+        <div class="lc-num" style="color:var(--purple)">3</div>
+        <div class="lc-title" style="color:var(--purple)">Select</div>
+        <div class="lc-desc">Evaluate results, approve or reject vendor</div>
+      </div>
+      <div class="lc" style="background:#fef9c3">
+        <div class="lc-num" style="color:var(--yellow)">4</div>
+        <div class="lc-title" style="color:var(--yellow)">Contract</div>
+        <div class="lc-desc">SLA, MSA, DPA, NDA, security clauses</div>
+      </div>
+      <div class="lc" style="background:#f0fdf4">
+        <div class="lc-num" style="color:var(--green)">5</div>
+        <div class="lc-title" style="color:var(--green)">Monitor</div>
+        <div class="lc-desc">Continuous oversight — annual reviews, alerts</div>
+      </div>
+      <div class="lc" style="background:#fef2f2">
+        <div class="lc-num" style="color:var(--red)">6</div>
+        <div class="lc-title" style="color:var(--red)">Offboard</div>
+        <div class="lc-desc">Terminate access, destroy data, final review</div>
+      </div>
+    </div>
+
+    <h3>Vendor Classification by Risk Level</h3>
+    <div class="tier-card" style="background:#fef2f2;border-color:#fecaca">
+      <span class="tier-icon">🔴</span>
+      <div>
+        <div class="tier-title" style="color:var(--red)">Critical / Tier 1 Vendors</div>
+        <div class="tier-body">Access to sensitive data (PII, PHI, financial records) OR critical systems (admin access, source code, network infrastructure). A compromise directly endangers the organization. Examples: cloud providers, MSSPs, payroll processors, core banking vendors, IT managed service providers. Highest scrutiny — full audit, on-site assessment, annual review, right-to-audit clauses.</div>
+      </div>
+    </div>
+    <div class="tier-card" style="background:#fff7ed;border-color:#fed7aa">
+      <span class="tier-icon">🟠</span>
+      <div>
+        <div class="tier-title" style="color:var(--orange)">High / Tier 2 Vendors</div>
+        <div class="tier-body">Limited access to sensitive data or non-critical systems. Important but not existential. Examples: marketing automation, HR software, non-core SaaS, professional services firms. Comprehensive questionnaire, SOC 2 review, annual reassessment, contract security clauses required.</div>
+      </div>
+    </div>
+    <div class="tier-card" style="background:#fef9c3;border-color:#fde047">
+      <span class="tier-icon">🟡</span>
+      <div>
+        <div class="tier-title" style="color:var(--yellow)">Medium / Tier 3 Vendors</div>
+        <div class="tier-body">No access to sensitive systems or data. Indirect relationship. Examples: office supplies, facilities vendors, catering. Basic due diligence — standard questionnaire, contract review. Annual spot check. Still in scope — Target breach started with an HVAC vendor.</div>
+      </div>
+    </div>
+    <div class="tier-card" style="background:#f0fdf4;border-color:#bbf7d0">
+      <span class="tier-icon">🟢</span>
+      <div>
+        <div class="tier-title" style="color:var(--green)">Low / Tier 4 Vendors</div>
+        <div class="tier-body">No system access, no data access, minimal business relationship. Examples: utility companies, general contractors. Basic contract only. No dedicated security assessment required. Monitor for any change in relationship that elevates risk tier.</div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">TPRM →</span><span>Third-Party Risk Management — managing security risks from external parties</span></div>
+      <div class="er"><span class="ek">Supply chain risk →</span><span>Risk from vendors, suppliers, software dependencies — SolarWinds example</span></div>
+      <div class="er"><span class="ek">Critical vendor →</span><span>Access to sensitive data or critical systems — highest scrutiny</span></div>
+      <div class="er"><span class="ek">Target breach →</span><span>Classic example — HVAC vendor compromised → POS malware → 40M cards stolen</span></div>
+      <div class="er"><span class="ek">Vendor classification →</span><span>Tier vendors by risk level — more access = higher tier = more scrutiny</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 2. VENDOR ASSESSMENT   -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">Vendor Assessment & Due Diligence</span><span class="bdg bdg-orange">Evaluate Before You Trust</span></div>
+  <div class="card-bd">
+    <p>Vendor assessment is the <strong style="color:var(--text)">process of evaluating a third party's security posture before engaging them</strong>. Due diligence means doing the work to verify — not just asking and accepting answers at face value.</p>
+
+    <h3>Assessment Methods</h3>
+
+    <div class="info-row">
+      <div class="info-icon">📋</div>
+      <div>
+        <div class="info-title">Security Questionnaire (Self-Assessment)</div>
+        <div class="info-desc">Vendor answers written questions about their security controls. Fast, low-cost, scalable. Limitation: you only know what they tell you — answers may be aspirational not actual. Must verify key claims. Used for initial screening and all tiers. Standard questionnaires: SIG (Standardized Information Gathering), CAIQ (CSA Cloud), CIS Controls questionnaire.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">📄</div>
+      <div>
+        <div class="info-title">SOC Reports — Third-Party Audit Evidence</div>
+        <div class="info-desc">SOC 2 Type II is the gold standard for SaaS vendors. Conducted by independent CPA firm. Covers: Security, Availability, Processing Integrity, Confidentiality, Privacy trust service criteria. Type I = design of controls at a point in time. Type II = operating effectiveness over a 6-12 month period. Always request Type II — proves controls actually WORK, not just exist.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🔍</div>
+      <div>
+        <div class="info-title">On-Site Assessment / Audit</div>
+        <div class="info-desc">Your team physically visits the vendor's facility. Inspect: physical security, data center controls, employee security practices, actual system configurations. Reserved for critical (Tier 1) vendors. Requires "right to audit" clause in contract. Expensive but most thorough — you see reality not just claims.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">📜</div>
+      <div>
+        <div class="info-title">Certifications and Attestations</div>
+        <div class="info-desc">Independent third-party validation of vendor's security claims. ISO 27001 certificate, PCI-DSS attestation of compliance (AoC), FedRAMP authorization, HIPAA Business Associate compliance, CSA STAR certification. Reduce assessment burden — if they have ISO 27001, you can rely on that audit rather than doing your own.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🌐</div>
+      <div>
+        <div class="info-title">Passive Monitoring / OSINT</div>
+        <div class="info-desc">Externally observable security indicators without vendor involvement. Security ratings services: BitSight, SecurityScorecard, UpGuard — score vendor based on observed external indicators (open ports, certificates, breach history, dark web exposure). Useful for ongoing monitoring and initial screening. Free tools: Shodan, SSL Labs, Have I Been Pwned for vendor domains.</div>
+      </div>
+    </div>
+
+    <h3>SOC 2 Reports — Deep Dive</h3>
+    <div class="code">
+<span class="cm"># SOC 2 — what to look for when reviewing:</span>
+
+<span class="cb">Type I vs Type II:</span>
+  Type I:   "Controls are DESIGNED correctly" — point in time
+  Type II:  "Controls OPERATED effectively for 6-12 months"
+  Always demand: <span class="cg">SOC 2 Type II</span> — Type I proves little
+
+<span class="cb">Five Trust Service Criteria:</span>
+  Security:             CC — Common Criteria (always included)
+  Availability:         A series (if relevant to SLA)
+  Processing Integrity: PI series (if processing transactions)
+  Confidentiality:      C series (if handling confidential data)
+  Privacy:              P series (if handling personal data)
+
+<span class="cb">What to review in the report:</span>
+  Audit period:         how recent? (should be within 12 months)
+  Auditor opinion:      unqualified = clean / qualified = issues
+  Control deviations:   any controls that FAILED during period?
+  Complementary controls: what YOU must do to make it work
+  Scope limitations:    what's EXCLUDED from the audit
+
+<span class="cr">Red flags in a SOC 2 report:</span>
+  Qualified opinion → controls had failures
+  Short audit period (3 months) → may hide issues
+  Old report (>18 months) → controls may have changed
+  Important controls excluded from scope
+  Many "complementary user entity controls" → your burden
+    </div>
+
+    <h3>Assessment Red Flags</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#fecaca">
+        <h4 style="color:var(--red)">Immediate Disqualifiers</h4>
+        <ul>
+          <li>No SOC 2 or equivalent — never been audited</li>
+          <li>SOC 2 with qualified (failing) opinion</li>
+          <li>Data breach in last 12 months with no evidence of remediation</li>
+          <li>No dedicated security personnel</li>
+          <li>No security awareness training for employees</li>
+          <li>Customer data stored unencrypted</li>
+          <li>Refuses to answer questionnaire</li>
+          <li>Subcontracts your data to fourth parties without disclosure</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#fde047">
+        <h4 style="color:var(--yellow)">Concerns Requiring Remediation Plan</h4>
+        <ul>
+          <li>Outdated SOC 2 (12-18 months old)</li>
+          <li>SOC 2 scope excludes important areas</li>
+          <li>Missing MFA on admin access</li>
+          <li>No formal incident response plan</li>
+          <li>Patch management SLA too long (&gt;30 days for critical)</li>
+          <li>No background checks on employees with data access</li>
+          <li>Limited logging and monitoring capability</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Due Diligence Prevents a Bad Vendor Choice</div>
+      <div class="code">
+<span class="cm"># Company evaluating two payroll vendors — both look fine on the surface:</span>
+
+<span class="cb">Vendor A — PayrollCo:</span>
+  Marketing: "Bank-grade security, SOC 2 certified"
+  
+  Assessment reveals:
+  SOC 2 report: Type I only (not Type II) ← <span class="cr">not operating effectiveness</span>
+  Report date: 22 months ago ← <span class="cr">outdated</span>
+  Questionnaire: "We use encryption for data at rest"
+  On-site visit: data encrypted with MD5 hashing ← <span class="cr">not encryption!</span>
+  Background checks: "We perform checks on hire" ← vague
+  Breach history: 2021 breach of 40,000 employee records ← <span class="cr">hidden</span>
+  
+  OSINT (SecurityScorecard): D rating (out of A-F) ← <span class="cr">poor</span>
+
+<span class="cg">Vendor B — SecurePayroll:</span>
+  SOC 2 Type II: current (3 months old), unqualified opinion ✓
+  ISO 27001: certified ✓
+  SecurityScorecard: A rating ✓
+  Background checks: annual + role-based screening ✓
+  Encryption: AES-256 at rest, TLS 1.3 in transit ✓
+  Incident response: documented plan, tested annually ✓
+
+Decision: <span class="cg">Vendor B selected despite being 20% more expensive ✓</span>
+Rationale: avoided risk of breach with 50,000 employee records
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">SOC 2 Type II →</span><span>Gold standard — operating effectiveness over period — always demand over Type I</span></div>
+      <div class="er"><span class="ek">SOC 2 Type I →</span><span>Design only at point in time — proves less — controls designed but may not work</span></div>
+      <div class="er"><span class="ek">Right to audit →</span><span>Contract clause giving you right to audit vendor's controls — required for critical vendors</span></div>
+      <div class="er"><span class="ek">Due diligence →</span><span>Verify don't just ask — investigate vendor security before engagement</span></div>
+      <div class="er"><span class="ek">Security ratings →</span><span>BitSight/SecurityScorecard — external scoring without vendor involvement</span></div>
+      <div class="er"><span class="ek">Qualified opinion →</span><span>SOC 2 audit found control failures — red flag — demand explanation and remediation</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 3. VENDOR SELECTION    -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">Vendor Selection</span><span class="bdg bdg-purple">Evaluate · Score · Decide</span></div>
+  <div class="card-bd">
+    <p>Vendor selection applies <strong style="color:var(--text)">structured criteria to choose the vendor that best balances security, capability, and business value</strong>. Security must be a gate — not just a factor — for vendors with access to sensitive data or critical systems.</p>
+
+    <h3>Selection Criteria Framework</h3>
+    <div class="code">
+<span class="cm"># Weighted scoring model — security as mandatory gate:</span>
+
+GATE CHECK (Pass/Fail — must pass all to proceed):
+  <span class="cg">✓</span> Valid SOC 2 Type II (or equivalent) — within 12 months
+  <span class="cg">✓</span> No unresolved critical/high findings from assessment
+  <span class="cg">✓</span> Willing to sign DPA / BAA / NDA as required
+  <span class="cg">✓</span> Accepts standard security contract clauses
+  <span class="cg">✓</span> Sufficient financial stability (won't disappear)
+  <span class="cr">✗</span> FAIL any of these → vendor rejected regardless of price/features
+
+SCORED CRITERIA (for vendors that pass the gate):
+  Security posture:     0-25 points  (weighted most heavily)
+  Functionality:        0-20 points
+  Price/TCO:            0-15 points
+  SLA / reliability:    0-15 points
+  Support quality:      0-10 points
+  Vendor viability:     0-10 points
+  References:           0-5 points
+  Total:                0-100 points
+    </div>
+
+    <h3>Security Scorecard Criteria</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Category</th><th>What to Evaluate</th><th>Points</th></tr>
+      <tr><td><span class="tag tb">Certifications</span></td><td>SOC 2 Type II, ISO 27001, PCI-DSS, FedRAMP, CSA STAR</td><td>0-8</td></tr>
+      <tr><td><span class="tag tg">Access Controls</span></td><td>MFA enforced, least privilege, PAM, access review process</td><td>0-4</td></tr>
+      <tr><td><span class="tag to">Incident History</span></td><td>Breaches in last 3 years, response quality, disclosure timeliness</td><td>0-4</td></tr>
+      <tr><td><span class="tag tp">Data Protection</span></td><td>Encryption at rest + transit, key management, data minimization</td><td>0-3</td></tr>
+      <tr><td><span class="tag ty">Patch Management</span></td><td>SLA for critical patches, vulnerability management program</td><td>0-3</td></tr>
+      <tr><td><span class="tag tt">Personnel Security</span></td><td>Background checks, security training, clearances if needed</td><td>0-3</td></tr>
+      <tr><td><strong>Total Security Score</strong></td><td></td><td><strong>0-25</strong></td></tr>
+    </table>
+    </div>
+
+    <h3>The Vendor Approval Process</h3>
+    <div class="code">
+<span class="cm"># Formal vendor approval workflow:</span>
+
+Step 1 — Business Initiates Request:
+  Business unit submits: vendor name, purpose, data access,
+  system access, timeline, business justification
+
+Step 2 — Risk Classification:
+  Security team assigns: tier (1-4), data classification,
+  access level → determines assessment requirements
+
+Step 3 — Assessment:
+  Tier 1: full questionnaire + SOC 2 review + site visit
+  Tier 2: questionnaire + SOC 2 review
+  Tier 3: standard questionnaire only
+  Tier 4: basic attestation
+
+Step 4 — Security Review:
+  Security team: reviews findings, scores, red flags
+  Outcome: APPROVE / APPROVE WITH CONDITIONS / REJECT
+
+Step 5 — Conditional Approval:
+  Conditions: vendor must resolve specific findings before
+  production access granted (e.g., "enable MFA within 30 days")
+
+Step 6 — Legal / Procurement:
+  NDA, MSA, DPA/BAA, SLA, security addendum finalized
+
+Step 7 — Onboarding:
+  Minimum necessary access provisioned
+  Access documented in vendor register
+  Monitoring cadence established
+    </div>
+
+    <h3>Concentrating Risk — Avoiding Vendor Lock-In</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--red)">Concentration Risk</h4>
+        <p>Relying too heavily on a single vendor for critical functions. If that vendor has an outage, breach, or goes out of business — catastrophic impact. SolarWinds showed one vendor can impact 18,000 organizations simultaneously. Manage by: diversifying critical functions, having alternative vendors identified, limiting blast radius.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Vendor Viability</h4>
+        <p>Will this vendor exist in 3 years? Startup vendors: may not survive. Source code escrow: if vendor disappears, you get source code to maintain yourself. Financial stability review: annual revenue, profitability, funding. Small vendor with no other customers = single point of failure for that vendor.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Security as gate →</span><span>Must pass security requirements first — not just a scoring factor</span></div>
+      <div class="er"><span class="ek">Vendor register →</span><span>Central list of all approved vendors — access levels, assessment status, review dates</span></div>
+      <div class="er"><span class="ek">Concentration risk →</span><span>Over-reliance on single vendor — SolarWinds — diversify critical functions</span></div>
+      <div class="er"><span class="ek">Vendor viability →</span><span>Will vendor still exist? Financial stability + source code escrow for critical software</span></div>
+      <div class="er"><span class="ek">Minimum necessary access →</span><span>Vendor gets only the access needed — not blanket access — least privilege</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 4. AGREEMENTS          -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Vendor Agreements</span><span class="bdg bdg-blue">SLA · MSA · DPA · NDA</span></div>
+  <div class="card-bd">
+    <p>Contracts and agreements are the <strong style="color:var(--text)">legal mechanism for enforcing security requirements on vendors</strong>. Without contractual obligations, a vendor has no legal obligation to meet your security standards. Security must be written into every contract — not assumed.</p>
+
+    <h3>Key Agreement Types</h3>
+
+    <div class="agree-row">
+      <span class="agree-abbr" style="color:var(--blue)">SLA</span>
+      <span class="agree-name">Service Level Agreement</span>
+      <span class="agree-desc">Defines measurable service performance commitments. Security SLAs include: uptime guarantees (99.9%), incident response times (notify within 24 hours of breach), patching windows (critical CVEs within 14 days), support response SLA, data recovery RTO/RPO. Violation = financial penalties or right to terminate. Make security SLAs specific and measurable — not vague.</span>
+    </div>
+
+    <div class="agree-row">
+      <span class="agree-abbr" style="color:var(--green)">MSA</span>
+      <span class="agree-name">Master Service Agreement</span>
+      <span class="agree-desc">Overarching legal framework governing the entire relationship. Includes: security responsibilities, liability limits, indemnification, dispute resolution, intellectual property rights, security requirements the vendor must maintain throughout the relationship. Security addendum attached to MSA specifies technical requirements.</span>
+    </div>
+
+    <div class="agree-row">
+      <span class="agree-abbr" style="color:var(--orange)">NDA</span>
+      <span class="agree-name">Non-Disclosure Agreement</span>
+      <span class="agree-desc">Legal protection for confidential information shared with vendors. Prevents vendors from disclosing your security architecture, vulnerabilities, business plans, or customer data to competitors or the public. Mutual NDA: protects both parties. Key elements: definition of confidential info, exclusions, duration, return/destruction of info on termination.</span>
+    </div>
+
+    <div class="agree-row">
+      <span class="agree-abbr" style="color:var(--red)">DPA</span>
+      <span class="agree-name">Data Processing Agreement</span>
+      <span class="agree-desc">REQUIRED by GDPR for any vendor that processes personal data on your behalf. Specifies: purpose and scope of processing, data subject rights support, security measures vendor must maintain, sub-processor disclosure and approval, data deletion on termination, audit rights, breach notification requirements (&lt;72 hours). Without DPA = GDPR violation even if you're not doing the processing.</span>
+    </div>
+
+    <div class="agree-row">
+      <span class="agree-abbr" style="color:var(--purple)">BAA</span>
+      <span class="agree-name">Business Associate Agreement</span>
+      <span class="agree-desc">REQUIRED by HIPAA for vendors that access, process, or store PHI. Business Associate must agree to: protect PHI with required safeguards, report breaches within 60 days, return or destroy PHI on termination, allow HHS audit. Without BAA = HIPAA violation. Healthcare organizations must have BAA with EVERY vendor that touches PHI — including cloud providers, IT support, billing services.</span>
+    </div>
+
+    <div class="agree-row">
+      <span class="agree-abbr" style="color:var(--teal)">MOU</span>
+      <span class="agree-name">Memorandum of Understanding</span>
+      <span class="agree-desc">Non-binding agreement outlining a framework for cooperation. Often used between organizations before formal contracts are signed, or with government/non-profit entities. Documents intent and responsibilities but lacks legal enforcement of SLA penalties. Common in public sector and interagency agreements.</span>
+    </div>
+
+    <div class="agree-row">
+      <span class="agree-abbr" style="color:var(--indigo)">MOA</span>
+      <span class="agree-name">Memorandum of Agreement</span>
+      <span class="agree-desc">More formal than MOU — both parties agree to specific obligations. Used when a formal contract is premature but more binding than an MOU. Defines responsibilities, resources, and timelines. Can be legally binding depending on jurisdiction and content.</span>
+    </div>
+
+    <div class="agree-row">
+      <span class="agree-abbr" style="color:var(--yellow)">OLA</span>
+      <span class="agree-name">Operational Level Agreement</span>
+      <span class="agree-desc">Internal agreement between IT teams or departments that supports SLAs with external parties. Example: "The network team will restore connectivity within 2 hours to support the 4-hour customer-facing SLA." Aligns internal operations with external commitments. Not with vendors — between internal groups.</span>
+    </div>
+
+    <h3>Critical Security Clauses in Every Vendor Contract</h3>
+    <div class="code">
+<span class="cm"># Non-negotiable security clauses — require in all critical vendor contracts:</span>
+
+<span class="cb">1. Security standards compliance:</span>
+   Vendor must maintain ISO 27001 / SOC 2 / equivalent
+   Provide evidence annually (updated SOC 2 report)
+
+<span class="cb">2. Breach notification:</span>
+   Notify within 24-72 hours of discovering a breach
+   Shorter than GDPR 72hr requirement — gives you time to notify
+   Specify: what constitutes a breach, who to notify, how
+
+<span class="cb">3. Right to audit:</span>
+   Organization may audit vendor security controls
+   Access to: facilities, systems, logs, evidence
+   At reasonable notice (30 days) OR immediately if breach suspected
+
+<span class="cb">4. Data handling requirements:</span>
+   Data classification must be maintained
+   Encryption standards specified (AES-256 at rest, TLS 1.3 transit)
+   No subprocessors without prior written approval
+
+<span class="cb">5. Personnel security:</span>
+   Background checks on staff with access to your data
+   Security awareness training — annual minimum
+   Immediate notification if key security staff departs
+
+<span class="cb">6. Termination and data return:</span>
+   On termination: return or certifiably destroy all data
+   Provide certificate of destruction
+   Timeline: within 30 days of termination
+
+<span class="cb">7. Minimum security requirements:</span>
+   MFA on all admin accounts
+   Patching SLA: critical = 14 days, high = 30 days
+   Penetration testing: annual, results shared on request
+
+<span class="cm"># Liability clause:</span>
+Vendor is liable for breaches caused by their negligence
+Cap on liability: often 12 months of fees paid (negotiate higher)
+Data breach costs (notification, credit monitoring): vendor covers
+    </div>
+
+    <h3>MOU vs MOA vs Contract — Quick Comparison</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Document</th><th>Binding?</th><th>Use Case</th><th>Enforceability</th></tr>
+      <tr><td><span class="tag ti">MOU</span></td><td>No</td><td>Intent, framework, pre-contract, govt partnerships</td><td>Moral — not legal penalties</td></tr>
+      <tr><td><span class="tag ts">MOA</span></td><td>Partially</td><td>Formal cooperation, defined obligations</td><td>Depends on jurisdiction and content</td></tr>
+      <tr><td><span class="tag tg">SLA</span></td><td>Yes</td><td>Performance guarantees within larger contract</td><td>Financial penalties, termination</td></tr>
+      <tr><td><span class="tag tb">MSA</span></td><td>Yes</td><td>Overarching relationship framework</td><td>Full legal enforcement</td></tr>
+      <tr><td><span class="tag tr">DPA</span></td><td>Yes</td><td>GDPR data processing — mandatory</td><td>Regulatory penalties up to 4% revenue</td></tr>
+      <tr><td><span class="tag to">BAA</span></td><td>Yes</td><td>HIPAA PHI access — mandatory</td><td>HHS fines + criminal liability</td></tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">SLA →</span><span>Service Level Agreement — measurable performance commitments — penalty for violation</span></div>
+      <div class="er"><span class="ek">DPA →</span><span>Data Processing Agreement — GDPR mandatory for personal data processors</span></div>
+      <div class="er"><span class="ek">BAA →</span><span>Business Associate Agreement — HIPAA mandatory for PHI access — without it = violation</span></div>
+      <div class="er"><span class="ek">NDA →</span><span>Non-Disclosure Agreement — protects confidential info shared with vendor</span></div>
+      <div class="er"><span class="ek">MOU →</span><span>Memorandum of Understanding — non-binding intent document — no legal penalties</span></div>
+      <div class="er"><span class="ek">OLA →</span><span>Operational Level Agreement — INTERNAL agreement supporting external SLA</span></div>
+      <div class="er"><span class="ek">Right to audit →</span><span>Contract clause — org can audit vendor — must be in contract before you need it</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ -->
+<!-- 5. QUESTIONNAIRES          -->
+<!-- ═══════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Security Questionnaires</span><span class="bdg bdg-teal">SIG · CAIQ · VSQ · Custom</span></div>
+  <div class="card-bd">
+    <p>Security questionnaires are <strong style="color:var(--text)">structured sets of questions sent to vendors to assess their security controls</strong>. They are the foundation of initial due diligence and annual reassessment. Well-designed questionnaires find real gaps — poorly designed ones just create paperwork.</p>
+
+    <h3>Standard Questionnaire Frameworks</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#bfdbfe">
+        <h4 style="color:var(--blue)">SIG / SIG-Lite (Shared Assessments)</h4>
+        <p>Standardized Information Gathering questionnaire. Industry standard for vendor risk assessments. Full SIG: 850+ questions across 19 risk domains. SIG-Lite: abbreviated version for lower-risk vendors. Free download from Shared Assessments organization. Covers: security policies, access controls, data management, privacy, IT operations.</p>
+      </div>
+      <div class="gc" style="border-color:#bbf7d0">
+        <h4 style="color:var(--green)">CAIQ (CSA Cloud Controls Matrix)</h4>
+        <p>Consensus Assessments Initiative Questionnaire from Cloud Security Alliance. Specifically designed for cloud service providers. Maps to: ISO 27001, NIST CSF, PCI-DSS, HIPAA, SOC 2. Published on CSA STAR registry — vendors post answers publicly. Best for assessing cloud vendors.</p>
+      </div>
+      <div class="gc" style="border-color:#d8b4fe">
+        <h4 style="color:var(--purple)">Custom Questionnaires</h4>
+        <p>Organization-specific questions tailored to your industry, regulatory requirements, or specific risks. Supplement standard frameworks. Include questions about: your specific compliance requirements, industry-specific threats, technology-specific controls relevant to your stack.</p>
+      </div>
+    </div>
+
+    <h3>Sample Questionnaire — Key Domains and Questions</h3>
+
+    <div class="q-section">
+      <div class="q-hd">
+        <span style="font-size:1rem">🔐</span>
+        <span class="q-hd-title" style="color:var(--blue)">Domain 1 — Access Control</span>
+        <span class="tag tb" style="margin-left:auto">Critical</span>
+      </div>
+      <div class="q-items">
+        <div class="q-item"><span class="q-num">1.1</span><span>Is multi-factor authentication (MFA) required for all privileged accounts and remote access? Please describe the MFA solution used.</span></div>
+        <div class="q-item"><span class="q-num">1.2</span><span>How often are user access rights reviewed and what is the process for revoking access when an employee departs?</span></div>
+        <div class="q-item"><span class="q-num">1.3</span><span>Do you use a privileged access management (PAM) solution for admin credentials? What is the password rotation policy?</span></div>
+        <div class="q-item"><span class="q-num">1.4</span><span>How is access to our data or systems specifically scoped and documented? Can you provide a list of personnel with access?</span></div>
+      </div>
+    </div>
+
+    <div class="q-section">
+      <div class="q-hd">
+        <span style="font-size:1rem">💾</span>
+        <span class="q-hd-title" style="color:var(--orange)">Domain 2 — Data Protection</span>
+        <span class="tag to" style="margin-left:auto">Critical</span>
+      </div>
+      <div class="q-items">
+        <div class="q-item"><span class="q-num">2.1</span><span>What encryption standards are used for data at rest and in transit? Specify algorithms and key lengths.</span></div>
+        <div class="q-item"><span class="q-num">2.2</span><span>Where is our data physically stored? List all data center locations and cloud regions used to process/store our data.</span></div>
+        <div class="q-item"><span class="q-num">2.3</span><span>Do you engage sub-processors that may have access to our data? List all sub-processors and their locations.</span></div>
+        <div class="q-item"><span class="q-num">2.4</span><span>What is your data retention policy? How is data securely destroyed at end of retention period or contract termination?</span></div>
+      </div>
+    </div>
+
+    <div class="q-section">
+      <div class="q-hd">
+        <span style="font-size:1rem">🚨</span>
+        <span class="q-hd-title" style="color:var(--red)">Domain 3 — Incident Response</span>
+        <span class="tag tr" style="margin-left:auto">High</span>
+      </div>
+      <div class="q-items">
+        <div class="q-item"><span class="q-num">3.1</span><span>Do you have a documented Incident Response Plan? When was it last tested? Please summarize the plan and attach relevant documentation.</span></div>
+        <div class="q-item"><span class="q-num">3.2</span><span>What is your process for notifying customers of a security incident that affects their data? What is the target notification time?</span></div>
+        <div class="q-item"><span class="q-num">3.3</span><span>Have you experienced a security breach in the last 3 years? If yes, please describe the incident, impact, and remediation steps taken.</span></div>
+        <div class="q-item"><span class="q-num">3.4</span><span>Who is the dedicated security contact we should notify and reach out to in case of a suspected incident?</span></div>
+      </div>
+    </div>
+
+    <div class="q-section">
+      <div class="q-hd">
+        <span style="font-size:1rem">🏗️</span>
+        <span class="q-hd-title" style="color:var(--purple)">Domain 4 — Network & Infrastructure</span>
+        <span class="tag tp" style="margin-left:auto">High</span>
+      </div>
+      <div class="q-items">
+        <div class="q-item"><span class="q-num">4.1</span><span>Is our data logically and/or physically isolated from other customers' data? Describe your multi-tenancy security architecture.</span></div>
+        <div class="q-item"><span class="q-num">4.2</span><span>What is your vulnerability management and patching SLA? How quickly are critical vulnerabilities remediated?</span></div>
+        <div class="q-item"><span class="q-num">4.3</span><span>Do you conduct regular penetration tests? By whom? How often? Can you share the executive summary of the most recent test?</span></div>
+        <div class="q-item"><span class="q-num">4.4</span><span>What security monitoring and logging tools do you use? How long are logs retained? Who has access to logs involving our data?</span></div>
+      </div>
+    </div>
+
+    <div class="q-section">
+      <div class="q-hd">
+        <span style="font-size:1rem">👥</span>
+        <span class="q-hd-title" style="color:var(--green)">Domain 5 — Personnel Security</span>
+        <span class="tag tg" style="margin-left:auto">Medium</span>
+      </div>
+      <div class="q-items">
+        <div class="q-item"><span class="q-num">5.1</span><span>What background checks are conducted on employees who will have access to our data or systems? How often are they renewed?</span></div>
+        <div class="q-item"><span class="q-num">5.2</span><span>Do all employees with access to our data receive security awareness training? How often? Please provide training completion rates.</span></div>
+        <div class="q-item"><span class="q-num">5.3</span><span>What is the process for managing access when an employee leaves the organization? What is the offboarding timeline?</span></div>
+      </div>
+    </div>
+
+    <h3>Evaluating Questionnaire Responses</h3>
+    <div class="code">
+<span class="cm"># Don't just accept answers — verify and probe:</span>
+
+Response: "Yes, we use MFA on all admin accounts"
+Probe:    "What MFA method? Can you show us a screenshot of
+           the admin login screen showing MFA requirement?"
+Red flag: "We use SMS OTP for MFA" ← weakest MFA
+
+Response: "We have annual penetration tests"
+Probe:    "Can you share the executive summary of the last
+           test? What were the critical findings? How were
+           they remediated?"
+Red flag: Refuses to share results ← what are they hiding?
+
+Response: "We notify customers within 24 hours of a breach"
+Probe:    "Please provide this clause in your contract and
+           describe the escalation path"
+Red flag: Not in the contract = it doesn't exist legally
+
+<span class="cm"># Scoring questionnaire responses:</span>
+Full credit:  detailed answer + supporting evidence
+Half credit:  answer given but no evidence
+Zero credit:  vague answer / "we're working on it" / no answer
+Disqualifier: "no" to critical controls + no compensating control
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">SIG questionnaire →</span><span>Standardized Information Gathering — industry standard — 850+ questions across 19 domains</span></div>
+      <div class="er"><span class="ek">CAIQ →</span><span>CSA Cloud questionnaire — for cloud vendors — maps to multiple frameworks — public STAR registry</span></div>
+      <div class="er"><span class="ek">Verify not just ask →</span><span>Request evidence — screenshots, reports, logs — don't accept unverified claims</span></div>
+      <div class="er"><span class="ek">Sub-processors →</span><span>Fourth parties — vendors of your vendor — must be disclosed and assessed</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 6. MONITORING          -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Ongoing Vendor Monitoring</span><span class="bdg bdg-green">Continuous · Annual · Triggered</span></div>
+  <div class="card-bd">
+    <p>Vendor assessment is not a one-time event. <strong style="color:var(--text)">A vendor that passed assessment two years ago may be compromised today</strong>. Continuous and periodic monitoring catches changes in a vendor's security posture before they become incidents.</p>
+
+    <h3>Monitoring Frequency by Activity</h3>
+
+    <div class="mon-row">
+      <span class="mon-freq" style="color:var(--red)">Continuous</span>
+      <span class="mon-activity">Security ratings monitoring</span>
+      <span class="mon-why">BitSight/SecurityScorecard alert on sudden score drops — early breach indicator. "Vendor's score dropped from 740 to 580 overnight — investigate."</span>
+    </div>
+    <div class="mon-row">
+      <span class="mon-freq" style="color:var(--red)">Continuous</span>
+      <span class="mon-activity">Dark web / threat intel alerts</span>
+      <span class="mon-why">Watch for vendor credentials or data appearing on dark web forums. Vendor employee credentials for sale = likely compromise in progress.</span>
+    </div>
+    <div class="mon-row">
+      <span class="mon-freq" style="color:var(--red)">Continuous</span>
+      <span class="mon-activity">Vendor access log review</span>
+      <span class="mon-why">Review logs of vendor access to YOUR systems. Unexpected access times, unusual queries, access outside scope = investigate immediately.</span>
+    </div>
+    <div class="mon-row">
+      <span class="mon-freq" style="color:var(--orange)">Monthly</span>
+      <span class="mon-activity">SLA compliance review</span>
+      <span class="mon-why">Verify vendor is meeting uptime, response time, patching SLAs. Pattern of near-misses may indicate deteriorating controls before SLA breach occurs.</span>
+    </div>
+    <div class="mon-row">
+      <span class="mon-freq" style="color:var(--orange)">Monthly</span>
+      <span class="mon-activity">Security news monitoring</span>
+      <span class="mon-why">Monitor for news about your vendors: breaches, regulatory actions, lawsuits, executive departures (especially CISO). Google Alerts on vendor names + "breach" + "security".</span>
+    </div>
+    <div class="mon-row">
+      <span class="mon-freq" style="color:var(--yellow)">Quarterly</span>
+      <span class="mon-activity">Access recertification</span>
+      <span class="mon-why">Review list of vendor personnel with access to your systems. Still employed at vendor? Still needs this access? Remove orphaned access. Critical vendors: quarterly. Others: semi-annual or annual.</span>
+    </div>
+    <div class="mon-row">
+      <span class="mon-freq" style="color:var(--yellow)">Quarterly</span>
+      <span class="mon-activity">Incident and near-miss review</span>
+      <span class="mon-why">Review any incidents involving the vendor in last quarter. Patterns of recurring issues. Trend analysis: getting better or worse? Inform next reassessment.</span>
+    </div>
+    <div class="mon-row">
+      <span class="mon-freq" style="color:var(--green)">Annual</span>
+      <span class="mon-activity">Full reassessment</span>
+      <span class="mon-why">Complete questionnaire cycle. Updated SOC 2 report. Verify key controls still in place. Review any changes in vendor's environment, personnel, or subprocessors.</span>
+    </div>
+    <div class="mon-row">
+      <span class="mon-freq" style="color:var(--green)">Annual</span>
+      <span class="mon-activity">Contract review</span>
+      <span class="mon-why">SLAs still appropriate? Security requirements still relevant? New regulations since contract signed? Renewing contract = opportunity to add stronger security requirements.</span>
+    </div>
+
+    <h3>Triggered Reviews — When to Act Immediately</h3>
+    <div class="code">
+<span class="cm"># Events that require immediate out-of-cycle vendor review:</span>
+
+Trigger                              Response
+──────────────────────────────────────────────────────────────
+Vendor announces data breach         Contact immediately — are
+                                     we affected? What data?
+                                     Invoke breach notification clause.
+
+Vendor CISO / security lead departs  Risk of security program decline.
+                                     Emergency assessment within 30 days.
+                                     Meet replacement security lead.
+
+Vendor acquired by new company       New ownership = different security
+                                     culture. Re-assess within 60 days.
+                                     New contracts may be needed.
+
+Major vulnerability in vendor        Is our deployment affected?
+software announced                   What is vendor's patch timeline?
+(e.g., Log4Shell)                    Invoke patching SLA clause.
+
+Vendor subcontracts without notice   Potential DPA/BAA violation.
+                                     Legal review immediately.
+                                     May be grounds for termination.
+
+Regulatory action against vendor     Check if action affects our data.
+(FTC, HHS, ICO fine)                 Review compliance status.
+                                     Reassess risk tier.
+
+Security ratings score drops 15+%    Likely early sign of compromise
+in one week                          or deteriorating controls.
+                                     Emergency questionnaire + contact.
+    </div>
+
+    <h3>Vendor Offboarding — The Critical Final Step</h3>
+    <div class="code">
+<span class="cm"># Vendor relationship ends — secure offboarding checklist:</span>
+
+Access revocation (Day 0 — contract end date):
+  <span class="cg">✓</span> Revoke all VPN access and certificates
+  <span class="cg">✓</span> Remove all user accounts from your systems
+  <span class="cg">✓</span> Revoke API keys and service accounts
+  <span class="cg">✓</span> Remove from network access control lists
+  <span class="cg">✓</span> Revoke physical access badges (if any)
+  <span class="cg">✓</span> Change shared credentials vendor may have known
+
+Data handling (within 30 days):
+  <span class="cg">✓</span> Request certificate of data destruction
+  <span class="cg">✓</span> Verify deletion of all copies including backups
+  <span class="cg">✓</span> Recover any company IP or proprietary materials
+  <span class="cg">✓</span> Confirm sub-processors also deleted data
+
+Documentation:
+  <span class="cg">✓</span> Close all outstanding support tickets
+  <span class="cg">✓</span> Document reason for termination
+  <span class="cg">✓</span> Lessons learned — update vendor selection criteria
+  <span class="cg">✓</span> Remove from approved vendor register
+  <span class="cg">✓</span> Retain contract and assessment records per policy
+
+NDA survival:
+  <span class="cg">✓</span> NDA obligations continue post-termination
+  <span class="cg">✓</span> Vendor cannot disclose your data or architecture
+  <span class="cg">✓</span> Document NDA survival clause in offboarding record
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Continuous monitoring →</span><span>Security ratings + dark web alerts + access logs — not just annual review</span></div>
+      <div class="er"><span class="ek">Annual reassessment →</span><span>Full questionnaire cycle + updated SOC 2 — all critical vendors</span></div>
+      <div class="er"><span class="ek">Triggered review →</span><span>Vendor breach, CISO departure, acquisition, major vulnerability — act immediately</span></div>
+      <div class="er"><span class="ek">Offboarding →</span><span>Revoke all access Day 0, certificate of data destruction within 30 days</span></div>
+      <div class="er"><span class="ek">Access recertification →</span><span>Quarterly review of vendor personnel with access — remove orphaned access</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 7. RULES OF ENGAGEMENT  -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Rules of Engagement</span><span class="bdg bdg-rose">Pen Test · Scope · Authorization</span></div>
+  <div class="card-bd">
+    <p>Rules of engagement (ROE) are <strong style="color:var(--text)">formal agreements that define the authorized scope, methods, timing, and boundaries for security testing activities</strong> — most commonly penetration tests and red team exercises. Without ROE, a penetration tester could face criminal charges for unauthorized computer access.</p>
+
+    <h3>Why Rules of Engagement Matter</h3>
+    <div class="code">
+<span class="cm"># Without proper ROE — legal and operational disaster:</span>
+
+Scenario: You hire a pen testing firm
+No formal ROE document signed
+Pen tester tests "everything" — including systems they
+assumed were in scope
+Actual result:
+  → Tests a cloud system shared with another company
+  → Triggers their intrusion detection → calls police
+  → Pen tester arrested under CFAA
+  → Your company sued by the other company
+  → Pen test achieves nothing useful
+
+<span class="cg"># With proper ROE:</span>
+Scope: EXACTLY which IP ranges, domains, systems
+Exclusions: EXACTLY what NOT to test (production DB, medical systems)
+Methods: allowed techniques (no social engineering of customers)
+Timing: test window (weekdays 8am-6pm only)
+Authorization: signed by system owner AND legal
+Emergency contact: if critical system disrupted — call this number
+
+Result:
+  → Pen tester knows exactly what's authorized
+  → Legally protected — written authorization
+  → Business operations not disrupted
+  → Useful findings that can be remediated
+    </div>
+
+    <h3>ROE Document Components</h3>
+
+    <div class="roe-row">
+      <div class="roe-icon">🎯</div>
+      <div>
+        <div class="roe-title" style="color:var(--blue)">Scope Definition</div>
+        <div class="roe-desc">Explicit list of what IS in scope: IP address ranges, domain names, application URLs, physical locations. Must be specific — "our network" is not sufficient. Include: internal IP ranges (e.g., 10.0.0.0/8), external IPs, cloud accounts (AWS account ID 123456), web apps by URL. Ambiguity = disputes or unintended testing.</div>
+      </div>
+    </div>
+
+    <div class="roe-row">
+      <div class="roe-icon">🚫</div>
+      <div>
+        <div class="roe-title" style="color:var(--red)">Exclusions (Out of Scope)</div>
+        <div class="roe-desc">Explicit list of what MUST NOT be tested: production payment processing during business hours, life-safety systems (hospital monitoring), systems belonging to other organizations (shared hosting), third-party SaaS services the org doesn't own, legal/compliance systems with regulatory restrictions. Tester MUST confirm exclusions before starting.</div>
+      </div>
+    </div>
+
+    <div class="roe-row">
+      <div class="roe-icon">⚙️</div>
+      <div>
+        <div class="roe-title" style="color:var(--orange)">Permitted Methods / Techniques</div>
+        <div class="roe-desc">Which attack techniques are authorized: network scanning (yes/no), exploitation of discovered vulnerabilities (yes/no), social engineering (yes/no — and against whom), physical testing (yes/no), DoS testing (usually no — disrupts business), credential testing (yes/no), physical device implants (usually no). Each technique has different risk and different legal implications.</div>
+      </div>
+    </div>
+
+    <div class="roe-row">
+      <div class="roe-icon">📅</div>
+      <div>
+        <div class="roe-title" style="color:var(--purple)">Testing Window / Timeline</div>
+        <div class="roe-desc">When testing is authorized: specific dates, allowed hours (9am-5pm vs 24/7), blackout periods (quarter-end, major releases, audits). After-hours testing may reduce business impact but reduces analyst availability to monitor. Time-boxed engagement: "14-day window, completing by March 31." Overtime and delays: must amend ROE.</div>
+      </div>
+    </div>
+
+    <div class="roe-row">
+      <div class="roe-icon">👥</div>
+      <div>
+        <div class="roe-title" style="color:var(--green)">Authorization and Sign-Off</div>
+        <div class="roe-desc">Who must sign the ROE? System owner (accountable for systems in scope), CISO (security program oversight), Legal counsel (ensure no regulatory or contractual conflicts), Executive sponsor. Without proper sign-off: tester has no legal protection. Multiple stakeholders must approve before work begins. Do NOT start until all signatures obtained.</div>
+      </div>
+    </div>
+
+    <div class="roe-row">
+      <div class="roe-icon">📞</div>
+      <div>
+        <div class="roe-title" style="color:var(--teal)">Emergency Contacts and Stop Conditions</div>
+        <div class="roe-desc">Who to call if something goes wrong: primary contact (mobile number), secondary contact, executive on-call. Stop conditions: if testing causes unintended outage — STOP and notify immediately. If tester discovers evidence of real attacker — STOP, preserve evidence, notify. If critical system impacted — notification protocol and automatic pause.</div>
+      </div>
+    </div>
+
+    <div class="roe-row">
+      <div class="roe-icon">🔒</div>
+      <div>
+        <div class="roe-title" style="color:var(--yellow)">Data Handling and Confidentiality</div>
+        <div class="roe-desc">How findings are handled: all data captured during testing is confidential, destruction of captured data after report delivery, no publication of findings without consent, who receives the report (named individuals only), storage and transmission of the report (encrypted), retention period for evidence. Critical for organizations in regulated industries.</div>
+      </div>
+    </div>
+
+    <div class="roe-row">
+      <div class="roe-icon">📋</div>
+      <div>
+        <div class="roe-title" style="color:var(--indigo)">Deliverables and Reporting</div>
+        <div class="roe-desc">What the organization receives at end of engagement: executive summary (for non-technical leadership), technical report (detailed findings with evidence), list of vulnerabilities with severity ratings, remediation recommendations with prioritization, retest to verify remediations after fixing, debrief meeting. Format, recipient, and delivery timeline all specified in ROE.</div>
+      </div>
+    </div>
+
+    <h3>Types of Penetration Tests — Different ROE Requirements</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#bfdbfe">
+        <h4 style="color:var(--blue)">Black Box</h4>
+        <p>Tester has NO prior knowledge of systems — simulates external attacker. Most realistic simulation. Longest time. ROE: provide only company name and target domain. No credentials, no network diagrams, no architecture docs provided to tester.</p>
+      </div>
+      <div class="gc" style="border-color:#fde047">
+        <h4 style="color:var(--yellow)">Grey Box</h4>
+        <p>Tester has PARTIAL knowledge — simulates insider threat or compromised account. Provided: credentials for standard user, network diagram, some system info. More efficient than black box. ROE: specify exactly what information is provided.</p>
+      </div>
+      <div class="gc" style="border-color:#bbf7d0">
+        <h4 style="color:var(--green)">White Box</h4>
+        <p>Tester has FULL knowledge — source code, architecture, credentials. Most thorough — no time wasted on reconnaissance. Used for deep technical review of specific systems. ROE: full documentation provided. Tester signs strict NDA before receiving any information.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — ROE Prevents Legal Disaster</div>
+      <div class="code">
+<span class="cm"># Pen test engagement — ROE defines what "almost went wrong":</span>
+
+Testing day 3:
+  Pen tester discovers: 10.0.5.0/24 has critical vulnerability
+  CVE-2021-44228 (Log4Shell) — remote code execution
+  Tester wants to exploit — this would prove full RCE
+
+Checks ROE:
+  Scope: <span class="cg">10.0.5.0/24 is in scope ✓</span>
+  Exclusions: "Do not test 10.0.5.50 — medical device"
+  Tester: notes 10.0.5.47 is the vulnerable host
+  10.0.5.47 ≠ 10.0.5.50 so: <span class="cg">cleared to exploit ✓</span>
+
+ROE also says: exploitation requires written approval
+                for systems in the "critical" tag
+
+Tester contacts: primary contact (CISO)
+CISO: "Yes, approved — but test between 6pm-9pm only
+       when system has no active users"
+
+Result: exploitation performed safely
+  Full RCE demonstrated
+  Finding: CRITICAL — in report
+  System patched within 24 hours
+  
+<span class="cb">If no ROE / no contact process:</span>
+  Tester exploits 10.0.5.47 during business hours
+  Log4Shell RCE triggers alert — SOC thinks real attack
+  SOC isolates entire segment — takes medical systems offline
+  Patient safety incident — legal liability
+  <span class="cr">Testing without ROE = real-world harm</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Rules of engagement →</span><span>Formal written authorization for security testing — scope, methods, timing, contacts</span></div>
+      <div class="er"><span class="ek">Scope →</span><span>Explicit list of what CAN be tested — IP ranges, domains, systems</span></div>
+      <div class="er"><span class="ek">Exclusions →</span><span>Explicit list of what MUST NOT be tested — life safety, third-party systems</span></div>
+      <div class="er"><span class="ek">Authorization →</span><span>System owner + CISO + Legal must sign before testing begins</span></div>
+      <div class="er"><span class="ek">Black box →</span><span>No prior knowledge given — most realistic — simulates external attacker</span></div>
+      <div class="er"><span class="ek">White box →</span><span>Full knowledge — source code, credentials — most thorough coverage</span></div>
+      <div class="er"><span class="ek">Grey box →</span><span>Partial knowledge — simulates insider or compromised account</span></div>
+      <div class="er"><span class="ek">ROE legal protection →</span><span>Written authorization protects tester from criminal charges under CFAA</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 8. SUPPLY CHAIN        -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Supply Chain Risk</span><span class="bdg bdg-yellow">Software · Hardware · Fourth Parties</span></div>
+  <div class="card-bd">
+    <p>Supply chain risk extends beyond direct vendors to the <strong style="color:var(--text)">entire chain of suppliers, software dependencies, hardware manufacturers, and subcontractors</strong> that ultimately deliver a product or service. SolarWinds showed a single compromised build pipeline can affect 18,000 organizations simultaneously.</p>
+
+    <h3>Supply Chain Attack Vectors</h3>
+    <div class="code">
+<span class="cm"># How supply chain attacks work — the SolarWinds model:</span>
+
+Normal software update:
+  SolarWinds writes Orion update → tests → signs → publishes
+  Your IT team: downloads update → installs → trusts it
+
+Compromised supply chain:
+  <span class="cr">Attackers compromise SolarWinds build environment (Dec 2019)</span>
+  Malicious code inserted INTO legitimate Orion update
+  SolarWinds: signs the update (legitimate signature!) ← trusted
+  Published: March 2020
+  18,000 organizations install: trust because legitimate sig
+  Malware: activates → contacts C2 → hands over network access
+  Discovered: December 2020 (9-MONTH DWELL TIME)
+  
+<span class="cm"># The attack was trusted because:</span>
+  Legitimate vendor ← trusted relationship
+  Valid digital signature ← appears authentic
+  Normal update process ← no reason to suspect
+  No malware signature ← bypassed AV
+
+<span class="cm"># Other supply chain attack types:</span>
+Dependency confusion:   malicious package w/ same name as private
+                        package → developers install it unknowingly
+Typosquatting:          "reqeusts" vs "requests" Python package
+Compromised open source: malicious PR merged to popular library
+Hardware implants:       hardware modified before delivery
+Watering hole:          attack developer tools used by target's devs
+    </div>
+
+    <h3>Software Supply Chain Security</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">SBOM — Software Bill of Materials</h4>
+        <p>Complete inventory of all components in a software product: open source libraries, commercial components, and their versions. Like a "nutrition label" for software. Required by US executive order for federal software. Enables: rapid response when a component has a vulnerability (Log4Shell), verification of what's actually in the software you're running.</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
+SBOM entry example:
+  Component: log4j-core
+  Version: 2.14.1
+  License: Apache-2.0
+  Supplier: Apache Software Foundation
+  CVE status: VULNERABLE (Log4Shell)
+  <span class="cr">→ Immediate patching required</span>
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Secure Software Development</h4>
+        <p>Security requirements for software you build: secure coding practices, SAST/DAST in CI/CD, dependency scanning (SCA), signed commits, code review, no hardcoded credentials. For vendors providing custom software: require these practices in the contract and verify via questionnaire and audit.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Dependency Management</h4>
+        <p>Track all open source dependencies your software uses. Vulnerability scanning: Dependabot, Snyk, OWASP Dependency Check. Update strategy: pin exact versions OR auto-update with testing. Private package registry: prevents dependency confusion attacks. Never blindly install from public registries.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Code Signing</h4>
+        <p>Cryptographically sign code and updates with a private key. Recipients verify signature with public key. Proves: code came from legitimate author AND wasn't modified. SolarWinds attack bypassed this because attacker compromised the signing system itself. Defense: hardware security modules (HSM) for signing keys + multi-party signing approval.</p>
+      </div>
+    </div>
+
+    <h3>Hardware Supply Chain Risks</h3>
+    <div class="code">
+<span class="cm"># Hardware can be compromised before you receive it:</span>
+
+Risks:
+  Counterfeit hardware:    fake components with backdoors
+  Implanted chips:         malicious chip added during manufacturing
+  Modified firmware:       UEFI/BIOS modified in transit
+  Tampered accessories:    compromised USB cables, chargers
+
+Mitigations:
+  Trusted suppliers only:  approved vendor list for hardware
+  Chain of custody:        track hardware from manufacturer to deployment
+  Tamper-evident packaging: visible if opened in transit
+  Hardware attestation:    TPM chips verify hardware integrity
+  Firmware verification:   cryptographic verification before boot
+  Country restrictions:    some orgs ban hardware from specific countries
+    </div>
+
+    <h3>Fourth-Party Risk</h3>
+    <div class="info-row">
+      <div class="info-icon">🔗</div>
+      <div>
+        <div class="info-title">What Is Fourth-Party Risk?</div>
+        <div class="info-desc">Fourth parties are your vendors' vendors. You assess your vendor (third party) — but do you know who THEY rely on? Your cloud provider uses sub-processors. Your payroll vendor uses a hosting company. A breach at the fourth party can cascade to your data through your vendor. GDPR requires you to approve your vendor's sub-processors (DPA clause). Most SIG questionnaires include questions about the vendor's own vendor management program.</div>
+      </div>
+    </div>
+    <div class="code">
+<span class="cm"># Fourth-party risk chain example:</span>
+
+Your org → Payroll vendor (third party) → Hosting company (fourth party)
+                                         ↑
+                                   Hosting company breached
+                                   Payroll vendor's data exposed
+                                   YOUR employee data exposed
+
+<span class="cm"># Controls for fourth-party risk:</span>
+  DPA clause: vendor must list all sub-processors
+  Change notification: vendor tells you if sub-processors change
+  Questionnaire section: "Describe your own vendor risk program"
+  Contract clause: vendor is liable for sub-processor breaches
+  Annual review: updated sub-processor list provided
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Kaseya VSA Supply Chain Attack</div>
+      <div class="code">
+<span class="cm"># July 2021 — Kaseya VSA (RMM tool) supply chain attack:</span>
+
+Context:
+  Kaseya VSA: used by Managed Service Providers (MSPs) to
+              remotely manage their clients' systems
+
+Attack flow:
+  Attackers find zero-day in Kaseya VSA
+  July 2 → deploy malicious update through VSA
+  VSA agents: installed on MSP clients' machines
+  Ransomware: deployed to 1,500+ companies in 22 countries
+  Ransom demand: $70M (largest ever at the time)
+
+Why it was so effective:
+  VSA agents: have admin access to ALL managed endpoints
+  Legitimate software channel: not flagged as malicious
+  Weekend attack: July 4th weekend (US) — minimal staff
+  Scale: one vendor → many MSPs → many end customers
+
+TPRM lessons:
+  <span class="cb">1.</span> Assess your MSP's security practices — not just their capabilities
+  <span class="cb">2.</span> MSP has highest possible access — must be Tier 1 critical vendor
+  <span class="cb">3.</span> Contractual right to audit MSP security controls
+  <span class="cb">4.</span> Monitor MSP access logs continuously — detect anomalies
+  <span class="cb">5.</span> Emergency contact plan if MSP is compromised
+  <span class="cb">6.</span> Can you isolate MSP access immediately if needed?
+
+<span class="cg">Organizations with strong TPRM:</span>
+  Detected anomalous behavior from VSA agents quickly
+  Isolated MSP VPN access within hours
+  Contained blast radius significantly
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Supply chain attack →</span><span>Compromise vendor to attack customers — SolarWinds / Kaseya examples</span></div>
+      <div class="er"><span class="ek">SBOM →</span><span>Software Bill of Materials — inventory of all software components — enables rapid CVE response</span></div>
+      <div class="er"><span class="ek">Fourth-party risk →</span><span>Vendors of your vendors — must be disclosed in DPA — can cascade to your data</span></div>
+      <div class="er"><span class="ek">Code signing →</span><span>Cryptographic signature on software — proves authenticity — HSM for signing keys</span></div>
+      <div class="er"><span class="ek">Dependency confusion →</span><span>Malicious package with same name as private package — supply chain attack vector</span></div>
+      <div class="er"><span class="ek">SolarWinds →</span><span>Compromised build pipeline — 18,000 orgs — 9-month dwell — trusted update</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 9. SUMMARY             -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-indigo">Domain 5 · Third-Party Risk</span></div>
+  <div class="card-bd">
+
+    <h3>Agreement Types Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Agreement</th><th>Full Name</th><th>Mandatory When?</th><th>Key Requirement</th></tr>
+      <tr><td><span class="tag tb">SLA</span></td><td>Service Level Agreement</td><td>All vendor contracts</td><td>Uptime, response times, patching SLA — penalties for violation</td></tr>
+      <tr><td><span class="tag tg">MSA</span></td><td>Master Service Agreement</td><td>All vendor contracts</td><td>Overarching framework — security clauses, liability, indemnification</td></tr>
+      <tr><td><span class="tag to">NDA</span></td><td>Non-Disclosure Agreement</td><td>Any confidential info shared</td><td>Protects security architecture, customer data, business plans</td></tr>
+      <tr><td><span class="tag tr">DPA</span></td><td>Data Processing Agreement</td><td>GDPR — any personal data processor</td><td>Processing purpose, security measures, breach notification, sub-processors</td></tr>
+      <tr><td><span class="tag tp">BAA</span></td><td>Business Associate Agreement</td><td>HIPAA — any PHI access</td><td>PHI safeguards, 60-day breach notification, HHS audit rights</td></tr>
+      <tr><td><span class="tag ty">MOU</span></td><td>Memorandum of Understanding</td><td>Pre-contract, government</td><td>NON-BINDING — intent only — no financial penalties</td></tr>
+      <tr><td><span class="tag ts">MOA</span></td><td>Memorandum of Agreement</td><td>Formal cooperation</td><td>More binding than MOU — defined obligations</td></tr>
+      <tr><td><span class="tag tl">OLA</span></td><td>Operational Level Agreement</td><td>Internal IT teams</td><td>INTERNAL — between departments — supports external SLA</td></tr>
+    </table>
+    </div>
+
+    <h3>Pen Test Types Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Type</th><th>Knowledge Given</th><th>Simulates</th><th>Best For</th></tr>
+      <tr><td><span class="tag tr">Black Box</span></td><td>None — company name only</td><td>External unknown attacker</td><td>Realistic attack simulation, external threat assessment</td></tr>
+      <tr><td><span class="tag ty">Grey Box</span></td><td>Partial — user credentials, basic diagrams</td><td>Insider threat / compromised account</td><td>Efficient testing, insider threat simulation</td></tr>
+      <tr><td><span class="tag tg">White Box</span></td><td>Full — source code, architecture, all credentials</td><td>Deep technical review</td><td>Thorough coverage, specific system deep-dive</td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"HVAC vendor compromised → retailer POS breach"</span><span>→ Target 2013 — classic third-party risk example — even low-tier vendors matter</span></div>
+      <div class="er"><span class="ek">"Software update from legitimate vendor installs malware"</span><span>→ Supply chain attack — SolarWinds model — trusted build pipeline compromised</span></div>
+      <div class="er"><span class="ek">"Vendor security assessment using structured questions"</span><span>→ Security questionnaire — SIG (full) or SIG-Lite (abbreviated)</span></div>
+      <div class="er"><span class="ek">"Third-party audit that proves controls operated over time"</span><span>→ SOC 2 Type II (NOT Type I — which is only design)</span></div>
+      <div class="er"><span class="ek">"SOC 2 found control failures during audit period"</span><span>→ Qualified opinion — red flag — demand explanation and remediation</span></div>
+      <div class="er"><span class="ek">"External scoring of vendor security without their involvement"</span><span>→ Security ratings — BitSight / SecurityScorecard</span></div>
+      <div class="er"><span class="ek">"Contract clause allowing you to inspect vendor controls"</span><span>→ Right to audit</span></div>
+      <div class="er"><span class="ek">"Measurable performance commitments with penalties"</span><span>→ SLA (Service Level Agreement)</span></div>
+      <div class="er"><span class="ek">"GDPR-required agreement for any personal data processor"</span><span>→ DPA (Data Processing Agreement)</span></div>
+      <div class="er"><span class="ek">"HIPAA-required agreement for any vendor accessing PHI"</span><span>→ BAA (Business Associate Agreement)</span></div>
+      <div class="er"><span class="ek">"Non-binding agreement expressing intent to cooperate"</span><span>→ MOU (Memorandum of Understanding)</span></div>
+      <div class="er"><span class="ek">"Internal agreement between IT departments supporting external SLA"</span><span>→ OLA (Operational Level Agreement)</span></div>
+      <div class="er"><span class="ek">"Formal written authorization for penetration testing"</span><span>→ Rules of Engagement (ROE)</span></div>
+      <div class="er"><span class="ek">"Pen tester given no prior information about systems"</span><span>→ Black box test</span></div>
+      <div class="er"><span class="ek">"Pen tester given full source code and architecture"</span><span>→ White box test</span></div>
+      <div class="er"><span class="ek">"Pen tester given user credentials but no architecture docs"</span><span>→ Grey box test</span></div>
+      <div class="er"><span class="ek">"Inventory of all components in a software product"</span><span>→ SBOM (Software Bill of Materials)</span></div>
+      <div class="er"><span class="ek">"Vendors of your vendors — cascading risk"</span><span>→ Fourth-party risk — must approve sub-processors in DPA</span></div>
+      <div class="er"><span class="ek">"Attacker publishes malicious package with same name as private one"</span><span>→ Dependency confusion attack — supply chain vector</span></div>
+      <div class="er"><span class="ek">"Relying too heavily on a single vendor for critical functions"</span><span>→ Concentration risk — diversify critical functions</span></div>
+      <div class="er"><span class="ek">"Emergency reassessment trigger — vendor's CISO leaves"</span><span>→ Key personnel departure — triggered review within 30 days</span></div>
+      <div class="er"><span class="ek">"Verify vendor actually deleted your data after termination"</span><span>→ Certificate of data destruction — required in offboarding</span></div>
+      <div class="er"><span class="ek">"Rank vendors by how much risk they pose to your organization"</span><span>→ Vendor tiering / classification — Tier 1 (critical) to Tier 4 (low)</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

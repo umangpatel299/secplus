@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Compliance — Security+ Domain 5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap');
+
+:root {
+  --bg:#0e0e12;
+  --s1:#141418;
+  --s2:#1b1b20;
+  --s3:#22222a;
+  --border:#30303c;
+  --text:#e4e2f4;
+  --muted:#666690;
+  --blue:#5599ff;
+  --green:#44dd88;
+  --red:#ff4455;
+  --orange:#ff9944;
+  --purple:#cc77ff;
+  --teal:#33ddcc;
+  --yellow:#ffcc44;
+  --indigo:#8899ff;
+  --lime:#99ee44;
+  --pink:#ff66bb;
+  --sky:#44bbff;
+  --gold:#ffbb33;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Raleway',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+/* HEADER */
+.hdr{
+  text-align:center;
+  margin-bottom:2.5rem;
+  padding:1.5rem 0 2rem;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.hdr::before{
+  content:'';
+  position:absolute;
+  bottom:-1px;left:50%;transform:translateX(-50%);
+  width:120px;height:2px;
+  background:linear-gradient(to right,var(--indigo),var(--teal));
+}
+.hdr-label{
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;
+  letter-spacing:0.22em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:0.6rem;
+}
+.hdr-title{
+  font-family:'Raleway',sans-serif;
+  font-size:2.8rem;
+  font-weight:900;
+  letter-spacing:-0.03em;
+  line-height:0.95;
+  margin-bottom:0.5rem;
+}
+.hdr-title .hi{color:var(--teal);}
+.hdr-sub{
+  font-family:'Space Mono',monospace;
+  font-size:0.63rem;
+  color:var(--muted);
+  letter-spacing:0.05em;
+}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.4rem 0.85rem;border-radius:6px;
+  border:1px solid var(--border);background:var(--s1);
+  color:var(--muted);cursor:pointer;
+  font-family:'Space Mono',monospace;font-size:0.62rem;
+  font-weight:700;transition:all 0.13s;letter-spacing:0.02em;
+}
+.tab:hover{border-color:var(--teal);color:var(--teal);}
+.tab.active{background:var(--teal);color:#0e0e12;border-color:var(--teal);}
+
+/* SECTIONS */
+.sec{display:none;}
+.sec.on{display:block;animation:up 0.2s ease;}
+@keyframes up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* CARD */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:12px;margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:1rem 1.4rem;border-bottom:1px solid var(--border);background:var(--s2);}
+.card-num{font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--muted);background:var(--s3);border:1px solid var(--border);border-radius:4px;padding:0.12rem 0.38rem;}
+.card-title{font-family:'Raleway',sans-serif;font-size:1.15rem;font-weight:800;letter-spacing:-0.02em;}
+.bdg{margin-left:auto;font-family:'Space Mono',monospace;font-size:0.57rem;padding:0.15rem 0.55rem;border-radius:999px;white-space:nowrap;font-weight:700;}
+.bdg-blue{background:#0d2040;color:var(--blue);border:1px solid #1a3060;}
+.bdg-green{background:#082818;color:var(--green);border:1px solid #104028;}
+.bdg-orange{background:#281400;color:var(--orange);border:1px solid #402000;}
+.bdg-red{background:#280808;color:var(--red);border:1px solid #401010;}
+.bdg-purple{background:#1e0830;color:var(--purple);border:1px solid #300d48;}
+.bdg-teal{background:#062018;color:var(--teal);border:1px solid #0e3830;}
+.bdg-indigo{background:#101830;color:var(--indigo);border:1px solid #182850;}
+.bdg-yellow{background:#201800;color:var(--yellow);border:1px solid #382800;}
+.bdg-gold{background:#201400;color:var(--gold);border:1px solid #382000;}
+.bdg-lime{background:#141e00;color:var(--lime);border:1px solid #202e00;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.72;}
+h3{font-family:'Raleway',sans-serif;font-size:0.92rem;font-weight:800;color:var(--text);margin:1.3rem 0 0.6rem;padding-left:0.7rem;border-left:3px solid var(--teal);letter-spacing:-0.01em;}
+
+/* CODE */
+.code{background:#07070a;border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;font-family:'Space Mono',monospace;font-size:0.68rem;line-height:1.9;color:var(--text);overflow-x:auto;margin:0.8rem 0;}
+.cg{color:var(--green);} .cr{color:var(--red);} .cb{color:var(--blue);}
+.co{color:var(--orange);} .cp{color:var(--purple);} .cm{color:var(--muted);}
+.ct{color:var(--teal);} .ci{color:var(--indigo);} .cy{color:var(--yellow);}
+.cl{color:var(--lime);} .cpk{color:var(--pink);} .cs{color:var(--sky);}
+.cgd{color:var(--gold);}
+
+/* SCENE */
+.scene{background:#1a1000;border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--orange);margin-bottom:0.4rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:1rem;}
+.gc h4{font-family:'Raleway',sans-serif;font-size:0.86rem;font-weight:800;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{background:#0d0a20;border:1px solid #281850;border-radius:8px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'Space Mono',monospace;font-size:0.58rem;color:var(--purple);margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'Space Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.52rem 0.8rem;text-align:left;color:var(--muted);border-bottom:1px solid var(--border);font-size:0.63rem;font-weight:700;font-family:'Space Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.52rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.08rem 0.42rem;border-radius:4px;font-size:0.6rem;font-family:'Space Mono',monospace;font-weight:700;}
+.tg{background:#082818;color:var(--green);}
+.tr{background:#280808;color:var(--red);}
+.tb{background:#0d2040;color:var(--blue);}
+.to{background:#281400;color:var(--orange);}
+.tp{background:#1e0830;color:var(--purple);}
+.tt{background:#062018;color:var(--teal);}
+.ti{background:#101830;color:var(--indigo);}
+.ty{background:#201800;color:var(--yellow);}
+.tl{background:#141e00;color:var(--lime);}
+.ts{background:#081e30;color:var(--sky);}
+.tgd{background:#201400;color:var(--gold);}
+.tpk{background:#280a20;color:var(--pink);}
+
+/* INFO ROW */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s2);border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;}
+.info-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Raleway',sans-serif;font-size:0.86rem;font-weight:800;margin-bottom:0.12rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* COMPLIANCE CARDS — regulation deep-dives */
+.reg-card{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:1.2rem;margin-bottom:0.8rem;border-left:4px solid;}
+.reg-hd{display:flex;align-items:center;gap:0.8rem;margin-bottom:0.6rem;}
+.reg-abbr{font-family:'Space Mono',monospace;font-size:0.78rem;font-weight:700;}
+.reg-name{font-size:0.88rem;font-weight:700;font-family:'Raleway',sans-serif;letter-spacing:-0.01em;}
+.reg-body{font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem;}
+.reg-pills{display:flex;flex-wrap:wrap;gap:0.3rem;}
+.reg-pill{font-family:'Space Mono',monospace;font-size:0.6rem;padding:0.12rem 0.5rem;border-radius:3px;font-weight:700;}
+
+/* CONSEQUENCE TIERS */
+.con-item{display:flex;gap:1rem;padding:0.75rem 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.con-item:last-child{border-bottom:none;}
+.con-icon{font-size:1.2rem;flex-shrink:0;}
+.con-title{font-size:0.86rem;font-weight:700;margin-bottom:0.15rem;font-family:'Raleway',sans-serif;letter-spacing:-0.01em;}
+.con-body{font-size:0.75rem;color:var(--muted);}
+
+/* PRIVACY RIGHTS */
+.right-card{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:0.9rem;margin-bottom:0.45rem;display:flex;gap:0.8rem;align-items:flex-start;}
+.right-tag{font-family:'Space Mono',monospace;font-size:0.62rem;font-weight:700;min-width:80px;flex-shrink:0;padding:0.15rem 0.4rem;border-radius:3px;text-align:center;}
+.right-title{font-size:0.84rem;font-weight:700;margin-bottom:0.15rem;font-family:'Raleway',sans-serif;}
+.right-body{font-size:0.75rem;color:var(--muted);}
+
+/* MONITORING CYCLE */
+.mon-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:1rem 0;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+@media(max-width:600px){.mon-grid{grid-template-columns:1fr;}}
+.mon-cell{padding:1rem 0.7rem;text-align:center;border-right:1px solid var(--border);}
+.mon-cell:last-child{border-right:none;}
+.mon-num{font-family:'Space Mono',monospace;font-size:1.4rem;font-weight:700;opacity:0.15;line-height:1;margin-bottom:0.4rem;}
+.mon-title{font-size:0.74rem;font-weight:700;margin-bottom:0.2rem;font-family:'Raleway',sans-serif;}
+.mon-desc{font-size:0.64rem;color:var(--muted);line-height:1.4;}
+
+/* PRIVACY TECH */
+.priv-tech{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:0.5rem;}
+.pt-head{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.pt-name{font-size:0.86rem;font-weight:700;font-family:'Raleway',sans-serif;letter-spacing:-0.01em;}
+.pt-badge{font-family:'Space Mono',monospace;font-size:0.57rem;padding:0.12rem 0.45rem;border-radius:3px;font-weight:700;margin-left:auto;}
+.pt-body{font-size:0.77rem;color:var(--muted);}
+
+/* FINE VISUAL */
+.fine-row{display:flex;align-items:center;gap:1rem;padding:0.55rem 0.8rem;background:var(--s2);border:1px solid var(--border);border-radius:6px;margin-bottom:0.35rem;}
+.fine-reg{font-family:'Space Mono',monospace;font-size:0.65rem;font-weight:700;min-width:80px;flex-shrink:0;}
+.fine-amount{font-size:0.82rem;font-weight:700;min-width:200px;flex-shrink:0;}
+.fine-detail{font-size:0.73rem;color:var(--muted);flex:1;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-label">Security+ SY0-701 · Domain 5 · Security Program Management · Subtopic 4</div>
+  <div class="hdr-title">Security<br><span class="hi">Compliance</span></div>
+  <div class="hdr-sub">// Reporting · Consequences · Monitoring · Privacy · Data Protection</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Regulations</button>
+  <button class="tab" onclick="go('s3',this)">3. Compliance Reporting</button>
+  <button class="tab" onclick="go('s4',this)">4. Consequences</button>
+  <button class="tab" onclick="go('s5',this)">5. Monitoring</button>
+  <button class="tab" onclick="go('s6',this)">6. Privacy Concepts</button>
+  <button class="tab" onclick="go('s7',this)">7. Privacy Rights</button>
+  <button class="tab" onclick="go('s8',this)">8. Privacy Technologies</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 1. OVERVIEW             -->
+<!-- ════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Compliance Overview</span><span class="bdg bdg-teal">Rules · Obligations · Accountability</span></div>
+  <div class="card-bd">
+    <p>Security compliance means <strong style="color:var(--text)">meeting the security obligations imposed by laws, regulations, contracts, and standards</strong>. It answers: What are we required to do? Are we actually doing it? How do we prove it? What happens if we don't?</p>
+
+    <h3>Why Compliance Is More Than a Checkbox</h3>
+    <div class="code">
+<span class="cm"># Two ways to think about compliance:</span>
+
+<span class="cr">Compliance as checkbox (wrong):</span>
+  "We just need to pass the audit"
+  "Do the minimum to avoid fines"
+  "Security exists to satisfy regulators"
+  Result:
+    Technically compliant but actually insecure
+    Passes audit → gets breached two months later
+    Compliance theater — appearance without substance
+
+<span class="cg">Compliance as foundation (right):</span>
+  Regulations encode minimum security baselines
+  Compliance floor → build security culture on top
+  "We follow HIPAA because our patients trust us"
+  "PCI-DSS protects our customers' payment data"
+  Result:
+    Security and compliance aligned → both improve together
+    Regulators see genuine commitment → lighter treatment
+    Customers trust you → competitive advantage
+
+<span class="cm"># Reality:</span>
+Compliance ≠ security  (you can be compliant AND breached)
+Security ≠ compliance  (you can be secure AND non-compliant)
+<span class="cg">Goal: be BOTH — compliant AND genuinely secure</span>
+    </div>
+
+    <h3>Compliance Sources — Where Obligations Come From</h3>
+    <div class="g4">
+      <div class="gc" style="border-color:#1a3060">
+        <h4 style="color:var(--blue)">Laws & Regulations</h4>
+        <p>Government mandates. GDPR, HIPAA, SOX, CCPA. Legal obligation. Non-compliance: fines, criminal charges, license revocation. No opt-out.</p>
+      </div>
+      <div class="gc" style="border-color:#104028">
+        <h4 style="color:var(--green)">Industry Standards</h4>
+        <p>Sector-specific requirements. PCI-DSS (payments), NERC CIP (energy), CMMC (defense). Contractual requirement to participate in industry. Violation: lose ability to operate in sector.</p>
+      </div>
+      <div class="gc" style="border-color:#282800">
+        <h4 style="color:var(--yellow)">Contracts</h4>
+        <p>Customer and partner requirements. SOC 2 often required by enterprise customers. ISO 27001 required in some supply chains. Violation: contract termination, civil suit.</p>
+      </div>
+      <div class="gc" style="border-color:#1e0830">
+        <h4 style="color:var(--purple)">Voluntary Frameworks</h4>
+        <p>Best practices adopted by choice. NIST CSF, CIS Controls. No legal mandate but improve security. Often used as evidence of good faith in breach litigation.</p>
+      </div>
+    </div>
+
+    <h3>Compliance vs Risk Management — Working Together</h3>
+    <div class="code">
+<span class="cm"># Compliance sets the FLOOR — risk management goes higher:</span>
+
+HIPAA requires:  encrypt PHI in transit
+Risk assessment: finds: PHI also stored unencrypted on 
+                        employee laptops (not a HIPAA requirement)
+Risk treatment:  implement laptop encryption anyway
+Result:          HIPAA compliant AND more secure than required
+
+<span class="cm"># Compliance gap analysis process:</span>
+1. What does the regulation require?
+2. What do we currently have?
+3. Gap: what's missing or insufficient?
+4. Remediation plan: close the gap
+5. Evidence collection: prove controls work
+6. Reporting: demonstrate compliance to auditors
+
+<span class="cm"># Same control can satisfy multiple requirements:</span>
+Encryption at rest → satisfies: HIPAA + PCI-DSS + GDPR + SOX
+MFA on admin accounts → satisfies: NIST 800-53 + ISO 27001 + PCI
+Audit logging → satisfies: HIPAA + SOX + PCI-DSS + NIST
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Compliance ≠ security →</span><span>Can be compliant and still breached — compliance is the floor not the ceiling</span></div>
+      <div class="er"><span class="ek">Compliance sources →</span><span>Laws/regulations, industry standards, contracts, voluntary frameworks</span></div>
+      <div class="er"><span class="ek">Compliance gap analysis →</span><span>What's required vs what we have → remediation plan → evidence → report</span></div>
+      <div class="er"><span class="ek">Control overlap →</span><span>One control can satisfy multiple regulatory requirements simultaneously</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 2. REGULATIONS          -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">Key Regulations & Standards</span><span class="bdg bdg-gold">GDPR · HIPAA · PCI · SOX · More</span></div>
+  <div class="card-bd">
+    <p>These are the <strong style="color:var(--text)">regulations most commonly tested on Security+</strong>. Know what each protects, who must comply, key requirements, and notification deadlines.</p>
+
+    <div class="reg-card" style="border-left-color:var(--blue)">
+      <div class="reg-hd">
+        <span class="reg-abbr" style="color:var(--blue)">GDPR</span>
+        <span class="reg-name">General Data Protection Regulation</span>
+      </div>
+      <div class="reg-body">EU regulation protecting personal data of EU residents. Applies globally — any organization that processes EU resident data is in scope regardless of where the org is based. Landmark privacy regulation — widely copied by other jurisdictions.</div>
+      <div class="code" style="font-size:0.64rem">
+Scope:              Any org processing EU resident personal data
+Enforcement body:   National Data Protection Authorities (DPA)
+Key principles:     Lawful basis required, data minimization,
+                    purpose limitation, accuracy, storage limitation,
+                    integrity and confidentiality, accountability
+
+Breach notification: <span class="cr">72 hours to supervisory authority</span>
+                     <span class="cr">Without undue delay to data subjects if high risk</span>
+
+Max fines:          <span class="cr">€20 million OR 4% of global annual turnover</span>
+                    (whichever is HIGHER)
+Example fine:       Amazon: €746M / Meta: €1.2B / Google: €50M
+
+Data subject rights: Access, Rectification, Erasure (right to be
+                     forgotten), Portability, Object, Restriction
+
+DPO required when:  Public authority / large-scale processing /
+                    special category data processing at scale
+      </div>
+      <div class="reg-pills">
+        <span class="reg-pill" style="background:#0d2040;color:var(--blue)">72-HR NOTIFICATION</span>
+        <span class="reg-pill" style="background:#280808;color:var(--red)">4% REVENUE FINE</span>
+        <span class="reg-pill" style="background:#062018;color:var(--teal)">RIGHT TO ERASURE</span>
+        <span class="reg-pill" style="background:#1e0830;color:var(--purple)">DPO REQUIRED</span>
+      </div>
+    </div>
+
+    <div class="reg-card" style="border-left-color:var(--green)">
+      <div class="reg-hd">
+        <span class="reg-abbr" style="color:var(--green)">HIPAA</span>
+        <span class="reg-name">Health Insurance Portability and Accountability Act</span>
+      </div>
+      <div class="reg-body">US federal law protecting Protected Health Information (PHI). Applies to covered entities (healthcare providers, health plans, clearinghouses) AND their business associates. Three key rules.</div>
+      <div class="code" style="font-size:0.64rem">
+Three rules:
+  Privacy Rule:      Who can access/use PHI, patient rights
+  Security Rule:     Administrative, physical, technical safeguards
+                     for electronic PHI (ePHI)
+  Breach Notification Rule: Report breaches of unsecured PHI
+
+PHI definition:     Any info linking patient + health condition + 
+                    healthcare/payment (name, SSN, DOB, address +
+                    health info)
+
+Breach notification: Individuals: <span class="cr">within 60 days of discovery</span>
+                     HHS:         within 60 days
+                     Media:       if &gt;500 in a state → notify media
+                     HHS Wall:    breaches &lt;500 reported annually
+
+Minimum necessary:  Access only the PHI needed for the purpose
+Business Associates: must have signed BAA — also must comply
+Penalties:          Tiered: $100–$50,000 per violation
+                    Max $1.9M per violation category per year
+      </div>
+      <div class="reg-pills">
+        <span class="reg-pill" style="background:#082818;color:var(--green)">60-DAY NOTIFICATION</span>
+        <span class="reg-pill" style="background:#201800;color:var(--yellow)">BAA REQUIRED</span>
+        <span class="reg-pill" style="background:#0d2040;color:var(--blue)">MINIMUM NECESSARY</span>
+        <span class="reg-pill" style="background:#280808;color:var(--red)">$1.9M/YR MAX</span>
+      </div>
+    </div>
+
+    <div class="reg-card" style="border-left-color:var(--orange)">
+      <div class="reg-hd">
+        <span class="reg-abbr" style="color:var(--orange)">PCI-DSS</span>
+        <span class="reg-name">Payment Card Industry Data Security Standard</span>
+      </div>
+      <div class="reg-body">NOT a law — a contractual standard from major card brands (Visa, Mastercard, AmEx, Discover, JCB). Required for any organization that stores, processes, or transmits cardholder data. 12 requirements organized around 6 goals.</div>
+      <div class="code" style="font-size:0.64rem">
+Applies to:    Any org handling credit/debit card data
+Enforced by:   Card brands + acquiring banks (not government)
+Violation:     Lose ability to process cards + fines from card brands
+
+12 Requirements (6 goals):
+  Build secure network:  Firewall, no vendor defaults
+  Protect cardholder:    Protect stored data, encrypt in transit
+  Vulnerability mgmt:    AV software, secure systems
+  Access control:        Need-to-know, unique IDs, physical
+  Monitor/test:          Track access, test security systems
+  Policy:                Security policy
+
+Scanning requirements:
+  Quarterly:  External vulnerability scans by ASV
+  Annual:     Penetration test
+  
+Merchant levels:
+  Level 1: &gt;6M transactions/year → on-site audit (QSA)
+  Level 2-4: lower volume → SAQ (Self Assessment Questionnaire)
+      </div>
+      <div class="reg-pills">
+        <span class="reg-pill" style="background:#281400;color:var(--orange)">NOT A LAW</span>
+        <span class="reg-pill" style="background:#082818;color:var(--green)">QUARTERLY ASV SCANS</span>
+        <span class="reg-pill" style="background:#101830;color:var(--indigo)">12 REQUIREMENTS</span>
+        <span class="reg-pill" style="background:#280808;color:var(--red)">CARD PROCESSING REVOKED</span>
+      </div>
+    </div>
+
+    <div class="reg-card" style="border-left-color:var(--yellow)">
+      <div class="reg-hd">
+        <span class="reg-abbr" style="color:var(--yellow)">SOX</span>
+        <span class="reg-name">Sarbanes-Oxley Act</span>
+      </div>
+      <div class="reg-body">US federal law for public companies focused on financial reporting integrity. Requires CEOs and CFOs to personally certify financial reports. IT security directly relevant because financial data lives in IT systems — IT general controls are audited as part of SOX compliance.</div>
+      <div class="code" style="font-size:0.64rem">
+Applies to:    US publicly traded companies + their subsidiaries
+Key sections:
+  Section 302: CEO/CFO certify financial statements
+  Section 404: Management + auditor assess internal controls
+  Section 802: Document retention — fines for destruction
+
+IT relevance:
+  Access controls on financial systems → who can modify data?
+  Change management → unauthorized changes to financial systems?
+  Audit logs → 7-year retention required
+  Separation of duties → developer ≠ production deployer
+
+Penalties:    Criminal: up to 20 years imprisonment for execs
+              Civil: fines for non-compliant orgs
+      </div>
+      <div class="reg-pills">
+        <span class="reg-pill" style="background:#201800;color:var(--yellow)">CEO/CFO CERTIFY</span>
+        <span class="reg-pill" style="background:#0d2040;color:var(--blue)">7-YR LOG RETENTION</span>
+        <span class="reg-pill" style="background:#280808;color:var(--red)">20-YR CRIMINAL</span>
+        <span class="reg-pill" style="background:#101830;color:var(--indigo)">SECTION 404 AUDIT</span>
+      </div>
+    </div>
+
+    <div class="reg-card" style="border-left-color:var(--purple)">
+      <div class="reg-hd">
+        <span class="reg-abbr" style="color:var(--purple)">CCPA</span>
+        <span class="reg-name">California Consumer Privacy Act</span>
+      </div>
+      <div class="reg-body">California state law giving California residents rights over their personal data. Often called "America's GDPR." Applies to for-profit businesses meeting certain thresholds. Amended by CPRA (California Privacy Rights Act) in 2023.</div>
+      <div class="code" style="font-size:0.64rem">
+Applies to:    For-profit orgs doing business in CA AND:
+               &gt;$25M revenue OR process data of &gt;100K Californians
+               OR &gt;50% revenue from selling personal data
+
+Consumer rights:
+  Right to know:    what data is collected and shared
+  Right to delete:  request deletion of personal data
+  Right to opt-out: stop sale of personal data
+  Right to non-discrimination: can't penalize for exercising rights
+  Right to correct: fix inaccurate personal data (CPRA addition)
+
+Fines:         $2,500 per unintentional violation
+               $7,500 per intentional violation
+               Private right of action for data breaches: $100-750/consumer
+      </div>
+      <div class="reg-pills">
+        <span class="reg-pill" style="background:#1e0830;color:var(--purple)">OPT-OUT RIGHT</span>
+        <span class="reg-pill" style="background:#082818;color:var(--green)">CALIFORNIA RESIDENTS</span>
+        <span class="reg-pill" style="background:#281400;color:var(--orange)">$7,500 INTENTIONAL</span>
+      </div>
+    </div>
+
+    <h3>Additional Regulations Quick Reference</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Regulation</th><th>Protects</th><th>Applies To</th><th>Key Requirement</th></tr>
+      <tr><td><span class="tag tg">FERPA</span></td><td>Student education records</td><td>US schools receiving federal funding</td><td>Parental access rights; restrict disclosure</td></tr>
+      <tr><td><span class="tag tb">GLBA</span></td><td>Financial consumer data</td><td>US financial institutions</td><td>Safeguards Rule — protect customer financial info</td></tr>
+      <tr><td><span class="tag to">FISMA</span></td><td>Federal information systems</td><td>US federal agencies + contractors</td><td>NIST 800-53 controls, annual reporting to OMB</td></tr>
+      <tr><td><span class="tag ti">NERC CIP</span></td><td>Bulk electric systems</td><td>Electric utility operators</td><td>Critical infrastructure protection standards</td></tr>
+      <tr><td><span class="tag tp">CMMC</span></td><td>Defense contractor systems</td><td>US DoD contractors</td><td>Tiered security maturity — Level 1-3 certification</td></tr>
+      <tr><td><span class="tag tt">DORA</span></td><td>EU financial digital resilience</td><td>EU financial sector firms</td><td>ICT risk management, incident reporting, testing</td></tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">GDPR notification →</span><span>72 hours to supervisory authority — fastest regulatory deadline</span></div>
+      <div class="er"><span class="ek">HIPAA notification →</span><span>60 days to HHS and individuals — 60 days for ≤500, annual wall for &lt;500</span></div>
+      <div class="er"><span class="ek">PCI-DSS →</span><span>Contractual — not a law — quarterly ASV scans — 12 requirements</span></div>
+      <div class="er"><span class="ek">SOX IT relevance →</span><span>Access controls + change mgmt + audit logs (7yr) on financial systems</span></div>
+      <div class="er"><span class="ek">GDPR max fine →</span><span>€20M or 4% of global annual turnover — whichever is HIGHER</span></div>
+      <div class="er"><span class="ek">CCPA →</span><span>California residents — right to know, delete, opt-out — America's GDPR</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 3. COMPLIANCE REPORTING -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">Compliance Reporting</span><span class="bdg bdg-indigo">Internal · External · Attestation</span></div>
+  <div class="card-bd">
+    <p>Compliance reporting is the <strong style="color:var(--text)">formal process of documenting and communicating compliance status to regulators, auditors, executives, and customers</strong>. Without evidence, compliance doesn't exist in the eyes of an auditor.</p>
+
+    <h3>Internal Compliance Reporting</h3>
+    <div class="code">
+<span class="cm"># Internal compliance reporting — keeping leadership informed:</span>
+
+<span class="cb">Board / Audit Committee (quarterly/annual):</span>
+  Compliance posture summary — are we meeting obligations?
+  Open regulatory findings and remediation status
+  Upcoming compliance deadlines
+  Resource needs for compliance activities
+  Significant compliance incidents (near-misses, violations)
+  Benchmarking vs peers
+
+<span class="ci">CISO / Executive Team (monthly):</span>
+  Compliance dashboard — control status by regulation
+  New regulatory developments affecting us
+  Assessment results and findings
+  Policy exceptions outstanding
+  Training completion rates
+  Vendor compliance status
+
+<span class="cg">Security team / Compliance team (weekly/ongoing):</span>
+  Control testing results
+  Evidence collection status
+  Audit preparation progress
+  Policy exceptions queue
+  Vulnerability scan compliance metrics
+    </div>
+
+    <h3>External Compliance Reporting</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Regulatory Reporting</h4>
+        <p>Mandatory reports to government agencies. HIPAA: report breaches to HHS, post on Wall of Shame if &gt;500. GDPR: notify Data Protection Authority. SEC: material cybersecurity incidents within 4 business days. FISMA: annual reporting to OMB/CISA. These are legal obligations with deadlines — missing them = additional violation.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Customer and Partner Reporting</h4>
+        <p>SOC 2 Type II report shared with customers annually. ISO 27001 certificate as evidence of ISMS. PCI-DSS Attestation of Compliance (AoC) shared with acquiring bank. Contract may require: annual security assessment, penetration test summary, security awareness training completion rates. Builds customer trust.</p>
+      </div>
+    </div>
+
+    <h3>Key Compliance Report Types</h3>
+
+    <div class="info-row">
+      <div class="info-icon">📋</div>
+      <div>
+        <div class="info-title">SOC 2 Report</div>
+        <div class="info-desc">System and Organization Controls report from independent CPA. Covers Trust Service Criteria. Shared with customers under NDA as proof of security controls. Type II (operating effectiveness) is the gold standard. Annual re-audit required to maintain. Organizations without a SOC 2 struggle to win enterprise customers.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">📜</div>
+      <div>
+        <div class="info-title">Attestation of Compliance (AoC) — PCI-DSS</div>
+        <div class="info-desc">Formal declaration by the organization and their QSA (Qualified Security Assessor) that PCI-DSS requirements were met for the assessed period. Submitted to acquiring bank. Different from the full Report on Compliance (ROC) — the AoC is the summary declaration, the ROC is the detailed evidence report.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">📊</div>
+      <div>
+        <div class="info-title">HIPAA Risk Assessment Report</div>
+        <div class="info-desc">HIPAA Security Rule requires covered entities to conduct and document an annual risk assessment. Must identify ePHI, threats, vulnerabilities, controls, likelihood, impact, and risk level. Documented risk analysis is itself required — not just doing the analysis. HHS audits look for this documentation first. Most commonly cited violation: no documented risk analysis.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🏛️</div>
+      <div>
+        <div class="info-title">Breach Notification Reports</div>
+        <div class="info-desc">Formal reports to regulators and affected individuals when a breach occurs. GDPR: formal notice to DPA within 72 hours, then detailed follow-up within 30 days. HIPAA: HHS OCR web portal submission. SEC: 8-K filing within 4 business days for material incidents. Notification letters to affected individuals — often reviewed by legal before sending. Strict templates in some jurisdictions.</div>
+      </div>
+    </div>
+
+    <h3>Evidence Collection — The Foundation of Compliance Reporting</h3>
+    <div class="code">
+<span class="cm"># Auditors need EVIDENCE — not assertions:</span>
+
+"We have MFA enabled"     → Show: screenshot of MFA policy + report
+                                  showing 100% enrollment rate
+"We patch within 14 days" → Show: patch compliance report showing
+                                  critical vulns remediated with dates
+"Employees are trained"   → Show: LMS report — 100% completion +
+                                  training content covered + signatures
+"Access is reviewed"      → Show: quarterly access review reports +
+                                  evidence of revocations actioned
+"We log all access"       → Show: SIEM configuration + sample log
+                                  retention report + log integrity check
+
+<span class="cm"># Evidence best practices:</span>
+Collect continuously — not just before audit
+Use a GRC tool to track evidence to controls to requirements
+Timestamp and version-control evidence
+Store in audit-ready repository — auditor gets read access
+Evidence for every control — gaps = findings = remediation work
+    </div>
+
+    <h3>GRC Tools — Automating Compliance</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--teal)">What GRC Tools Do</h4>
+        <p>GRC (Governance, Risk, and Compliance) platforms: map controls to multiple frameworks simultaneously (HIPAA + PCI + ISO 27001), track evidence collection, manage policy lifecycle, automate compliance reporting, maintain risk register, track audit findings. Examples: ServiceNow GRC, Archer, OneTrust, Drata, Vanta.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Automated Evidence Collection</h4>
+        <p>Modern compliance platforms integrate with: cloud environments (AWS/Azure), endpoint management (MDM), identity systems (Azure AD), SIEM, vulnerability scanners. Automatically pull evidence of control operation. MFA enabled? GRC pulls from Azure AD. Patching current? GRC reads from WSUS/Qualys. Reduces manual effort dramatically.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Audit Management</h4>
+        <p>When auditors arrive: GRC generates pre-packaged evidence for each requirement. Auditor gets read-only portal access. All findings tracked and remediated within the system. Audit trail of who collected what evidence when. Re-audit preparation built in — track remediation of prior findings.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Compliance reporting →</span><span>Internal (executives/board) + external (regulators/customers) — evidence is required</span></div>
+      <div class="er"><span class="ek">SOC 2 →</span><span>Independent audit of security controls — shared with customers — Type II annually</span></div>
+      <div class="er"><span class="ek">AoC →</span><span>Attestation of Compliance — PCI-DSS declaration submitted to acquiring bank</span></div>
+      <div class="er"><span class="ek">HIPAA risk assessment →</span><span>Annual documented risk analysis — most common violation is missing documentation</span></div>
+      <div class="er"><span class="ek">GRC platform →</span><span>Maps controls to frameworks, automates evidence, manages audits — OneTrust/Drata/Vanta</span></div>
+      <div class="er"><span class="ek">Evidence ≠ assertion →</span><span>Auditors need proof — screenshots, reports, logs — not just "we do this"</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 4. CONSEQUENCES         -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Consequences of Non-Compliance</span><span class="bdg bdg-red">Fines · Criminal · Business Impact</span></div>
+  <div class="card-bd">
+    <p>Non-compliance consequences extend far beyond fines. <strong style="color:var(--text)">The full spectrum of consequences — financial, legal, operational, and reputational — often dwarfs the cost of compliance itself</strong>.</p>
+
+    <h3>Financial Fines — Real Numbers</h3>
+    <div class="fine-row">
+      <span class="fine-reg" style="color:var(--blue)">GDPR</span>
+      <span class="fine-amount" style="color:var(--red)">Up to €20M or 4% revenue</span>
+      <span class="fine-detail">Meta: €1.2B (2023) / Amazon: €746M (2021) / WhatsApp: €225M — whichever is higher</span>
+    </div>
+    <div class="fine-row">
+      <span class="fine-reg" style="color:var(--green)">HIPAA</span>
+      <span class="fine-amount" style="color:var(--red)">$100–$50,000 per violation</span>
+      <span class="fine-detail">Max $1.9M per category/yr. Anthem: $16M / Premera: $6.85M / UCLA Health: $865K</span>
+    </div>
+    <div class="fine-row">
+      <span class="fine-reg" style="color:var(--orange)">PCI-DSS</span>
+      <span class="fine-amount" style="color:var(--red)">$5,000–$100,000/month</span>
+      <span class="fine-detail">From card brands to acquiring bank, passed to merchant. Plus card replacement costs, forensic audit costs, increased transaction fees.</span>
+    </div>
+    <div class="fine-row">
+      <span class="fine-reg" style="color:var(--yellow)">CCPA</span>
+      <span class="fine-amount" style="color:var(--red)">$2,500–$7,500 per violation</span>
+      <span class="fine-detail">Per consumer per violation — multiplies rapidly. Sephora: $1.2M settlement. Private right of action: $100-$750 per consumer for data breaches.</span>
+    </div>
+    <div class="fine-row">
+      <span class="fine-reg" style="color:var(--purple)">FTC (US)</span>
+      <span class="fine-amount" style="color:var(--red)">Up to $50,120/day per violation</span>
+      <span class="fine-detail">Facebook/Meta: $5B (2019 Cambridge Analytica). Equifax: $575M FTC settlement. Can mandate specific security improvements.</span>
+    </div>
+
+    <h3>Full Spectrum of Consequences</h3>
+
+    <div class="con-item">
+      <div class="con-icon">💰</div>
+      <div>
+        <div class="con-title" style="color:var(--red)">Financial Penalties</div>
+        <div class="con-body">Regulatory fines are just the beginning. Add: legal defense costs (millions per case), breach notification costs ($50-100/affected individual for credit monitoring), forensic investigation fees, IT remediation costs, increased cyber insurance premiums (often 2-5× after a breach), card replacement costs (PCI breaches). Total cost of a major breach: often 10-100× the regulatory fine alone.</div>
+      </div>
+    </div>
+
+    <div class="con-item">
+      <div class="con-icon">⚖️</div>
+      <div>
+        <div class="con-title" style="color:var(--orange)">Legal and Criminal Liability</div>
+        <div class="con-body">SOX: executives can face up to 20 years imprisonment for knowingly certifying false financial reports. HIPAA: criminal charges — $250K fine + 10 years for "wrongful disclosure." Civil lawsuits from affected individuals (class action). FTC enforcement actions with consent decrees requiring 20 years of monitoring. Directors and Officers (D&O) personal liability for negligent governance.</div>
+      </div>
+    </div>
+
+    <div class="con-item">
+      <div class="con-icon">🚫</div>
+      <div>
+        <div class="con-title" style="color:var(--yellow)">Loss of Business Privileges</div>
+        <div class="con-body">PCI-DSS non-compliance: card brands revoke ability to process credit/debit cards — business cannot accept card payments. Healthcare: CMS can exclude provider from Medicare/Medicaid participation. Federal contracts: loss of security clearance or government contract eligibility. Operating licenses can be revoked by state regulators in financial and healthcare sectors.</div>
+      </div>
+    </div>
+
+    <div class="con-item">
+      <div class="con-icon">📉</div>
+      <div>
+        <div class="con-title" style="color:var(--purple)">Reputational Damage</div>
+        <div class="con-body">Breaches become public. HHS "Wall of Shame" (HIPAA breaches &gt;500). SEC mandatory disclosures for material incidents. Press coverage and social media amplification. Stock price impact: 3-5% average drop on disclosure. Long-term customer churn — especially B2B enterprises that remove non-compliant vendors from supply chain. Brand recovery takes years.</div>
+      </div>
+    </div>
+
+    <div class="con-item">
+      <div class="con-icon">📏</div>
+      <div>
+        <div class="con-title" style="color:var(--teal)">Regulatory Oversight and Remediation Orders</div>
+        <div class="con-body">Beyond fines: regulators impose Consent Decrees requiring specific improvements, monitored by independent assessors, lasting 20+ years (FTC standard). Corrective Action Plans (CAP) with mandatory timelines. Mandatory third-party security audits at organization's expense. Some regulators (GDPR, HIPAA) can conduct unannounced inspections. Ongoing oversight is often more burdensome than the initial fine.</div>
+      </div>
+    </div>
+
+    <div class="con-item">
+      <div class="con-icon">🏗️</div>
+      <div>
+        <div class="con-title" style="color:var(--blue)">Operational Disruption</div>
+        <div class="con-body">Regulator-mandated system shutdowns (HIPAA: HHS can require ePHI system shutdown). Incident response and forensic investigation while trying to run the business. Leadership distraction — breach response consumes CISO, CEO, General Counsel time for months. System remediations that interrupt normal operations. Court-ordered discovery consumes IT and legal resources.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — True Cost of Non-Compliance (Healthcare Breach)</div>
+      <div class="code">
+<span class="cm"># Mid-size healthcare provider — 500,000 patient records breached</span>
+<span class="cm"># Root cause: unencrypted laptop stolen — no HIPAA encryption</span>
+
+DIRECT REGULATORY COSTS:
+  HIPAA fine (HHS settlement):      <span class="cr">$3,200,000</span>
+  State attorney general:           <span class="cr">$750,000</span>
+  Mandatory 2-year monitoring:      <span class="cr">$400,000</span>
+  Total regulatory:                 <span class="cr">$4,350,000</span>
+
+BREACH RESPONSE COSTS:
+  Forensic investigation:           <span class="co">$400,000</span>
+  Breach notification letters:      <span class="co">$250,000</span>
+  Credit monitoring (500K × $20):   <span class="co">$10,000,000</span>
+  Call center (6 months):           <span class="co">$800,000</span>
+  Legal defense:                    <span class="co">$1,200,000</span>
+  Total response:                   <span class="co">$12,650,000</span>
+
+BUSINESS IMPACT COSTS:
+  Insurance premium increase (3yr): <span class="cy">$600,000</span>
+  IT remediation (encrypt all):     <span class="cy">$1,500,000</span>
+  Patient churn (3% lost):          <span class="cy">$5,000,000</span>
+  Staff overtime / turnover:        <span class="cy">$300,000</span>
+  Class action settlement:          <span class="cy">$8,000,000</span>
+  Total business:                   <span class="cy">$15,400,000</span>
+
+<span class="cr">TOTAL COST: $32,400,000</span>
+
+Cost of prevention:
+  Laptop encryption for all devices:    $85,000/year
+  <span class="cg">Prevention cost vs breach: 381× cheaper ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">GDPR fine →</span><span>€20M or 4% of global annual turnover — whichever is HIGHER</span></div>
+      <div class="er"><span class="ek">HIPAA criminal →</span><span>Up to 10 years + $250K for wrongful disclosure — not just civil penalties</span></div>
+      <div class="er"><span class="ek">PCI-DSS consequence →</span><span>Card processing privileges revoked — business cannot accept card payments</span></div>
+      <div class="er"><span class="ek">Consent decree →</span><span>Regulatory order requiring specific improvements — FTC standard is 20 years</span></div>
+      <div class="er"><span class="ek">Wall of Shame →</span><span>HHS public list of HIPAA breaches affecting 500+ individuals</span></div>
+      <div class="er"><span class="ek">Reputational damage →</span><span>Stock price drop, customer churn, partner loss — often larger than fine</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 5. MONITORING           -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Compliance Monitoring</span><span class="bdg bdg-green">Continuous · Periodic · Automated</span></div>
+  <div class="card-bd">
+    <p>Compliance monitoring verifies that <strong style="color:var(--text)">controls are working as intended, continuously and over time</strong>. Point-in-time assessments only show you a snapshot — monitoring shows you the movie.</p>
+
+    <h3>Monitoring Cycle</h3>
+    <div class="mon-grid">
+      <div class="mon-cell" style="background:#0d1a2a">
+        <div class="mon-num" style="color:var(--blue)">1</div>
+        <div class="mon-title" style="color:var(--blue)">Define</div>
+        <div class="mon-desc">What controls to monitor, metrics, acceptable thresholds</div>
+      </div>
+      <div class="mon-cell" style="background:#1a1000">
+        <div class="mon-num" style="color:var(--orange)">2</div>
+        <div class="mon-title" style="color:var(--orange)">Collect</div>
+        <div class="mon-desc">Gather data from systems, logs, scans, surveys</div>
+      </div>
+      <div class="mon-cell" style="background:#1a0830">
+        <div class="mon-num" style="color:var(--purple)">3</div>
+        <div class="mon-title" style="color:var(--purple)">Analyze</div>
+        <div class="mon-desc">Compare actual state to required state — find gaps</div>
+      </div>
+      <div class="mon-cell" style="background:#200e00">
+        <div class="mon-num" style="color:var(--red)">4</div>
+        <div class="mon-title" style="color:var(--red)">Report</div>
+        <div class="mon-desc">Communicate findings to owners, management, auditors</div>
+      </div>
+      <div class="mon-cell" style="background:#082010">
+        <div class="mon-num" style="color:var(--green)">5</div>
+        <div class="mon-title" style="color:var(--green)">Remediate</div>
+        <div class="mon-desc">Fix gaps, update controls, verify improvement</div>
+      </div>
+    </div>
+
+    <h3>Compliance Monitoring Activities by Frequency</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Frequency</th><th>Activity</th><th>Why</th><th>Regulation Requiring It</th></tr>
+      <tr><td><span class="tag tr">Continuous</span></td><td>SIEM alert monitoring for security events</td><td>Detect breaches early — notification clock starts at discovery</td><td>GDPR, HIPAA, PCI</td></tr>
+      <tr><td><span class="tag tr">Continuous</span></td><td>Privileged access monitoring and logging</td><td>Detect unauthorized access to regulated data</td><td>PCI Req 10, HIPAA, SOX</td></tr>
+      <tr><td><span class="tag to">Weekly</span></td><td>Patch status review</td><td>Identify systems past patching SLA</td><td>PCI Req 6, HIPAA Security</td></tr>
+      <tr><td><span class="tag ty">Monthly</span></td><td>Access rights review (sample)</td><td>Catch over-privileged accounts before full quarterly review</td><td>ISO 27001, SOX</td></tr>
+      <tr><td><span class="tag ty">Monthly</span></td><td>Security awareness training completion</td><td>Ensure 100% completion before audit</td><td>PCI Req 12, HIPAA, SOX</td></tr>
+      <tr><td><span class="tag tg">Quarterly</span></td><td>External vulnerability scan (ASV)</td><td>PCI-DSS mandatory — Approved Scanning Vendor</td><td>PCI Req 11 — mandatory</td></tr>
+      <tr><td><span class="tag tg">Quarterly</span></td><td>User access recertification</td><td>Managers confirm employees still need their access</td><td>SOX, ISO 27001</td></tr>
+      <tr><td><span class="tag tg">Quarterly</span></td><td>Firewall rule review</td><td>PCI requires quarterly review of firewall rules</td><td>PCI Req 1</td></tr>
+      <tr><td><span class="tag tb">Annual</span></td><td>Risk assessment</td><td>HIPAA Security Rule explicitly requires documented annual RA</td><td>HIPAA — mandatory</td></tr>
+      <tr><td><span class="tag tb">Annual</span></td><td>Penetration test</td><td>Validate controls actually work against real attacks</td><td>PCI Req 11, ISO 27001</td></tr>
+      <tr><td><span class="tag tb">Annual</span></td><td>Security awareness training (all staff)</td><td>Ensure all employees current on threats and policies</td><td>HIPAA, PCI Req 12</td></tr>
+      <tr><td><span class="tag tb">Annual</span></td><td>Policy review and update</td><td>Policies reflect current environment and regulations</td><td>PCI Req 12, ISO 27001</td></tr>
+    </table>
+    </div>
+
+    <h3>Automated Compliance Monitoring</h3>
+    <div class="code">
+<span class="cm"># Technology-driven continuous compliance:</span>
+
+<span class="cb">Cloud Security Posture Management (CSPM):</span>
+  Continuously scans cloud config vs compliance benchmarks
+  AWS Config → checks against PCI-DSS / HIPAA / CIS benchmarks
+  Alert: S3 bucket made public → PCI violation → auto-remediate
+  Dashboard: compliance score per regulation, per service
+  
+<span class="ct">Vulnerability Management platforms:</span>
+  Tenable.io / Qualys → maps CVEs to compliance frameworks
+  PCI-DSS: "this CVE violates Requirement 6.3.3"
+  Track: time-to-remediate by regulation requirement
+  Report: compliance status for patch requirements
+
+<span class="cg">Identity Governance (IGA):</span>
+  Automated access certification campaigns
+  Orphaned accounts → auto-alert → manager reviews
+  SOD violations → auto-flag for review
+  Access provisioning aligned to compliance requirements
+
+<span class="cp">SIEM compliance rules:</span>
+  "Alert if privileged user accesses cardholder data
+   outside business hours" → PCI Req 10.2.1
+  Log completeness check → verify required events logging
+  Retention verification → logs meeting required duration
+    </div>
+
+    <h3>Due Care vs Due Diligence</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#1a3060">
+        <h4 style="color:var(--blue)">Due Diligence</h4>
+        <p>Doing the research and investigation BEFORE making a decision. "We evaluated the vendor's security posture before engagement." "We assessed the risk before implementing this system." Proactive — gathering information to make informed decisions. Prerequisite to due care.</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
+Examples:
+  Vendor security questionnaire
+  Risk assessment before project
+  Background check before hiring
+  Vulnerability scan before deployment
+        </div>
+      </div>
+      <div class="gc" style="border-color:#082818">
+        <h4 style="color:var(--green)">Due Care</h4>
+        <p>Doing what a reasonable person would do to protect against harm — ONGOING reasonable precautions. "We maintain controls that a reasonable organization would maintain." Standard of care expected. Failure = negligence. Regulators ask: "Did you do what any reasonable organization would do?"</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
+Examples:
+  Keeping systems patched
+  Annual security training
+  Monitoring access to sensitive data
+  Responding to known vulnerabilities
+        </div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Continuous monitoring →</span><span>Real-time control verification — SIEM, CSPM, IGA — not just annual audits</span></div>
+      <div class="er"><span class="ek">Quarterly ASV scan →</span><span>PCI-DSS Requirement 11 — external vulnerability scan by Approved Scanning Vendor</span></div>
+      <div class="er"><span class="ek">HIPAA annual RA →</span><span>Annual documented risk assessment — most common HIPAA violation is missing this</span></div>
+      <div class="er"><span class="ek">Due diligence →</span><span>Research/investigation BEFORE decisions — vendor assessment, risk analysis</span></div>
+      <div class="er"><span class="ek">Due care →</span><span>Ongoing reasonable precautions — what any reasonable org would do</span></div>
+      <div class="er"><span class="ek">CSPM →</span><span>Cloud Security Posture Management — continuous cloud compliance checking</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 6. PRIVACY CONCEPTS     -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Privacy Concepts</span><span class="bdg bdg-purple">PII · PHI · Data Minimization</span></div>
+  <div class="card-bd">
+    <p>Privacy is about <strong style="color:var(--text)">individuals' rights to control their personal information</strong>. Security enables privacy but they are distinct: security is about protecting data from unauthorized access; privacy is about ensuring data is only collected, used, and shared in ways people consent to and expect.</p>
+
+    <h3>Types of Protected Personal Data</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#1a3060">
+        <h4 style="color:var(--blue)">PII — Personally Identifiable Information</h4>
+        <p>Any information that can directly or indirectly identify a specific individual. No universal legal definition — varies by jurisdiction. Protected by: GDPR, CCPA, state privacy laws.</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
+Direct identifiers (alone = PII):
+  Full name, SSN, passport number,
+  driver's license, email, phone,
+  biometric data, face photo
+
+Indirect identifiers (combined = PII):
+  ZIP code + DOB + gender → often
+  identifies a specific person
+  IP address (often = PII under GDPR)
+        </div>
+      </div>
+      <div class="gc" style="border-color:#082818">
+        <h4 style="color:var(--green)">PHI — Protected Health Information</h4>
+        <p>Any health information linked to an individual's identity. HIPAA-specific term. 18 identifiers defined by HHS. Any of the 18 + a health condition = PHI. Electronic PHI (ePHI) = PHI in electronic form → Security Rule applies.</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
+HIPAA 18 identifiers include:
+  Name, address, DOB, phone, fax,
+  email, SSN, MRN, account numbers,
+  certificate/license numbers, VINs,
+  device identifiers, URLs, IPs,
+  biometrics, face photos, any
+  unique characteristic/code
+        </div>
+      </div>
+      <div class="gc" style="border-color:#201800">
+        <h4 style="color:var(--yellow)">Special Category Data (GDPR)</h4>
+        <p>Requires additional protection and explicit consent under GDPR. Higher bar for lawful processing. Includes: racial or ethnic origin, political opinions, religious beliefs, trade union membership, genetic data, biometric data for identification, health data, sex life/sexual orientation.</p>
+      </div>
+      <div class="gc" style="border-color:#280808">
+        <h4 style="color:var(--red)">Sensitive PII</h4>
+        <p>US context — PII that poses greater risk if disclosed. Financial information (account numbers, credit cards), credentials (passwords, PINs), children's data, biometrics, location data that reveals movements. Triggers additional notification requirements and breach notification obligations in most jurisdictions.</p>
+      </div>
+    </div>
+
+    <h3>Privacy Principles — Core Concepts</h3>
+    <div class="code">
+<span class="cm"># Privacy by Design — build privacy in from the start:</span>
+  Proactive not reactive: address privacy BEFORE collecting data
+  Privacy as default: most private setting is the DEFAULT
+  Privacy embedded: not bolted on — integral to design
+  Full functionality: privacy AND utility — not zero-sum
+  End-to-end security: full lifecycle protection
+  Transparency: open about policies and practices
+  User-centric: respect user privacy — center the individual
+
+<span class="cm"># Key Privacy Principles (from GDPR and international standards):</span>
+
+<span class="cb">Lawful basis:</span>
+  Cannot process personal data without legal justification
+  GDPR lawful bases: consent, contract, legal obligation,
+  vital interests, public task, legitimate interests
+
+<span class="ct">Data minimization:</span>
+  Collect only what is NECESSARY for the stated purpose
+  "We need an email to create an account — not your DOB"
+  More data = more risk = more liability
+
+<span class="cg">Purpose limitation:</span>
+  Data collected for one purpose → cannot be used for another
+  "We collected email for shipping — cannot use for marketing
+   without separate consent"
+
+<span class="co">Storage limitation:</span>
+  Keep data only as long as necessary for the stated purpose
+  Retention schedules: when purpose fulfilled → delete
+  Cannot keep "just in case it might be useful someday"
+
+<span class="cp">Accuracy:</span>
+  Personal data must be accurate and kept up to date
+  Mechanism for individuals to correct inaccurate data
+  Regular reviews of data quality
+
+<span class="cr">Security (Integrity and Confidentiality):</span>
+  Appropriate technical and organizational measures
+  Protect against unauthorized access, disclosure, destruction
+  Where security and privacy overlap
+    </div>
+
+    <h3>Privacy vs Security — The Distinction</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--teal)">Security</h4>
+        <p>Protects data from unauthorized access, use, disclosure, disruption, modification, or destruction. Technical and procedural safeguards. CIA Triad: Confidentiality, Integrity, Availability. Asks: "Is the data protected from those who shouldn't have it?"</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--pink)">Privacy</h4>
+        <p>Ensures data is collected, used, and shared only in ways the individual expects and consents to. Regulatory and rights-based framework. Asks: "Should we have this data? Are we using it appropriately? Does the individual have control?" Security enables privacy but doesn't guarantee it.</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
+Secure but NOT private:
+  Perfectly secure HR database
+  But used to discriminate in
+  hiring based on religion
+  → Security ✓ Privacy ✗
+        </div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">PII →</span><span>Any info identifying an individual — direct (SSN/name) or indirect (combined attributes)</span></div>
+      <div class="er"><span class="ek">PHI →</span><span>Health info + any of 18 identifiers — HIPAA specific — ePHI = electronic PHI</span></div>
+      <div class="er"><span class="ek">Data minimization →</span><span>Collect only what's necessary — GDPR principle — less data = less risk</span></div>
+      <div class="er"><span class="ek">Purpose limitation →</span><span>Data collected for one purpose cannot be used for another without new consent</span></div>
+      <div class="er"><span class="ek">Privacy by design →</span><span>Build privacy in from the start — default to most private setting</span></div>
+      <div class="er"><span class="ek">Lawful basis →</span><span>GDPR requires legal justification to process personal data — consent, contract, legitimate interest, etc.</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 7. PRIVACY RIGHTS       -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Data Subject Rights & Privacy Roles</span><span class="bdg bdg-pink">Rights · DPO · Processor · Controller</span></div>
+  <div class="card-bd">
+    <p>Privacy laws grant individuals specific rights over their personal data and define organizational roles and responsibilities. <strong style="color:var(--text)">Understanding these rights and roles is directly tested on Security+</strong>.</p>
+
+    <h3>GDPR Data Subject Rights</h3>
+
+    <div class="right-card">
+      <span class="right-tag" style="background:#0d2040;color:var(--blue)">ACCESS</span>
+      <div>
+        <div class="right-title" style="color:var(--blue)">Right of Access (Article 15)</div>
+        <div class="right-body">Individual can request a copy of all personal data held about them. Must be provided within 30 days. Must include: what data, purpose, who it's shared with, retention period, source. Organizations must have a process to handle Subject Access Requests (SARs). Free of charge for first request.</div>
+      </div>
+    </div>
+
+    <div class="right-card">
+      <span class="right-tag" style="background:#082818;color:var(--green)">ERASURE</span>
+      <div>
+        <div class="right-title" style="color:var(--green)">Right to Erasure — "Right to be Forgotten" (Article 17)</div>
+        <div class="right-body">Individual can request deletion of their personal data. Must be honored when: data no longer necessary for original purpose, consent withdrawn and no other lawful basis, individual objects and no overriding legitimate interest. Cannot be honored when: legal obligation to retain, public interest, legal claim. Most misunderstood right — not absolute.</div>
+      </div>
+    </div>
+
+    <div class="right-card">
+      <span class="right-tag" style="background:#281400;color:var(--orange)">PORTABILITY</span>
+      <div>
+        <div class="right-title" style="color:var(--orange)">Right to Data Portability (Article 20)</div>
+        <div class="right-body">Individual can receive their data in a structured, commonly used, machine-readable format (CSV, JSON). Can request transfer directly to another provider. Applies when: processing based on consent or contract AND processing automated. Enables: switching banks/providers without losing your data history. Applies to data the individual provided — not derived/inferred data.</div>
+      </div>
+    </div>
+
+    <div class="right-card">
+      <span class="right-tag" style="background:#1e0830;color:var(--purple)">RECTIFICATION</span>
+      <div>
+        <div class="right-title" style="color:var(--purple)">Right to Rectification (Article 16)</div>
+        <div class="right-body">Individual can request correction of inaccurate personal data. Must be completed within 30 days. Must also notify any third parties who received the inaccurate data. Organizations must have a mechanism for individuals to update their information. Especially important for: credit bureaus, healthcare records, government databases.</div>
+      </div>
+    </div>
+
+    <div class="right-card">
+      <span class="right-tag" style="background:#062018;color:var(--teal)">RESTRICTION</span>
+      <div>
+        <div class="right-title" style="color:var(--teal)">Right to Restriction of Processing (Article 18)</div>
+        <div class="right-body">Individual can request that processing of their data is paused while another right is being exercised. Example: individual contests accuracy of data — while accuracy is verified, restrict processing. Doesn't delete data — puts it in a "suspended" state. Must notify individual before lifting restriction.</div>
+      </div>
+    </div>
+
+    <div class="right-card">
+      <span class="right-tag" style="background:#200e00;color:var(--red)">OBJECT</span>
+      <div>
+        <div class="right-title" style="color:var(--red)">Right to Object (Article 21)</div>
+        <div class="right-body">Individual can object to processing based on legitimate interests or for direct marketing. For direct marketing: absolute right — must stop immediately. For legitimate interests: must stop unless compelling overriding interest or legal claim. Must be told of this right at first point of contact. Opt-out mechanisms must be easy to use.</div>
+      </div>
+    </div>
+
+    <div class="right-card">
+      <span class="right-tag" style="background:#101830;color:var(--indigo)">AUTOMATED</span>
+      <div>
+        <div class="right-title" style="color:var(--indigo)">Right Regarding Automated Decision-Making (Article 22)</div>
+        <div class="right-body">Individual can refuse fully automated decisions that significantly affect them (credit scoring, job applications, insurance pricing). Must be able to request: human review of the decision, ability to contest the decision, explanation of the logic used. Applies when: purely automated AND legally/similarly significant effect. The AI fairness right.</div>
+      </div>
+    </div>
+
+    <h3>Privacy Roles — Controller vs Processor</h3>
+    <div class="code">
+<span class="cm"># GDPR defines distinct roles — different obligations for each:</span>
+
+<span class="cb">Data Controller:</span>
+  WHO: Decides WHY and HOW personal data is processed
+  Example: Your company that collects customer data
+  Obligations: 
+    - Must have lawful basis for processing
+    - Responsible for data subject rights fulfillment
+    - Must ensure processors comply
+    - Notifies DPA of breaches (72 hrs)
+    - Accountability — can be fined directly
+
+<span class="cg">Data Processor:</span>
+  WHO: Processes personal data ON BEHALF OF controller
+  Example: Cloud provider, payroll vendor, email platform
+  Obligations:
+    - Only process per controller's instructions
+    - Must have DPA with controller
+    - Sub-processors need approval
+    - Security measures (Article 32)
+    - Notify controller of breaches "without undue delay"
+    - Can also be fined directly under GDPR
+
+<span class="co">Joint Controllers:</span>
+  Two orgs JOINTLY decide why and how to process data
+  Both are controllers — must have joint controller agreement
+  Example: two companies jointly running a website
+
+<span class="cm"># Example chain:</span>
+Your company (controller) → payroll SaaS (processor)
+                          → payroll SaaS's cloud provider (sub-processor)
+Controller responsible for ensuring whole chain complies
+    </div>
+
+    <h3>Data Protection Officer (DPO)</h3>
+    <div class="info-row">
+      <div class="info-icon">🧑‍⚖️</div>
+      <div>
+        <div class="info-title">DPO Role and Requirements</div>
+        <div class="info-desc">Mandatory under GDPR when: public authority/body, core activities involve large-scale systematic monitoring of individuals, OR core activities involve large-scale special category data. DPO must be: expert in data protection law, independent (cannot be instructed — cannot be dismissed for performing DPO duties), accessible to data subjects, registered with supervisory authority. Can be internal employee or external contractor. NOT personally liable for org's GDPR compliance — that's the controller's responsibility.</div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Right to erasure →</span><span>"Right to be forgotten" — not absolute — cannot override legal retention obligations</span></div>
+      <div class="er"><span class="ek">Right of access →</span><span>Individual receives copy of their data — 30 days — free first request</span></div>
+      <div class="er"><span class="ek">Right to portability →</span><span>Machine-readable format — structured data — switching providers</span></div>
+      <div class="er"><span class="ek">Data controller →</span><span>Decides why and how — primary accountability — your company</span></div>
+      <div class="er"><span class="ek">Data processor →</span><span>Processes on behalf of controller — follows instructions — vendor/cloud provider</span></div>
+      <div class="er"><span class="ek">DPO →</span><span>Data Protection Officer — GDPR mandatory for some orgs — independent — registered with DPA</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 8. PRIVACY TECHNOLOGIES -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Privacy-Enhancing Technologies</span><span class="bdg bdg-lime">Anonymization · Pseudonymization · Encryption</span></div>
+  <div class="card-bd">
+    <p>Privacy-enhancing technologies (PETs) are technical tools that <strong style="color:var(--text)">reduce or eliminate the ability to identify individuals while preserving data utility for analysis, testing, or sharing</strong>.</p>
+
+    <h3>Core Privacy Technologies</h3>
+
+    <div class="priv-tech">
+      <div class="pt-head">
+        <span style="font-size:1.1rem">🎭</span>
+        <span class="pt-name" style="color:var(--teal)">Anonymization</span>
+        <span class="pt-badge" style="background:#062018;color:var(--teal)">GDPR no longer applies</span>
+      </div>
+      <div class="pt-body">Irreversibly removes all identifying information — cannot be re-linked to an individual with any reasonable effort. If truly anonymized, GDPR no longer applies (not personal data). Extremely difficult to achieve — most "anonymized" data can be re-identified. True anonymization: removes ALL 18 HIPAA identifiers + resistant to re-identification attacks. Requires k-anonymity testing to verify.</div>
+      <div class="code" style="font-size:0.62rem;margin-top:0.5rem">
+Before: "Jane Smith, 04/15/1985, 10001, Breast cancer, $45,200"
+After:  "Patient A, 1985, 100xx, Cancer, $40,000-50,000"
+Challenge: ZIP+DOB+sex can re-identify 87% of Americans
+True anonymization: very hard — often achieves pseudonymization instead
+      </div>
+    </div>
+
+    <div class="priv-tech">
+      <div class="pt-head">
+        <span style="font-size:1.1rem">🔑</span>
+        <span class="pt-name" style="color:var(--blue)">Pseudonymization</span>
+        <span class="pt-badge" style="background:#0d2040;color:var(--blue)">GDPR still applies</span>
+      </div>
+      <div class="pt-body">Replaces direct identifiers with pseudonyms (tokens, codes). Re-identification is possible if the key or mapping table is available. GDPR explicitly mentions pseudonymization as a safeguard — reduces risk but data is still personal data. More practical than full anonymization — utility preserved with reduced risk. Common uses: database tokenization, research datasets, testing environments.</div>
+      <div class="code" style="font-size:0.62rem;margin-top:0.5rem">
+Name: "Jane Smith" → Token: "USR-8847-XK"
+SSN:  "123-45-6789" → Token: "TKN-9034-MN"
+DOB:  "04/15/1985"  → Token: "DOB-7721-QR"
+
+Key mapping stored SEPARATELY with strict access control
+Research team: gets tokenized data — cannot re-identify
+Security team: holds key — can re-identify if legally required
+GDPR still applies: key holder can re-identify → still personal data
+      </div>
+    </div>
+
+    <div class="priv-tech">
+      <div class="pt-head">
+        <span style="font-size:1.1rem">🔢</span>
+        <span class="pt-name" style="color:var(--orange)">Data Masking</span>
+        <span class="pt-badge" style="background:#281400;color:var(--orange)">Non-prod environments</span>
+      </div>
+      <div class="pt-body">Replaces sensitive data with realistic but fake data. Unlike pseudonymization — no key to reverse it. Static masking: one-time transformation for non-production environments. Dynamic masking: mask data in real-time based on user role (support agent sees XXX-XXX-1234, billing sees full number). Ideal for: developer testing with realistic data, non-production copies of databases, support portals.</div>
+      <div class="code" style="font-size:0.62rem;margin-top:0.5rem">
+Production:    John Smith | <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="81ebeee9efaff2ece8f5e9c1e2eeecf1e0eff8afe2eeec">[email&#160;protected]</a> | CC: 4532-9812-3456-7890
+Dev/Test:      Bob Jones  | <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ee8c818cc08481808b9dae8b968f839e828bc08d8183">[email&#160;protected]</a>  | CC: 4532-0000-0000-0001
+
+Data structure preserved — application tests work
+Real customer data: never in non-production environments
+Dynamic masking: credit card → **** **** **** 7890 (last 4 visible to agent)
+      </div>
+    </div>
+
+    <div class="priv-tech">
+      <div class="pt-head">
+        <span style="font-size:1.1rem">📊</span>
+        <span class="pt-name" style="color:var(--purple)">Differential Privacy</span>
+        <span class="pt-badge" style="background:#1e0830;color:var(--purple)">Statistical privacy</span>
+      </div>
+      <div class="pt-body">Mathematical technique adding calibrated noise to datasets or query results. Enables statistical analysis of population data while preventing identification of individuals. Google and Apple use it to collect usage statistics from devices without identifying users. The privacy budget limits how many queries can be answered before individual data could be inferred.</div>
+    </div>
+
+    <div class="priv-tech">
+      <div class="pt-head">
+        <span style="font-size:1.1rem">🔒</span>
+        <span class="pt-name" style="color:var(--green)">Encryption</span>
+        <span class="pt-badge" style="background:#082818;color:var(--green)">Security + Privacy</span>
+      </div>
+      <div class="pt-body">Encrypting personal data reduces risk in case of breach — encrypted data is generally not "a breach" under many regulations (safe harbor provisions). GDPR: encryption can be a reason not to notify individuals if breached (data unintelligible). HIPAA: encrypted ePHI is "unsecured" only if encryption key is also compromised. Encryption = both security control AND privacy protection.</div>
+      <div class="code" style="font-size:0.62rem;margin-top:0.5rem">
+Encrypted breach safe harbor:
+  GDPR: if breached data is encrypted → may not need
+        to notify individuals (Article 34 exception)
+  HIPAA: encrypted ePHI breach → not a reportable breach
+         (as long as key not compromised)
+  
+→ Encryption reduces notification obligations
+→ Makes breaches less damaging in regulatory terms
+      </div>
+    </div>
+
+    <div class="priv-tech">
+      <div class="pt-head">
+        <span style="font-size:1.1rem">📋</span>
+        <span class="pt-name" style="color:var(--yellow)">Privacy Impact Assessment (PIA / DPIA)</span>
+        <span class="pt-badge" style="background:#201800;color:var(--yellow)">GDPR mandatory for high-risk</span>
+      </div>
+      <div class="pt-body">Systematic assessment of how a new project, system, or process will affect individual privacy. GDPR mandates a Data Protection Impact Assessment (DPIA) for high-risk processing activities (large-scale, systematic monitoring, special category data, new technologies). Done BEFORE implementing the new processing — proactive privacy protection. Involves: describing the processing, assessing necessity, identifying risks, determining mitigation measures.</div>
+      <div class="code" style="font-size:0.62rem;margin-top:0.5rem">
+When DPIA required (GDPR Article 35):
+  Systematic evaluation of personal aspects (profiling)
+  Large-scale processing of special category data
+  Systematic monitoring of publicly accessible areas (CCTV)
+  New technologies with unclear risk profile
+  
+DPIA output:
+  Description of processing
+  Necessity/proportionality assessment
+  Risk identification
+  Mitigation measures
+  DPO consultation if high-risk remains
+      </div>
+    </div>
+
+    <h3>Anonymization vs Pseudonymization — Exam Critical</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Aspect</th><th>Anonymization</th><th>Pseudonymization</th></tr>
+      <tr><td>Re-identification possible?</td><td><span class="tag tg">No — irreversible</span></td><td><span class="tag to">Yes — with key</span></td></tr>
+      <tr><td>GDPR applies?</td><td><span class="tag tg">No — no longer personal data</span></td><td><span class="tag tr">Yes — still personal data</span></td></tr>
+      <tr><td>Difficulty to achieve</td><td><span class="tag tr">Very high — hard to truly anonymize</span></td><td><span class="tag tg">Lower — practical technique</span></td></tr>
+      <tr><td>Data utility</td><td><span class="tag ty">Reduced — some utility lost</span></td><td><span class="tag tg">High — full structure preserved</span></td></tr>
+      <tr><td>Common use</td><td>Research datasets, public statistics</td><td>Database tokenization, dev/test</td></tr>
+      <tr><td>GDPR mention</td><td>Recital 26 — no longer in scope</td><td>Article 4(5) — encouraged safeguard</td></tr>
+    </table>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Privacy Technologies in a Healthcare Analytics Platform</div>
+      <div class="code">
+<span class="cm"># Hospital wants to share patient data with research university:</span>
+
+<span class="cr">Option 1 — Share raw data:</span>
+  HIPAA violation: PHI disclosed without authorization
+  GDPR violation (EU patients): no lawful basis
+  <span class="cr">Not acceptable</span>
+
+<span class="co">Option 2 — Pseudonymize the data:</span>
+  Replace patient names/IDs with random tokens
+  Keep: diagnoses, medications, outcomes, age range
+  Store: mapping table in hospital vault (strict access)
+  Research university: gets tokenized dataset
+  GDPR: still applies (processor agreement needed)
+  HIPAA: limited dataset — reduced safeguards if 16 of 18
+         identifiers removed + data use agreement
+  <span class="co">Acceptable with agreements in place</span>
+
+<span class="cg">Option 3 — Apply differential privacy:</span>
+  Add statistical noise to aggregate queries
+  "How many patients had this diagnosis?" + noise
+  Individual patient: cannot be identified from results
+  GDPR: de-identified — may no longer apply
+  Research value: preserved at population level
+  Individual data: protected
+  <span class="cg">Best option for aggregate research queries ✓</span>
+
+<span class="cg">Option 4 — Full anonymization (if achievable):</span>
+  Remove all 18 HIPAA identifiers
+  Test for re-identification resistance
+  If passed: HIPAA and GDPR no longer apply
+  Share freely without restrictions
+  Challenge: genuinely hard to achieve without losing utility
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Anonymization →</span><span>Irreversible — GDPR no longer applies — very difficult to truly achieve</span></div>
+      <div class="er"><span class="ek">Pseudonymization →</span><span>Reversible with key — GDPR still applies — practical — encouraged by GDPR</span></div>
+      <div class="er"><span class="ek">Data masking →</span><span>Realistic fake data — static (dev/test) or dynamic (role-based views) — no key to reverse</span></div>
+      <div class="er"><span class="ek">DPIA →</span><span>Data Protection Impact Assessment — GDPR mandatory for high-risk processing — done BEFORE implementation</span></div>
+      <div class="er"><span class="ek">Encryption safe harbor →</span><span>Breached encrypted data may not require individual notification — GDPR/HIPAA</span></div>
+      <div class="er"><span class="ek">Differential privacy →</span><span>Statistical noise added — enables population analytics without identifying individuals</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 9. SUMMARY              -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-teal">Domain 5 · Security Compliance</span></div>
+  <div class="card-bd">
+
+    <h3>Regulations Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Regulation</th><th>Protects</th><th>Notification Deadline</th><th>Max Penalty</th><th>Key Unique Feature</th></tr>
+      <tr><td><span class="tag tb">GDPR</span></td><td>EU personal data</td><td><span class="tag tr">72 hours</span> to DPA</td><td>€20M or 4% revenue</td><td>Global reach — applies to any org with EU residents</td></tr>
+      <tr><td><span class="tag tg">HIPAA</span></td><td>US health data (PHI)</td><td><span class="tag to">60 days</span> to HHS/individuals</td><td>$1.9M/category/yr</td><td>BAA required for all vendors touching PHI</td></tr>
+      <tr><td><span class="tag to">PCI-DSS</span></td><td>Payment card data</td><td>Immediately to card brands</td><td>Card processing revoked</td><td>NOT a law — contractual — quarterly ASV scans</td></tr>
+      <tr><td><span class="tag ty">SOX</span></td><td>Financial reporting</td><td>—</td><td>20 years criminal for execs</td><td>CEO/CFO personally certify — Section 404 audit</td></tr>
+      <tr><td><span class="tag tp">CCPA</span></td><td>California residents</td><td>Varies by type</td><td>$7,500 intentional</td><td>Right to opt-out of data sale — private right of action</td></tr>
+    </table>
+    </div>
+
+    <h3>Privacy Technologies Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Technology</th><th>Reversible?</th><th>GDPR Applies?</th><th>Best Use Case</th></tr>
+      <tr><td><span class="tag tt">Anonymization</span></td><td><span class="tag tg">No</span></td><td><span class="tag tg">No (if done properly)</span></td><td>Public data sharing, statistics</td></tr>
+      <tr><td><span class="tag tb">Pseudonymization</span></td><td><span class="tag to">Yes — with key</span></td><td><span class="tag tr">Yes — still personal data</span></td><td>Database tokenization, research</td></tr>
+      <tr><td><span class="tag to">Data Masking</span></td><td><span class="tag tg">No — no key</span></td><td><span class="tag tg">No (if fully masked)</span></td><td>Dev/test environments</td></tr>
+      <tr><td><span class="tag tg">Encryption</span></td><td><span class="tag to">Yes — with key</span></td><td><span class="tag tr">Yes (data still personal)</span></td><td>At rest + transit + safe harbor</td></tr>
+      <tr><td><span class="tag tp">Differential Privacy</span></td><td><span class="tag tg">No</span></td><td><span class="tag ty">Maybe not</span></td><td>Population analytics with privacy</td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Technically compliant but still got breached"</span><span>→ Compliance ≠ security — compliance is the floor, not the ceiling</span></div>
+      <div class="er"><span class="ek">"EU regulation — applies globally to any org with EU residents"</span><span>→ GDPR</span></div>
+      <div class="er"><span class="ek">"Must notify regulator within 72 hours of breach"</span><span>→ GDPR — notify supervisory authority (DPA)</span></div>
+      <div class="er"><span class="ek">"Must notify HHS within 60 days of PHI breach"</span><span>→ HIPAA Breach Notification Rule</span></div>
+      <div class="er"><span class="ek">"Payment card standard — not a law — quarterly scans required"</span><span>→ PCI-DSS — quarterly ASV external vulnerability scans</span></div>
+      <div class="er"><span class="ek">"Financial reporting — CEO personally certifies — executives face criminal liability"</span><span>→ Sarbanes-Oxley (SOX) — Sections 302 and 404</span></div>
+      <div class="er"><span class="ek">"California residents — right to know, delete, opt-out of data sale"</span><span>→ CCPA (California Consumer Privacy Act)</span></div>
+      <div class="er"><span class="ek">"Annual documented security risk assessment — HIPAA mandatory"</span><span>→ HIPAA Security Rule Risk Analysis — most cited violation = missing this</span></div>
+      <div class="er"><span class="ek">"Independent third-party audit shared with customers annually"</span><span>→ SOC 2 Type II report</span></div>
+      <div class="er"><span class="ek">"PCI-DSS formal compliance declaration to acquiring bank"</span><span>→ Attestation of Compliance (AoC)</span></div>
+      <div class="er"><span class="ek">"Research before making a security decision"</span><span>→ Due diligence</span></div>
+      <div class="er"><span class="ek">"Ongoing reasonable security precautions"</span><span>→ Due care</span></div>
+      <div class="er"><span class="ek">"Continuous cloud compliance checking vs benchmarks"</span><span>→ CSPM (Cloud Security Posture Management)</span></div>
+      <div class="er"><span class="ek">"Regulator-imposed 20-year monitoring requirement"</span><span>→ Consent decree (FTC standard)</span></div>
+      <div class="er"><span class="ek">"HHS public list of breaches affecting 500+ patients"</span><span>→ HIPAA Wall of Shame</span></div>
+      <div class="er"><span class="ek">"Any information identifying an individual"</span><span>→ PII (Personally Identifiable Information)</span></div>
+      <div class="er"><span class="ek">"Health info combined with patient identifier — HIPAA term"</span><span>→ PHI (Protected Health Information) — 18 identifiers defined by HHS</span></div>
+      <div class="er"><span class="ek">"Collect only what is necessary for the stated purpose"</span><span>→ Data minimization — GDPR principle</span></div>
+      <div class="er"><span class="ek">"Cannot use data collected for shipping for marketing"</span><span>→ Purpose limitation — GDPR principle</span></div>
+      <div class="er"><span class="ek">"Build privacy into systems from the beginning"</span><span>→ Privacy by design</span></div>
+      <div class="er"><span class="ek">"Individual can get copy of all data held about them"</span><span>→ Right of access — GDPR Article 15 — 30 days</span></div>
+      <div class="er"><span class="ek">"Request deletion — right to be forgotten"</span><span>→ Right to erasure — GDPR Article 17 — not absolute</span></div>
+      <div class="er"><span class="ek">"Receive data in machine-readable format to switch providers"</span><span>→ Right to data portability — GDPR Article 20</span></div>
+      <div class="er"><span class="ek">"Decides why and how personal data is processed"</span><span>→ Data controller — primary accountability</span></div>
+      <div class="er"><span class="ek">"Processes data on behalf of the controller"</span><span>→ Data processor — follows controller's instructions — vendor</span></div>
+      <div class="er"><span class="ek">"GDPR mandatory privacy role — independent — cannot be fired"</span><span>→ DPO (Data Protection Officer)</span></div>
+      <div class="er"><span class="ek">"Irreversible identity removal — GDPR no longer applies"</span><span>→ Anonymization</span></div>
+      <div class="er"><span class="ek">"Replace identifiers with tokens — reversible — GDPR still applies"</span><span>→ Pseudonymization</span></div>
+      <div class="er"><span class="ek">"Realistic fake data for dev/test — no key to reverse"</span><span>→ Data masking</span></div>
+      <div class="er"><span class="ek">"Assessment of privacy impact before implementing new processing"</span><span>→ DPIA (Data Protection Impact Assessment) — GDPR mandatory for high-risk</span></div>
+      <div class="er"><span class="ek">"Encrypted breach may not require individual notification"</span><span>→ Encryption safe harbor — GDPR Article 34 / HIPAA</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudfl

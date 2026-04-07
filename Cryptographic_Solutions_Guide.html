@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cryptographic Solutions — Security+ Domain 1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap');
+
+:root{
+  --bg:#06080e;
+  --s1:#0b0d16;
+  --s2:#10121e;
+  --s3:#161828;
+  --bd:#20243a;
+  --tx:#d8dff8;
+  --mu:#555e88;
+  /* Topic accent colours */
+  --pki:#e8b030;    /* gold — PKI */
+  --enc:#40c8e0;    /* cyan — encryption */
+  --obf:#a060f8;    /* violet — obfuscation */
+  --hsh:#30d880;    /* green — hashing */
+  --sig:#f06030;    /* orange — signatures */
+  --blk:#60a0f8;    /* blue — blockchain */
+  --acc:#e8b030;    /* primary accent */
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk',sans-serif;font-size:14px;line-height:1.65;padding:2rem 1.5rem;}
+
+/* ── HEADER ── */
+.hdr{
+  text-align:center;margin-bottom:2.5rem;padding:2.5rem 0 2rem;
+  border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  position:relative;
+}
+.hdr::before,.hdr::after{
+  content:'';position:absolute;width:80px;height:2px;bottom:-1px;
+  background:linear-gradient(90deg,var(--pki),var(--enc));
+}
+.hdr::before{left:50%;transform:translateX(-100%)}
+.hdr::after{left:50%;background:linear-gradient(90deg,var(--enc),var(--hsh));}
+.hdr-tag{font-family:'JetBrains Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;color:var(--mu);text-transform:uppercase;margin-bottom:0.7rem;}
+.hdr-title{font-family:'Playfair Display',serif;font-size:3.4rem;font-weight:900;line-height:0.9;letter-spacing:-0.01em;margin-bottom:0.5rem;}
+.hdr-title .g{background:linear-gradient(135deg,var(--pki),var(--enc),var(--hsh));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hdr-sub{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--mu);letter-spacing:0.06em;}
+
+/* ── TOPIC SELECTOR ── */
+.topics{display:grid;grid-template-columns:repeat(7,1fr);gap:0.35rem;margin-bottom:2rem;}
+@media(max-width:700px){.topics{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:400px){.topics{grid-template-columns:repeat(2,1fr);}}
+.tpc{
+  border:1px solid var(--bd);background:var(--s1);
+  padding:0.65rem 0.3rem;text-align:center;
+  cursor:pointer;border-radius:8px;transition:all 0.14s;
+  display:flex;flex-direction:column;align-items:center;gap:0.25rem;
+}
+.tpc-ico{font-size:1.3rem;line-height:1;}
+.tpc-name{font-family:'JetBrains Mono',monospace;font-size:0.55rem;font-weight:700;letter-spacing:0.04em;color:var(--mu);transition:color 0.14s;}
+.tpc:hover{transform:translateY(-2px);}
+
+/* topic hover/active colors */
+.tpc[data-t="pki"]:hover,.tpc[data-t="pki"].on{border-color:var(--pki);background:rgba(232,176,48,0.07);}
+.tpc[data-t="pki"].on .tpc-name,.tpc[data-t="pki"]:hover .tpc-name{color:var(--pki);}
+.tpc[data-t="enc"]:hover,.tpc[data-t="enc"].on{border-color:var(--enc);background:rgba(64,200,224,0.07);}
+.tpc[data-t="enc"].on .tpc-name,.tpc[data-t="enc"]:hover .tpc-name{color:var(--enc);}
+.tpc[data-t="obf"]:hover,.tpc[data-t="obf"].on{border-color:var(--obf);background:rgba(160,96,248,0.07);}
+.tpc[data-t="obf"].on .tpc-name,.tpc[data-t="obf"]:hover .tpc-name{color:var(--obf);}
+.tpc[data-t="hsh"]:hover,.tpc[data-t="hsh"].on{border-color:var(--hsh);background:rgba(48,216,128,0.07);}
+.tpc[data-t="hsh"].on .tpc-name,.tpc[data-t="hsh"]:hover .tpc-name{color:var(--hsh);}
+.tpc[data-t="sig"]:hover,.tpc[data-t="sig"].on{border-color:var(--sig);background:rgba(240,96,48,0.08);}
+.tpc[data-t="sig"].on .tpc-name,.tpc[data-t="sig"]:hover .tpc-name{color:var(--sig);}
+.tpc[data-t="blk"]:hover,.tpc[data-t="blk"].on{border-color:var(--blk);background:rgba(96,160,248,0.07);}
+.tpc[data-t="blk"].on .tpc-name,.tpc[data-t="blk"]:hover .tpc-name{color:var(--blk);}
+.tpc[data-t="sum"]:hover,.tpc[data-t="sum"].on{border-color:var(--mu);background:rgba(85,94,136,0.12);}
+.tpc[data-t="sum"].on .tpc-name,.tpc[data-t="sum"]:hover .tpc-name{color:var(--tx);}
+
+/* inner tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:1.8rem;}
+.tab{padding:0.38rem 0.85rem;border-radius:6px;border:1px solid var(--bd);background:var(--s1);color:var(--mu);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:0.62rem;font-weight:600;transition:all 0.13s;letter-spacing:0.02em;}
+.tab:hover,.tab.active{color:#fff;}
+
+/* model/section visibility */
+.model{display:none;}
+.model.on{display:block;animation:rise 0.18s ease;}
+.sec{display:none;}
+.sec.on{display:block;}
+@keyframes rise{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* ── CARD ── */
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:0.95rem 1.4rem;border-bottom:1px solid var(--bd);background:var(--s2);}
+.card-num{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--mu);background:var(--s3);border:1px solid var(--bd);border-radius:4px;padding:0.1rem 0.35rem;}
+.card-title{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;}
+.bdg{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:0.57rem;padding:0.14rem 0.55rem;border-radius:999px;white-space:nowrap;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.card-bd{padding:1.4rem;}
+p{color:var(--mu);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.75;}
+h3{font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:700;color:var(--tx);margin:1.3rem 0 0.55rem;padding-left:0.7rem;border-left:3px solid;letter-spacing:-0.01em;}
+
+/* ── CODE ── */
+.code{background:#030408;border:1px solid var(--bd);border-radius:8px;padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:0.67rem;line-height:1.95;overflow-x:auto;margin:0.8rem 0;color:var(--tx);}
+.cg{color:#30d880;}.cr{color:#f86060;}.cb{color:#40c8e0;}.co{color:#f0c040;}.cp{color:#c080f8;}.cm{color:var(--mu);}.ct{color:#50e8d0;}.ci{color:#a8c0f8;}.cs{color:#f0a060;}.cgd{color:#e8b030;}
+
+/* ── SCENE ── */
+.scene{background:#120e00;border-left:3px solid var(--pki);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--pki);margin-bottom:0.4rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+
+/* ── EXAM ── */
+.exam{background:#0c0818;border:1px solid #281848;border-radius:8px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--obf);margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--obf);font-family:'JetBrains Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.gc{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:1rem;}
+.gc h4{font-family:'Space Grotesk',sans-serif;font-size:0.86rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--mu);margin-bottom:0.25rem;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.5rem 0.8rem;text-align:left;color:var(--mu);border-bottom:1px solid var(--bd);font-size:0.62rem;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--bd);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.1rem 0.48rem;border-radius:4px;font-size:0.6rem;font-family:'JetBrains Mono',monospace;font-weight:700;}
+.tg{background:#072a14;color:#30d880;border:1px solid #0e4020;}
+.tr{background:#2a0808;color:#f86060;border:1px solid #401010;}
+.tb{background:#071828;color:#40c8e0;border:1px solid #0e2840;}
+.to{background:#281200;color:#f0c040;border:1px solid #402000;}
+.tp{background:#180828;color:#c080f8;border:1px solid #281040;}
+.tt{background:#071e1c;color:#50e8d0;border:1px solid #0e3830;}
+.tgd{background:#201400;color:#e8b030;border:1px solid #382000;}
+.ts{background:#181820;color:#a0a8c8;border:1px solid #282838;}
+
+/* ── INFO ROW ── */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s2);border:1px solid var(--bd);border-radius:7px;margin-bottom:0.5rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Space Grotesk',sans-serif;font-size:0.86rem;font-weight:700;margin-bottom:0.12rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--mu);}
+
+/* ── ALGO CARD ── */
+.algo{border:1px solid var(--bd);border-radius:8px;padding:1rem 1.1rem;margin-bottom:0.5rem;display:flex;gap:0.9rem;align-items:flex-start;background:var(--s2);}
+.algo-name{font-family:'JetBrains Mono',monospace;font-size:0.78rem;font-weight:700;min-width:100px;flex-shrink:0;}
+.algo-body{font-size:0.76rem;color:var(--mu);}
+.algo-tags{display:flex;gap:0.3rem;flex-wrap:wrap;margin-top:0.3rem;}
+
+/* ── KEY PAIR DIAGRAM ── */
+.keypair{display:grid;grid-template-columns:1fr auto 1fr;gap:0.5rem;align-items:center;margin:1rem 0;border:1px solid var(--bd);border-radius:8px;overflow:hidden;}
+.kp-side{padding:1.2rem;background:var(--s2);}
+.kp-mid{padding:0.5rem;background:var(--s3);text-align:center;color:var(--mu);font-size:0.8rem;}
+.kp-label{font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--mu);margin-bottom:0.3rem;letter-spacing:0.06em;text-transform:uppercase;}
+.kp-key{font-family:'JetBrains Mono',monospace;font-size:0.85rem;font-weight:700;margin-bottom:0.25rem;}
+.kp-desc{font-size:0.74rem;color:var(--mu);}
+
+/* ── CERT ANATOMY ── */
+.cert-field{display:flex;align-items:flex-start;gap:0.8rem;padding:0.45rem 0.75rem;background:var(--s2);border-bottom:1px solid var(--bd);}
+.cert-field:last-child{border-bottom:none;}
+.cf-name{font-family:'JetBrains Mono',monospace;font-size:0.63rem;font-weight:700;min-width:170px;flex-shrink:0;color:var(--cgd);}
+.cf-val{font-size:0.74rem;color:var(--mu);}
+
+/* ── CHAIN STRIP ── */
+.chain{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.chain-box{border-radius:6px;padding:0.6rem 0.9rem;font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:700;border:1px solid;text-align:center;min-width:90px;}
+.chain-arr{color:var(--mu);font-size:0.9rem;}
+
+/* ── HASH ROW ── */
+.hash-row{display:flex;align-items:flex-start;gap:1rem;padding:0.65rem 0;border-bottom:1px solid var(--bd);}
+.hash-row:last-child{border-bottom:none;}
+.hr-alg{font-family:'JetBrains Mono',monospace;font-size:0.72rem;font-weight:700;min-width:85px;flex-shrink:0;}
+.hr-bits{font-family:'JetBrains Mono',monospace;font-size:0.65rem;min-width:60px;flex-shrink:0;color:var(--mu);}
+.hr-status{min-width:70px;flex-shrink:0;}
+.hr-notes{font-size:0.74rem;color:var(--mu);flex:1;}
+
+/* ── VS STRIP ── */
+.vs-strip{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin:1rem 0;}
+@media(max-width:560px){.vs-strip{grid-template-columns:1fr;}}
+.vs-side{padding:1.1rem;}
+.vs-side+.vs-side{border-left:1px solid var(--bd);}
+.vs-label{font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;}
+.vs-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.35rem;letter-spacing:-0.01em;}
+.vs-body{font-size:0.76rem;color:var(--mu);line-height:1.6;}
+
+/* ── BLOCKCHAIN BLOCK ── */
+.blk-chain{overflow-x:auto;margin:1rem 0;}
+.blk-row{display:flex;gap:0.4rem;min-width:600px;}
+.blk-block{
+  background:var(--s2);border:1px solid var(--bd);border-radius:8px;
+  padding:0.9rem;min-width:160px;flex:1;
+}
+.blk-n{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--mu);margin-bottom:0.3rem;}
+.blk-h{font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:700;margin-bottom:0.2rem;}
+.blk-ph{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--mu);margin-bottom:0.5rem;}
+.blk-data{font-size:0.7rem;color:var(--tx);border-top:1px solid var(--bd);padding-top:0.4rem;margin-top:0.2rem;}
+.blk-arr{display:flex;align-items:center;color:var(--mu);font-size:1rem;padding:0 0.1rem;}
+
+/* ── LEVEL BAR ── */
+.level-row{display:flex;align-items:center;gap:0.8rem;padding:0.45rem 0.8rem;background:var(--s2);border:1px solid var(--bd);border-radius:5px;margin-bottom:0.35rem;}
+.lv-name{font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:700;min-width:130px;flex-shrink:0;}
+.lv-bar{flex:1;height:10px;background:var(--s3);border-radius:3px;overflow:hidden;}
+.lv-fill{height:100%;border-radius:3px;}
+.lv-note{font-size:0.7rem;color:var(--mu);min-width:120px;flex-shrink:0;text-align:right;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-tag">Security+ SY0-701 · Domain 1 · General Security Concepts · 12%</div>
+  <div class="hdr-title"><span class="g">Cryptographic</span><br>Solutions</div>
+  <div class="hdr-sub">// PKI · Encryption · Obfuscation · Hashing · Digital Signatures · Blockchain</div>
+</div>
+
+<!-- TOPIC SELECTOR -->
+<div class="topics">
+  <div class="tpc on" data-t="pki" onclick="show('pki',this)"><span class="tpc-ico">🔑</span><span class="tpc-name">PKI</span></div>
+  <div class="tpc" data-t="enc" onclick="show('enc',this)"><span class="tpc-ico">🔐</span><span class="tpc-name">Encryption</span></div>
+  <div class="tpc" data-t="obf" onclick="show('obf',this)"><span class="tpc-ico">🌫️</span><span class="tpc-name">Obfuscation</span></div>
+  <div class="tpc" data-t="hsh" onclick="show('hsh',this)"><span class="tpc-ico">🧮</span><span class="tpc-name">Hashing</span></div>
+  <div class="tpc" data-t="sig" onclick="show('sig',this)"><span class="tpc-ico">✍️</span><span class="tpc-name">Signatures</span></div>
+  <div class="tpc" data-t="blk" onclick="show('blk',this)"><span class="tpc-ico">⛓️</span><span class="tpc-name">Blockchain</span></div>
+  <div class="tpc" data-t="sum" onclick="show('sum',this)"><span class="tpc-ico">📊</span><span class="tpc-name">Summary</span></div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- PKI                                -->
+<!-- ══════════════════════════════════ -->
+<div class="model on" id="m-pki">
+<div class="tabs" id="t-pki">
+  <button class="tab active" onclick="goTab('pki','p1',this)">Overview</button>
+  <button class="tab" onclick="goTab('pki','p2',this)">Key Pairs</button>
+  <button class="tab" onclick="goTab('pki','p3',this)">Certificates</button>
+  <button class="tab" onclick="goTab('pki','p4',this)">CA Hierarchy</button>
+  <button class="tab" onclick="goTab('pki','p5',this)">Revocation</button>
+  <button class="tab" onclick="goTab('pki','p6',this)">Exam Notes</button>
+</div>
+
+<div class="sec on" id="p1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">PKI</span><span class="card-title" style="color:var(--pki)">Public Key Infrastructure Overview</span><span class="bdg" style="background:#201400;color:var(--pki);border:1px solid #382000">Trust · Identity · Binding</span></div>
+  <div class="card-bd">
+    <p>PKI is the <strong style="color:var(--tx)">framework of policies, procedures, hardware, software, and standards that enables secure electronic communication</strong> through asymmetric cryptography. It solves the fundamental trust problem: how do you know the public key you received actually belongs to who you think it does?</p>
+    <h3 style="border-left-color:var(--pki)">The Trust Problem PKI Solves</h3>
+    <div class="code">
+<span class="cm"># Without PKI — the MITM problem:</span>
+Alice wants to send encrypted message to Bob
+Alice receives: "Here is my public key: [key]" from Bob
+Problem: how does Alice KNOW this is Bob's key?
+         Eve could intercept and substitute her own key
+         Alice encrypts with Eve's key → Eve decrypts → reads message → re-encrypts with Bob's key
+
+<span class="cm"># With PKI:</span>
+Bob's key is wrapped in a CERTIFICATE
+Certificate signed by a trusted Certificate Authority (CA)
+CA vouches: "I verified this key belongs to Bob at company.com"
+Alice's browser trusts the CA (pre-installed trust store)
+Chain: Alice trusts CA → CA vouches for Bob → Alice trusts Bob's key
+
+<span class="cg">PKI answer: binding identity to public key via trusted third party</span>
+    </div>
+    <h3 style="border-left-color:var(--pki)">PKI Components</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#382000"><h4 style="color:var(--pki)">Certificate Authority (CA)</h4><p>Trusted third party that issues and signs digital certificates. Verifies identity before issuing. Root CA: highest level of trust. Intermediate CA: issues end-entity certificates. Browsers ship with pre-trusted root CAs.</p></div>
+      <div class="gc"><h4 style="color:var(--enc)">Registration Authority (RA)</h4><p>Delegates identity verification for CA. Handles enrollment requests, verifies identity, forwards to CA for signing. Offloads verification work from CA — CA still signs. May be an internal team or organizational role.</p></div>
+      <div class="gc"><h4 style="color:var(--hsh)">Certificate Repository</h4><p>Public directory where certificates can be retrieved. LDAP directory, HTTP server. Also: Certificate Revocation Lists (CRL) published here. Clients query to verify certificate validity and retrieve certificates for others.</p></div>
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">PKI purpose →</span><span>Binds identity to public key via trusted CA — solves MITM key substitution problem</span></div>
+      <div class="er"><span class="ek">CA →</span><span>Certificate Authority — issues and signs certificates — vouches for identity</span></div>
+      <div class="er"><span class="ek">RA →</span><span>Registration Authority — verifies identity — delegates from CA — CA still signs</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="p2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">PKI</span><span class="card-title" style="color:var(--pki)">Key Pairs — Public &amp; Private Keys</span><span class="bdg" style="background:#201400;color:var(--pki);border:1px solid #382000">Asymmetric Foundation</span></div>
+  <div class="card-bd">
+    <p>PKI is built on <strong style="color:var(--tx)">asymmetric (public-key) cryptography</strong> — mathematically linked key pairs where data encrypted with one key can only be decrypted with the other. This elegant math enables secure communication without prior shared secrets.</p>
+    <div class="keypair">
+      <div class="kp-side" style="background:rgba(232,176,48,0.05);border-right:1px solid var(--bd)">
+        <div class="kp-label" style="color:var(--pki)">Public Key</div>
+        <div class="kp-key" style="color:var(--pki)">🔓 Share with everyone</div>
+        <div class="kp-desc">Published freely — in certificate, on website, in directory. Anyone can have it. Used by others TO: encrypt messages to you, verify your digital signature. Cannot be kept secret — the whole point is sharing it widely.</div>
+      </div>
+      <div class="kp-mid">⟷<br><span style="font-size:0.6rem;font-family:'JetBrains Mono',monospace">Mathematically<br>Linked</span></div>
+      <div class="kp-side" style="background:rgba(248,96,48,0.05)">
+        <div class="kp-label" style="color:var(--sig)">Private Key</div>
+        <div class="kp-key" style="color:var(--sig)">🔒 Never leave your device</div>
+        <div class="kp-desc">Held exclusively by owner — never transmitted. Used by YOU TO: decrypt messages others encrypted to you, create digital signatures. Compromise of private key = compromise of everything. Protected by HSM, smart card, or encrypted key store.</div>
+      </div>
+    </div>
+    <h3 style="border-left-color:var(--pki)">Key Operations — What Each Key Does</h3>
+    <div class="code">
+<span class="cm"># Encryption use case (confidentiality):</span>
+  Sender encrypts with recipient's <span class="cgd">PUBLIC key</span>   → <span class="cb">only recipient can decrypt</span>
+  Recipient decrypts with their own <span class="cs">PRIVATE key</span>  → <span class="cg">confidential message</span>
+  
+  Analogy: Public key = padlock anyone can close
+           Private key = only key that opens that padlock
+
+<span class="cm"># Digital signature use case (authentication + integrity + non-repudiation):</span>
+  Sender signs with their own <span class="cs">PRIVATE key</span>         → <span class="cg">only they could have signed</span>
+  Recipient verifies with sender's <span class="cgd">PUBLIC key</span>   → <span class="cb">signature is authentic</span>
+
+<span class="cm"># Critical exam rule: which key for what?</span>
+  Encrypt for someone:     their PUBLIC key   (anyone can send them encrypted data)
+  Decrypt:                 YOUR PRIVATE key   (only you can decrypt what was sent to you)
+  Sign:                    YOUR PRIVATE key   (proves it came from you)
+  Verify signature:        signer's PUBLIC key (anyone can verify your signature)
+
+<span class="cm"># Key exchange:</span>
+  Problem: asymmetric crypto is SLOW for bulk data
+  Solution: use asymmetric to exchange a SYMMETRIC session key
+  Then: use fast symmetric key for actual data encryption
+  This is how TLS/HTTPS works
+    </div>
+    <h3 style="border-left-color:var(--pki)">Key Storage and Protection</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#382000"><h4 style="color:var(--pki)">Hardware Security Module (HSM)</h4><p>Dedicated hardware device for cryptographic operations and key storage. Keys generated inside HSM — never exported in plaintext. FIPS 140-2 Level 3: physical tamper resistance — destroys keys if opened. Uses: CA root key, code signing, high-value certificate private keys. Cloud: AWS KMS, Azure Key Vault (cloud HSM).</p></div>
+      <div class="gc"><h4 style="color:var(--enc)">TPM — Trusted Platform Module</h4><p>Chip on motherboard that stores cryptographic keys. Used by BitLocker: encryption key bound to the TPM — disk encrypted, key in hardware. Measured boot: TPM records boot sequence — detects tampering. Cannot extract keys from TPM without physical access to chip. Most modern PCs have TPM 2.0.</p></div>
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Encrypt for someone →</span><span>Use their PUBLIC key — only they can decrypt with private key</span></div>
+      <div class="er"><span class="ek">Sign a message →</span><span>Use YOUR PRIVATE key — others verify with your public key</span></div>
+      <div class="er"><span class="ek">HSM →</span><span>Hardware Security Module — keys never leave in plaintext — FIPS 140-2 certified</span></div>
+      <div class="er"><span class="ek">TPM →</span><span>Trusted Platform Module — motherboard chip — BitLocker key storage — measured boot</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="p3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">PKI</span><span class="card-title" style="color:var(--pki)">Digital Certificates</span><span class="bdg" style="background:#201400;color:var(--pki);border:1px solid #382000">X.509 · Contents · Types</span></div>
+  <div class="card-bd">
+    <p>A digital certificate is a <strong style="color:var(--tx)">digitally signed document that binds a public key to an identity</strong>. The CA's signature on the certificate is the proof of binding — the CA vouches that this public key belongs to this identity.</p>
+    <h3 style="border-left-color:var(--pki)">X.509 Certificate Contents</h3>
+    <div style="border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin:0.8rem 0;">
+      <div style="background:var(--s3);padding:0.5rem 0.8rem;font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:var(--pki);border-bottom:1px solid var(--bd);">X.509 DIGITAL CERTIFICATE</div>
+      <div class="cert-field"><span class="cf-name">Version</span><span class="cf-val">X.509 version (v3 is current standard)</span></div>
+      <div class="cert-field"><span class="cf-name">Serial Number</span><span class="cf-val">Unique ID issued by the CA — used in revocation (CRL/OCSP)</span></div>
+      <div class="cert-field"><span class="cf-name">Subject</span><span class="cf-val">Identity this cert belongs to: CN=company.com, O=Acme Corp, C=US</span></div>
+      <div class="cert-field"><span class="cf-name">Subject Public Key</span><span class="cf-val">The actual public key being certified by the CA</span></div>
+      <div class="cert-field"><span class="cf-name">Issuer</span><span class="cf-val">CA that signed this certificate: CN=DigiCert TLS RSA SHA256 2020 CA1</span></div>
+      <div class="cert-field"><span class="cf-name">Validity Period</span><span class="cf-val">Not Before / Not After — certificate expires, must be renewed</span></div>
+      <div class="cert-field"><span class="cf-name">Extensions (v3)</span><span class="cf-val">SAN (Subject Alternative Names), Key Usage, Extended Key Usage, CDP, OCSP URL</span></div>
+      <div class="cert-field"><span class="cf-name">CA Digital Signature</span><span class="cf-val">CA signed everything above with CA's private key — proves cert not tampered + CA vouches</span></div>
+    </div>
+    <h3 style="border-left-color:var(--pki)">Certificate Types by Purpose</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Type</th><th>Purpose</th><th>Validation Level</th><th>Example Use</th></tr>
+      <tr><td><span class="tag tgd">DV</span></td><td>Domain Validation — proves domain control</td><td>Low — domain control only</td><td>Most HTTPS websites</td></tr>
+      <tr><td><span class="tag to">OV</span></td><td>Organization Validation — proves org exists</td><td>Medium — org identity verified</td><td>Business websites, portals</td></tr>
+      <tr><td><span class="tag tg">EV</span></td><td>Extended Validation — highest assurance</td><td>High — thorough legal vetting</td><td>Banking, high-value commerce</td></tr>
+      <tr><td><span class="tag tb">Wildcard</span></td><td>Covers domain + all first-level subdomains</td><td>DV or OV</td><td>*.company.com covers all subs</td></tr>
+      <tr><td><span class="tag tp">SAN</span></td><td>Subject Alternative Name — multiple domains</td><td>Any</td><td>company.com + company.net + mail.company.com</td></tr>
+      <tr><td><span class="tag tt">Self-signed</span></td><td>Signed by own private key — no CA involved</td><td>None — no third party</td><td>Internal labs, development, test</td></tr>
+      <tr><td><span class="tag ts">Code Signing</span></td><td>Verifies software authenticity</td><td>OV or EV</td><td>Windows drivers, software packages</td></tr>
+      <tr><td><span class="tag tg">Client Auth</span></td><td>Client authenticates to server</td><td>Varies</td><td>Employee VPN, smart card login</td></tr>
+    </table>
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Certificate contents →</span><span>Subject, public key, issuer (CA), validity period, serial number, CA signature</span></div>
+      <div class="er"><span class="ek">Self-signed cert →</span><span>No CA — low trust — OK for internal/dev — not for public internet</span></div>
+      <div class="er"><span class="ek">Wildcard cert →</span><span>*.company.com covers all first-level subdomains — NOT sub.sub.company.com</span></div>
+      <div class="er"><span class="ek">SAN cert →</span><span>Multiple hostnames in one cert — company.com + mail.company.com + company.net</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="p4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">PKI</span><span class="card-title" style="color:var(--pki)">CA Hierarchy &amp; Trust Chains</span><span class="bdg" style="background:#201400;color:var(--pki);border:1px solid #382000">Root · Intermediate · Chain of Trust</span></div>
+  <div class="card-bd">
+    <p>CAs are organized in a <strong style="color:var(--tx)">hierarchy — the chain of trust</strong>. Trust flows from the Root CA at the top, through Intermediate CAs, to end-entity certificates. This hierarchy allows Root CAs to stay offline and secure while Intermediate CAs handle day-to-day operations.</p>
+    <div class="chain">
+      <div class="chain-box" style="background:rgba(232,176,48,0.1);border-color:var(--pki);color:var(--pki)">🔐 Root CA<br><span style="font-size:0.55rem;font-weight:400">Self-signed<br>OFFLINE vault</span></div>
+      <span class="chain-arr">→</span>
+      <div class="chain-box" style="background:rgba(64,200,224,0.08);border-color:var(--enc);color:var(--enc)">Intermediate CA<br><span style="font-size:0.55rem;font-weight:400">Online<br>Signs end certs</span></div>
+      <span class="chain-arr">→</span>
+      <div class="chain-box" style="background:rgba(48,216,128,0.08);border-color:var(--hsh);color:var(--hsh)">End-Entity Cert<br><span style="font-size:0.55rem;font-weight:400">Your website<br>User cert</span></div>
+      <span class="chain-arr">→</span>
+      <div class="chain-box" style="background:rgba(160,96,248,0.08);border-color:var(--obf);color:var(--obf)">Browser/<br>Client<br><span style="font-size:0.55rem;font-weight:400">Verifies<br>chain</span></div>
+    </div>
+    <div class="code">
+<span class="cm"># Chain of trust verification:</span>
+Browser receives: website certificate + intermediate certificate
+
+Verify end-entity cert:
+  Signed by: Intermediate CA? ← check signature with intermediate's public key ✓
+  Valid dates? ✓   Not revoked? ✓
+
+Verify intermediate cert:
+  Signed by: Root CA? ← check signature with root CA's public key ✓
+  Is Root CA in my trust store? ← YES (browser pre-installed) ✓
+
+Result: <span class="cg">trust established — chain of trust verified</span>
+
+<span class="cm"># Why Root CA stays offline:</span>
+Root CA compromise = ALL certificates ever issued are untrusted
+Solution: keep root CA in air-gapped vault, only power on to sign new intermediate certs
+Intermediate CA: online, handles daily operations
+If intermediate is compromised: revoke intermediate cert → root still safe
+    </div>
+    <h3 style="border-left-color:var(--pki)">Internal vs External PKI</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#382000"><h4 style="color:var(--pki)">Public PKI (External CA)</h4><p>Commercial CAs: DigiCert, Let's Encrypt, Sectigo. Trusted by browsers/OS out of the box. Required for: public websites, external-facing services. Cost: commercial CAs charge; Let's Encrypt is free. Validation: CA verifies domain/organization before issuing.</p></div>
+      <div class="gc"><h4 style="color:var(--enc)">Private PKI (Internal CA)</h4><p>Organization runs its own CA hierarchy. Used for: internal services, employee certificates, device authentication, code signing. Not trusted by external browsers by default — must push root cert to devices via GPO/MDM. Windows: Active Directory Certificate Services (AD CS). Benefits: full control, no cost per cert, custom validity periods.</p></div>
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Root CA →</span><span>Top of trust hierarchy — self-signed — kept OFFLINE in vault — compromise = catastrophic</span></div>
+      <div class="er"><span class="ek">Intermediate CA →</span><span>Signs end-entity certificates — online — if compromised: revoke without affecting root</span></div>
+      <div class="er"><span class="ek">Chain of trust →</span><span>End cert → intermediate → root → trust store — every link must verify</span></div>
+      <div class="er"><span class="ek">Let's Encrypt →</span><span>Free public CA — automated DV certificates — 90-day validity</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="p5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">PKI</span><span class="card-title" style="color:var(--pki)">Certificate Revocation</span><span class="bdg" style="background:#201400;color:var(--pki);border:1px solid #382000">CRL · OCSP · Stapling</span></div>
+  <div class="card-bd">
+    <p>When a certificate must be invalidated before its expiry — private key compromised, employee leaves, org changes — <strong style="color:var(--tx)">revocation mechanisms allow CAs to declare a certificate invalid</strong>.</p>
+    <div class="g2">
+      <div class="gc" style="border-color:#382000">
+        <h4 style="color:var(--pki)">CRL — Certificate Revocation List</h4>
+        <p>A list of serial numbers of revoked certificates, digitally signed by the CA. Published at CDP (CRL Distribution Point) URL in the certificate. Client downloads CRL → checks if serial number is on it. Problems: CRL can be large (megabytes), updated on schedule not in real time, client caches it — delay between revocation and detection.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--enc)">OCSP — Online Certificate Status Protocol</h4>
+        <p>Real-time revocation checking via HTTP request to OCSP responder. Client sends: serial number. OCSP returns: good/revoked/unknown. Faster and smaller than CRL. Problem: OCSP responder must be available — single point of failure. Privacy: OCSP responder learns which sites you're visiting.</p>
+      </div>
+    </div>
+    <div class="info-row" style="margin-top:0.8rem">
+      <div class="info-icon">⚡</div>
+      <div>
+        <div class="info-title" style="color:var(--hsh)">OCSP Stapling — Best of Both</div>
+        <div class="info-desc">Server queries OCSP responder itself → caches the signed response → staples it to the TLS handshake. Client receives cert + OCSP response in one handshake. Benefits: faster (no extra client request), better privacy (client doesn't contact OCSP), works even if OCSP responder is temporarily down (cached response). Modern web servers use OCSP stapling — it's the recommended approach.</div>
+      </div>
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">CRL →</span><span>List of revoked serial numbers — published by CA — client downloads — can be large/stale</span></div>
+      <div class="er"><span class="ek">OCSP →</span><span>Real-time revocation check — client queries responder — faster than CRL — privacy concern</span></div>
+      <div class="er"><span class="ek">OCSP stapling →</span><span>Server staples OCSP response to handshake — fast + private + resilient — best approach</span></div>
+      <div class="er"><span class="ek">Certificate pinning →</span><span>App only trusts specific cert/key — prevents MITM even with rogue CA</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="p6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">PKI</span><span class="card-title" style="color:var(--pki)">PKI Exam Summary</span><span class="bdg" style="background:#201400;color:var(--pki);border:1px solid #382000">All Key Points</span></div>
+  <div class="card-bd">
+    <div class="exam">
+      <h4>// All PKI Exam Points</h4>
+      <div class="er"><span class="ek">PKI purpose →</span><span>Binds identity to public key — solves MITM key substitution via trusted CA</span></div>
+      <div class="er"><span class="ek">Encrypt for someone →</span><span>Their PUBLIC key — they decrypt with PRIVATE key</span></div>
+      <div class="er"><span class="ek">Sign a message →</span><span>YOUR PRIVATE key — anyone verifies with your PUBLIC key</span></div>
+      <div class="er"><span class="ek">Certificate contains →</span><span>Subject, public key, issuer, validity, serial number, CA signature</span></div>
+      <div class="er"><span class="ek">Root CA →</span><span>Offline, air-gapped — compromise = catastrophic — self-signed</span></div>
+      <div class="er"><span class="ek">Intermediate CA →</span><span>Online — signs end certs — can be revoked without affecting root</span></div>
+      <div class="er"><span class="ek">Wildcard →</span><span>*.company.com — all first-level subdomains — NOT second-level</span></div>
+      <div class="er"><span class="ek">Self-signed →</span><span>No CA — no third-party trust — OK internal/dev — not public internet</span></div>
+      <div class="er"><span class="ek">HSM →</span><span>Hardware key storage — keys never exposed in plaintext — FIPS 140-2</span></div>
+      <div class="er"><span class="ek">TPM →</span><span>Motherboard chip — BitLocker key storage — measured boot integrity</span></div>
+      <div class="er"><span class="ek">CRL →</span><span>Revocation list — serial numbers — client downloads — can be stale</span></div>
+      <div class="er"><span class="ek">OCSP →</span><span>Real-time status check — faster than CRL — privacy concern</span></div>
+      <div class="er"><span class="ek">OCSP Stapling →</span><span>Server includes OCSP response in handshake — best approach</span></div>
+    </div>
+  </div>
+</div>
+</div>
+</div><!-- end pki -->
+
+<!-- ══════════════════════════════════ -->
+<!-- ENCRYPTION                         -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-enc">
+<div class="tabs" id="t-enc">
+  <button class="tab active" onclick="goTab('enc','e1',this)">Overview</button>
+  <button class="tab" onclick="goTab('enc','e2',this)">Symmetric</button>
+  <button class="tab" onclick="goTab('enc','e3',this)">Asymmetric</button>
+  <button class="tab" onclick="goTab('enc','e4',this)">Algorithms</button>
+  <button class="tab" onclick="goTab('enc','e5',this)">In Practice</button>
+</div>
+
+<div class="sec on" id="e1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">ENC</span><span class="card-title" style="color:var(--enc)">Encryption Overview</span><span class="bdg" style="background:#071828;color:var(--enc);border:1px solid #0e2840">Confidentiality · Transform Data</span></div>
+  <div class="card-bd">
+    <p>Encryption is the process of <strong style="color:var(--tx)">transforming readable plaintext into unreadable ciphertext using a mathematical algorithm and a key</strong>. Only those with the correct key can decrypt the ciphertext back to plaintext. It is the primary technical control for confidentiality.</p>
+    <h3 style="border-left-color:var(--enc)">Symmetric vs Asymmetric — Core Distinction</h3>
+    <div class="vs-strip">
+      <div class="vs-side" style="background:rgba(64,200,224,0.04)">
+        <div class="vs-label" style="color:var(--enc)">Symmetric</div>
+        <div class="vs-title">One Key</div>
+        <div class="vs-body">Same key encrypts AND decrypts. Fast — ideal for bulk data. Problem: how do you securely share the key initially? Examples: AES, 3DES, ChaCha20.</div>
+      </div>
+      <div class="vs-side">
+        <div class="vs-label" style="color:var(--pki)">Asymmetric</div>
+        <div class="vs-title">Key Pair</div>
+        <div class="vs-body">Public key encrypts, private key decrypts (or vice versa for signing). Slow — impractical for bulk data. Solves key distribution. Examples: RSA, ECC, DH.</div>
+      </div>
+    </div>
+    <div class="code">
+<span class="cm"># How TLS/HTTPS uses BOTH (hybrid encryption):</span>
+1. Asymmetric: client uses server's public key to encrypt a random value
+2. Both derive:  symmetric session key from that value (key exchange)
+3. Symmetric:   all subsequent data encrypted with fast symmetric key
+
+Result: security of asymmetric (key exchange) + speed of symmetric (bulk data)
+This hybrid approach is used in: TLS, SSH, PGP, S/MIME
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Symmetric →</span><span>One key — fast — bulk data — key distribution problem</span></div>
+      <div class="er"><span class="ek">Asymmetric →</span><span>Key pair — slow — solves key distribution — used for key exchange</span></div>
+      <div class="er"><span class="ek">Hybrid →</span><span>Asymmetric for key exchange + symmetric for data — TLS, SSH, PGP</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="e2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">ENC</span><span class="card-title" style="color:var(--enc)">Symmetric Encryption</span><span class="bdg" style="background:#071828;color:var(--enc);border:1px solid #0e2840">AES · 3DES · ChaCha20</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--enc)">Symmetric Algorithms</h3>
+    <div class="algo">
+      <span class="algo-name" style="color:var(--enc)">AES</span>
+      <div class="algo-body">Advanced Encryption Standard. CURRENT STANDARD. Block cipher — 128-bit blocks. Key sizes: 128, 192, 256 bits (AES-256 = gold standard). Extremely fast in hardware. Adopted by US government for classified data. Used in: TLS, disk encryption (BitLocker), Wi-Fi (WPA2/3), file encryption.
+        <div class="algo-tags"><span class="tag tb">Block cipher</span><span class="tag tg">Approved</span><span class="tag tg">128/192/256-bit key</span></div>
+      </div>
+    </div>
+    <div class="algo">
+      <span class="algo-name" style="color:var(--hsh)">ChaCha20</span>
+      <div class="algo-body">Stream cipher. Excellent performance on devices without AES hardware acceleration (mobile, IoT). Used in TLS 1.3 alongside AES. Paired with Poly1305 for authentication: ChaCha20-Poly1305. Google uses it for HTTPS on mobile devices. Modern and secure — good alternative to AES.
+        <div class="algo-tags"><span class="tag tg">Stream cipher</span><span class="tag tg">Approved</span><span class="tag tb">TLS 1.3</span></div>
+      </div>
+    </div>
+    <div class="algo">
+      <span class="algo-name" style="color:var(--mu)">3DES</span>
+      <div class="algo-body">Triple DES — applies DES three times. Legacy algorithm — being phased out. Effectively 112-bit security. Much slower than AES. NIST deprecated 3DES in 2017 — disallowed after 2023. If you see 3DES: replace with AES. Still found in legacy payment systems and old TLS configs.
+        <div class="algo-tags"><span class="tag ts">Legacy</span><span class="tag tr">Deprecated</span></div>
+      </div>
+    </div>
+    <div class="algo">
+      <span class="algo-name" style="color:var(--sig)">DES</span>
+      <div class="algo-body">Data Encryption Standard. 56-bit key — completely broken. Crackable in under 24 hours. Never use for anything. Replaced by 3DES → AES. If you see DES in a security context: that system is broken.
+        <div class="algo-tags"><span class="tag tr">Broken</span><span class="tag tr">56-bit — DO NOT USE</span></div>
+      </div>
+    </div>
+    <h3 style="border-left-color:var(--enc)">Block Cipher Modes</h3>
+    <div class="code">
+<span class="cm"># How block ciphers process multiple blocks of data:</span>
+
+<span class="cr">ECB (Electronic Codebook) — NEVER USE:</span>
+  Same plaintext block → same ciphertext block
+  Pattern preservation: encrypted penguin image still shows penguin shape
+  Deterministic: easy to detect patterns, replay attacks
+
+<span class="cb">CBC (Cipher Block Chaining):</span>
+  Each block XOR'd with previous ciphertext before encrypting
+  Randomized by IV (Initialization Vector) — no two same
+  Sequential: cannot parallelize decryption
+  Vulnerable: BEAST, POODLE attacks on TLS — avoid in TLS
+
+<span class="cg">GCM (Galois/Counter Mode) — RECOMMENDED:</span>
+  Parallelizable: fast
+  Provides: encryption + authentication (AEAD)
+  AES-GCM: used in TLS 1.3, SSH, IPsec
+  Both encrypts data AND verifies integrity in one step
+
+<span class="cg">CTR (Counter Mode):</span>
+  Turns block cipher into stream cipher
+  Parallelizable
+  Requires: unique nonce per use — reuse is catastrophic
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">AES →</span><span>Current standard symmetric — 128/192/256-bit — block cipher — fast in hardware</span></div>
+      <div class="er"><span class="ek">AES-256 →</span><span>Gold standard — used in TLS, BitLocker, WPA3, government classified</span></div>
+      <div class="er"><span class="ek">3DES →</span><span>Legacy — deprecated 2017 — replace with AES</span></div>
+      <div class="er"><span class="ek">ECB mode →</span><span>NEVER USE — reveals patterns — same input = same output</span></div>
+      <div class="er"><span class="ek">GCM mode →</span><span>Recommended — AEAD — encryption + authentication — TLS 1.3</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="e3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">ENC</span><span class="card-title" style="color:var(--enc)">Asymmetric Encryption</span><span class="bdg" style="background:#071828;color:var(--enc);border:1px solid #0e2840">RSA · ECC · DH · Key Exchange</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--enc)">Asymmetric Algorithms</h3>
+    <div class="algo">
+      <span class="algo-name" style="color:var(--enc)">RSA</span>
+      <div class="algo-body">Rivest–Shamir–Adleman. Based on difficulty of factoring large numbers. Key sizes: 2048-bit minimum (secure), 4096-bit for long-term. Slow — used for key exchange and signatures, not bulk data. RSA-2048: widely used in TLS certificates, code signing. RSA-1024: broken — do not use.
+        <div class="algo-tags"><span class="tag tb">2048-bit min</span><span class="tag tg">Widely deployed</span></div>
+      </div>
+    </div>
+    <div class="algo">
+      <span class="algo-name" style="color:var(--hsh)">ECC</span>
+      <div class="algo-body">Elliptic Curve Cryptography. Based on algebraic structure of elliptic curves. Smaller keys for equivalent security: ECC-256 ≈ RSA-3072. Faster and less power-hungry than RSA. Widely used on mobile/IoT. Curves: P-256, P-384, Curve25519 (modern, fast, resistant to timing attacks). Used in: TLS 1.3 key exchange (ECDHE), Bitcoin.
+        <div class="algo-tags"><span class="tag tg">Smaller keys</span><span class="tag tg">Efficient</span><span class="tag tb">Mobile/IoT</span></div>
+      </div>
+    </div>
+    <div class="algo">
+      <span class="algo-name" style="color:var(--pki)">Diffie-Hellman</span>
+      <div class="algo-body">Key exchange — allows two parties to establish a shared secret over an insecure channel WITHOUT exchanging the secret itself. Not encryption itself — just key exchange. DHE (ephemeral DH): new keys per session → forward secrecy. ECDHE: DH using elliptic curves — faster. Used in TLS for key exchange.
+        <div class="algo-tags"><span class="tag tgd">Key exchange</span><span class="tag tg">Forward secrecy (DHE)</span></div>
+      </div>
+    </div>
+    <h3 style="border-left-color:var(--enc)">Forward Secrecy — Critical Concept</h3>
+    <div class="code">
+<span class="cm"># Why forward secrecy matters:</span>
+Without FS (old RSA key exchange):
+  Attacker records encrypted TLS session
+  Later: compromise server's RSA private key
+  Can decrypt ALL previously recorded sessions
+
+With FS (DHE/ECDHE):
+  Each session: new ephemeral key pair generated
+  Session key derived from ephemeral keys → discarded after session
+  Compromise server key: <span class="cg">cannot decrypt past sessions</span>
+  Each session: only decryptable with that session's ephemeral key
+
+<span class="cm"># TLS 1.3 mandates forward secrecy:</span>
+Only allows ECDHE and DHE for key exchange
+Removed: RSA key transport (no forward secrecy)
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">RSA →</span><span>2048-bit minimum — factoring-based — slow — certs and signatures</span></div>
+      <div class="er"><span class="ek">ECC →</span><span>Smaller keys — same security as larger RSA — efficient — mobile/IoT</span></div>
+      <div class="er"><span class="ek">Diffie-Hellman →</span><span>Key EXCHANGE only — not encryption — establishes shared secret over insecure channel</span></div>
+      <div class="er"><span class="ek">Forward secrecy →</span><span>Ephemeral keys — past sessions safe if key compromised later — TLS 1.3 mandates it</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="e4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">ENC</span><span class="card-title" style="color:var(--enc)">Key Concepts &amp; Algorithms Summary</span><span class="bdg" style="background:#071828;color:var(--enc);border:1px solid #0e2840">Strength · Lengths · Use Cases</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--enc)">Key Length and Security Strength</h3>
+    <div class="level-row"><span class="lv-name" style="color:var(--sig)">DES — 56-bit</span><div class="lv-bar"><div class="lv-fill" style="width:5%;background:var(--sig)"></div></div><span class="lv-note" style="color:var(--sig)">BROKEN — never use</span></div>
+    <div class="level-row"><span class="lv-name" style="color:var(--mu)">3DES — ~112-bit</span><div class="lv-bar"><div class="lv-fill" style="width:20%;background:var(--mu)"></div></div><span class="lv-note" style="color:var(--mu)">Deprecated — legacy only</span></div>
+    <div class="level-row"><span class="lv-name" style="color:var(--enc)">AES-128</span><div class="lv-bar"><div class="lv-fill" style="width:65%;background:var(--enc)"></div></div><span class="lv-note" style="color:var(--enc)">Secure — fast</span></div>
+    <div class="level-row"><span class="lv-name" style="color:var(--hsh)">AES-256</span><div class="lv-bar"><div class="lv-fill" style="width:90%;background:var(--hsh)"></div></div><span class="lv-note" style="color:var(--hsh)">Gold standard ✓</span></div>
+    <div class="level-row"><span class="lv-name" style="color:var(--mu)">RSA-1024</span><div class="lv-bar"><div class="lv-fill" style="width:10%;background:var(--sig)"></div></div><span class="lv-note" style="color:var(--sig)">Broken — do not use</span></div>
+    <div class="level-row"><span class="lv-name" style="color:var(--enc)">RSA-2048</span><div class="lv-bar"><div class="lv-fill" style="width:55%;background:var(--enc)"></div></div><span class="lv-note" style="color:var(--enc)">Minimum acceptable</span></div>
+    <div class="level-row"><span class="lv-name" style="color:var(--hsh)">ECC-256 (P-256)</span><div class="lv-bar"><div class="lv-fill" style="width:80%;background:var(--hsh)"></div></div><span class="lv-note" style="color:var(--hsh)">Recommended — efficient</span></div>
+
+    <h3 style="border-left-color:var(--enc)">Encryption At Rest vs In Transit</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#0e2840"><h4 style="color:var(--enc)">Encryption At Rest</h4><p>Encrypts stored data — protects if physical media is stolen. Full Disk Encryption: BitLocker (Windows), FileVault (macOS), LUKS (Linux). Database encryption: TDE (Transparent Data Encryption). File-level: VeraCrypt, PGP. Key: store encryption key separately from data — encrypted disk with key on same drive = useless.</p></div>
+      <div class="gc"><h4 style="color:var(--hsh)">Encryption In Transit</h4><p>Encrypts data moving between systems — prevents eavesdropping. TLS 1.3: HTTPS, SMTP/TLS, IMAP/TLS. SSH: encrypts admin traffic. IPsec VPN: encrypts entire network layer. Never: plain HTTP, Telnet, FTP for sensitive data. Certificate required: TLS relies on PKI for authentication.</p></div>
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">AES-256 at rest →</span><span>Gold standard for stored data — BitLocker, VeraCrypt, database TDE</span></div>
+      <div class="er"><span class="ek">TLS 1.3 in transit →</span><span>Current standard — forward secrecy mandatory — removed weak ciphers</span></div>
+      <div class="er"><span class="ek">Key storage →</span><span>Encryption key must be stored separately from encrypted data — HSM/TPM ideal</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="e5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">ENC</span><span class="card-title" style="color:var(--enc)">Encryption In Practice</span><span class="bdg" style="background:#071828;color:var(--enc);border:1px solid #0e2840">TLS · SSH · VPN · Email</span></div>
+  <div class="card-bd">
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Protocol</th><th>What It Encrypts</th><th>Algorithm Used</th><th>Port</th></tr>
+      <tr><td><span class="tag tb">TLS 1.3</span></td><td>Web traffic, email, any TCP app</td><td>AES-GCM + ECDHE key exchange</td><td>443 (HTTPS)</td></tr>
+      <tr><td><span class="tag tg">SSH</span></td><td>Remote admin sessions, file transfer</td><td>AES, ChaCha20 + ECDH key exchange</td><td>22</td></tr>
+      <tr><td><span class="tag tg">IPsec</span></td><td>Network layer — full packets</td><td>AES-GCM + IKEv2 key exchange</td><td>ESP/AH protocols</td></tr>
+      <tr><td><span class="tag to">PGP/GPG</span></td><td>Email and file encryption</td><td>AES (symmetric) + RSA/ECC (key wrap)</td><td>N/A</td></tr>
+      <tr><td><span class="tag tp">S/MIME</span></td><td>Email encryption + signing</td><td>AES + RSA/ECC — uses X.509 certs</td><td>N/A</td></tr>
+      <tr><td><span class="tag tgd">WPA3</span></td><td>WiFi traffic</td><td>AES-CCMP + SAE (Dragonfly) key exchange</td><td>N/A</td></tr>
+    </table>
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">TLS 1.3 →</span><span>HTTPS + most secure protocols — AES-GCM + ECDHE — forward secrecy built in</span></div>
+      <div class="er"><span class="ek">IPsec tunnel mode →</span><span>Encrypts entire original packet including headers — used in site-to-site VPN</span></div>
+      <div class="er"><span class="ek">S/MIME →</span><span>Email encryption + signing — uses X.509 certificates — enterprise email</span></div>
+    </div>
+  </div>
+</div>
+</div>
+</div><!-- end encryption -->
+
+<!-- ══════════════════════════════════ -->
+<!-- OBFUSCATION                        -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-obf">
+<div class="card">
+  <div class="card-hd"><span class="card-num">OBF</span><span class="card-title" style="color:var(--obf)">Obfuscation</span><span class="bdg" style="background:#180828;color:var(--obf);border:1px solid #281040">Hide · Obscure · Conceal</span></div>
+  <div class="card-bd">
+    <p>Obfuscation is the practice of <strong style="color:var(--tx)">making something unclear, obscure, or difficult to understand — without necessarily encrypting it</strong>. It is security through concealment rather than mathematical strength. NOT a substitute for strong encryption.</p>
+
+    <h3 style="border-left-color:var(--obf)">Obfuscation Techniques</h3>
+
+    <div class="algo">
+      <span class="algo-name" style="color:var(--obf)">Data Masking</span>
+      <div class="algo-body">Replacing real data with realistic but fake data. Used in: non-production environments (dev, test, QA). Credit card: 4532-9812-3456-7890 → 4532-XXXX-XXXX-7890. SSN: 123-45-6789 → XXX-XX-6789. Real customer data never in dev/test → no breach risk. Static masking: one-time transform. Dynamic masking: real-time based on user role (support agent sees masked, billing sees full).
+        <div class="algo-tags"><span class="tag tp">Not reversible</span><span class="tag tg">Dev/test use</span></div>
+      </div>
+    </div>
+
+    <div class="algo">
+      <span class="algo-name" style="color:var(--obf)">Steganography</span>
+      <div class="algo-body">Hiding secret data INSIDE another file (image, audio, video, text). The carrier file appears normal — nobody knows there's hidden data. Technique: hide bits in least-significant bits of image pixels. Covert channel: attacker exfiltrates data hidden in images (bypasses DLP). Steganalysis: detecting steganography. Unlike encryption: doesn't draw attention — nobody knows data is hidden there.
+        <div class="algo-tags"><span class="tag tp">Hidden in plain sight</span><span class="tag to">Covert channel risk</span></div>
+      </div>
+    </div>
+
+    <div class="algo">
+      <span class="algo-name" style="color:var(--obf)">Tokenization</span>
+      <div class="algo-body">Replacing sensitive data with a non-sensitive placeholder (token). Token has no mathematical relationship to original — just a lookup table. Used in: payment processing (PCI-DSS) — merchant stores token, not real card number. The token vault (mapping token → real data) is protected. Unlike encryption: token is useless without vault. Even if tokens are stolen: cannot derive original data without vault access.
+        <div class="algo-tags"><span class="tag tg">PCI-DSS common</span><span class="tag tb">No math relationship</span></div>
+      </div>
+    </div>
+
+    <div class="algo">
+      <span class="algo-name" style="color:var(--obf)">Code Obfuscation</span>
+      <div class="algo-body">Transforming source code to make it harder to reverse-engineer while keeping functionality identical. Techniques: variable renaming (x → a1b2c3), control flow flattening, string encryption, dead code insertion. Used by: malware authors (evade AV detection), software vendors (protect IP). Security implication: obfuscated malware harder to analyze. Does not provide security — determined analyst will reverse it.
+        <div class="algo-tags"><span class="tag to">Not true security</span><span class="tag tp">Malware technique</span></div>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--obf)">Obfuscation vs Encryption vs Hashing</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Technique</th><th>Reversible?</th><th>Math Basis?</th><th>Security Level</th><th>Use Case</th></tr>
+      <tr><td><span class="tag tp">Obfuscation</span></td><td>Varies</td><td>No</td><td>Low — obscurity only</td><td>Hide, conceal, dev/test data</td></tr>
+      <tr><td><span class="tag tb">Encryption</span></td><td>Yes — with key</td><td>Yes — strong</td><td>High — mathematical</td><td>Protect confidential data</td></tr>
+      <tr><td><span class="tag tg">Hashing</span></td><td>No — one-way</td><td>Yes</td><td>High — integrity only</td><td>Verify integrity, store passwords</td></tr>
+      <tr><td><span class="tag to">Tokenization</span></td><td>Yes — via vault</td><td>No</td><td>High — vault is key</td><td>PCI-DSS payment data</td></tr>
+    </table>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Steganography as Covert Exfil</div>
+      <div class="code">
+<span class="cm"># Insider threat using steganography to exfiltrate data:</span>
+Employee: downloads confidential product roadmap (PDF)
+DLP tool: scans email attachments → finds no sensitive keywords
+         scans files → no obvious sensitive content in attached image
+
+What actually happened:
+  Employee encoded roadmap data into least-significant bits
+  of a vacation photo (cat.jpg)
+  DLP: sees innocent cat photo → no alert
+  External recipient: runs steganalysis tool → extracts roadmap
+
+Defensive controls:
+  Deep content inspection: steganalysis on all outbound images
+  User behavior analytics: unusual large image uploads
+  Data-in-use monitoring: who accessed the roadmap?
+  Zero Trust: verify context of file access + upload
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Obfuscation →</span><span>Makes data unclear/difficult to understand — NOT strong security by itself</span></div>
+      <div class="er"><span class="ek">Steganography →</span><span>Hides data inside innocent-looking files — covert channel — least-significant bit technique</span></div>
+      <div class="er"><span class="ek">Data masking →</span><span>Realistic fake data for dev/test — not reversible — protects real data in non-prod</span></div>
+      <div class="er"><span class="ek">Tokenization →</span><span>Replace sensitive data with token — vault maps token to real — used in PCI-DSS</span></div>
+      <div class="er"><span class="ek">Obfuscation ≠ security →</span><span>Security through obscurity is weak — must combine with real cryptographic controls</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end obfuscation -->
+
+<!-- ══════════════════════════════════ -->
+<!-- HASHING                            -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-hsh">
+<div class="tabs" id="t-hsh">
+  <button class="tab active" onclick="goTab('hsh','h1',this)">Overview</button>
+  <button class="tab" onclick="goTab('hsh','h2',this)">Algorithms</button>
+  <button class="tab" onclick="goTab('hsh','h3',this)">Password Hashing</button>
+  <button class="tab" onclick="goTab('hsh','h4',this)">Exam Notes</button>
+</div>
+
+<div class="sec on" id="h1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">HSH</span><span class="card-title" style="color:var(--hsh)">Hashing Overview</span><span class="bdg" style="background:#072a14;color:var(--hsh);border:1px solid #0e4020">One-Way · Integrity · Fingerprint</span></div>
+  <div class="card-bd">
+    <p>A hash function takes <strong style="color:var(--tx)">input of any size and produces a fixed-size output (digest) that uniquely represents the input</strong>. It is a one-way function — you cannot reverse a hash to get the original input. Any change to input produces a completely different hash.</p>
+    <div class="code">
+<span class="cm"># Hash properties — must know for exam:</span>
+
+<span class="cg">Deterministic:</span>      same input → always same hash
+<span class="cg">One-way:</span>            hash → cannot reverse to get input
+<span class="cg">Fixed output:</span>       any input size → same length output
+<span class="cg">Avalanche effect:</span>   1 bit change in input → completely different hash
+<span class="cg">Collision resistant:</span> computationally infeasible to find two inputs with same hash
+
+<span class="cm"># SHA-256 example:</span>
+input: "Hello"
+hash:  185f8db32921bd46d35cc2e...  (64 hex chars = 256 bits)
+
+input: "hello"  ← one character different (case)
+hash:  2cf24dba5fb0a30e26e83b2a...  ← completely different! (avalanche)
+
+<span class="cm"># What hashing provides:</span>
+Integrity:        verify file hasn't changed (compare hashes)
+Password storage: store hash not password → can't reverse to get password
+Digital sig:      sign the hash (not the data) — efficient
+Forensics:        chain of custody — evidence hash never changes
+    </div>
+    <h3 style="border-left-color:var(--hsh)">Collision Attacks</h3>
+    <div class="g2">
+      <div class="gc"><h4 style="color:var(--sig)">Collision Attack</h4><p>Finding two different inputs that produce the same hash. "Hash collision." If achievable: attacker can substitute a malicious file for a legitimate one while keeping the same hash. MD5 and SHA-1: collision attacks exist — do not use for security. SHA-256+: currently collision-resistant.</p></div>
+      <div class="gc"><h4 style="color:var(--enc)">Pre-image Attack</h4><p>Given a hash, find ANY input that produces that hash. Much harder than collision attack. Current algorithms (SHA-256+) are resistant to pre-image attacks. Password hashes: pre-image attack would allow recovering password from hash — this is why rainbow tables are a concern.</p></div>
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Hash →</span><span>One-way function — fixed-size output — cannot reverse — integrity verification</span></div>
+      <div class="er"><span class="ek">Avalanche effect →</span><span>Tiny input change = completely different hash — proves even small modifications detected</span></div>
+      <div class="er"><span class="ek">Collision →</span><span>Two inputs same hash — MD5/SHA-1 vulnerable — reason they're deprecated</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="h2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">HSH</span><span class="card-title" style="color:var(--hsh)">Hash Algorithms</span><span class="bdg" style="background:#072a14;color:var(--hsh);border:1px solid #0e4020">MD5 · SHA Family · HMAC</span></div>
+  <div class="card-bd">
+    <div class="hash-row">
+      <span class="hr-alg" style="color:var(--sig)">MD5</span>
+      <span class="hr-bits">128-bit</span>
+      <span class="hr-status"><span class="tag tr">BROKEN</span></span>
+      <span class="hr-notes">Cryptographically broken — collisions demonstrated in seconds. Still used for: non-security checksums (file download verification where integrity not security-critical). NEVER use for: password hashing, digital signatures, security-sensitive integrity checks.</span>
+    </div>
+    <div class="hash-row">
+      <span class="hr-alg" style="color:var(--sig)">SHA-1</span>
+      <span class="hr-bits">160-bit</span>
+      <span class="hr-status"><span class="tag tr">DEPRECATED</span></span>
+      <span class="hr-notes">Collision demonstrated in 2017 (SHAttered attack). Deprecated by NIST. Browsers no longer accept SHA-1 certificates. Still seen in: legacy git commits, older systems. Replace with SHA-256 minimum.</span>
+    </div>
+    <div class="hash-row">
+      <span class="hr-alg" style="color:var(--hsh)">SHA-256</span>
+      <span class="hr-bits">256-bit</span>
+      <span class="hr-status"><span class="tag tg">APPROVED</span></span>
+      <span class="hr-notes">Current minimum standard. Part of SHA-2 family. Used in: TLS certificates, Bitcoin, code signing, S/MIME. Fast and well-studied. Default choice for most integrity applications. SHA-256 is the go-to hash algorithm.</span>
+    </div>
+    <div class="hash-row">
+      <span class="hr-alg" style="color:var(--hsh)">SHA-384</span>
+      <span class="hr-bits">384-bit</span>
+      <span class="hr-status"><span class="tag tg">APPROVED</span></span>
+      <span class="hr-notes">Higher security margin than SHA-256. Used when extra strength needed. Government/classified data.</span>
+    </div>
+    <div class="hash-row">
+      <span class="hr-alg" style="color:var(--hsh)">SHA-512</span>
+      <span class="hr-bits">512-bit</span>
+      <span class="hr-status"><span class="tag tg">APPROVED</span></span>
+      <span class="hr-notes">Highest SHA-2 strength. Actually faster than SHA-256 on 64-bit systems. Used for password hashing as part of SHA-512crypt.</span>
+    </div>
+    <div class="hash-row">
+      <span class="hr-alg" style="color:var(--enc)">SHA-3</span>
+      <span class="hr-bits">Varies</span>
+      <span class="hr-status"><span class="tag tg">APPROVED</span></span>
+      <span class="hr-notes">Completely different construction from SHA-2 (Keccak sponge). Backup if SHA-2 weaknesses found. Not yet widely deployed but NIST approved.</span>
+    </div>
+    <div class="hash-row">
+      <span class="hr-alg" style="color:var(--enc)">HMAC</span>
+      <span class="hr-bits">Varies</span>
+      <span class="hr-status"><span class="tag tb">KEY-BASED</span></span>
+      <span class="hr-notes">Hash-based Message Authentication Code. Hash + secret key = HMAC. Provides: integrity AND authentication (you need the key to verify). Used in: TLS MAC, API authentication (HMAC-SHA256 JWT), IPsec. Without key: cannot produce valid HMAC.</span>
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">MD5 →</span><span>128-bit — BROKEN — collisions trivial — never use for security</span></div>
+      <div class="er"><span class="ek">SHA-1 →</span><span>160-bit — DEPRECATED — SHAttered collision 2017 — replace with SHA-256</span></div>
+      <div class="er"><span class="ek">SHA-256 →</span><span>Current minimum — 256-bit — TLS certs, code signing, general integrity</span></div>
+      <div class="er"><span class="ek">HMAC →</span><span>Hash + secret key — integrity AND authentication — TLS, JWT, API auth</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="h3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">HSH</span><span class="card-title" style="color:var(--hsh)">Password Hashing</span><span class="bdg" style="background:#072a14;color:var(--hsh);border:1px solid #0e4020">Salts · bcrypt · Argon2</span></div>
+  <div class="card-bd">
+    <p>Passwords must be stored as hashes — never plaintext. But <strong style="color:var(--tx)">basic hashing is insufficient for passwords</strong>. Dedicated password hashing functions add important protections.</p>
+    <div class="code">
+<span class="cm"># Why basic hash (SHA-256) is wrong for passwords:</span>
+
+Problem 1: Rainbow tables
+  Attacker pre-computes hash("password") = 5e884898...
+  Steals database → looks up hash → finds "password" instantly
+  SHA-256 is fast → trillions of lookups/second
+
+Problem 2: Identical passwords = identical hashes
+  Alice: password = "summer2023"
+  Bob:   password = "summer2023"
+  Database: alice_hash = bob_hash → tells attacker both use same pass
+
+<span class="cg"># Solutions:</span>
+
+<span class="cg">1. Salt:</span>
+  Random string appended to password BEFORE hashing
+  Alice: hash("summer2023" + "a7f3d2") = unique hash
+  Bob:   hash("summer2023" + "k8q2r9") = completely different hash!
+  Rainbow table: useless — would need table for every salt value
+  Salt stored alongside hash (not secret — uniqueness is enough)
+
+<span class="cg">2. Slow hash functions (work factor):</span>
+  bcrypt: designed to be slow — thousands of iterations
+         attacker: only thousands of attempts/second (not trillions)
+  Argon2: memory-hard — uses lots of RAM → expensive to parallelize
+  PBKDF2: key derivation with iterations → NIST approved
+  scrypt:  memory + CPU hard
+
+<span class="cg"># Password storage rule:</span>
+  NEVER: store plaintext
+  NEVER: use MD5 or SHA-256 alone (too fast)
+  ALWAYS: use bcrypt, Argon2, or PBKDF2
+  ALWAYS: salt is automatically handled by these functions
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Salt →</span><span>Random value added to password before hashing — defeats rainbow tables — stored with hash</span></div>
+      <div class="er"><span class="ek">bcrypt →</span><span>Slow password hash — work factor — thousands of iterations — correct for passwords</span></div>
+      <div class="er"><span class="ek">Argon2 →</span><span>Memory-hard password hash — modern winner — current recommendation</span></div>
+      <div class="er"><span class="ek">Rainbow table →</span><span>Pre-computed hash lookup table — defeated by salts — attacker tool</span></div>
+      <div class="er"><span class="ek">SHA-256 for passwords? →</span><span>WRONG — too fast — use bcrypt/Argon2/PBKDF2 instead</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="sec" id="h4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">HSH</span><span class="card-title" style="color:var(--hsh)">Hashing Exam Summary</span><span class="bdg" style="background:#072a14;color:var(--hsh);border:1px solid #0e4020">Key Points</span></div>
+  <div class="card-bd">
+    <div class="exam">
+      <h4>// All Hashing Exam Points</h4>
+      <div class="er"><span class="ek">Hash →</span><span>One-way, fixed-size, deterministic, collision-resistant — integrity verification</span></div>
+      <div class="er"><span class="ek">MD5 →</span><span>BROKEN — 128-bit — collisions trivial — never use for security</span></div>
+      <div class="er"><span class="ek">SHA-1 →</span><span>DEPRECATED — 160-bit — collision 2017 — not for new deployments</span></div>
+      <div class="er"><span class="ek">SHA-256 →</span><span>Current standard — 256-bit — TLS, code signing, integrity</span></div>
+      <div class="er"><span class="ek">HMAC →</span><span>Hash + key — integrity AND authentication — cannot forge without key</span></div>
+      <div class="er"><span class="ek">Salt →</span><span>Random value + password before hash — defeats rainbow tables</span></div>
+      <div class="er"><span class="ek">bcrypt/Argon2 →</span><span>Slow hash for passwords — work factor — right tool for password storage</span></div>
+      <div class="er"><span class="ek">Avalanche effect →</span><span>Tiny change → completely different hash</span></div>
+      <div class="er"><span class="ek">Hash use cases →</span><span>File integrity, password storage, digital signatures, chain of custody</span></div>
+    </div>
+  </div>
+</div>
+</div>
+</div><!-- end hashing -->
+
+<!-- ══════════════════════════════════ -->
+<!-- DIGITAL SIGNATURES                 -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-sig">
+<div class="card">
+  <div class="card-hd"><span class="card-num">SIG</span><span class="card-title" style="color:var(--sig)">Digital Signatures</span><span class="bdg" style="background:#200c00;color:var(--sig);border:1px solid #381400">Auth · Integrity · Non-Repudiation</span></div>
+  <div class="card-bd">
+    <p>Digital signatures provide <strong style="color:var(--tx)">three things simultaneously: authentication (who sent it), integrity (wasn't modified), and non-repudiation (can't deny sending it)</strong>. They combine asymmetric cryptography and hashing into one powerful mechanism.</p>
+    <h3 style="border-left-color:var(--sig)">How Digital Signatures Work</h3>
+    <div class="code">
+<span class="cm"># Signing (sender):</span>
+1. hash    = SHA256(document)           <span class="cm">// create fingerprint</span>
+2. sig     = RSA_sign(hash, private_key) <span class="cm">// encrypt hash with private key</span>
+3. send:   document + sig
+
+<span class="cm"># Verifying (receiver):</span>
+4. hash_from_sig  = RSA_verify(sig, sender_public_key) <span class="cm">// decrypt sig with public key</span>
+5. hash_of_doc    = SHA256(received_document)          <span class="cm">// hash what arrived</span>
+6. if hash_from_sig == hash_of_doc:
+       <span class="cg">✓ Integrity: document not modified since signing</span>
+       <span class="cg">✓ Authentication: only private key holder could produce this sig</span>
+       <span class="cg">✓ Non-repudiation: signer cannot deny — only they have their private key</span>
+   else:
+       <span class="cr">✗ Document was modified or signature is invalid</span>
+
+<span class="cm"># Why hash then sign (not sign the document directly)?</span>
+  RSA encryption is SLOW — signing 1GB file directly = too slow
+  SHA-256 of 1GB file = 32 bytes → sign the tiny hash instead
+  Fast regardless of document size
+    </div>
+    <h3 style="border-left-color:var(--sig)">What Digital Signatures Provide</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#381400"><h4 style="color:var(--sig)">Authentication</h4><p>Proves the message came from the private key holder. Only the owner of the private key could have produced the signature. Relies on: PKI to bind the private key to a verified identity via certificate.</p></div>
+      <div class="gc"><h4 style="color:var(--hsh)">Integrity</h4><p>Proves the document wasn't modified after signing. If even one bit changes: hash changes, signature verification fails. Detects: MITM tampering, accidental corruption, unauthorized modification.</p></div>
+      <div class="gc"><h4 style="color:var(--obf)">Non-Repudiation</h4><p>Signer cannot deny having signed. Private key is secret — only key holder could produce the signature. Legal weight: digital signatures legally binding in many jurisdictions (eIDAS EU, ESIGN USA).</p></div>
+    </div>
+    <h3 style="border-left-color:var(--sig)">Digital Signatures vs MAC (HMAC)</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th></th><th>Digital Signature</th><th>HMAC</th></tr>
+      <tr><td>Key type</td><td>Asymmetric (private key signs)</td><td>Symmetric (shared secret)</td></tr>
+      <tr><td>Verification</td><td>Anyone with public key can verify</td><td>Only those with shared secret</td></tr>
+      <tr><td>Non-repudiation</td><td>✅ Yes — only private key holder can sign</td><td>❌ No — both parties have the key</td></tr>
+      <tr><td>Authentication</td><td>✅ Yes</td><td>✅ Yes (mutual)</td></tr>
+      <tr><td>Integrity</td><td>✅ Yes</td><td>✅ Yes</td></tr>
+      <tr><td>Use case</td><td>Documents, code, certificates, email</td><td>TLS record MAC, API auth, JWT</td></tr>
+    </table>
+    </div>
+    <h3 style="border-left-color:var(--sig)">Real-World Digital Signature Applications</h3>
+    <div class="code">
+<span class="cm"># Where digital signatures are used:</span>
+
+Code signing:
+  Microsoft signs Windows updates with private key
+  Windows verifies signature before installing
+  Unsigned code: Windows blocks by default
+  Benefit: prevents malware masquerading as Windows update
+
+Email (S/MIME, PGP):
+  Sender signs email → recipient verifies
+  Proves: email from that sender, not modified in transit
+  S/MIME: enterprise email, X.509 certificates
+
+PDF / Document signing:
+  Adobe Acrobat, DocuSign, eIDAS compliant
+  Legal contracts signed electronically
+  Auditable trail: who signed, when, what version
+
+TLS Certificate Chain:
+  CA signs certificate with CA's private key
+  Browser verifies CA signature → trusts the certificate
+  Chain: Root CA signs Intermediate CA cert → Intermediate signs end cert
+
+Code/Package repositories:
+  GPG-signed Git commits: prove who committed
+  Package signing: apt/yum verify package signatures before install
+    </div>
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Digital signature provides →</span><span>Authentication + Integrity + Non-repudiation — all three simultaneously</span></div>
+      <div class="er"><span class="ek">Sign with →</span><span>YOUR PRIVATE key — others verify with your PUBLIC key</span></div>
+      <div class="er"><span class="ek">Why hash then sign →</span><span>Signing large file directly is slow — hash is always fixed small size</span></div>
+      <div class="er"><span class="ek">Sig vs HMAC →</span><span>Sig = asymmetric + non-repudiation / HMAC = symmetric + mutual auth — no non-repudiation</span></div>
+      <div class="er"><span class="ek">Code signing →</span><span>Software vendor signs code — OS verifies — prevents malware masquerading as legitimate software</span></div>
+      <div class="er"><span class="ek">Certificate chain →</span><span>CA signs cert with private key — browser verifies with CA public key — digital signature in action</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end signatures -->
+
+<!-- ══════════════════════════════════ -->
+<!-- BLOCKCHAIN                         -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-blk">
+<div class="card">
+  <div class="card-hd"><span class="card-num">BLK</span><span class="card-title" style="color:var(--blk)">Blockchain</span><span class="bdg" style="background:#0a1430;color:var(--blk);border:1px solid #102048">Distributed · Immutable · Consensus</span></div>
+  <div class="card-bd">
+    <p>A blockchain is a <strong style="color:var(--tx)">distributed, append-only ledger where each block contains a cryptographic hash of the previous block</strong>, creating an immutable chain. Tampering with any block invalidates all subsequent blocks — making fraud detectable.</p>
+
+    <h3 style="border-left-color:var(--blk)">How Blockchain Works</h3>
+    <div class="blk-chain">
+      <div class="blk-row">
+        <div class="blk-block" style="border-color:var(--pki)">
+          <div class="blk-n" style="color:var(--pki)">BLOCK 0 (Genesis)</div>
+          <div class="blk-h"><span style="color:var(--mu)">Hash:</span> <span style="color:var(--hsh)">0000a1b2c3...</span></div>
+          <div class="blk-ph"><span style="color:var(--mu)">Prev:</span> 0000000000...</div>
+          <div class="blk-data">Transaction: Alice → Bob 5 BTC<br>Nonce: 38472</div>
+        </div>
+        <div class="blk-arr">→</div>
+        <div class="blk-block" style="border-color:var(--enc)">
+          <div class="blk-n" style="color:var(--enc)">BLOCK 1</div>
+          <div class="blk-h"><span style="color:var(--mu)">Hash:</span> <span style="color:var(--hsh)">00f4a8b9e1...</span></div>
+          <div class="blk-ph"><span style="color:var(--mu)">Prev:</span> <span style="color:var(--pki)">0000a1b2c3...</span> ←links</div>
+          <div class="blk-data">Transaction: Bob → Carol 2 BTC<br>Nonce: 91847</div>
+        </div>
+        <div class="blk-arr">→</div>
+        <div class="blk-block" style="border-color:var(--hsh)">
+          <div class="blk-n" style="color:var(--hsh)">BLOCK 2</div>
+          <div class="blk-h"><span style="color:var(--mu)">Hash:</span> <span style="color:var(--hsh)">001c7d3f82...</span></div>
+          <div class="blk-ph"><span style="color:var(--mu)">Prev:</span> <span style="color:var(--enc)">00f4a8b9e1...</span> ←links</div>
+          <div class="blk-data">Transaction: Alice → Dave 1 BTC<br>Nonce: 20491</div>
+        </div>
+        <div class="blk-arr">→</div>
+        <div class="blk-block">
+          <div class="blk-n" style="color:var(--mu)">BLOCK 3 (Current)</div>
+          <div class="blk-h"><span style="color:var(--mu)">Hash:</span> <span style="color:var(--hsh)">003e9f1a7c...</span></div>
+          <div class="blk-ph"><span style="color:var(--mu)">Prev:</span> <span style="color:var(--hsh)">001c7d3f82...</span> ←links</div>
+          <div class="blk-data">New transactions<br>being validated...</div>
+        </div>
+      </div>
+    </div>
+    <div class="code">
+<span class="cm"># Why blockchain is tamper-evident:</span>
+If attacker modifies Block 1 transaction: "Bob → Carol 2 BTC" → "Bob → Eve 100 BTC"
+
+Block 1's hash: changes completely (avalanche effect)
+Block 2's "Previous hash" field: now doesn't match Block 1's real hash
+Block 2 is now invalid → Block 3 is invalid → entire chain after Block 1 invalid
+
+<span class="cg">Detection: any node in the distributed network checks → mismatch detected</span>
+Attack: would need to recalculate ALL subsequent blocks AND convince majority of
+        distributed network to accept the tampered chain
+        This is "51% attack" — requires controlling majority of network computing power
+    </div>
+
+    <h3 style="border-left-color:var(--blk)">Blockchain Security Properties</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#102048"><h4 style="color:var(--blk)">Immutability</h4><p>Records cannot be altered retroactively. Each block's hash is part of the next block — tampering invalidates all following blocks. Provides: audit trail that cannot be falsified. Security use: certificate transparency logs, supply chain records, audit trails.</p></div>
+      <div class="gc"><h4 style="color:var(--hsh)">Distributed</h4><p>No single point of failure or control. Hundreds/thousands of nodes hold full copies. Attacker must compromise majority of nodes simultaneously (51% attack). Provides: high availability + resistance to single-party manipulation.</p></div>
+      <div class="gc"><h4 style="color:var(--pki)">Transparency</h4><p>Public blockchains: all transactions visible to everyone. Every transaction verifiable by any participant. Auditability: complete history of every transaction since genesis. Note: privacy concern — no anonymity on public blockchain (addresses pseudonymous, not anonymous).</p></div>
+    </div>
+
+    <h3 style="border-left-color:var(--blk)">Security Applications of Blockchain</h3>
+    <div class="info-row">
+      <div class="info-icon">🔒</div>
+      <div>
+        <div class="info-title" style="color:var(--blk)">Certificate Transparency (CT) Logs</div>
+        <div class="info-desc">Public, append-only logs of all issued TLS certificates. CAs must submit certificates to CT logs. Browsers check CT logs — certificates not in logs are rejected. Detects: rogue CAs issuing unauthorized certificates (e.g., for google.com without Google's knowledge). DigiNotar 2011: rogue certificates issued — CT logs would have immediately detected this. Security benefit: any unauthorized cert issuance is publicly visible within seconds.</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">📦</div>
+      <div>
+        <div class="info-title" style="color:var(--blk)">Supply Chain Integrity</div>
+        <div class="info-desc">Record every step in a supply chain on blockchain — manufacturer to retailer. Immutable record: cannot falsify provenance records. Detect counterfeits: every item has a traceable history. Applications: pharmaceutical (verify drug authenticity), food safety (trace contamination source instantly), electronics (prevent counterfeit components).</div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Blockchain →</span><span>Distributed append-only ledger — each block contains hash of previous — tamper-evident</span></div>
+      <div class="er"><span class="ek">Immutability →</span><span>Changing one block invalidates all following blocks — entire distributed network detects</span></div>
+      <div class="er"><span class="ek">51% attack →</span><span>Attacker controls majority of network — can rewrite history — main blockchain threat</span></div>
+      <div class="er"><span class="ek">Certificate Transparency →</span><span>Public blockchain-like log of all TLS certs — detects rogue CA issuance</span></div>
+      <div class="er"><span class="ek">Blockchain security role →</span><span>Provides integrity and non-repudiation for distributed, decentralized records</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end blockchain -->
+
+<!-- ══════════════════════════════════ -->
+<!-- SUMMARY                            -->
+<!-- ══════════════════════════════════ -->
+<div class="model" id="m-sum">
+<div class="card">
+  <div class="card-hd"><span class="card-num">ALL</span><span class="card-title">Complete Exam Cheat Sheet</span><span class="bdg" style="background:#181820;color:var(--mu);border:1px solid var(--bd)">Domain 1 · Cryptographic Solutions</span></div>
+  <div class="card-bd">
+    <h3 style="border-left-color:var(--enc)">Algorithm Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Algorithm</th><th>Type</th><th>Key/Output</th><th>Status</th><th>Primary Use</th></tr>
+      <tr><td><span class="tag tb">AES-256</span></td><td>Symmetric encryption</td><td>256-bit key</td><td><span class="tag tg">Approved</span></td><td>Bulk encryption — TLS, BitLocker, WPA3</td></tr>
+      <tr><td><span class="tag tb">ChaCha20</span></td><td>Symmetric stream cipher</td><td>256-bit key</td><td><span class="tag tg">Approved</span></td><td>TLS 1.3 mobile, IoT devices</td></tr>
+      <tr><td><span class="tag ts">3DES</span></td><td>Symmetric block cipher</td><td>~112-bit</td><td><span class="tag tr">Deprecated</span></td><td>Legacy payment systems — replace with AES</td></tr>
+      <tr><td><span class="tag to">RSA-2048</span></td><td>Asymmetric encryption</td><td>2048-bit min</td><td><span class="tag tg">Minimum OK</span></td><td>Key exchange, digital signatures, TLS certs</td></tr>
+      <tr><td><span class="tag tg">ECC (P-256)</span></td><td>Asymmetric encryption</td><td>256-bit</td><td><span class="tag tg">Approved</span></td><td>TLS, mobile, certificates — efficient</td></tr>
+      <tr><td><span class="tag tgd">DH / ECDHE</span></td><td>Key exchange</td><td>Ephemeral</td><td><span class="tag tg">Required TLS 1.3</span></td><td>Forward secrecy — key exchange only</td></tr>
+      <tr><td><span class="tag tr">MD5</span></td><td>Hash</td><td>128-bit</td><td><span class="tag tr">Broken</span></td><td>Non-security checksums only — never security</td></tr>
+      <tr><td><span class="tag tr">SHA-1</span></td><td>Hash</td><td>160-bit</td><td><span class="tag tr">Deprecated</span></td><td>Replace with SHA-256</td></tr>
+      <tr><td><span class="tag tg">SHA-256</span></td><td>Hash</td><td>256-bit</td><td><span class="tag tg">Standard</span></td><td>Integrity, TLS certs, code signing, blockchain</td></tr>
+      <tr><td><span class="tag tb">HMAC</span></td><td>Hash + key</td><td>Varies</td><td><span class="tag tg">Approved</span></td><td>Integrity + authentication (no non-repudiation)</td></tr>
+      <tr><td><span class="tag tg">bcrypt/Argon2</span></td><td>Password hash</td><td>N/A</td><td><span class="tag tg">Recommended</span></td><td>Password storage — slow by design</td></tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--sig)">What Each Technique Provides</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Technique</th><th>Confidentiality</th><th>Integrity</th><th>Authentication</th><th>Non-Repudiation</th></tr>
+      <tr><td><span class="tag tb">Symmetric Encryption</span></td><td>✅</td><td>❌ (alone)</td><td>❌</td><td>❌</td></tr>
+      <tr><td><span class="tag tgd">Asymmetric Encryption</span></td><td>✅</td><td>❌ (alone)</td><td>✅ (key exchange)</td><td>❌</td></tr>
+      <tr><td><span class="tag tg">Hashing</span></td><td>❌</td><td>✅</td><td>❌</td><td>❌</td></tr>
+      <tr><td><span class="tag tb">HMAC</span></td><td>❌</td><td>✅</td><td>✅ (mutual)</td><td>❌</td></tr>
+      <tr><td><span class="tag to">Digital Signature</span></td><td>❌</td><td>✅</td><td>✅</td><td>✅</td></tr>
+      <tr><td><span class="tag tp">AES-GCM (AEAD)</span></td><td>✅</td><td>✅</td><td>❌</td><td>❌</td></tr>
+      <tr><td><span class="tag tgd">PKI Certificate</span></td><td>❌ (key distribution)</td><td>✅ (binding)</td><td>✅</td><td>✅ (with key)</td></tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--obf)">Master Scenario Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// 40 Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Binds identity to public key via trusted third party"</span><span>→ PKI / Certificate Authority</span></div>
+      <div class="er"><span class="ek">"Encrypt a message so only Bob can read it"</span><span>→ Encrypt with Bob's PUBLIC key — he decrypts with his PRIVATE key</span></div>
+      <div class="er"><span class="ek">"Prove you sent this message — cannot be forged by anyone else"</span><span>→ Digital signature — sign with YOUR PRIVATE key</span></div>
+      <div class="er"><span class="ek">"Verify a digital signature"</span><span>→ Use signer's PUBLIC key</span></div>
+      <div class="er"><span class="ek">"Top of PKI hierarchy — kept offline — self-signed"</span><span>→ Root CA</span></div>
+      <div class="er"><span class="ek">"Signs end-entity certificates — can be revoked without affecting root"</span><span>→ Intermediate CA</span></div>
+      <div class="er"><span class="ek">"Real-time certificate revocation check"</span><span>→ OCSP — server staples response = OCSP Stapling</span></div>
+      <div class="er"><span class="ek">"List of revoked certificate serial numbers"</span><span>→ CRL — Certificate Revocation List</span></div>
+      <div class="er"><span class="ek">"Hardware device — crypto keys never exposed in plaintext"</span><span>→ HSM (Hardware Security Module)</span></div>
+      <div class="er"><span class="ek">"Motherboard chip — BitLocker key storage — measured boot"</span><span>→ TPM (Trusted Platform Module)</span></div>
+      <div class="er"><span class="ek">"*.company.com — covers all subdomains"</span><span>→ Wildcard certificate</span></div>
+      <div class="er"><span class="ek">"Certificate signed by itself — no third party trust"</span><span>→ Self-signed certificate — internal/dev use only</span></div>
+      <div class="er"><span class="ek">"Same key for encrypt and decrypt — fast"</span><span>→ Symmetric encryption (AES)</span></div>
+      <div class="er"><span class="ek">"Current gold standard symmetric algorithm"</span><span>→ AES-256</span></div>
+      <div class="er"><span class="ek">"Block cipher mode that reveals patterns — NEVER use"</span><span>→ ECB mode</span></div>
+      <div class="er"><span class="ek">"Block cipher mode providing encryption + authentication"</span><span>→ GCM / AES-GCM (AEAD)</span></div>
+      <div class="er"><span class="ek">"Fast on mobile/IoT devices without AES hardware"</span><span>→ ChaCha20 stream cipher</span></div>
+      <div class="er"><span class="ek">"TLS uses both asymmetric and symmetric — why?"</span><span>→ Hybrid: asymmetric for key exchange + symmetric for bulk data speed</span></div>
+      <div class="er"><span class="ek">"Past sessions safe even if long-term key is compromised"</span><span>→ Forward secrecy — ephemeral keys — ECDHE/DHE — TLS 1.3 mandates</span></div>
+      <div class="er"><span class="ek">"Key exchange — not encryption — establishes shared secret"</span><span>→ Diffie-Hellman (DH / ECDHE)</span></div>
+      <div class="er"><span class="ek">"Smaller keys — equivalent security to much larger RSA"</span><span>→ ECC (Elliptic Curve Cryptography)</span></div>
+      <div class="er"><span class="ek">"RSA minimum acceptable key size"</span><span>→ 2048-bit (1024-bit is broken)</span></div>
+      <div class="er"><span class="ek">"One-way function — fixed output — cannot reverse"</span><span>→ Hash function</span></div>
+      <div class="er"><span class="ek">"Tiny input change → completely different hash"</span><span>→ Avalanche effect</span></div>
+      <div class="er"><span class="ek">"Hash is broken — collisions trivially demonstrated"</span><span>→ MD5 (128-bit) — also SHA-1 deprecated</span></div>
+      <div class="er"><span class="ek">"Current standard hash algorithm"</span><span>→ SHA-256 (256-bit output)</span></div>
+      <div class="er"><span class="ek">"Hash + secret key — integrity AND authentication"</span><span>→ HMAC — no non-repudiation (shared key)</span></div>
+      <div class="er"><span class="ek">"Random value added to password before hashing"</span><span>→ Salt — defeats rainbow tables</span></div>
+      <div class="er"><span class="ek">"Correct function for storing passwords"</span><span>→ bcrypt, Argon2, or PBKDF2 — slow by design</span></div>
+      <div class="er"><span class="ek">"Pre-computed hash lookup table for password cracking"</span><span>→ Rainbow table — defeated by salts</span></div>
+      <div class="er"><span class="ek">"Hides secret data inside an innocent-looking image"</span><span>→ Steganography — covert channel</span></div>
+      <div class="er"><span class="ek">"Realistic fake data for dev/test environments"</span><span>→ Data masking</span></div>
+      <div class="er"><span class="ek">"Replace credit card with non-sensitive placeholder"</span><span>→ Tokenization — vault maps token to real data — PCI-DSS</span></div>
+      <div class="er"><span class="ek">"Digital signature provides three things"</span><span>→ Authentication + Integrity + Non-repudiation</span></div>
+      <div class="er"><span class="ek">"Sign hash not full document — why?"</span><span>→ Hash is fixed small size — signing large file directly too slow</span></div>
+      <div class="er"><span class="ek">"Digital sig vs HMAC — non-repudiation?"</span><span>→ Signature = YES (private key) / HMAC = NO (shared key)</span></div>
+      <div class="er"><span class="ek">"Distributed append-only ledger — hash links blocks"</span><span>→ Blockchain</span></div>
+      <div class="er"><span class="ek">"Changing one block invalidates all following blocks"</span><span>→ Blockchain immutability — hash chaining</span></div>
+      <div class="er"><span class="ek">"Public log of all issued TLS certificates"</span><span>→ Certificate Transparency logs — detects rogue CA issuance</span></div>
+      <div class="er"><span class="ek">"Attacker controls majority of blockchain network"</span><span>→ 51% attack — can rewrite recent history</span></div>
+    </div>
+  </div>
+</div>
+</div><!-- end summary -->
+
+<script>
+const COLORS = {pki:'var(--pki)',enc:'var(--enc)',obf:'var(--obf)',hsh:'var(--hsh)',sig:'var(--sig)',blk:'var(--blk)',sum:'var(--mu)'};
+
+function show(id, el){
+  document.querySelectorAll('.model').forEach(m=>m.classList.remove('on'));
+  document.querySelectorAll('.tpc').forEach(t=>t.classList.remove('on'));
+  document.getElementById('m-'+id).classList.add('on');
+  el.classList.add('on');
+  const c = COLORS[id];
+  const tabsEl = document.getElementById('t-'+id);
+  if(tabsEl){
+    tabsEl.querySelectorAll('.tab').forEach(t=>{
+      t.onmouseover=()=>{t.style.borderColor=c;t.style.color=c;t.style.background='';};
+      t.onmouseout=()=>{if(!t.classList.contains('active')){t.style.borderColor='';t.style.color='';t.style.background='';}};
+    });
+    const active=tabsEl.querySelector('.tab.active');
+    if(active){active.style.background=c;active.style.borderColor=c;active.style.color='#06080e';}
+  }
+  window.scrollTo(0,0);
+}
+
+function goTab(model, secId, btn){
+  const modelEl=document.getElementById('m-'+model);
+  const tabsEl=document.getElementById('t-'+model);
+  if(!modelEl||!tabsEl) return;
+  modelEl.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  tabsEl.querySelectorAll('.tab').forEach(t=>{
+    t.classList.remove('active');t.style.background='';t.style.borderColor='';t.style.color='';
+  });
+  document.getElementById(secId).classList.add('on');
+  btn.classList.add('active');
+  const c = COLORS[model];
+  btn.style.background=c; btn.style.borderColor=c; btn.style.color='#06080e';
+  window.scrollTo(0,0);
+}
+
+// Initialise first model tab colour
+document.addEventListener('DOMContentLoaded',()=>{
+  const btn=document.querySelector('#t-pki .tab.active');
+  if(btn){btn.style.background='var(--pki)';btn.style.borderColor='var(--pki)';btn.style.color='#06080e';}
+});
+</script>
+</body>
+</html>

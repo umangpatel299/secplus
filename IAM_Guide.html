@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identity & Access Management — Security+ Domain 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:#09090e;
+  --s1:#111118;
+  --s2:#18181f;
+  --s3:#202028;
+  --border:#2c2c3a;
+  --text:#e8e6f0;
+  --muted:#7070a0;
+  --blue:#5b9cf6;
+  --green:#4ade8a;
+  --red:#f87171;
+  --orange:#fb923c;
+  --purple:#c084fc;
+  --teal:#34d4c8;
+  --yellow:#fbbf24;
+  --pink:#f472b6;
+  --indigo:#818cf8;
+  --lime:#a3e635;
+  --sky:#38bdf8;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+/* HEADER */
+.hdr{text-align:center;margin-bottom:2.5rem;}
+.hdr-tag{
+  font-family:'Fira Mono',monospace;
+  font-size:0.65rem;
+  letter-spacing:0.2em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:0.6rem;
+}
+.hdr-title{
+  font-family:'Fraunces',serif;
+  font-size:2.8rem;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.05;
+  margin-bottom:0.3rem;
+  letter-spacing:-0.02em;
+}
+.hdr-title em{font-style:italic;color:var(--indigo);}
+.hdr-sub{
+  font-family:'Fira Mono',monospace;
+  font-size:0.67rem;
+  color:var(--muted);
+}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.42rem 0.9rem;
+  border-radius:7px;
+  border:1px solid var(--border);
+  background:var(--s1);
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'Fira Mono',monospace;
+  font-size:0.65rem;
+  font-weight:500;
+  transition:all 0.14s;
+}
+.tab:hover{border-color:var(--indigo);color:var(--indigo);}
+.tab.active{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+
+/* SECTIONS */
+.sec{display:none;}
+.sec.on{display:block;animation:up 0.2s ease;}
+@keyframes up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* CARD */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:14px;margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:1.1rem 1.4rem;border-bottom:1px solid var(--border);}
+.card-num{font-family:'Fira Mono',monospace;font-size:0.6rem;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.4rem;}
+.card-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:600;letter-spacing:-0.01em;}
+.bdg{margin-left:auto;font-family:'Fira Mono',monospace;font-size:0.6rem;padding:0.18rem 0.6rem;border-radius:999px;white-space:nowrap;}
+.bdg-blue{background:#0f2a4a;color:var(--blue);border:1px solid #1a3f6f;}
+.bdg-green{background:#0a2d1a;color:var(--green);border:1px solid #154028;}
+.bdg-orange{background:#2d1a08;color:var(--orange);border:1px solid #4a2d10;}
+.bdg-red{background:#2d0f0f;color:var(--red);border:1px solid #4a1515;}
+.bdg-purple{background:#1e0f3d;color:var(--purple);border:1px solid #2d1a5a;}
+.bdg-teal{background:#082820;color:var(--teal);border:1px solid #103830;}
+.bdg-indigo{background:#131a4a;color:var(--indigo);border:1px solid #1e2870;}
+.bdg-yellow{background:#2d2208;color:var(--yellow);border:1px solid #4a3510;}
+.bdg-sky{background:#082030;color:var(--sky);border:1px solid #104560;}
+.bdg-lime{background:#1a2808;color:var(--lime);border:1px solid #2a4010;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.86rem;margin-bottom:0.8rem;}
+h3{font-family:'Fraunces',serif;font-size:1rem;font-weight:600;color:var(--text);margin:1.2rem 0 0.6rem;padding-left:0.75rem;border-left:3px solid var(--indigo);}
+
+/* CODE */
+.code{background:#050508;border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;font-family:'Fira Mono',monospace;font-size:0.69rem;line-height:1.9;color:var(--text);overflow-x:auto;margin:0.8rem 0;}
+.cg{color:var(--green);} .cr{color:var(--red);} .cb{color:var(--blue);}
+.co{color:var(--orange);} .cp{color:var(--purple);} .cm{color:var(--muted);}
+.ct{color:var(--teal);} .ci{color:var(--indigo);} .cy{color:var(--yellow);}
+.cpk{color:var(--pink);} .cs{color:var(--sky);} .cl{color:var(--lime);}
+
+/* SCENE */
+.scene{background:#1a1400;border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'Fira Mono',monospace;font-size:0.6rem;color:var(--orange);margin-bottom:0.4rem;letter-spacing:0.1em;font-weight:500;text-transform:uppercase;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:1rem;}
+.gc h4{font-family:'Fraunces',serif;font-size:0.95rem;font-weight:600;margin-bottom:0.4rem;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{background:#130f2a;border:1px solid #2d1a5a;border-radius:10px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'Fira Mono',monospace;font-size:0.6rem;color:var(--purple);margin-bottom:0.6rem;letter-spacing:0.1em;font-weight:500;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.4rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'Fira Mono',monospace;font-size:0.67rem;flex-shrink:0;font-weight:500;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.55rem 0.8rem;text-align:left;color:var(--muted);border-bottom:1px solid var(--border);font-size:0.68rem;font-weight:600;font-family:'Fira Mono',monospace;}
+td{padding:0.55rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.1rem 0.45rem;border-radius:4px;font-size:0.62rem;font-family:'Fira Mono',monospace;font-weight:500;}
+.tg{background:#0a2d1a;color:var(--green);}
+.tr{background:#2d0f0f;color:var(--red);}
+.tb{background:#0f2a4a;color:var(--blue);}
+.to{background:#2d1a08;color:var(--orange);}
+.tp{background:#1e0f3d;color:var(--purple);}
+.tt{background:#082820;color:var(--teal);}
+.ti{background:#131a4a;color:var(--indigo);}
+.ty{background:#2d2208;color:var(--yellow);}
+.ts{background:#082030;color:var(--sky);}
+.tl{background:#1a2808;color:var(--lime);}
+
+/* INFO ROW */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s2);border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;}
+.info-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-size:0.85rem;font-weight:600;margin-bottom:0.15rem;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* FLOW */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.flow-box{border-radius:7px;padding:0.55rem 0.85rem;font-size:0.7rem;font-weight:600;border:1px solid;text-align:center;min-width:85px;font-family:'Fira Mono',monospace;}
+.flow-arr{color:var(--muted);font-size:1rem;}
+
+/* LIFECYCLE */
+.lifecycle{display:flex;overflow-x:auto;gap:0;margin:1rem 0;}
+.lc{flex:1;min-width:110px;text-align:center;padding:1rem 0.5rem;position:relative;}
+.lc::after{content:'→';position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1rem;}
+.lc:last-child::after{display:none;}
+.lc-num{width:36px;height:36px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:'Fira Mono',monospace;font-size:0.78rem;font-weight:700;margin:0 auto 0.5rem;}
+.lc-label{font-size:0.75rem;font-weight:600;margin-bottom:0.2rem;}
+.lc-desc{font-size:0.64rem;color:var(--muted);line-height:1.4;}
+
+/* MFA FACTORS */
+.factor-card{border-radius:10px;padding:1.1rem;border:1px solid;margin-bottom:0.6rem;display:flex;gap:1rem;align-items:flex-start;}
+.factor-icon{font-size:1.5rem;flex-shrink:0;}
+.factor-title{font-size:0.88rem;font-weight:700;margin-bottom:0.2rem;}
+.factor-sub{font-size:0.72rem;color:var(--muted);margin-bottom:0.4rem;}
+.factor-examples{display:flex;flex-wrap:wrap;gap:0.3rem;}
+.fex{font-family:'Fira Mono',monospace;font-size:0.62rem;padding:0.15rem 0.5rem;background:var(--s3);border:1px solid var(--border);border-radius:4px;}
+
+/* PAM VAULT */
+.vault-row{display:flex;align-items:center;gap:0.8rem;padding:0.6rem 0.9rem;background:var(--s2);border:1px solid var(--border);border-radius:8px;margin-bottom:0.4rem;}
+.vault-icon{font-size:1rem;flex-shrink:0;}
+.vault-label{font-size:0.8rem;font-weight:600;min-width:160px;}
+.vault-desc{font-size:0.74rem;color:var(--muted);flex:1;}
+.vault-status{font-family:'Fira Mono',monospace;font-size:0.62rem;white-space:nowrap;}
+
+/* SSO PROTOCOLS */
+.proto-card{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:0.6rem;}
+.proto-hd{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;}
+.proto-name{font-size:0.9rem;font-weight:700;}
+.proto-type{font-family:'Fira Mono',monospace;font-size:0.6rem;color:var(--muted);background:var(--s3);padding:0.15rem 0.4rem;border-radius:4px;margin-left:auto;}
+
+/* COMPARISON STRIP */
+.cmp{display:flex;gap:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:1rem 0;}
+.cmp-col{flex:1;padding:1rem;}
+.cmp-col+.cmp-col{border-left:1px solid var(--border);}
+.cmp-head{font-size:0.8rem;font-weight:700;margin-bottom:0.5rem;}
+.cmp-item{font-size:0.74rem;color:var(--muted);padding:0.2rem 0;display:flex;gap:0.4rem;}
+.cmp-dot{flex-shrink:0;margin-top:0.35rem;width:5px;height:5px;border-radius:50%;}
+
+/* ACCESS MODELS */
+.model-row{display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-bottom:1px solid var(--border);}
+.model-row:last-child{border-bottom:none;}
+.model-name{font-family:'Fira Mono',monospace;font-size:0.75rem;font-weight:700;min-width:70px;flex-shrink:0;}
+.model-content{flex:1;}
+.model-title{font-size:0.82rem;font-weight:700;margin-bottom:0.15rem;}
+.model-desc{font-size:0.75rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-tag">CompTIA Security+ SY0-701 — Domain 4</div>
+  <div class="hdr-title"><em>Identity</em> & Access Management</div>
+  <div class="hdr-sub">// Provisioning · SSO · MFA · PAM · Access Models · Federation</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Provisioning</button>
+  <button class="tab" onclick="go('s3',this)">3. SSO</button>
+  <button class="tab" onclick="go('s4',this)">4. MFA</button>
+  <button class="tab" onclick="go('s5',this)">5. Federation</button>
+  <button class="tab" onclick="go('s6',this)">6. PAM</button>
+  <button class="tab" onclick="go('s7',this)">7. Access Models</button>
+  <button class="tab" onclick="go('s8',this)">8. Zero Trust</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 1. OVERVIEW               -->
+<!-- ══════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">IAM Overview</span><span class="bdg bdg-indigo">Identity is the New Perimeter</span></div>
+  <div class="card-bd">
+    <p>Identity and Access Management (IAM) is the framework of <strong style="color:var(--text)">policies, processes, and technologies that ensure the right people have the right access to the right resources at the right time</strong> — and that every access event is verified, logged, and auditable.</p>
+
+    <h3>Why IAM Is the New Security Perimeter</h3>
+    <div class="code">
+<span class="cm"># Traditional security model:</span>
+TRUSTED: Inside the corporate network
+UNTRUSTED: Outside the corporate network
+Defense: strong perimeter firewall
+
+<span class="cm"># Modern reality:</span>
+Employees: work from home, coffee shops, airports
+Applications: in the cloud (SaaS, IaaS, PaaS)
+Data: in Microsoft 365, Salesforce, AWS, Dropbox
+Network perimeter: <span class="cr">doesn't exist anymore</span>
+
+<span class="cm"># Result:</span>
+Attacker steals ONE set of credentials →
+  Access to email ✓
+  Access to SharePoint ✓
+  Access to Salesforce ✓
+  Access to cloud servers ✓
+  Access to financial systems ✓
+<span class="cr">ALL from ANY location — no perimeter stops them</span>
+
+<span class="cg"># IAM becomes the perimeter:</span>
+Verify IDENTITY before access
+Verify DEVICE health before access
+Verify CONTEXT (location, time, risk)
+Grant MINIMUM required access
+Monitor ALL access continuously
+<span class="cg">Identity = new security boundary ✓</span>
+    </div>
+
+    <h3>Core IAM Functions</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#1e2870">
+        <h4 style="color:var(--indigo)">Authentication</h4>
+        <p>Proving you are who you claim to be. Passwords, MFA, certificates, biometrics. Answering: "Who are you?" before any access is granted.</p>
+      </div>
+      <div class="gc" style="border-color:#0f2a4a">
+        <h4 style="color:var(--blue)">Authorization</h4>
+        <p>Determining what you're allowed to do after authentication. RBAC, ABAC, ACLs. Answering: "What can you do?" — access models covered in Tab 7.</p>
+      </div>
+      <div class="gc" style="border-color:#0a2d1a">
+        <h4 style="color:var(--green)">Accounting / Auditing</h4>
+        <p>Tracking who did what, when, from where. Logs, audit trails, access reviews. Answering: "What did you do?" — non-repudiation and forensics.</p>
+      </div>
+      <div class="gc" style="border-color:#2d1a08">
+        <h4 style="color:var(--orange)">Provisioning</h4>
+        <p>Creating, managing, and revoking access throughout the user lifecycle. Joiner-mover-leaver process. Covered in Tab 2.</p>
+      </div>
+      <div class="gc" style="border-color:#1e0f3d">
+        <h4 style="color:var(--purple)">Privileged Access</h4>
+        <p>Special controls for admin/privileged accounts. PAM vaults, just-in-time access. Covered in Tab 6 — highest risk accounts need strongest controls.</p>
+      </div>
+      <div class="gc" style="border-color:#082820">
+        <h4 style="color:var(--teal)">Federation & SSO</h4>
+        <p>Extending identity across systems and organizations. SAML, OIDC, SSO. Covered in Tabs 3 and 5 — one identity across many systems.</p>
+      </div>
+    </div>
+
+    <h3>The AAA Framework — Core Exam Concept</h3>
+    <div class="code">
+<span class="cb">Authentication</span> — Who are you?
+  Prove identity: password, MFA, certificate, biometric
+  Result: identity verified (or denied)
+
+<span class="cg">Authorization</span> — What can you do?
+  After identity confirmed: what resources can be accessed?
+  Access control models: RBAC, ABAC, MAC, DAC
+  Result: permissions granted (minimum necessary)
+
+<span class="co">Accounting</span> — What did you do?
+  Log every action: login time, resource accessed, changes made
+  Non-repudiation: user cannot deny their actions
+  Forensics: reconstruct what happened
+
+<span class="cm"># RADIUS protocol implements AAA for network access</span>
+<span class="cm"># TACACS+ implements AAA for device administration</span>
+<span class="cm"># Remember: Authentication THEN Authorization THEN Accounting</span>
+    </div>
+
+    <h3>IAM Architecture Components</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Identity Provider (IdP)</h4>
+        <p>The authoritative source of identity — where user accounts live. Users authenticate TO the IdP. IdP issues tokens/assertions to other systems. Examples: Microsoft Azure AD (Entra ID), Okta, Google Workspace, Active Directory.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Service Provider (SP)</h4>
+        <p>The application or service the user wants to access. Trusts the IdP to verify identity. Grants access based on IdP assertion. Examples: Salesforce, GitHub, Jira, any web app using SSO.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Directory Service</h4>
+        <p>Stores identity objects — users, groups, computers, policies. LDAP protocol for querying. Active Directory = most common enterprise directory. Azure AD = cloud directory. Source of truth for identities.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Access Management Platform</h4>
+        <p>Enforces access policies, manages sessions, handles SSO. Examples: Okta, Microsoft Entra ID, Ping Identity, ForgeRock. Sits between users and all their applications.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">AAA →</span><span>Authentication + Authorization + Accounting — core IAM framework</span></div>
+      <div class="er"><span class="ek">Authentication →</span><span>"Who are you?" — verify identity</span></div>
+      <div class="er"><span class="ek">Authorization →</span><span>"What can you do?" — permissions after identity verified</span></div>
+      <div class="er"><span class="ek">Accounting →</span><span>"What did you do?" — logging, audit, non-repudiation</span></div>
+      <div class="er"><span class="ek">Identity Provider →</span><span>Authoritative source of identity — Azure AD, Okta, Google</span></div>
+      <div class="er"><span class="ek">Identity = perimeter →</span><span>No network boundary anymore — identity verification IS the security boundary</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 2. PROVISIONING           -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">Identity Provisioning & Lifecycle</span><span class="bdg bdg-green">Joiner · Mover · Leaver</span></div>
+  <div class="card-bd">
+    <p>Provisioning is the <strong style="color:var(--text)">process of creating, modifying, and removing user access throughout their relationship with the organization</strong>. Poor provisioning creates orphaned accounts, excess privilege accumulation, and access that outlives employment — all major security risks.</p>
+
+    <h3>The Identity Lifecycle — Joiner-Mover-Leaver</h3>
+    <div class="lifecycle">
+      <div class="lc">
+        <div class="lc-num" style="border-color:var(--green);color:var(--green)">J</div>
+        <div class="lc-label" style="color:var(--green)">Joiner</div>
+        <div class="lc-desc">New hire, contractor, vendor onboarded</div>
+      </div>
+      <div class="lc">
+        <div class="lc-num" style="border-color:var(--blue);color:var(--blue)">P</div>
+        <div class="lc-label" style="color:var(--blue)">Provisioned</div>
+        <div class="lc-desc">Account created, roles assigned, access granted</div>
+      </div>
+      <div class="lc">
+        <div class="lc-num" style="border-color:var(--teal);color:var(--teal)">A</div>
+        <div class="lc-label" style="color:var(--teal)">Active</div>
+        <div class="lc-desc">Working — access reviewed periodically</div>
+      </div>
+      <div class="lc">
+        <div class="lc-num" style="border-color:var(--orange);color:var(--orange)">M</div>
+        <div class="lc-label" style="color:var(--orange)">Mover</div>
+        <div class="lc-desc">Promotion, transfer, role change — access updated</div>
+      </div>
+      <div class="lc">
+        <div class="lc-num" style="border-color:var(--red);color:var(--red)">L</div>
+        <div class="lc-label" style="color:var(--red)">Leaver</div>
+        <div class="lc-desc">Resignation/termination — all access revoked</div>
+      </div>
+    </div>
+
+    <h3>Joiner — New Employee Provisioning</h3>
+    <div class="code">
+<span class="cm"># Automated provisioning triggered by HR system:</span>
+
+HR creates record: Sarah Chen, Finance Analyst, Start: 2024-03-01
+
+<span class="cg">Automated provisioning (Day 0 — before she arrives):</span>
+  AD account created:       <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a3d0c2d1c2cb8dc0cbc6cde3c0ccced3c2cdda8dc0ccce">[email&#160;protected]</a>
+  Email mailbox:            provisioned
+  Role assigned:            Finance-Analyst-Group
+  Permissions via RBAC:
+    Finance shared drive:   READ + WRITE
+    Accounts payable app:   Standard user
+    SAP Finance module:     Viewer access
+    Corporate intranet:     Employee access
+  
+  <span class="cr">NOT provisioned (least privilege):</span>
+    HR database:            ✗ (not needed)
+    Source code repos:      ✗ (not a developer)
+    Admin consoles:         ✗ (not IT admin)
+    Executive reports:      ✗ (not authorized)
+
+  MFA enrollment email sent: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8cbd9cad9d096dbd0ddd6f8c8ddcacbd7d6d9d496dbd7d5">[email&#160;protected]</a>
+  Welcome package: IT contacts, setup instructions
+  Manager notified: account ready for Day 1
+
+<span class="cm"># Provisioning from ROLE not individual decisions</span>
+<span class="cm"># Finance-Analyst-Group = predefined access set</span>
+<span class="cm"># Less chance of error, consistent, auditable</span>
+    </div>
+
+    <h3>Mover — Role Change Access Update</h3>
+    <div class="code">
+<span class="cm"># Sarah promoted from Finance Analyst to Finance Manager:</span>
+
+<span class="co">Trigger: HR system updates Sarah's title and department</span>
+
+Access Management System receives change:
+  Old role: Finance-Analyst-Group → <span class="cr">REMOVE</span>
+  New role: Finance-Manager-Group → <span class="cg">ADD</span>
+
+Changes applied:
+  <span class="cg">Added:</span>
+    Finance team reports:      ADMIN access
+    Budget approval system:    Approver role
+    HR salary visibility:      Direct reports only
+    Team resource booking:     Full access
+  
+  <span class="cr">Removed:</span>
+    Accounts payable (data entry):  ✗ (managers review, not enter)
+
+<span class="cr">ACCESS CREEP problem — what often goes wrong:</span>
+  Old analyst access KEPT (should remove)
+  New manager access ADDED
+  Result: Sarah has both analyst AND manager access
+  Over time: more and more accumulated permissions
+  
+<span class="cg">Solution: role-based provisioning with transition rules</span>
+<span class="cg">Remove old role COMPLETELY before adding new role ✓</span>
+    </div>
+
+    <h3>Leaver — Offboarding & Deprovisioning</h3>
+    <div class="code">
+<span class="cm"># Employee John Smith resigns — final day: Friday</span>
+
+<span class="cb">Immediate actions (on last day / termination for cause — IMMEDIATELY):</span>
+09:00 — AD account: <span class="cr">DISABLED</span> (not deleted — preserve audit trail)
+09:00 — Email: <span class="cr">OUT OF OFFICE set, access revoked</span>
+09:00 — VPN certificate: <span class="cr">REVOKED</span>
+09:00 — All OAuth tokens: <span class="cr">REVOKED</span> (Salesforce, GitHub, etc)
+09:00 — MFA tokens: <span class="cr">DEREGISTERED</span>
+09:00 — SSH keys: <span class="cr">REMOVED from all servers</span>
+09:01 — Slack access: <span class="cr">DEACTIVATED</span>
+09:01 — GitHub access: <span class="cr">REMOVED from org</span>
+09:01 — Privileged accounts: <span class="cr">DISABLED FIRST</span> (before regular)
+
+<span class="cb">Preserve (do NOT delete immediately):</span>
+  AD account object: keep 90 days (email continuity, investigation)
+  Email: redirect to manager 90 days
+  Files: transfer to manager's review folder
+  Audit logs: retain per policy (legal/compliance)
+
+<span class="cb">For cause termination (immediate — security escort):</span>
+  Start with: DISABLE account BEFORE notifying employee
+  Reason: prevents data destruction in anger
+
+<span class="cm"># Orphaned accounts = account still active after person leaves</span>
+<span class="cm"># Attacker finds orphaned account = easy target (nobody monitors it)</span>
+    </div>
+
+    <h3>Provisioning Methods</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Manual Provisioning</h4>
+        <p>IT admin manually creates accounts per ticket. Slow — days before access granted. Error-prone — wrong permissions set. No consistency — different admin, different setup. Only acceptable for very small organizations.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Automated Provisioning (IGA)</h4>
+        <p>Identity Governance and Administration — triggered by HR system changes. Account created automatically on new hire record. Role-based — join Finance group = get Finance access. Fast, consistent, auditable. Examples: SailPoint, Saviynt, Microsoft Entra ID Governance.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">SCIM — Automated SaaS Provisioning</h4>
+        <p>System for Cross-domain Identity Management. Standard protocol for pushing user accounts to cloud apps. When AD user created → SCIM pushes to Salesforce, Slack, GitHub, etc. No manual SaaS account creation needed.</p>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># SCIM provisioning flow:</span>
+HR creates employee → AD → SCIM protocol →
+Salesforce account created automatically ✓
+Slack workspace added automatically ✓
+GitHub org membership added automatically ✓
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Self-Service Provisioning</h4>
+        <p>Users request additional access via portal. Manager approves request. Workflow-based — approvals required before access granted. Audit trail of who approved what. Reduces IT workload while maintaining control.</p>
+      </div>
+    </div>
+
+    <h3>Access Reviews — Recertification</h3>
+    <div class="info-row">
+      <div class="info-icon">📋</div>
+      <div>
+        <div class="info-title" style="color:var(--yellow)">What Is Access Recertification?</div>
+        <div class="info-desc">Periodic review of all user access — managers confirm each employee still needs their current access. Typically quarterly or annually. Catches: role creep, orphaned access after moves, access no longer needed. Required by: SOX, PCI-DSS, HIPAA, ISO 27001. Automated by IGA platforms — managers get email "Does Sarah still need access to X? Yes/No"</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Orphaned Account Used in Breach</div>
+      <div class="code">
+<span class="cm"># Former contractor account not deprovisioned:</span>
+
+March 2023: Contractor Jake completes project, leaves
+IT offboarding: <span class="cr">NOT COMPLETED (overlooked)</span>
+Jake's AD account: <span class="cr">still active</span>
+Jake's VPN access: <span class="cr">still active</span>
+Jake's server SSH keys: <span class="cr">still active</span>
+
+November 2023 (8 months later):
+Attacker buys Jake's credentials on dark web
+(<span class="cr">Jake reused same password — breached in LinkedIn leak</span>)
+
+Attacker logs in:
+  VPN: <span class="cr">SUCCESS — Jake's account still active</span>
+  Internal systems: <span class="cr">full contractor access still present</span>
+  Database server: <span class="cr">SSH key still accepted</span>
+  Data exfiltrated: customer records — 50,000 records
+
+Root cause: <span class="cr">orphaned account — not deprovisioned on departure</span>
+
+<span class="cg">Prevention:</span>
+  Automated deprovisioning tied to HR system
+  Quarterly access review would have caught it
+  Contractor accounts: auto-expire after project end
+  Regular orphaned account scan: find and disable
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Joiner-Mover-Leaver →</span><span>Identity lifecycle — provision on join, update on move, revoke on leave</span></div>
+      <div class="er"><span class="ek">Access creep →</span><span>Accumulating permissions over time through role changes — never removing old access</span></div>
+      <div class="er"><span class="ek">Orphaned account →</span><span>Active account with no current owner — ex-employee/contractor — major risk</span></div>
+      <div class="er"><span class="ek">Least privilege provisioning →</span><span>Grant only access needed for current role — from role template</span></div>
+      <div class="er"><span class="ek">SCIM →</span><span>Automated SaaS account provisioning — push identity changes to cloud apps</span></div>
+      <div class="er"><span class="ek">Access recertification →</span><span>Periodic review — managers confirm employees still need their access</span></div>
+      <div class="er"><span class="ek">Disable vs Delete →</span><span>Disable departed accounts — don't delete (preserve audit trail)</span></div>
+      <div class="er"><span class="ek">Termination order →</span><span>For cause: disable account BEFORE notifying employee</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 3. SSO                    -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">Single Sign-On (SSO)</span><span class="bdg bdg-sky">One Login · Many Systems</span></div>
+  <div class="card-bd">
+    <p>SSO allows users to <strong style="color:var(--text)">authenticate once and access multiple applications without re-entering credentials</strong>. One trusted identity provider authenticates the user, then vouches for them to all connected applications via tokens or assertions.</p>
+
+    <h3>The Problem SSO Solves</h3>
+    <div class="code">
+<span class="cm"># Without SSO — typical enterprise employee:</span>
+Email: username + password A
+CRM (Salesforce): username + password B
+HR system: username + password C
+Project mgmt (Jira): username + password D
+Cloud storage: username + password E
+Security tools: username + password F
+Financial system: username + password G
+...total: 12-15 different credentials
+
+<span class="cr">Result:</span>
+  Employees reuse passwords → credential stuffing risk
+  Employees forget passwords → IT helpdesk burden (30-40% of tickets)
+  No central visibility → who has access to what?
+  Deprovisioning → must remove from ALL 15 systems manually
+
+<span class="cg"># With SSO:</span>
+Employee logs in ONCE to IdP (Okta/Azure AD):
+  Username: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f2819380939adc919a979cb2919d9f82939c8bdc919d9f">[email&#160;protected]</a>
+  Password: [strong password] + MFA token
+
+SSO session established → access ALL connected apps:
+  Salesforce: <span class="cg">auto-logged in ✓</span>
+  Jira:       <span class="cg">auto-logged in ✓</span>
+  Slack:      <span class="cg">auto-logged in ✓</span>
+  GitHub:     <span class="cg">auto-logged in ✓</span>
+  No additional passwords for any of these
+    </div>
+
+    <h3>SSO Protocols — SAML vs OIDC vs Kerberos</h3>
+
+    <div class="proto-card">
+      <div class="proto-hd">
+        <span class="info-icon">📜</span>
+        <span class="proto-name">SAML 2.0 — Security Assertion Markup Language</span>
+        <span class="proto-type">XML-based · Enterprise</span>
+      </div>
+      <p style="font-size:0.8rem;margin-bottom:0.6rem">Older protocol, XML-based. Industry standard for enterprise SSO. Works well for web applications. Does NOT work well for mobile apps or REST APIs. Exchanges XML "assertions" between IdP and SP.</p>
+      <div class="code" style="font-size:0.65rem">
+<span class="cm"># SAML flow:</span>
+1. User accesses Salesforce (Service Provider)
+2. Salesforce: "no session — redirect to IdP"
+3. Browser redirected to Okta (IdP) login page
+4. User authenticates to Okta (password + MFA)
+5. Okta creates SAML Assertion (XML):
+   "I confirm user <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dcafbdaebdb4f2bfb4b9b29cbfb3b1acbdb2a5f2bfb3b1">[email&#160;protected]</a>
+    She is in roles: [Finance, Manager, Salesforce-User]
+    Valid for: 8 hours
+    Signed with Okta private key"
+6. SAML Assertion sent to Salesforce
+7. Salesforce: verifies Okta's signature → trusts assertion
+8. Salesforce: grants access based on roles in assertion
+9. User: in Salesforce — no second login needed
+      </div>
+    </div>
+
+    <div class="proto-card">
+      <div class="proto-hd">
+        <span class="info-icon">🔑</span>
+        <span class="proto-name">OIDC — OpenID Connect</span>
+        <span class="proto-type">JSON/OAuth2 · Modern · Mobile</span>
+      </div>
+      <p style="font-size:0.8rem;margin-bottom:0.6rem">Modern protocol built on top of OAuth 2.0. JSON-based (not XML) — works great for mobile apps and APIs. Uses JWT (JSON Web Tokens). Most new applications use OIDC. "Sign in with Google/Microsoft/Apple" = OIDC.</p>
+      <div class="code" style="font-size:0.65rem">
+<span class="cm"># OIDC flow (simplified):</span>
+1. App redirects to Google (IdP) with client_id
+2. User logs in to Google (password + MFA)
+3. Google returns: Authorization Code
+4. App exchanges code for tokens:
+   access_token:  short-lived, grants API access
+   id_token:      JWT with user identity claims
+   refresh_token: get new access_token when expired
+5. App reads id_token:
+   {"sub":"12345","email":"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="43302231222b03202c2e33222d3a6d202c2e">[email&#160;protected]</a>",
+    "name":"Sarah Chen","groups":["finance"]}
+6. User: logged in — JWT verified ✓
+
+<span class="cm"># OIDC vs OAuth 2.0:</span>
+OAuth 2.0: Authorization only ("can this app access your data?")
+OIDC:      Authentication + Authorization ("who are you AND what can you do?")
+      </div>
+    </div>
+
+    <div class="proto-card">
+      <div class="proto-hd">
+        <span class="info-icon">🎟️</span>
+        <span class="proto-name">Kerberos</span>
+        <span class="proto-type">Ticket-based · Windows/AD</span>
+      </div>
+      <p style="font-size:0.8rem;margin-bottom:0.6rem">Used by Windows Active Directory for internal SSO. Ticket-based system — KDC (Key Distribution Center) issues tickets. Users log in to Windows domain once → access all domain resources without re-entering credentials. The backbone of Windows enterprise authentication.</p>
+      <div class="code" style="font-size:0.65rem">
+<span class="cm"># Kerberos components:</span>
+KDC (Key Distribution Center):
+  Authentication Server (AS): verifies password → issues TGT
+  Ticket Granting Server (TGS): exchanges TGT for service tickets
+
+<span class="cm"># Flow:</span>
+1. User logs into Windows → AS verifies password
+2. AS issues: TGT (Ticket Granting Ticket) — encrypted
+3. User wants file server access → sends TGT to TGS
+4. TGS issues: Service Ticket for file server
+5. User presents Service Ticket to file server → access granted
+6. File server: never sees password! Only encrypted ticket
+
+Key security note: TGT valid ~8-10 hours
+Pass-the-ticket attack: steal TGT → impersonate user
+Golden ticket attack: forge TGT → admin access to everything
+      </div>
+    </div>
+
+    <h3>SSO — Security Considerations</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#0a2d1a">
+        <h4 style="color:var(--green)">SSO Benefits</h4>
+        <ul>
+          <li>One strong password + MFA everywhere</li>
+          <li>Fewer passwords = less reuse</li>
+          <li>Central visibility and control</li>
+          <li>Instant deprovisioning — disable IdP = lose all access</li>
+          <li>Reduced helpdesk password reset calls</li>
+          <li>Better user experience — less friction</li>
+          <li>Consistent policy enforcement</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#2d0f0f">
+        <h4 style="color:var(--red)">SSO Risks</h4>
+        <p>SSO introduces a <strong style="color:var(--text)">single point of failure</strong> for identity. If IdP goes down — nobody can log in anywhere. If SSO account compromised — attacker gets everything.</p>
+        <ul>
+          <li>IdP availability = critical infrastructure</li>
+          <li>Credential theft = blast radius is EVERYTHING</li>
+          <li>Makes MFA on the IdP absolutely critical</li>
+          <li>Session token theft = bypass password+MFA</li>
+          <li>Must monitor SSO login events closely</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — SSO Streamlines 500-Employee Onboarding</div>
+      <div class="code">
+<span class="cm"># Company migrates 500 employees to Okta SSO:</span>
+
+<span class="cr">Before SSO:</span>
+New hire Day 1:
+  IT creates: AD account (10 min)
+  IT creates: Salesforce account (15 min)
+  IT creates: Jira account (10 min)
+  IT creates: Slack account (8 min)
+  IT creates: GitHub account (10 min)
+  IT creates: Zoom account (8 min)
+  Total IT time per hire: <span class="cr">61 minutes</span>
+  For 50 hires/month: <span class="cr">51 hours/month IT time</span>
+
+Employee has 6 passwords → forgets them → 
+  3 helpdesk tickets/month average per user
+
+<span class="cg">After SSO (Okta + SCIM provisioning):</span>
+New hire added to HR system →
+  Okta account: auto-created (30 seconds)
+  Salesforce: auto-provisioned via SCIM (30 seconds)
+  Jira: auto-provisioned via SCIM (30 seconds)
+  Slack: auto-provisioned via SCIM (30 seconds)
+  GitHub: auto-provisioned via SCIM (30 seconds)
+  Zoom: auto-provisioned via SCIM (30 seconds)
+  Total IT time: <span class="cg">2 minutes (reviewing confirmation)</span>
+
+Employee: 1 password + MFA for everything
+Helpdesk: <span class="cg">password tickets drop 80% ✓</span>
+
+Offboarding:
+  Disable Okta account → ALL access revoked in seconds ✓
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">SSO →</span><span>Authenticate once — access many systems — IdP vouches for user</span></div>
+      <div class="er"><span class="ek">SAML →</span><span>XML-based — enterprise web apps — assertion from IdP to SP</span></div>
+      <div class="er"><span class="ek">OIDC →</span><span>JSON/JWT — built on OAuth 2.0 — modern apps + mobile — "Sign in with Google"</span></div>
+      <div class="er"><span class="ek">Kerberos →</span><span>Windows AD internal SSO — ticket-based — KDC issues TGT then service tickets</span></div>
+      <div class="er"><span class="ek">Golden ticket →</span><span>Forge Kerberos TGT — admin access everywhere — Kerberos attack</span></div>
+      <div class="er"><span class="ek">SSO risk →</span><span>Single point of failure — compromised IdP = all apps compromised — MFA critical</span></div>
+      <div class="er"><span class="ek">OAuth 2.0 vs OIDC →</span><span>OAuth = authorization only / OIDC = authentication + authorization (adds identity layer)</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 4. MFA                    -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Multi-Factor Authentication (MFA)</span><span class="bdg bdg-orange">Something You Know · Have · Are</span></div>
+  <div class="card-bd">
+    <p>MFA requires users to prove identity using <strong style="color:var(--text)">two or more factors from different categories</strong>. Even if a password is stolen, MFA prevents access without the second factor. Microsoft says MFA blocks 99.9% of automated credential attacks.</p>
+
+    <h3>The Three Factor Categories</h3>
+
+    <div class="factor-card" style="background:#0a1a30;border-color:#1e3a5f">
+      <span class="factor-icon">🧠</span>
+      <div>
+        <div class="factor-title" style="color:var(--blue)">Something You KNOW</div>
+        <div class="factor-sub">Knowledge factors — memorized information</div>
+        <div class="factor-examples">
+          <span class="fex">Password</span>
+          <span class="fex">PIN</span>
+          <span class="fex">Security questions</span>
+          <span class="fex">Passphrase</span>
+        </div>
+        <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--muted)">Weakness: can be stolen (phishing), guessed (brute force), shared, or forgotten. Alone = insufficient for sensitive access.</p>
+      </div>
+    </div>
+
+    <div class="factor-card" style="background:#1a2810;border-color:#2d4a1a">
+      <span class="factor-icon">📱</span>
+      <div>
+        <div class="factor-title" style="color:var(--green)">Something You HAVE</div>
+        <div class="factor-sub">Possession factors — physical object in your control</div>
+        <div class="factor-examples">
+          <span class="fex">Authenticator app (TOTP)</span>
+          <span class="fex">SMS OTP</span>
+          <span class="fex">Hardware token (RSA SecurID)</span>
+          <span class="fex">FIDO2 key (YubiKey)</span>
+          <span class="fex">Smart card / PIV</span>
+          <span class="fex">Push notification</span>
+        </div>
+        <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--muted)">Weakness: can be lost or stolen. SIM swapping compromises SMS. Most common second factor in enterprise environments.</p>
+      </div>
+    </div>
+
+    <div class="factor-card" style="background:#1e0f30;border-color:#3d1a5a">
+      <span class="factor-icon">🫆</span>
+      <div>
+        <div class="factor-title" style="color:var(--purple)">Something You ARE</div>
+        <div class="factor-sub">Inherence factors — biometric characteristics</div>
+        <div class="factor-examples">
+          <span class="fex">Fingerprint</span>
+          <span class="fex">Face recognition</span>
+          <span class="fex">Iris/retina scan</span>
+          <span class="fex">Voice recognition</span>
+          <span class="fex">Vein pattern</span>
+          <span class="fex">Gait analysis</span>
+        </div>
+        <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--muted)">Weakness: can't be changed if compromised. False accept/reject rates. Privacy concerns. Deepfake attacks on facial recognition emerging.</p>
+      </div>
+    </div>
+
+    <div class="factor-card" style="background:#081a1a;border-color:#103030">
+      <span class="factor-icon">📍</span>
+      <div>
+        <div class="factor-title" style="color:var(--teal)">Somewhere You ARE (4th Factor)</div>
+        <div class="factor-sub">Location factors — geolocation, network location</div>
+        <div class="factor-examples">
+          <span class="fex">GPS location</span>
+          <span class="fex">IP geolocation</span>
+          <span class="fex">Network (corp Wi-Fi)</span>
+          <span class="fex">Geofencing</span>
+        </div>
+        <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--muted)">Used in adaptive/contextual MFA. "User is in the office network — reduce friction." "User in new country — require stronger auth."</p>
+      </div>
+    </div>
+
+    <h3>MFA Methods — Strength Comparison</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Method</th><th>Type</th><th>Phish-Resistant?</th><th>SIM-Swap Safe?</th><th>Security Level</th></tr>
+      <tr>
+        <td>SMS OTP</td>
+        <td>Something you have</td>
+        <td><span class="tag tr">No — can be phished</span></td>
+        <td><span class="tag tr">No — SIM swap defeats it</span></td>
+        <td><span class="tag to">Low-Medium</span></td>
+      </tr>
+      <tr>
+        <td>Email OTP</td>
+        <td>Something you have</td>
+        <td><span class="tag tr">No</span></td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag to">Low-Medium</span></td>
+      </tr>
+      <tr>
+        <td>TOTP Authenticator</td>
+        <td>Something you have</td>
+        <td><span class="tag to">Partially (real-time phish possible)</span></td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag ty">Medium</span></td>
+      </tr>
+      <tr>
+        <td>Push notification</td>
+        <td>Something you have</td>
+        <td><span class="tag to">No (MFA fatigue attack)</span></td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag ty">Medium</span></td>
+      </tr>
+      <tr>
+        <td>FIDO2 / Hardware Key</td>
+        <td>Something you have</td>
+        <td><span class="tag tg">Yes — cryptographically bound</span></td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag tg">Highest</span></td>
+      </tr>
+      <tr>
+        <td>Smart card / PIV</td>
+        <td>Have + Know (PIN)</td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag tg">Highest</span></td>
+      </tr>
+      <tr>
+        <td>Biometric alone</td>
+        <td>Something you are</td>
+        <td><span class="tag to">No (spoofing possible)</span></td>
+        <td><span class="tag tg">Yes</span></td>
+        <td><span class="tag ty">Medium</span></td>
+      </tr>
+    </table>
+    </div>
+
+    <h3>TOTP — Time-Based One-Time Password</h3>
+    <div class="code">
+<span class="cm"># How authenticator apps work (Google Authenticator, Authy, MS Authenticator):</span>
+
+Setup (once):
+  Server and authenticator app share a secret key
+  QR code scanned → secret stored in app
+
+Every 30 seconds:
+  Both server AND app independently compute:
+  TOTP = HMAC(secret_key, current_time_window)
+  
+  Example 6-digit code: <span class="cg">847293</span>
+  Valid: 30 seconds only
+  Next window: <span class="cg">194827</span> (completely different)
+
+Authentication:
+  User enters: 847293
+  Server computes: same value → <span class="cg">MATCH ✓</span>
+  Server accepts: 1 window before/after (clock skew)
+
+<span class="cm"># Why it's better than SMS:</span>
+No network connection needed (offline capable)
+No SIM card to steal
+Standard (RFC 6238) — works with any TOTP app
+<span class="cm"># But still phishable — real-time attack can relay code</span>
+    </div>
+
+    <h3>FIDO2 / WebAuthn — Phishing-Resistant MFA</h3>
+    <div class="code">
+<span class="cm"># FIDO2 = most secure MFA — why it's phish-resistant:</span>
+
+Setup:
+  YubiKey generates: unique key pair (public + private)
+  Public key: stored on server (login.company.com)
+  Private key: NEVER leaves YubiKey hardware
+
+Authentication:
+  Server sends: challenge (random value)
+  YubiKey: signs challenge with PRIVATE KEY
+  User: taps YubiKey (physical presence proof)
+  Server: verifies signature with stored PUBLIC KEY
+
+<span class="cg">Why phishing can't work:</span>
+  Attacker creates fake site: login.company-secure.com
+  User visits fake site → challenge issued
+  YubiKey signs challenge BUT:
+    Key is bound to: login.company.com ONLY (origin binding)
+    Fake site: login.company-secure.com → <span class="cr">KEY REFUSES</span>
+    FIDO2: checks domain before signing
+    Phishing site: <span class="cg">gets nothing ✓</span>
+
+<span class="cm"># Hardware key: YubiKey, Titan Key, Feitian</span>
+<span class="cm"># Software: Windows Hello, Apple FaceID (uses TPM/Secure Enclave)</span>
+<span class="cm"># FIDO2 = gold standard — US government mandates for high-value systems</span>
+    </div>
+
+    <h3>MFA Fatigue Attack</h3>
+    <div class="code">
+<span class="cm"># MFA fatigue = bombarding user with push notifications until they approve</span>
+
+Attacker has stolen username + password for j.smith
+MFA: push notification to j.smith's phone
+
+Attacker triggers:
+  Push #1 at 11:45 PM: j.smith taps DENY
+  Push #2 at 11:46 PM: j.smith taps DENY
+  Push #3 at 11:47 PM: j.smith (annoyed, half asleep) taps APPROVE ←
+
+<span class="cr">Attacker: logged in — MFA bypassed by user error</span>
+
+Real example: Uber breach 2022 — attacker bombarded
+contractor with WhatsApp MFA pushes at 1am until
+contractor approved → full network access gained.
+
+<span class="cg">Defenses against MFA fatigue:</span>
+1. Number matching: push shows number, user must match it in app
+   Attacker sends push: app shows "Enter 47" — user must type 47
+   Attacker doesn't know what number appears → can't coordinate
+
+2. Geographic context: push shows "Login attempt from Moscow, Russia"
+   User thinks: "I'm in Toronto" → clearly deny
+
+3. Limit push rate: max 3 pushes → account locked
+4. FIDO2 hardware key: no push → immune to fatigue
+    </div>
+
+    <h3>Adaptive / Risk-Based MFA</h3>
+    <div class="code">
+<span class="cm"># MFA strength adapted to risk level — not always same friction:</span>
+
+Low risk (trusted device, known location, normal hours):
+  User: sarah.chen — office network — Tuesday 9am — known laptop
+  Risk score: LOW
+  MFA: username + password only (SSO session trusted)
+  
+Medium risk (new location, off-hours):
+  User: sarah.chen — home VPN — Wednesday 11pm
+  Risk score: MEDIUM
+  MFA: password + authenticator TOTP required
+
+High risk (new country, new device, sensitive resource):
+  User: sarah.chen — Singapore IP — unknown device — admin console
+  Risk score: HIGH  
+  MFA: password + FIDO2 hardware key required
+  Additional: manager notification sent
+
+Impossible travel (two countries 30 minutes apart):
+  User: sarah.chen — logged in NY 2pm, login attempt UK 2:30pm
+  Risk score: CRITICAL — impossible travel
+  Action: <span class="cr">BLOCK — force full re-verification + alert SOC</span>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — MFA Prevents Credential Stuffing Attack</div>
+      <div class="code">
+<span class="cm"># Attacker buys 10,000 credential pairs from dark web:</span>
+<span class="cm"># Tests against company login portal:</span>
+
+09:14:00 — Automated login attempts begin
+09:14:01 — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8cede8e1e5e2ccefe3e1fcede2f5a2efe3e1">[email&#160;protected]</a> + Password123 → <span class="cr">WRONG PASSWORD</span>
+09:14:02 — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6903060107471a04001d01290a060419080710470a0604">[email&#160;protected]</a> + Fluffy2019 → <span class="co">CORRECT PASSWORD!</span>
+            MFA required: push notification sent to John's phone
+            John: asleep (3am) → does NOT approve
+            Attacker: <span class="cg">BLOCKED — MFA stops access ✓</span>
+
+09:14:03 — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1e6d7f6c7f76307d767b705e7d71736e7f7067307d7173">[email&#160;protected]</a> + Summer2023 → <span class="co">CORRECT PASSWORD!</span>
+            MFA required: TOTP code needed
+            Attacker: doesn't have Sarah's phone
+            Attacker: <span class="cg">BLOCKED — MFA stops access ✓</span>
+
+...10,000 attempts later:
+Correct passwords found: 847
+<span class="cg">Accounts actually breached: 0</span>
+<span class="cg">MFA blocked 100% of successful credential stuffing ✓</span>
+
+<span class="cm"># This is why Microsoft says MFA blocks 99.9% of account attacks</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">MFA factors →</span><span>Know (password/PIN) + Have (token/phone) + Are (biometric)</span></div>
+      <div class="er"><span class="ek">2FA vs MFA →</span><span>2FA = exactly 2 factors / MFA = 2 or more factors — both from different categories</span></div>
+      <div class="er"><span class="ek">TOTP →</span><span>Time-based OTP — authenticator app — RFC 6238 — 30-second window</span></div>
+      <div class="er"><span class="ek">FIDO2 / WebAuthn →</span><span>Most secure — hardware key — phishing-resistant — origin binding</span></div>
+      <div class="er"><span class="ek">SMS OTP →</span><span>Weakest MFA — SIM swapping defeats it — still better than nothing</span></div>
+      <div class="er"><span class="ek">MFA fatigue →</span><span>Bombard user with push notifications — defense: number matching, rate limiting</span></div>
+      <div class="er"><span class="ek">Adaptive MFA →</span><span>Adjusts friction based on risk score — low risk = less friction</span></div>
+      <div class="er"><span class="ek">SIM swapping →</span><span>Convince carrier to transfer number — defeats SMS-based MFA</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 5. FEDERATION             -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Federation & Identity Standards</span><span class="bdg bdg-teal">Cross-Org Trust · SAML · OAuth</span></div>
+  <div class="card-bd">
+    <p>Federation extends identity trust <strong style="color:var(--text)">across organizational boundaries</strong>. Instead of creating separate accounts in every partner's system, your home organization's identity is trusted by partner organizations — one identity works everywhere.</p>
+
+    <h3>Federation — What It Solves</h3>
+    <div class="code">
+<span class="cm"># Problem: Company A employees need access to Company B's portal</span>
+
+<span class="cr">Without federation:</span>
+Company B: creates accounts for all Company A employees
+Employee has: Company A identity + Company B identity
+When employee leaves Company A:
+  Company A account: disabled
+  Company B account: <span class="cr">STILL ACTIVE (orphaned!)</span>
+  Security risk: ex-employee still has partner access
+
+<span class="cg">With federation:</span>
+Company B: "Trusts" Company A's IdP (Okta/Azure AD)
+Employee: logs in with Company A credentials
+Company A IdP: vouches for employee to Company B
+Company B: grants access based on Company A assertion
+
+When employee leaves Company A:
+  Company A account: disabled
+  Company B: <span class="cg">immediately loses access (trust chain broken) ✓</span>
+  No orphaned accounts at partner ✓
+    </div>
+
+    <h3>OAuth 2.0 — Authorization Framework</h3>
+    <div class="code">
+<span class="cm"># OAuth 2.0 — delegated authorization ("grant access to my data")</span>
+
+<span class="cm"># Common scenario: app wants access to your Google calendar</span>
+
+1. Expense app: "I need your Google Calendar access"
+2. Redirect to Google consent screen:
+   "Expense App wants to:
+    ✓ View your calendar events
+    ✗ Not requesting email access
+    ✗ Not requesting contacts"
+3. User: clicks "Allow"
+4. Google: issues access_token to Expense App
+5. Expense App: uses token to read calendar
+   NEVER sees Google password ← this is the key!
+
+<span class="cm"># OAuth roles:</span>
+Resource Owner:   the user (owns the Google calendar)
+Client:           Expense App (wants access)
+Authorization Server: Google (issues tokens)
+Resource Server:  Google Calendar API (holds the data)
+
+<span class="cm"># OAuth 2.0 grant types:</span>
+Authorization Code: most secure — server-side apps
+Implicit:          deprecated — was for SPAs (insecure)
+Client Credentials: machine-to-machine (no user)
+Device Code:       TVs, IoT, devices without browsers
+    </div>
+
+    <h3>Token Types</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Access Token</h4>
+        <p>Short-lived credential (minutes to hours). Grants access to specific resources. Presented to API/resource server. Revoked when expired or user logs out.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Refresh Token</h4>
+        <p>Long-lived (days to months). Used to get new access tokens without re-authentication. Stored securely server-side. If stolen — attacker can get access tokens indefinitely.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">JWT — JSON Web Token</h4>
+        <p>Self-contained token format — contains identity claims. Three parts: Header.Payload.Signature. Signed by IdP — anyone can verify. Used by OIDC for id_token. Stateless — no server lookup needed.</p>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+JWT structure:
+<span class="cb">eyJhbGciOiJSUzI1NiJ9</span>  ← header (base64)
+.<span class="cg">eyJzdWIiOiJzYXJhaCJ9</span>  ← payload (base64)
+.<span class="cp">SflKxwRJSMeKKF2QT4</span>    ← signature (RSA)
+
+Payload decoded:
+{"sub":"sarah.chen",
+ "email":"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b2c1d3c0d3daf2d1dddfc2d3dccb9cd1dddf">[email&#160;protected]</a>",
+ "roles":["Finance"],
+ "exp":1704067200}
+        </div>
+      </div>
+    </div>
+
+    <h3>Directory Services — LDAP & Active Directory</h3>
+    <div class="code">
+<span class="cm"># LDAP — Lightweight Directory Access Protocol:</span>
+Protocol for querying directory services
+Port: 389 (unencrypted) | 636 (LDAPS — encrypted)
+Used to: authenticate users, look up group membership
+Active Directory, OpenLDAP use LDAP for queries
+
+<span class="cm"># Active Directory — enterprise identity backbone:</span>
+Domain: company.com
+Domain Controller (DC): hosts AD database
+Objects: Users, Groups, Computers, Policies (GPO)
+Kerberos: authentication within domain
+LDAP: directory queries
+
+<span class="cm"># Azure AD (now Microsoft Entra ID):</span>
+Cloud version of Active Directory
+Supports: SAML, OIDC, OAuth 2.0
+Hybrid: sync on-prem AD to Azure AD (AD Connect)
+MFA: built-in Azure MFA
+Conditional Access: adaptive policies
+
+<span class="cm"># LDAP injection attack:</span>
+Attacker injects LDAP query syntax into login form
+Example: username = *)(uid=*))(|(uid=*
+Bypasses authentication if not sanitized
+Prevention: input validation, parameterized LDAP queries
+    </div>
+
+    <h3>Trust Models in Federation</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--teal)">Direct / Bilateral Trust</h4>
+        <p>Company A specifically trusts Company B's IdP. Configured manually. Works for a small number of partners. Simple — two parties agree to trust each other. SAML federation between two organizations.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Brokered Trust (Hub and Spoke)</h4>
+        <p>Trusted third-party broker in the middle. All organizations trust the broker. Broker trusts all organizations. Scale: hundreds of orgs can federate without individual agreements. Examples: government PKI hierarchies, cloud marketplace identity.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — B2B Federation Between Law Firm and Client</div>
+      <div class="code">
+<span class="cm"># Law firm (LexCorp) + pharmaceutical client (PharmaInc) federation:</span>
+
+<span class="cb">Setup (one time, done by IT admins):</span>
+PharmaInc: exports IdP metadata (SAML metadata XML)
+LexCorp: imports PharmaInc metadata into their SP
+Trust established: LexCorp trusts PharmaInc's Okta
+
+<span class="cb">PharmaInc lawyer (Sarah) accesses LexCorp document portal:</span>
+1. Sarah: visits docs.lexcorp.com
+2. Portal: "Who is your IdP?"
+3. Sarah: selects "PharmaInc (Okta)"
+4. Redirect: sarah → pharmaInc.okta.com
+5. Sarah: logs into PharmaInc Okta (her normal login!)
+6. Okta: verifies Sarah, creates SAML assertion
+7. SAML assertion: sent to docs.lexcorp.com
+8. LexCorp portal: reads assertion
+   "Sarah Chen, PharmaInc, Legal team, active employee"
+9. Portal: grants access to PharmaInc matter files only
+
+<span class="cg">Sarah: never created account at LexCorp ✓</span>
+<span class="cg">LexCorp: no account management for PharmaInc users ✓</span>
+<span class="cg">Sarah leaves PharmaInc: LexCorp access instantly lost ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Federation →</span><span>Cross-organization identity trust — use home org credentials at partner</span></div>
+      <div class="er"><span class="ek">OAuth 2.0 →</span><span>Delegated authorization — "grant app access to my data" — does NOT authenticate</span></div>
+      <div class="er"><span class="ek">JWT →</span><span>JSON Web Token — self-contained signed token — Header.Payload.Signature</span></div>
+      <div class="er"><span class="ek">LDAP →</span><span>Directory query protocol — port 389 (clear) / 636 (encrypted LDAPS)</span></div>
+      <div class="er"><span class="ek">Active Directory →</span><span>Windows enterprise directory — Kerberos auth — LDAP queries — GPO</span></div>
+      <div class="er"><span class="ek">LDAP injection →</span><span>Inject LDAP syntax to bypass auth — prevent with input validation</span></div>
+      <div class="er"><span class="ek">Refresh token theft →</span><span>Long-lived — if stolen attacker gets indefinite access — store securely</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 6. PAM                    -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Privileged Access Management (PAM)</span><span class="bdg bdg-red">Vault · JIT · Session Recording</span></div>
+  <div class="card-bd">
+    <p>Privileged accounts — admins, service accounts, root users — are the <strong style="color:var(--text)">highest-value targets for attackers</strong>. PAM protects them through vaulting, just-in-time access, session recording, and privileged access workstations. These accounts need the strongest controls because compromise means full control.</p>
+
+    <h3>Why Privileged Accounts Are High Risk</h3>
+    <div class="code">
+<span class="cm"># What a compromised admin account can do:</span>
+Create new admin accounts (persistence)
+Disable security controls (AV, EDR, logging)
+Exfiltrate any data (no access restrictions)
+Encrypt systems (ransomware with no shadow copies)
+Cover tracks (delete logs)
+Move laterally to all systems (domain admin = all)
+
+<span class="cm"># Statistics:</span>
+80% of breaches involve privileged credentials
+Most damaging attacks involve admin account compromise
+Domain Admin compromise = game over for entire org
+
+<span class="cm"># Common problems without PAM:</span>
+Shared admin passwords ("Password123!" for everyone)
+Passwords never rotated (set once, never changed)
+No visibility into who used admin when
+Admin accounts used for daily work tasks
+Service accounts with admin rights unnecessarily
+    </div>
+
+    <h3>PAM Core Components</h3>
+    <div class="info-row">
+      <div class="info-icon">🔐</div>
+      <div>
+        <div class="info-title" style="color:var(--red)">Password Vault</div>
+        <div class="info-desc">Stores all privileged credentials encrypted. Admin never sees the actual password — requests access through vault. Vault checks out credential, injects it, checks it back in. Automatic password rotation after each use. Nobody knows the password — only the vault does. Examples: CyberArk, HashiCorp Vault, Delinea (formerly Thycotic).</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">⏱️</div>
+      <div>
+        <div class="info-title" style="color:var(--orange)">Just-in-Time (JIT) Access</div>
+        <div class="info-desc">Admin privileges granted only for the duration needed — not permanent. Engineer needs to patch server: request JIT access, get 2-hour admin window, access expires automatically. No persistent admin privileges sitting exposed. Also called: Privileged Elevation and Delegation Management (PEDM).</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">🎥</div>
+      <div>
+        <div class="info-title" style="color:var(--purple)">Session Recording</div>
+        <div class="info-desc">Every privileged session recorded — full screen capture + keystroke logging. Forensic evidence: "what did admin do during this session?" Compliance: PCI-DSS, HIPAA require privileged session monitoring. Deterrent: admins know they're being recorded — less insider threat risk. Searchable: find "who ran this command on this server?"</div>
+      </div>
+    </div>
+    <div class="info-row">
+      <div class="info-icon">💻</div>
+      <div>
+        <div class="info-title" style="color:var(--teal)">Privileged Access Workstation (PAW)</div>
+        <div class="info-desc">Dedicated hardened workstation used ONLY for privileged administration. Never used for: browsing, email, Teams, regular work. Separate from regular workstation. Cannot access internet directly. No software installation. Hardware enforced — separate physical machine or VM. Drastically reduces attack surface for admin actions.</div>
+      </div>
+    </div>
+
+    <h3>PAM in Practice — Vault Workflow</h3>
+    <div class="code">
+<span class="cm"># Admin needs to patch production SQL Server:</span>
+
+<span class="cb">Step 1 — Request access:</span>
+  Admin logs into PAM portal (CyberArk)
+  Request: "SQL-PROD-01 — patch maintenance — 2 hours"
+  Reason: CVE-2024-XXXX emergency patch
+  Approver: Manager + change ticket required
+
+<span class="cb">Step 2 — Approval workflow:</span>
+  PAM: notifies manager for approval
+  Manager: approves via mobile app (5 minutes)
+  Change ticket: CHG-2024-8847 validated
+
+<span class="cb">Step 3 — Vault checks out credential:</span>
+  PAM vault: retrieves SQL-PROD-01 service account password
+  Admin: NEVER sees the password
+  PAM: injects credential directly into RDP session
+
+<span class="cb">Step 4 — Session begins:</span>
+  Admin: connected to SQL-PROD-01 via PAM proxy
+  Recording: starts automatically (screen + keystrokes)
+  Timer: 2-hour window starts
+
+<span class="cb">Step 5 — During session:</span>
+  Admin patches SQL Server
+  Every command typed: <span class="cp">recorded</span>
+  Every screen: <span class="cp">recorded</span>
+  Abnormal behavior: <span class="cr">alerts security team</span>
+
+<span class="cb">Step 6 — Session ends:</span>
+  2 hours expire → session terminated automatically
+  OR admin logs off → session ended
+  Password: <span class="cg">AUTOMATICALLY ROTATED by vault</span>
+  Nobody has the password anymore — vault has new one
+
+<span class="cb">Audit:</span>
+  Complete session recording available
+  Every command searchable
+  Full evidence trail for compliance
+    </div>
+
+    <h3>Types of Privileged Accounts</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--red)">Domain Admin (DA)</h4>
+        <p>Highest privilege in Windows environment. Can do anything in the domain. Should be: locked in vault, used via JIT only, never used for daily work. Compromise = game over for entire AD environment.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Local Administrator</h4>
+        <p>Admin on individual machine only. LAPS (Local Administrator Password Solution) — Microsoft tool that sets unique random password on every machine's local admin account. Prevents lateral movement using shared local admin password.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--yellow)">Service Accounts</h4>
+        <p>Non-human accounts — run applications and scheduled tasks. Often over-privileged and never have password rotated. Managed Service Accounts (MSA) — Windows auto-rotates password. Must be inventoried in PAM vault.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Cloud Root / Global Admin</h4>
+        <p>AWS root account or Azure Global Admin. Never used for daily work. No access keys. MFA always required. Locked away — only used in break-glass scenarios. Monitored 24/7 — any use triggers immediate alert.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Emergency / Break-Glass Account</h4>
+        <p>Last resort account used when all other admin access fails. Credential in physical safe. Password known to CISO + CTO only. Any use immediately triggers P1 security alert. Reviewed quarterly — confirm it hasn't been used.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">API Keys / Secrets</h4>
+        <p>Non-human privileged credentials. Access cloud APIs, databases, third-party services. Must be stored in secrets manager (HashiCorp Vault, AWS Secrets Manager). Never hardcoded in code. Auto-rotated regularly.</p>
+      </div>
+    </div>
+
+    <h3>LAPS — Local Administrator Password Solution</h3>
+    <div class="code">
+<span class="cm"># Common attack: lateral movement using shared local admin password</span>
+
+<span class="cr">Without LAPS:</span>
+All 500 workstations: same local admin password "Corp@dmin123"
+Attacker compromises one workstation → finds local admin hash
+Pass-the-hash to next workstation: <span class="cr">SUCCESS</span>
+Pass-the-hash to next: <span class="cr">SUCCESS</span>
+All 500 workstations: <span class="cr">compromised in minutes</span>
+
+<span class="cg">With LAPS:</span>
+Workstation-001: local admin password = "Kj8#mP2qL9nX"
+Workstation-002: local admin password = "Rp3@vN7wF4mY"
+Workstation-003: local admin password = "Tz6!xK1sH8bQ"
+...all different, randomly generated, auto-rotated
+
+Attacker compromises Workstation-001:
+  Gets: "Kj8#mP2qL9nX"
+  Tries on Workstation-002: <span class="cg">FAILS (different password) ✓</span>
+  Lateral movement via local admin: <span class="cg">STOPPED ✓</span>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — PAM Detects Insider Threat</div>
+      <div class="code">
+<span class="cm"># Disgruntled admin plans data theft before leaving:</span>
+
+Normal behavior (baseline):
+  DBA "j.wilson" accesses: customer_db during business hours
+  Typical queries: SELECT for reports, UPDATE for corrections
+  Session duration: 30-60 minutes
+
+<span class="cr">Thursday 11:47 PM — unusual PAM session:</span>
+  j.wilson: requests access to customer_db
+  PAM: JIT access granted (within policy)
+  Session: recording starts
+
+<span class="co">PAM behavior analytics flags:</span>
+  Time: 11:47 PM (outside normal hours) ← anomaly
+  Query: SELECT * FROM customer_table (full table dump!) ← anomaly
+  Export: csv file to local C:\ drive ← anomaly
+  Size: 8.7 GB transfer ← anomaly
+
+<span class="cr">PAM alert sent to SOC (11:52 PM):</span>
+"Privileged session anomaly — j.wilson
+ Full table dump + export — after hours"
+
+<span class="cb">SOC response (11:54 PM):</span>
+  Live view of j.wilson's session (real-time recording)
+  Confirmed: data exfiltration in progress
+  Action: terminate PAM session immediately
+  Action: disable j.wilson's AD account
+  Action: DLP logs reviewed — confirm no data left
+
+<span class="cg">Data: contained — copy on local drive only ✓</span>
+<span class="cg">Session recording: complete forensic evidence ✓</span>
+<span class="cg">Legal action: recording submitted as evidence ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">PAM →</span><span>Privileged Access Management — vault, JIT, session recording, PAW</span></div>
+      <div class="er"><span class="ek">Password vault →</span><span>Stores privileged creds — admin never sees password — auto-rotates after use</span></div>
+      <div class="er"><span class="ek">JIT access →</span><span>Just-in-Time — temporary privilege granted for specific task — auto-expires</span></div>
+      <div class="er"><span class="ek">Session recording →</span><span>Screen + keystroke capture of all privileged sessions — forensic + compliance</span></div>
+      <div class="er"><span class="ek">PAW →</span><span>Privileged Access Workstation — hardened dedicated machine for admin tasks only</span></div>
+      <div class="er"><span class="ek">LAPS →</span><span>Local Administrator Password Solution — unique random password per machine — stops lateral movement</span></div>
+      <div class="er"><span class="ek">Break-glass account →</span><span>Emergency last-resort admin — in physical safe — any use = immediate P1 alert</span></div>
+      <div class="er"><span class="ek">CyberArk →</span><span>Most widely deployed PAM platform — exam may reference it</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 7. ACCESS MODELS          -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Access Control Models</span><span class="bdg bdg-lime">RBAC · ABAC · MAC · DAC</span></div>
+  <div class="card-bd">
+    <p>Access control models define <strong style="color:var(--text)">how authorization decisions are made</strong> — who decides who gets what access, and based on what criteria. Different models suit different environments and sensitivity levels.</p>
+
+    <h3>The Four Core Access Control Models</h3>
+
+    <div class="model-row">
+      <div class="model-name" style="color:var(--blue)">DAC</div>
+      <div class="model-content">
+        <div class="model-title" style="color:var(--blue)">Discretionary Access Control</div>
+        <div class="model-desc">Resource OWNER decides who can access their resources. Most flexible — owner controls access. Most common in everyday file systems (Windows NTFS, Linux file permissions). Owner of a file can share it with anyone they choose.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.4rem">
+Example:
+Sarah creates file: budget.xlsx
+Sarah is OWNER → she decides who can access
+Sarah: grants READ to Finance team
+Sarah: grants EDIT to her manager
+Sarah: revokes access from Bob (she decides)
+<span class="cm"># No central authority — owner controls everything</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-name" style="color:var(--red)">MAC</div>
+      <div class="model-content">
+        <div class="model-title" style="color:var(--red)">Mandatory Access Control</div>
+        <div class="model-desc">System enforces access based on SECURITY LABELS. Owner has no control — security policy decides. Used in military/government — TOP SECRET users can only access TOP SECRET or below. Users cannot share above their clearance. Most restrictive model.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.4rem">
+Labels on objects:   TOP SECRET | SECRET | CONFIDENTIAL | UNCLASSIFIED
+Labels on subjects:  User clearance level
+
+Rule — "read down, write up" (Bell-LaPadula):
+  SECRET user + SECRET file → <span class="cg">ALLOWED</span>
+  SECRET user + TOP SECRET file → <span class="cr">DENIED (no read up)</span>
+  SECRET user + UNCLASSIFIED file → <span class="cg">ALLOWED (read down)</span>
+  
+<span class="cm"># Owner CANNOT override — system enforces always</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-name" style="color:var(--green)">RBAC</div>
+      <div class="model-content">
+        <div class="model-title" style="color:var(--green)">Role-Based Access Control</div>
+        <div class="model-desc">Access granted based on JOB ROLE not individual identity. Most common enterprise model. User assigned to role → role has permissions → user gets those permissions. Role changes automatically update all permissions. Simple to manage at scale.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.4rem">
+Roles defined:
+  Finance-Analyst: READ finance drive, USE accounts payable
+  Finance-Manager: + APPROVE payments, VIEW all reports
+  HR-Staff:        READ HR system, EDIT employee records
+  IT-Admin:        ADMIN all systems, RESET passwords
+
+User assigned role:
+  sarah.chen → Finance-Analyst role
+  Gets: exactly Finance-Analyst permissions
+  Nothing more, nothing less
+<span class="cm"># Change role → all permissions change automatically</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="model-row">
+      <div class="model-name" style="color:var(--orange)">ABAC</div>
+      <div class="model-content">
+        <div class="model-title" style="color:var(--orange)">Attribute-Based Access Control</div>
+        <div class="model-desc">Most granular and flexible model. Access based on MULTIPLE ATTRIBUTES simultaneously: user attributes (department, clearance, location) + resource attributes (classification, owner) + environment attributes (time, device, location). Used in Zero Trust architectures and cloud environments.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.4rem">
+Policy example:
+ALLOW access IF:
+  user.department == "Finance" AND
+  user.clearance >= "Confidential" AND
+  resource.classification == "Financial" AND
+  device.managed == true AND
+  time.hour BETWEEN 8 AND 18 AND
+  location.country == "Canada"
+
+Same user — different result:
+  Sarah, Finance, Monday 9am, managed laptop, Toronto: <span class="cg">ALLOWED</span>
+  Sarah, Finance, Sunday 2am, personal phone, Paris:   <span class="cr">DENIED</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Additional Access Control Concepts</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--purple)">Rule-Based AC</h4>
+        <p>Access based on rules/conditions — not role or identity. Firewall rules are rule-based: "allow TCP 443 from any to webserver." Time-based rules: "allow access Monday-Friday 9am-6pm only." Often confused with RBAC — different!</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Separation of Duties (SoD)</h4>
+        <p>No single person controls entire critical process. Finance: one person requests, another approves, another executes. Prevents fraud and errors. Cannot have same person create and approve invoices. Also called dual control or two-man rule.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--sky)">Need-to-Know Principle</h4>
+        <p>Access only to information REQUIRED for specific job function. Even with appropriate clearance level — if you don't need it for your job, you don't get it. Limits insider threat blast radius. Complements MAC in government environments.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--indigo)">Least Privilege</h4>
+        <p>Grant minimum permissions necessary to do the job. No more, no less. Regular users: no admin rights. Admins: use standard account for daily work, admin account only for admin tasks. Review and remove unused privileges regularly.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--lime)">Time-of-Day Restrictions</h4>
+        <p>Access only during authorized hours. Contractor: Monday-Friday 9am-5pm only. System maintenance account: 2am-4am Saturday only. Prevents off-hours access that could indicate compromise or insider threat.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--pink)">Location-Based Access</h4>
+        <p>Access restricted to specific geographic locations. VPN required for remote access. Sensitive systems: only from office network. Cloud: conditional access policy requiring trusted location. Geofencing alerts on access from unexpected countries.</p>
+      </div>
+    </div>
+
+    <h3>Model Comparison — Quick Reference</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Model</th><th>Who Decides Access</th><th>Based On</th><th>Best For</th><th>Flexibility</th></tr>
+      <tr><td><span class="tag tb">DAC</span></td><td>Resource owner</td><td>Owner's discretion</td><td>Home users, SMBs, file systems</td><td><span class="tag tg">High</span></td></tr>
+      <tr><td><span class="tag tr">MAC</span></td><td>Security policy</td><td>Labels + clearances</td><td>Military, government, classified</td><td><span class="tag tr">None</span></td></tr>
+      <tr><td><span class="tag tg">RBAC</span></td><td>Admin (role assignment)</td><td>Job role</td><td>Most enterprises — easy to manage</td><td><span class="tag ty">Medium</span></td></tr>
+      <tr><td><span class="tag to">ABAC</span></td><td>Policy engine</td><td>Multiple attributes</td><td>Cloud, Zero Trust, complex policies</td><td><span class="tag tg">Highest</span></td></tr>
+    </table>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — ABAC Prevents Unauthorized Access</div>
+      <div class="code">
+<span class="cm"># Healthcare org using ABAC for patient record access:</span>
+
+Policy:
+ALLOW IF:
+  user.role IN ["Doctor","Nurse","Specialist"] AND
+  user.treating_patient == record.patient_id AND
+  device.encrypted == true AND
+  device.MDM_enrolled == true AND
+  time.hour BETWEEN 6 AND 23
+
+<span class="cb">Test Case 1 — Dr. Patel accessing her patient's record:</span>
+  user.role: Doctor ✓
+  treating_patient: matches patient_id ✓
+  device: encrypted + MDM enrolled ✓
+  time: 14:30 ✓
+  Result: <span class="cg">GRANTED ✓</span>
+
+<span class="cr">Test Case 2 — Dr. Patel accessing another doctor's patient:</span>
+  user.role: Doctor ✓
+  treating_patient: <span class="cr">NO MATCH — different doctor's patient</span>
+  Result: <span class="cr">DENIED ✗ (even though same role)</span>
+
+<span class="cr">Test Case 3 — Billing staff accessing clinical notes:</span>
+  user.role: Billing ✗
+  Result: <span class="cr">DENIED — billing not in allowed roles</span>
+
+<span class="cr">Test Case 4 — Doctor on personal unencrypted phone:</span>
+  device.encrypted: <span class="cr">false</span>
+  Result: <span class="cr">DENIED — device not compliant</span>
+
+<span class="cg">ABAC enforces: right person + right patient + right device + right time</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">DAC →</span><span>Owner decides — most flexible — file systems — Windows NTFS</span></div>
+      <div class="er"><span class="ek">MAC →</span><span>Labels + clearances — most restrictive — military/government — owner has no control</span></div>
+      <div class="er"><span class="ek">RBAC →</span><span>Job role determines access — most common enterprise — easy to manage at scale</span></div>
+      <div class="er"><span class="ek">ABAC →</span><span>Multiple attributes — most granular — cloud/Zero Trust — user + resource + environment</span></div>
+      <div class="er"><span class="ek">Separation of duties →</span><span>No single person controls complete critical process — fraud prevention</span></div>
+      <div class="er"><span class="ek">Least privilege →</span><span>Minimum necessary permissions — review and remove unused regularly</span></div>
+      <div class="er"><span class="ek">Need-to-know →</span><span>Even with clearance — only access information needed for specific job</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 8. ZERO TRUST             -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Zero Trust Architecture</span><span class="bdg bdg-purple">Never Trust · Always Verify</span></div>
+  <div class="card-bd">
+    <p>Zero Trust is a security model based on the principle <strong style="color:var(--text)">"never trust, always verify"</strong> — no user, device, or network is trusted by default, even if inside the corporate network. Every access request is verified before being granted, every time.</p>
+
+    <h3>Zero Trust vs Traditional "Castle and Moat"</h3>
+    <div class="cmp">
+      <div class="cmp-col" style="background:var(--s2)">
+        <div class="cmp-head" style="color:var(--red)">Traditional — Castle & Moat</div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Trust inside network, distrust outside</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>VPN = fully trusted once connected</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Authentication once → access all</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Attacker inside = unrestricted movement</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--red)"></div><span>Flat network — lateral movement easy</span></div>
+      </div>
+      <div class="cmp-col" style="background:var(--s2)">
+        <div class="cmp-head" style="color:var(--green)">Zero Trust — Verify Always</div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>No implicit trust based on network location</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Every access request verified — always</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Least privilege for each access</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Micro-segmentation limits lateral movement</span></div>
+        <div class="cmp-item"><div class="cmp-dot" style="background:var(--green)"></div><span>Assume breach — always monitoring</span></div>
+      </div>
+    </div>
+
+    <h3>Zero Trust Core Principles</h3>
+    <div class="code">
+<span class="cm"># NIST SP 800-207 Zero Trust Tenets:</span>
+
+<span class="cb">1. All resources treated as untrusted:</span>
+   Network location = irrelevant
+   Inside the office? → still verify
+   On VPN? → still verify
+   "We don't trust our own network"
+
+<span class="cb">2. Least privilege access:</span>
+   Only access needed for current task
+   Time-limited sessions
+   No persistent broad access
+   JIT access for privileged operations
+
+<span class="cb">3. Verify explicitly:</span>
+   Check all available signals:
+     Identity: Who is this user?
+     Device:   Is this device healthy and managed?
+     Location: Where is this request coming from?
+     Behavior: Does this match normal patterns?
+     Risk:     What's the current risk score?
+
+<span class="cb">4. Assume breach:</span>
+   Act as if attacker is already inside
+   Micro-segment networks
+   Encrypt all traffic (even internal)
+   Monitor everything continuously
+   Minimize blast radius
+
+<span class="cb">5. Continuous evaluation:</span>
+   Not just at login — verify throughout session
+   Risk score changes → re-verify or terminate
+   Sensitive action → step-up authentication
+    </div>
+
+    <h3>Zero Trust Components</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Identity Verification</h4>
+        <p>Strong identity = foundation of ZT. MFA required always. Conditional access policies. Risk-based authentication. Identity is the control plane. Verified on every access request.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Device Trust</h4>
+        <p>Device health verified before access. MDM enrollment required. Patch compliance checked. EDR installed and active. Certificate-based device identity. Unmanaged devices → limited access only.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Network Micro-segmentation</h4>
+        <p>Break flat network into tiny segments. Each segment = separate trust boundary. East-west traffic controlled. Server-to-server access requires explicit policy. Lateral movement becomes nearly impossible.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Application Access</h4>
+        <p>Applications not exposed to network directly. Accessed through secure proxy/gateway. User verified before app connection established. ZTNA (Zero Trust Network Access) replaces VPN. App-level microsegmentation.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--teal)">Data Protection</h4>
+        <p>Data classified and protected at all locations. Encryption in transit AND at rest. DLP enforces data access policies. Access to sensitive data requires additional verification. Data sovereignty and compliance built in.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--red)">Continuous Monitoring</h4>
+        <p>All access logged and analyzed. UEBA detects behavioral anomalies. SIEM correlates across all signals. Real-time risk scoring. Suspicious behavior → immediate re-verification or session termination.</p>
+      </div>
+    </div>
+
+    <h3>ZTNA — Zero Trust Network Access</h3>
+    <div class="code">
+<span class="cm"># ZTNA replaces traditional VPN:</span>
+
+<span class="cr">Traditional VPN:</span>
+User connects → VPN tunnel → access to ENTIRE internal network
+Risk: user (or malware) can reach all internal systems
+One compromised endpoint → flat network access
+
+<span class="cg">ZTNA:</span>
+User connects → verified → access to SPECIFIC app only
+Not the network — just the application
+Even on "trusted" network — access is app-by-app
+Micro-application perimeter
+
+Example:
+  HR staff → ZTNA → HR system only (not finance, not IT)
+  Finance → ZTNA → Finance systems only
+  Developers → ZTNA → Dev servers only (not prod)
+
+<span class="cm"># ZTNA providers:</span>
+Cloudflare Access, Zscaler ZPA, Palo Alto Prisma Access
+Cisco Duo Network Gateway, Google BeyondCorp
+    </div>
+
+    <h3>Conditional Access — Zero Trust in Practice</h3>
+    <div class="code">
+<span class="cm"># Microsoft Entra ID Conditional Access — ZT enforcement:</span>
+
+Policy: "Access to Finance app"
+Conditions evaluated:
+  Is this user in Finance group?
+  Is device compliant (MDM + patches)?
+  Is MFA satisfied?
+  Is location trusted (office or home VPN)?
+  Is sign-in risk low?
+
+<span class="cg">All conditions met → ALLOW with standard MFA</span>
+<span class="co">Device non-compliant → ALLOW web only (no download)</span>
+<span class="co">Unfamiliar location → ALLOW + require hardware key MFA</span>
+<span class="cr">High risk sign-in → BLOCK + alert security team</span>
+<span class="cr">Unknown device + foreign country → BLOCK immediately</span>
+
+<span class="cm"># Same user — different decisions based on context</span>
+<span class="cm"># This IS Zero Trust — continuous contextual evaluation</span>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Zero Trust Stops Lateral Movement</div>
+      <div class="code">
+<span class="cm"># Attacker compromises marketing employee's laptop via phishing:</span>
+
+<span class="cr">Old model (traditional VPN-based):</span>
+  Attacker: connects via employee VPN credentials
+  Access gained: ENTIRE internal network
+  Lateral movement: marketing → HR → finance → servers
+  Breach: complete — all systems reachable
+
+<span class="cg">Zero Trust model:</span>
+  Attacker: steals employee credentials
+  Login attempt: risk score HIGH (new device, unusual location)
+  Conditional access: BLOCKS — requires compliant device
+  Attacker: no ZTNA-compliant device
+  Result: <span class="cg">access denied ✓</span>
+
+  Attacker compromises actual laptop instead:
+  Login: succeeds (from employee's device)
+  ZTNA grants: marketing apps only
+  
+  Attacker tries to access finance server:
+  ZTNA: <span class="cg">access denied — not in Finance group ✓</span>
+  
+  Attacker tries to access HR system:
+  ZTNA: <span class="cg">access denied — not in HR group ✓</span>
+  
+  Attacker tries to ping other internal servers:
+  Micro-segmentation: <span class="cg">no route to other segments ✓</span>
+  
+  Blast radius: marketing laptop only — cannot spread ✓
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Zero Trust →</span><span>Never trust, always verify — no implicit trust based on network location</span></div>
+      <div class="er"><span class="ek">Assume breach →</span><span>Act as if attacker is already inside — micro-segment, monitor, encrypt everything</span></div>
+      <div class="er"><span class="ek">ZTNA →</span><span>Zero Trust Network Access — replaces VPN — access specific app not whole network</span></div>
+      <div class="er"><span class="ek">Micro-segmentation →</span><span>Tiny network segments — each requires explicit access policy — limits lateral movement</span></div>
+      <div class="er"><span class="ek">Conditional access →</span><span>Access decision based on: identity + device + location + risk — contextual</span></div>
+      <div class="er"><span class="ek">Continuous verification →</span><span>Not just at login — verify throughout session — re-challenge on risky actions</span></div>
+      <div class="er"><span class="ek">NIST SP 800-207 →</span><span>US government Zero Trust standard — seven tenets</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ -->
+<!-- 9. SUMMARY                -->
+<!-- ══════════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-indigo">All Topics</span></div>
+  <div class="card-bd">
+
+    <h3>IAM Concepts Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Concept</th><th>What It Is</th><th>Key Detail</th><th>Exam Keyword</th></tr>
+      <tr><td><span class="tag ti">AAA</span></td><td>Auth + Authorization + Accounting</td><td>RADIUS (network) / TACACS+ (device admin)</td><td>Core framework — in that order</td></tr>
+      <tr><td><span class="tag tg">Provisioning</span></td><td>Create/modify/remove access</td><td>Joiner-Mover-Leaver lifecycle</td><td>Least privilege from role template</td></tr>
+      <tr><td><span class="tag tg">SCIM</span></td><td>Auto SaaS account provisioning</td><td>Protocol pushing changes to cloud apps</td><td>HR change → all apps auto-updated</td></tr>
+      <tr><td><span class="tag ts">SSO</span></td><td>Authenticate once, access many</td><td>IdP vouches for user to all SPs</td><td>Single point of failure — MFA critical</td></tr>
+      <tr><td><span class="tag tb">SAML</span></td><td>XML SSO for web apps</td><td>IdP sends signed XML assertion to SP</td><td>Enterprise standard — not mobile-friendly</td></tr>
+      <tr><td><span class="tag tg">OIDC</span></td><td>JSON SSO built on OAuth 2.0</td><td>JWT id_token — modern apps + mobile</td><td>"Sign in with Google" = OIDC</td></tr>
+      <tr><td><span class="tag ty">Kerberos</span></td><td>Windows AD ticket-based SSO</td><td>KDC → TGT → Service Ticket</td><td>Golden ticket attack = forge TGT</td></tr>
+      <tr><td><span class="tag to">OAuth 2.0</span></td><td>Delegated authorization</td><td>Grant app access to your data</td><td>Authorization only — NOT authentication</td></tr>
+      <tr><td><span class="tag tp">MFA</span></td><td>2+ factors from different categories</td><td>Know + Have + Are + Somewhere</td><td>Blocks 99.9% credential attacks</td></tr>
+      <tr><td><span class="tag tg">FIDO2</span></td><td>Hardware key — phish-resistant MFA</td><td>Origin binding — fake site gets nothing</td><td>Strongest MFA — gold standard</td></tr>
+      <tr><td><span class="tag tr">SMS OTP</span></td><td>Weakest MFA method</td><td>SIM swapping defeats it</td><td>Better than nothing — not recommended</td></tr>
+      <tr><td><span class="tag tp">MFA fatigue</span></td><td>Spam pushes until user approves</td><td>Uber 2022 breach method</td><td>Defense: number matching, rate limiting</td></tr>
+      <tr><td><span class="tag tr">PAM</span></td><td>Privileged account protection</td><td>Vault + JIT + session recording + PAW</td><td>CyberArk — most deployed</td></tr>
+      <tr><td><span class="tag tr">LAPS</span></td><td>Unique local admin passwords</td><td>Per-machine random passwords</td><td>Stops lateral movement via local admin</td></tr>
+      <tr><td><span class="tag tb">DAC</span></td><td>Owner controls access</td><td>Most flexible — file systems</td><td>File permissions — Windows NTFS</td></tr>
+      <tr><td><span class="tag tr">MAC</span></td><td>Labels + clearances control access</td><td>Most restrictive — government</td><td>Bell-LaPadula — read down, write up</td></tr>
+      <tr><td><span class="tag tg">RBAC</span></td><td>Role determines access</td><td>Most common enterprise model</td><td>Role change = permissions auto-update</td></tr>
+      <tr><td><span class="tag to">ABAC</span></td><td>Multiple attributes control access</td><td>User + resource + environment</td><td>Most granular — Zero Trust / cloud</td></tr>
+      <tr><td><span class="tag tp">Zero Trust</span></td><td>Never trust, always verify</td><td>NIST SP 800-207</td><td>No implicit trust — verify everything</td></tr>
+      <tr><td><span class="tag tp">ZTNA</span></td><td>App-level access vs network access</td><td>Replaces VPN</td><td>Access specific app — not whole network</td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Authenticate, then determine what they can do, then log"</span><span>→ AAA — Authentication + Authorization + Accounting</span></div>
+      <div class="er"><span class="ek">"Employee account still active 6 months after leaving"</span><span>→ Orphaned account — deprovisioning failure — major risk</span></div>
+      <div class="er"><span class="ek">"User accumulated excess permissions after 3 role changes"</span><span>→ Access creep — solution: remove old role before adding new</span></div>
+      <div class="er"><span class="ek">"Periodic review of who has access to what"</span><span>→ Access recertification / user access review</span></div>
+      <div class="er"><span class="ek">"Automatically push user accounts to Salesforce when created in AD"</span><span>→ SCIM provisioning protocol</span></div>
+      <div class="er"><span class="ek">"Login once — access all company applications"</span><span>→ Single Sign-On (SSO)</span></div>
+      <div class="er"><span class="ek">"XML assertion from identity provider to service provider"</span><span>→ SAML 2.0</span></div>
+      <div class="er"><span class="ek">"Modern SSO for mobile apps — JSON tokens"</span><span>→ OIDC (OpenID Connect) — built on OAuth 2.0</span></div>
+      <div class="er"><span class="ek">"Windows domain SSO — ticket-based"</span><span>→ Kerberos — TGT from KDC</span></div>
+      <div class="er"><span class="ek">"Forge admin ticket in Windows environment"</span><span>→ Golden ticket attack — Kerberos TGT forgery</span></div>
+      <div class="er"><span class="ek">"Grant app access to my Google data without sharing password"</span><span>→ OAuth 2.0 — delegated authorization</span></div>
+      <div class="er"><span class="ek">"Most phishing-resistant MFA method"</span><span>→ FIDO2 / Hardware security key (YubiKey) — origin binding</span></div>
+      <div class="er"><span class="ek">"Weakest MFA — can be defeated by carrier social engineering"</span><span>→ SMS OTP — SIM swapping attack</span></div>
+      <div class="er"><span class="ek">"Attacker sends 50 push notifications until user approves"</span><span>→ MFA fatigue attack — defense: number matching</span></div>
+      <div class="er"><span class="ek">"Time-based 6-digit code from authenticator app"</span><span>→ TOTP (Time-based One-Time Password)</span></div>
+      <div class="er"><span class="ek">"Admin credentials stored — never visible to users"</span><span>→ PAM password vault (CyberArk, HashiCorp Vault)</span></div>
+      <div class="er"><span class="ek">"Temporary admin access for specific task — auto-expires"</span><span>→ Just-in-Time (JIT) access — PAM feature</span></div>
+      <div class="er"><span class="ek">"Every admin session screen-captured and logged"</span><span>→ PAM session recording</span></div>
+      <div class="er"><span class="ek">"Dedicated hardened computer for admin tasks only"</span><span>→ Privileged Access Workstation (PAW)</span></div>
+      <div class="er"><span class="ek">"Unique random local admin password per machine"</span><span>→ LAPS — prevents lateral movement via shared local admin</span></div>
+      <div class="er"><span class="ek">"File owner decides who can access their file"</span><span>→ DAC (Discretionary Access Control)</span></div>
+      <div class="er"><span class="ek">"Military clearance level determines data access"</span><span>→ MAC (Mandatory Access Control)</span></div>
+      <div class="er"><span class="ek">

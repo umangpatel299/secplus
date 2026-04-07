@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audits, Assessments & Security Awareness — Security+ Domain 5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --bg:#f6f5ef;
+  --s1:#ffffff;
+  --s2:#eeede6;
+  --s3:#e4e2da;
+  --border:#d6d4ca;
+  --text:#1c1b14;
+  --muted:#706e5e;
+  --blue:#1248c0;
+  --green:#0c6e34;
+  --red:#b01818;
+  --orange:#a84408;
+  --purple:#5c14a8;
+  --teal:#0a6860;
+  --yellow:#7a5c08;
+  --indigo:#2010c8;
+  --lime:#386008;
+  --gold:#885800;
+  --rose:#980844;
+  --sky:#0858b0;
+  --coral:#c03820;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Epilogue',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+/* DUAL HEADER */
+.hdr{
+  display:grid;
+  grid-template-columns:1fr 4px 1fr;
+  gap:1.5rem;
+  margin-bottom:2.5rem;
+  padding-bottom:1.5rem;
+  border-bottom:2px solid var(--text);
+}
+@media(max-width:640px){.hdr{grid-template-columns:1fr;}}
+.hdr-divider{background:var(--text);border-radius:2px;}
+.hdr-block{padding:0.5rem 0;}
+.hdr-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.18em;
+  color:var(--muted);text-transform:uppercase;margin-bottom:0.4rem;
+}
+.hdr-title{
+  font-family:'Epilogue',sans-serif;
+  font-size:2.3rem;font-weight:900;
+  letter-spacing:-0.03em;line-height:0.95;margin-bottom:0.3rem;
+}
+.hdr-title .a1{color:var(--indigo);}
+.hdr-title .a2{color:var(--coral);}
+.hdr-sub{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:0.62rem;color:var(--muted);
+}
+
+/* SECTION SWITCHER */
+.switcher{
+  display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.5rem;
+}
+.sw-btn{
+  padding:0.55rem 1.4rem;border-radius:4px;border:2px solid;
+  font-family:'IBM Plex Mono',monospace;font-size:0.68rem;font-weight:700;
+  cursor:pointer;transition:all 0.14s;letter-spacing:0.04em;text-transform:uppercase;
+}
+.sw-a{border-color:var(--indigo);color:var(--indigo);background:transparent;}
+.sw-a.on{background:var(--indigo);color:#fff;}
+.sw-b{border-color:var(--coral);color:var(--coral);background:transparent;}
+.sw-b.on{background:var(--coral);color:#fff;}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.38rem 0.85rem;border-radius:4px;
+  border:1.5px solid var(--border);background:var(--s1);
+  color:var(--muted);cursor:pointer;
+  font-family:'IBM Plex Mono',monospace;font-size:0.62rem;
+  font-weight:700;transition:all 0.13s;letter-spacing:0.03em;
+}
+.tabs.indigo .tab:hover{border-color:var(--indigo);color:var(--indigo);}
+.tabs.indigo .tab.active{background:var(--indigo);color:#fff;border-color:var(--indigo);}
+.tabs.coral .tab:hover{border-color:var(--coral);color:var(--coral);}
+.tabs.coral .tab.active{background:var(--coral);color:#fff;border-color:var(--coral);}
+
+/* TOPIC PANELS */
+.topic{display:none;}
+.topic.on{display:block;animation:rise 0.2s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+/* INNER SECTIONS */
+.sec{display:none;}
+.sec.on{display:block;}
+
+/* CARD */
+.card{
+  background:var(--s1);border:1.5px solid var(--border);
+  border-radius:8px;margin-bottom:1.5rem;overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.card-hd{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.9rem 1.4rem;
+  border-bottom:1.5px solid var(--border);background:var(--s2);
+}
+.card-num{
+  font-family:'IBM Plex Mono',monospace;font-size:0.58rem;
+  color:var(--muted);background:var(--s3);
+  border:1px solid var(--border);border-radius:2px;padding:0.12rem 0.38rem;
+}
+.card-title{
+  font-family:'Epilogue',sans-serif;
+  font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;
+}
+.bdg{
+  margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:0.57rem;
+  padding:0.14rem 0.52rem;border-radius:2px;white-space:nowrap;font-weight:700;
+  letter-spacing:0.04em;text-transform:uppercase;
+}
+.bdg-blue{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.bdg-green{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.bdg-orange{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.bdg-red{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.bdg-purple{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.bdg-teal{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.bdg-indigo{background:#e0e7ff;color:#3730a3;border:1px solid #a5b4fc;}
+.bdg-yellow{background:#fef9c3;color:#713f12;border:1px solid #fde047;}
+.bdg-coral{background:#fff1ee;color:#9a1800;border:1px solid #fdc5b8;}
+.bdg-lime{background:#ecfccb;color:#3f6212;border:1px solid #bef264;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.72;}
+h3{
+  font-family:'Epilogue',sans-serif;font-size:0.9rem;font-weight:800;
+  color:var(--text);margin:1.3rem 0 0.6rem;
+  padding-left:0.7rem;letter-spacing:-0.01em;
+}
+.h3-indigo{border-left:3px solid var(--indigo);}
+.h3-coral{border-left:3px solid var(--coral);}
+
+/* CODE */
+.code{
+  background:var(--text);color:#f0edd8;
+  border-radius:4px;padding:1rem 1.2rem;
+  font-family:'IBM Plex Mono',monospace;font-size:0.68rem;
+  line-height:1.9;overflow-x:auto;margin:0.8rem 0;
+}
+.cg{color:#86efac;} .cr{color:#fca5a5;} .cb{color:#93c5fd;}
+.co{color:#fde68a;} .cp{color:#d8b4fe;} .cm{color:#706e5e;}
+.ct{color:#5eead4;} .ci{color:#a5b4fc;} .cy{color:#fef08a;}
+.cl{color:#bef264;} .cpk{color:#f9a8d4;} .cs{color:#7dd3fc;}
+
+/* SCENE */
+.scene{
+  border-left:4px solid var(--orange);
+  border-radius:0 5px 5px 0;padding:1rem 1.2rem;margin:1rem 0;
+  background:#fffbeb;
+}
+.scene-lbl{
+  font-family:'IBM Plex Mono',monospace;font-size:0.58rem;
+  color:var(--orange);margin-bottom:0.4rem;
+  letter-spacing:0.12em;font-weight:700;text-transform:uppercase;
+}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{background:var(--s2);border:1.5px solid var(--border);border-radius:5px;padding:1rem;}
+.gc h4{font-family:'Epilogue',sans-serif;font-size:0.86rem;font-weight:800;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{border-radius:5px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam-indigo{background:#f0eeff;border:1.5px solid #c4b5fd;}
+.exam-coral{background:#fff1ee;border:1.5px solid #fdc5b8;}
+.exam h4{
+  font-family:'IBM Plex Mono',monospace;font-size:0.58rem;
+  margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:700;text-transform:uppercase;
+}
+.exam-indigo h4{color:var(--purple);}
+.exam-coral h4{color:var(--coral);}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek-indigo{color:var(--purple);font-family:'IBM Plex Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+.ek-coral{color:var(--coral);font-family:'IBM Plex Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:700;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.52rem 0.8rem;text-align:left;color:var(--muted);border-bottom:1.5px solid var(--border);font-size:0.63rem;font-weight:700;font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.52rem 0.8rem;border-bottom:1px solid var(--border);font-size:0.82rem;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.08rem 0.42rem;border-radius:2px;font-size:0.6rem;font-family:'IBM Plex Mono',monospace;font-weight:700;}
+.tg{background:#dcfce7;color:#166534;} .tr{background:#fee2e2;color:#991b1b;}
+.tb{background:#dbeafe;color:#1e40af;} .to{background:#ffedd5;color:#9a3412;}
+.tp{background:#f3e8ff;color:#6b21a8;} .tt{background:#ccfbf1;color:#115e59;}
+.ti{background:#e0e7ff;color:#3730a3;} .ty{background:#fef9c3;color:#713f12;}
+.tl{background:#ecfccb;color:#3f6212;} .ts{background:#e0f2fe;color:#075985;}
+.tc{background:#fff1ee;color:#9a1800;}
+
+/* AUDIT TYPES */
+.audit-card{
+  background:var(--s1);border:1.5px solid var(--border);border-radius:6px;
+  padding:1.1rem;margin-bottom:0.7rem;border-left:4px solid;
+}
+.audit-hd{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.5rem;}
+.audit-icon{font-size:1.2rem;flex-shrink:0;}
+.audit-name{font-family:'Epilogue',sans-serif;font-size:0.92rem;font-weight:800;letter-spacing:-0.01em;}
+.audit-type{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;color:var(--muted);background:var(--s2);padding:0.12rem 0.4rem;border-radius:2px;margin-left:auto;}
+.audit-body{font-size:0.78rem;color:var(--muted);}
+
+/* PENTEST PHASES */
+.phase-strip{display:flex;overflow-x:auto;gap:0;margin:1rem 0;border:1.5px solid var(--border);border-radius:6px;overflow:hidden;}
+.phase-cell{flex:1;min-width:110px;padding:1rem 0.7rem;text-align:center;border-right:1px solid var(--border);}
+.phase-cell:last-child{border-right:none;}
+.phase-num{font-family:'Epilogue',sans-serif;font-size:1.3rem;font-weight:900;opacity:0.15;margin-bottom:0.4rem;}
+.phase-name{font-size:0.75rem;font-weight:800;margin-bottom:0.2rem;font-family:'Epilogue',sans-serif;}
+.phase-desc{font-size:0.62rem;color:var(--muted);line-height:1.4;}
+
+/* PHISHING TYPES */
+.phish-row{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:0.75rem 0;border-bottom:1px solid var(--border);
+}
+.phish-row:last-child{border-bottom:none;}
+.phish-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.1rem;}
+.phish-title{font-size:0.86rem;font-weight:800;margin-bottom:0.15rem;font-family:'Epilogue',sans-serif;letter-spacing:-0.01em;}
+.phish-body{font-size:0.76rem;color:var(--muted);}
+
+/* BEHAVIOR SIGNALS */
+.sig-card{
+  background:var(--s2);border:1.5px solid var(--border);border-radius:5px;
+  padding:0.9rem;margin-bottom:0.45rem;
+  display:flex;gap:0.8rem;align-items:flex-start;
+}
+.sig-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.sig-title{font-size:0.84rem;font-weight:800;margin-bottom:0.15rem;font-family:'Epilogue',sans-serif;letter-spacing:-0.01em;}
+.sig-body{font-size:0.75rem;color:var(--muted);}
+.sig-level{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;padding:0.1rem 0.4rem;border-radius:2px;font-weight:700;margin-left:auto;flex-shrink:0;}
+
+/* TRAINING FLOW */
+.train-step{
+  display:flex;gap:0.9rem;padding:0.8rem 0;
+  border-bottom:1px solid var(--border);align-items:flex-start;
+}
+.train-step:last-child{border-bottom:none;}
+.train-num{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:0.72rem;font-weight:700;
+  flex-shrink:0;
+}
+.train-title{font-size:0.85rem;font-weight:800;margin-bottom:0.15rem;font-family:'Epilogue',sans-serif;letter-spacing:-0.01em;}
+.train-body{font-size:0.76rem;color:var(--muted);}
+
+/* INFO ROW */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s2);border:1.5px solid var(--border);border-radius:5px;margin-bottom:0.5rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Epilogue',sans-serif;font-size:0.86rem;font-weight:800;margin-bottom:0.12rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<!-- DUAL MASTHEAD -->
+<div class="hdr">
+  <div class="hdr-block">
+    <div class="hdr-label">Domain 5 · Topic A</div>
+    <div class="hdr-title"><span class="a1">Audits &amp;<br>Assessments</span></div>
+    <div class="hdr-sub">// Attestation · Internal · External · Pen Testing</div>
+  </div>
+  <div class="hdr-divider"></div>
+  <div class="hdr-block">
+    <div class="hdr-label">Domain 5 · Topic B</div>
+    <div class="hdr-title"><span class="a2">Security<br>Awareness</span></div>
+    <div class="hdr-sub">// Phishing · Behavior · Training · Reporting</div>
+  </div>
+</div>
+
+<!-- TOPIC SWITCHER -->
+<div class="switcher">
+  <button class="sw-btn sw-a on" onclick="switchTopic('A',this)">📋 Audits &amp; Assessments</button>
+  <button class="sw-btn sw-b" onclick="switchTopic('B',this)">🎓 Security Awareness</button>
+</div>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║  TOPIC A — AUDITS & ASSESSMENTS     ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<div class="topic on" id="topicA">
+  <div class="tabs indigo">
+    <button class="tab active" onclick="goA('a1',this)">1. Overview</button>
+    <button class="tab" onclick="goA('a2',this)">2. Attestation</button>
+    <button class="tab" onclick="goA('a3',this)">3. Internal Audits</button>
+    <button class="tab" onclick="goA('a4',this)">4. External Audits</button>
+    <button class="tab" onclick="goA('a5',this)">5. Pen Testing</button>
+    <button class="tab" onclick="goA('a6',this)">6. Vulnerability Assess.</button>
+    <button class="tab" onclick="goA('a7',this)">📊 Summary A</button>
+  </div>
+
+  <!-- A1: OVERVIEW -->
+  <div class="sec on" id="a1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">A1</span><span class="card-title">Audits & Assessments Overview</span><span class="bdg bdg-indigo">Verify · Evidence · Assurance</span></div>
+    <div class="card-bd">
+      <p>Audits and assessments provide <strong style="color:var(--text)">independent verification that security controls are working as intended</strong>. They answer: are we actually doing what we say we're doing? Are our controls effective? Where are the gaps?</p>
+
+      <h3 class="h3-indigo">Assessment vs Audit — The Distinction</h3>
+      <div class="code">
+<span class="cm"># Assessment vs Audit — often confused:</span>
+
+<span class="cb">ASSESSMENT:</span>
+  Purpose:   Identify weaknesses and improve security posture
+  Focus:     Technical — what vulnerabilities exist?
+  Tone:      Collaborative — help you find and fix problems
+  Output:    Findings with remediation recommendations
+  Examples:  Vulnerability scan, risk assessment, pen test
+  Who:       Internal security team or external consultants
+
+<span class="ci">AUDIT:</span>
+  Purpose:   Verify compliance with policies, standards, regulations
+  Focus:     Process — are controls documented and followed?
+  Tone:      Independent — objective evidence review
+  Output:    Audit findings, opinion, compliance status
+  Examples:  SOC 2 audit, PCI-DSS QSA audit, internal IT audit
+  Who:       Independent auditors (cannot audit own work)
+
+<span class="cm"># They complement each other:</span>
+Assessments → find what to fix
+Audits → verify the fixes were made and sustained
+      </div>
+
+      <h3 class="h3-indigo">Why Both Are Needed</h3>
+      <div class="g2">
+        <div class="gc" style="border-color:#a5b4fc">
+          <h4 style="color:var(--indigo)">Assessments Find Reality</h4>
+          <p>Technical testing reveals actual security posture. Documentation says "MFA enabled" — pen tester finds MFA bypass. Policies say "patching within 14 days" — vulnerability scan shows 60-day-old critical CVEs. Assessments reveal the gap between stated and actual security.</p>
+        </div>
+        <div class="gc" style="border-color:#86efac">
+          <h4 style="color:var(--green)">Audits Ensure Sustainability</h4>
+          <p>Compliance must be maintained — not just achieved once. Audits verify controls operate consistently over time. An audit finding tells you: this control failed to operate as required. Without audits, security can degrade between assessments without anyone noticing.</p>
+        </div>
+      </div>
+
+      <div class="exam exam-indigo">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-indigo">Assessment →</span><span>Identify weaknesses — collaborative — technical focus — find and fix</span></div>
+        <div class="er"><span class="ek-indigo">Audit →</span><span>Verify compliance — independent — process focus — evidence review</span></div>
+        <div class="er"><span class="ek-indigo">Independence →</span><span>Auditors cannot audit their own work — conflict of interest</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- A2: ATTESTATION -->
+  <div class="sec" id="a2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">A2</span><span class="card-title">Attestation</span><span class="bdg bdg-blue">Formal Declaration of Compliance</span></div>
+    <div class="card-bd">
+      <p>Attestation is a <strong style="color:var(--text)">formal declaration — signed by an authorized person — that certain security controls or compliance requirements are met</strong>. It creates legal accountability: the person signing is personally responsible for the accuracy of the statement.</p>
+
+      <h3 class="h3-indigo">Types of Attestation</h3>
+
+      <div class="audit-card" style="border-left-color:var(--blue)">
+        <div class="audit-hd"><span class="audit-icon">📜</span><span class="audit-name" style="color:var(--blue)">Self-Attestation</span><span class="audit-type">Internal declaration</span></div>
+        <div class="audit-body">The organization itself declares compliance. CISO, CEO, or executive signs a statement confirming controls are in place. Used when: third-party audit not required, initial compliance claim, smaller-scope requirements. PCI-DSS SAQ (Self-Assessment Questionnaire) is a form of self-attestation for smaller merchants. Risk: no independent verification — organization could be mistaken or dishonest. Best backed by internal audit evidence.</div>
+      </div>
+
+      <div class="audit-card" style="border-left-color:var(--green)">
+        <div class="audit-hd"><span class="audit-icon">🏢</span><span class="audit-name" style="color:var(--green)">Third-Party Attestation</span><span class="audit-type">Independent verification</span></div>
+        <div class="audit-body">Independent auditor or assessor provides the attestation. Highest credibility — auditor has no conflict of interest. Examples: SOC 2 Type II report (CPA firm attests), PCI-DSS AoC with QSA signature, ISO 27001 certificate from accredited certification body. The attestor's professional license and reputation are on the line — significant accountability. Required for enterprise customers and regulated industries.</div>
+      </div>
+
+      <div class="audit-card" style="border-left-color:var(--orange)">
+        <div class="audit-hd"><span class="audit-icon">✍️</span><span class="audit-name" style="color:var(--orange)">Letter of Attestation</span><span class="audit-type">Formal written statement</span></div>
+        <div class="audit-body">Formal written letter from a qualified person confirming specific facts. Examples: auditor's letter confirming controls reviewed, legal counsel letter confirming no known regulatory violations, CISO letter confirming security assessment was conducted. Often required as part of contract due diligence, M&A transactions, or regulatory filings. Creates paper trail of accountability.</div>
+      </div>
+
+      <h3 class="h3-indigo">Attestation in Practice</h3>
+      <div class="code">
+<span class="cm"># What different attestations cover:</span>
+
+<span class="cb">SOC 2 Attestation (CPA firm):</span>
+  "Based on our examination, the description of [Company's]
+   system fairly presents the system and the controls...
+   are suitably designed and operating effectively
+   throughout the period from Jan 1 to Dec 31, 2024"
+  Signed by: CPA firm audit partner
+  Liability: professional liability + potential criminal fraud
+
+<span class="cg">PCI-DSS Attestation of Compliance (QSA):</span>
+  QSA certifies: assessed organization against PCI-DSS v4.0
+  Merchant certifies: information in the AoC is accurate
+  Both sign: QSA + senior officer of assessed company
+  
+<span class="co">HIPAA Risk Analysis Attestation (Internal):</span>
+  CISO attests: comprehensive risk analysis was conducted
+  Documents: methodology, scope, findings, treatment
+  Date and signature: establishes when analysis was done
+  Required by: HHS audit request, breach investigation
+  
+<span class="cm"># Key principle: attestation creates accountability</span>
+<span class="cm"># False attestation: can be fraud / criminal liability</span>
+      </div>
+
+      <div class="exam exam-indigo">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-indigo">Attestation →</span><span>Formal signed declaration of compliance — creates legal accountability</span></div>
+        <div class="er"><span class="ek-indigo">Self-attestation →</span><span>Organization declares its own compliance — no independent verification</span></div>
+        <div class="er"><span class="ek-indigo">Third-party attestation →</span><span>Independent auditor certifies — highest credibility — SOC 2, ISO 27001</span></div>
+        <div class="er"><span class="ek-indigo">PCI AoC →</span><span>Attestation of Compliance — signed by QSA + senior org officer</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- A3: INTERNAL AUDITS -->
+  <div class="sec" id="a3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">A3</span><span class="card-title">Internal Audits</span><span class="bdg bdg-teal">Independent · Continuous · Pre-audit</span></div>
+    <div class="card-bd">
+      <p>Internal audits are <strong style="color:var(--text)">conducted by an organization's own audit staff — independent from the security team being audited</strong>. They provide ongoing assurance, find issues before external auditors do, and are a key governance control.</p>
+
+      <h3 class="h3-indigo">Internal Audit Characteristics</h3>
+      <div class="code">
+<span class="cm"># What makes an audit truly "internal":</span>
+
+Internal audit staff: employees of the organization
+Independence:  separate department from security ops
+               Internal auditors do NOT report to CISO
+               Report to: Audit Committee (board level)
+               or CFO / CEO — never to the auditee
+
+Why independence matters:
+  Auditor cannot audit own work
+  If security team audits itself: conflict of interest
+  Board needs objective view of security posture
+  External regulators won't accept non-independent audit
+
+Scope: typically assigned by Audit Committee
+  Annual audit plan: covers all risk areas over 3-5 years
+  Prioritized by risk: higher risk areas audited more frequently
+  Triggered: by incidents, regulatory changes, board requests
+      </div>
+
+      <h3 class="h3-indigo">Internal Audit Types</h3>
+      <div class="g3">
+        <div class="gc">
+          <h4 style="color:var(--indigo)">Compliance Audit</h4>
+          <p>Verifies adherence to policies, standards, and regulations. "Are employees following the password policy?" "Is change management being followed for all production changes?" Compares actual practice to documented requirement. Output: gaps and non-conformities.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--blue)">Operational Audit</h4>
+          <p>Evaluates efficiency and effectiveness of security processes. "Is our patch management process taking 45 days when it should take 14?" "Is the IR process working?" Identifies process improvement opportunities beyond just compliance.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--green)">IT General Controls (ITGC) Audit</h4>
+          <p>Specific to IT controls required for financial reporting (SOX). Access controls, change management, computer operations, IT security. Must be audited annually for public companies. Output feeds into external financial audit opinion.</p>
+        </div>
+      </div>
+
+      <h3 class="h3-indigo">Internal Audit Process</h3>
+      <div class="code">
+<span class="cm"># Standard internal audit lifecycle:</span>
+
+<span class="cb">1. Planning:</span>
+   Define scope and objectives
+   Review prior audit findings (are old issues fixed?)
+   Identify key risks to focus on
+   Develop audit program (what to test and how)
+   Notify auditee (usually 2-4 weeks notice)
+
+<span class="cg">2. Fieldwork:</span>
+   Request evidence: policies, configs, logs, reports
+   Interview key personnel: controls in practice
+   Test controls: sample transactions, configs
+   Document: workpapers for every test performed
+   Identify: preliminary findings
+
+<span class="co">3. Reporting:</span>
+   Draft report: findings with risk rating and evidence
+   Management response: auditee responds to each finding
+   Final report: issued to Audit Committee / executive
+   Contains: opinion, findings, management response, timeline
+
+<span class="cp">4. Follow-up:</span>
+   Track remediation of findings
+   Verify: fixes were actually implemented
+   Report status to Audit Committee quarterly
+   Repeat: findings unresolved → escalate
+      </div>
+
+      <h3 class="h3-indigo">Internal Audit — Value to Security Team</h3>
+      <div class="g2">
+        <div class="gc" style="border-color:#a5b4fc">
+          <h4 style="color:var(--indigo)">Pre-Audit Preparation</h4>
+          <p>Internal audit acts as a "dress rehearsal" for external audits. Finds issues before the PCI QSA or HHS auditor finds them. Much better to fix gaps internally than get external audit findings. Security teams should actively engage with internal audit as a partner.</p>
+        </div>
+        <div class="gc" style="border-color:#86efac">
+          <h4 style="color:var(--green)">Continuous Assurance</h4>
+          <p>Unlike annual external audit, internal audit provides year-round assurance. Regular checks catch control degradation early. "We were compliant in January — are we still compliant in October?" Internal audit answers this continuously.</p>
+        </div>
+      </div>
+
+      <div class="exam exam-indigo">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-indigo">Internal audit independence →</span><span>Separate from security team — reports to Audit Committee NOT to CISO</span></div>
+        <div class="er"><span class="ek-indigo">ITGC audit →</span><span>IT General Controls — SOX requirement — access, change mgmt, operations</span></div>
+        <div class="er"><span class="ek-indigo">Internal audit value →</span><span>Finds issues before external auditors — "dress rehearsal" for compliance audit</span></div>
+        <div class="er"><span class="ek-indigo">Audit follow-up →</span><span>Track and verify remediation — findings unresolved = escalate to Audit Committee</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- A4: EXTERNAL AUDITS -->
+  <div class="sec" id="a4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">A4</span><span class="card-title">External Audits</span><span class="bdg bdg-orange">Independent · Credible · Regulatory</span></div>
+    <div class="card-bd">
+      <p>External audits are conducted by <strong style="color:var(--text)">independent third parties with no connection to the organization</strong>. They provide the highest level of assurance credibility because the auditor has no conflict of interest — their reputation and license are at stake.</p>
+
+      <h3 class="h3-indigo">Types of External Audits</h3>
+
+      <div class="audit-card" style="border-left-color:var(--blue)">
+        <div class="audit-hd"><span class="audit-icon">📊</span><span class="audit-name" style="color:var(--blue)">SOC 2 Audit</span><span class="audit-type">CPA firm · SaaS vendors · Annual</span></div>
+        <div class="audit-body">Conducted by licensed CPA firm. Covers Trust Service Criteria: Security, Availability, Processing Integrity, Confidentiality, Privacy. Type I: design at point in time. Type II: operating effectiveness over 6-12 months — gold standard. Report shared with customers under NDA. Required by enterprise buyers for cloud/SaaS vendors. Cost: $30K-$150K+ depending on scope.</div>
+      </div>
+
+      <div class="audit-card" style="border-left-color:var(--orange)">
+        <div class="audit-hd"><span class="audit-icon">💳</span><span class="audit-name" style="color:var(--orange)">PCI-DSS Assessment</span><span class="audit-type">QSA · Level 1 merchants · Annual</span></div>
+        <div class="audit-body">Conducted by Qualified Security Assessor (QSA) — PCI SSC certified. Required for Level 1 merchants (&gt;6M transactions/year). Reviews all 12 PCI-DSS requirements. Output: Report on Compliance (ROC) + Attestation of Compliance (AoC). Quarterly ASV external scans also required. Non-compliance: losing card processing ability.</div>
+      </div>
+
+      <div class="audit-card" style="border-left-color:var(--green)">
+        <div class="audit-hd"><span class="audit-icon">🌍</span><span class="audit-name" style="color:var(--green)">ISO 27001 Certification Audit</span><span class="audit-type">Accredited CB · International · 3-year cycle</span></div>
+        <div class="audit-body">Conducted by accredited Certification Body (CB). Stage 1: documentation review. Stage 2: implementation audit — verify controls working. Certificate valid 3 years with annual surveillance audits. Scope-limited: organization defines what's in scope. Used as B2B trust signal — "we have ISO 27001" proves security commitment to partners.</div>
+      </div>
+
+      <div class="audit-card" style="border-left-color:var(--purple)">
+        <div class="audit-hd"><span class="audit-icon">🏥</span><span class="audit-name" style="color:var(--purple)">Regulatory Examination</span><span class="audit-type">Government agency · Healthcare/Finance/Energy</span></div>
+        <div class="audit-body">HHS OCR audits healthcare orgs for HIPAA compliance. SEC examinations for financial firms. FDIC for banks. CISA for critical infrastructure. Cannot refuse — regulators have legal authority. Findings: corrective action plans with deadlines. Unresolved findings: escalate to fines and enforcement actions. Unannounced inspections possible.</div>
+      </div>
+
+      <h3 class="h3-indigo">Audit Findings — Classification</h3>
+      <div class="code">
+<span class="cm"># Audit findings are graded by severity:</span>
+
+<span class="cr">Critical Finding:</span>
+  Control completely absent or fundamentally broken
+  Example: "No MFA on any admin accounts"
+  Immediate remediation required before audit closes
+  May result in audit opinion modification
+
+<span class="co">High/Major Finding:</span>
+  Significant control gap — material impact if exploited
+  Example: "Critical patches over 60 days old on 30% of systems"
+  Remediation plan required with specific timeline
+
+<span class="cy">Medium/Moderate Finding:</span>
+  Control exists but effectiveness limited
+  Example: "Access reviews performed but no evidence of revocations"
+  Remediation within agreed timeframe
+
+<span class="cg">Low/Minor/Observation:</span>
+  Best practice not followed — low risk
+  Example: "Password policy doesn't specify complexity"
+  Note for improvement — no strict timeline
+
+<span class="cm"># External audit opinion types (SOC 2):</span>
+Unqualified ("clean"): all controls operated effectively ✓
+Qualified:             most controls OK — specific exceptions
+Adverse:               material weaknesses in controls
+Disclaimer:            couldn't obtain sufficient evidence
+      </div>
+
+      <h3 class="h3-indigo">Preparing for External Audits</h3>
+      <div class="g2">
+        <div class="gc">
+          <h4 style="color:var(--orange)">Before the Audit</h4>
+          <ul>
+            <li>Run internal audit as rehearsal</li>
+            <li>Collect and organize evidence in advance</li>
+            <li>Fix known gaps before auditors arrive</li>
+            <li>Train staff who will be interviewed</li>
+            <li>Establish single point of contact for auditors</li>
+            <li>Review prior year findings — are they all fixed?</li>
+            <li>Prepare evidence repository with read-only access</li>
+          </ul>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--red)">During the Audit</h4>
+          <ul>
+            <li>Provide evidence promptly — delays = red flags</li>
+            <li>Don't guess — say "I'll find that for you"</li>
+            <li>All auditor requests go through point of contact</li>
+            <li>Document everything you provide</li>
+            <li>Challenge findings factually with evidence</li>
+            <li>Resolve preliminary findings before final report</li>
+            <li>Treat auditors as partners not adversaries</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exam exam-indigo">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-indigo">SOC 2 Type II →</span><span>Operating effectiveness over period — CPA firm — gold standard for cloud vendors</span></div>
+        <div class="er"><span class="ek-indigo">QSA →</span><span>Qualified Security Assessor — PCI-DSS Level 1 auditor — certified by PCI SSC</span></div>
+        <div class="er"><span class="ek-indigo">Unqualified opinion →</span><span>"Clean" SOC 2 — all controls operated effectively — what you want</span></div>
+        <div class="er"><span class="ek-indigo">Qualified opinion →</span><span>Most controls OK but specific exceptions found — red flag for customers</span></div>
+        <div class="er"><span class="ek-indigo">Regulatory examination →</span><span>HHS/SEC/FDIC — legal authority — cannot refuse — unannounced possible</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- A5: PENETRATION TESTING -->
+  <div class="sec" id="a5">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">A5</span><span class="card-title">Penetration Testing</span><span class="bdg bdg-red">Authorized · Exploit · Prove</span></div>
+    <div class="card-bd">
+      <p>Penetration testing is <strong style="color:var(--text)">authorized, simulated cyberattacks against systems to find and demonstrate exploitable vulnerabilities</strong>. Unlike vulnerability scanning, pen testers actively try to exploit what they find — proving real-world impact, not theoretical risk.</p>
+
+      <h3 class="h3-indigo">Pen Test Phases</h3>
+      <div class="phase-strip">
+        <div class="phase-cell" style="background:#eff6ff">
+          <div class="phase-num" style="color:var(--blue)">1</div>
+          <div class="phase-name" style="color:var(--blue)">Reconnaissance</div>
+          <div class="phase-desc">Passive + active info gathering. OSINT, DNS, ports, employees, technologies</div>
+        </div>
+        <div class="phase-cell" style="background:#fff7ed">
+          <div class="phase-num" style="color:var(--orange)">2</div>
+          <div class="phase-name" style="color:var(--orange)">Scanning</div>
+          <div class="phase-desc">Port scanning, service enumeration, vulnerability identification</div>
+        </div>
+        <div class="phase-cell" style="background:#fef2f2">
+          <div class="phase-num" style="color:var(--red)">3</div>
+          <div class="phase-name" style="color:var(--red)">Exploitation</div>
+          <div class="phase-desc">Actively exploit vulnerabilities. Gain initial access. Prove real-world impact</div>
+        </div>
+        <div class="phase-cell" style="background:#f3e8ff">
+          <div class="phase-num" style="color:var(--purple)">4</div>
+          <div class="phase-name" style="color:var(--purple)">Post-Exploitation</div>
+          <div class="phase-desc">Lateral movement, privilege escalation, persistence, data access</div>
+        </div>
+        <div class="phase-cell" style="background:#f0fdf4">
+          <div class="phase-num" style="color:var(--green)">5</div>
+          <div class="phase-name" style="color:var(--green)">Reporting</div>
+          <div class="phase-desc">Document findings, risk ratings, evidence, remediation guidance</div>
+        </div>
+      </div>
+
+      <h3 class="h3-indigo">Pen Test Types</h3>
+      <div class="code">
+<span class="cm"># Black / Grey / White box — what information is given:</span>
+
+<span class="cb">Black Box:</span>  No prior knowledge — company name only
+             Simulates: external unknown attacker
+             Realistic: yes — but slow (time on recon)
+             Finds: externally exploitable vulnerabilities
+             Best for: external attack surface assessment
+
+<span class="ci">Grey Box:</span>   Partial knowledge — credentials, network map
+             Simulates: insider threat / compromised account
+             Efficient: less time on recon → deeper testing
+             Finds: what authenticated attacker can access
+             Best for: internal network, application testing
+
+<span class="cg">White Box:</span>  Full knowledge — source code, architecture, all creds
+             Simulates: deep technical review
+             Thorough: no time wasted on guessing
+             Finds: deepest vulnerabilities — code-level
+             Best for: specific application security review
+      </div>
+
+      <h3 class="h3-indigo">Specialized Pen Test Types</h3>
+      <div class="g3">
+        <div class="gc">
+          <h4 style="color:var(--blue)">Network Pen Test</h4>
+          <p>External: test attack surface visible from internet. Internal: assume attacker inside — how far can they go? Tests: firewall rules, segmentation, lateral movement paths, credential attacks. Most common pen test type.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--orange)">Web Application Pen Test</h4>
+          <p>Tests specific web applications for OWASP Top 10 vulnerabilities. SQL injection, XSS, broken authentication, IDOR, API security. Grey box preferred — use app as authenticated user. Manual + automated (Burp Suite). Annual minimum for customer-facing apps.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--green)">Social Engineering</h4>
+          <p>Tests human vulnerabilities. Phishing simulation (email), vishing (voice calls), physical tailgating. Usually combined with technical test — realistic attacker uses both. Requires explicit authorization and employee notification policy. Results: click rates, reporting rates.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--purple)">Red Team Exercise</h4>
+          <p>Simulates advanced persistent threat (APT). Multi-week to multi-month engagement. Uses: phishing, exploitation, lateral movement, persistence — realistic attack chain. Blue team doesn't know when/how attacks come. Tests: detection AND response capability.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--teal)">Physical Pen Test</h4>
+          <p>Tests physical security controls. Tailgating into secure areas, bypassing badge access, social engineering receptionists. Tests: locked server room actually locked? CCTV blind spots? Waste disposal security? Rarely done but very revealing.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--red)">Cloud Pen Test</h4>
+          <p>Tests cloud environment security configurations. IAM permissions, S3 bucket policies, network security groups, serverless function security. Must comply with cloud provider's pen test policies (AWS/Azure/GCP each have rules on what you can test).</p>
+        </div>
+      </div>
+
+      <h3 class="h3-indigo">Pen Test Report Structure</h3>
+      <div class="code">
+<span class="cm"># Professional pen test deliverable:</span>
+
+<span class="cb">Executive Summary (non-technical):</span>
+  Overall security posture assessment
+  Key risks in business terms (not technical jargon)
+  Priority findings: "Attacker could steal all customer data"
+  Comparison to last year (if applicable)
+
+<span class="ct">Technical Findings (detailed):</span>
+  Each finding:
+    Title: descriptive name
+    Severity: Critical/High/Medium/Low/Info
+    CVSS Score: if applicable
+    Description: what the vulnerability is
+    Evidence: screenshots, logs, exploit output
+    Business Impact: what an attacker could do
+    Affected systems: IP, hostname, URL
+    Remediation: specific steps to fix
+
+<span class="cg">Remediation Guidance:</span>
+  Prioritized list by severity
+  Short-term (immediate): patch/disable/isolate
+  Long-term (strategic): architecture improvements
+  
+<span class="cm"># Re-test:</span>
+After org remediates findings → pen tester re-tests
+Verifies: fixes actually work (not just documented)
+Certificate of re-test: evidence of remediation
+      </div>
+
+      <div class="scene">
+        <div class="scene-lbl">// Scenario — Pen Test Finds Critical Before Attacker Does</div>
+        <div class="code">
+<span class="cm"># Annual web application pen test — e-commerce platform:</span>
+
+Day 2 of engagement (grey box):
+Tester authenticated as standard customer account
+Testing: access control on order history
+
+Request: GET /api/orders/order_id=10047
+Response: order details for tester's own order ✓
+
+Modified: GET /api/orders/order_id=10046
+Response: <span class="cr">another customer's order details! (IDOR)</span>
+
+Tester iterates IDs:
+  order_id=1 through 10047 → ALL accessible
+  Contains: name, address, email, payment last 4, order history
+  Count: 847,293 customer orders → all accessible by any user
+
+<span class="cr">CRITICAL FINDING: Insecure Direct Object Reference (IDOR)</span>
+  CVSS: 9.1 (Critical)
+  Impact: Full customer order history and PII of 847,293 customers
+  Exploitable by: any authenticated customer account
+
+Developer fix: add authorization check
+  if order.customer_id != current_user.id:
+      return 403 Forbidden
+
+<span class="cg">Fix deployed in 4 hours after report ✓</span>
+<span class="cg">No customer data exposed ✓</span>
+<span class="cg">Without pen test: attacker finds → GDPR breach + media</span>
+        </div>
+      </div>
+
+      <div class="exam exam-indigo">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-indigo">Pen test vs vuln scan →</span><span>Pen test actively exploits — vuln scan identifies without exploiting</span></div>
+        <div class="er"><span class="ek-indigo">Black box →</span><span>No prior knowledge — simulates external attacker</span></div>
+        <div class="er"><span class="ek-indigo">White box →</span><span>Full knowledge — code, architecture — most thorough</span></div>
+        <div class="er"><span class="ek-indigo">Grey box →</span><span>Partial knowledge — credentials provided — insider threat simulation</span></div>
+        <div class="er"><span class="ek-indigo">Red team →</span><span>Multi-week APT simulation — blue team unaware — tests detection AND response</span></div>
+        <div class="er"><span class="ek-indigo">Re-test →</span><span>Verify remediation actually fixed the finding — not just documented</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- A6: VULNERABILITY ASSESSMENT -->
+  <div class="sec" id="a6">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">A6</span><span class="card-title">Vulnerability Assessments</span><span class="bdg bdg-yellow">Scan · Identify · Prioritize</span></div>
+    <div class="card-bd">
+      <p>Vulnerability assessments <strong style="color:var(--text)">identify, classify, and prioritize vulnerabilities in systems without actively exploiting them</strong>. They are the systematic approach to finding technical weaknesses — the foundation of vulnerability management programs.</p>
+
+      <h3 class="h3-indigo">Pen Test vs Vulnerability Assessment</h3>
+      <div style="overflow-x:auto;margin:1rem 0">
+      <table>
+        <tr><th>Aspect</th><th>Vulnerability Assessment</th><th>Penetration Test</th></tr>
+        <tr><td>Goal</td><td>Find and catalog vulnerabilities</td><td>Exploit vulnerabilities — prove impact</td></tr>
+        <tr><td>Exploitation?</td><td><span class="tag tg">No — identify only</span></td><td><span class="tag tr">Yes — actively exploit</span></td></tr>
+        <tr><td>Scope</td><td>Broad — scan everything</td><td>Narrow — focused deep dive</td></tr>
+        <tr><td>Automation</td><td>Mostly automated (Nessus/Qualys)</td><td>Manual + automated — expertise required</td></tr>
+        <tr><td>Frequency</td><td>Weekly to monthly</td><td>Annual or triggered</td></tr>
+        <tr><td>Cost</td><td>Low — scanner license</td><td>High — skilled testers time</td></tr>
+        <tr><td>Output</td><td>List of vulnerabilities with CVSS</td><td>Exploited chain with business impact</td></tr>
+        <tr><td>Shows</td><td>What MIGHT be exploitable</td><td>What IS exploitable with proof</td></tr>
+      </table>
+      </div>
+
+      <h3 class="h3-indigo">Scan Types</h3>
+      <div class="g2">
+        <div class="gc" style="border-color:#a5b4fc">
+          <h4 style="color:var(--indigo)">Authenticated / Credentialed Scan</h4>
+          <p>Scanner logs into each system. Sees: locally installed software, patches applied, configuration settings, registry keys, user accounts. Much more thorough — finds 4-5× more vulnerabilities than unauthenticated. Requires: service account with read access. Industry standard for internal scanning.</p>
+        </div>
+        <div class="gc" style="border-color:#fdba74">
+          <h4 style="color:var(--orange)">Unauthenticated / Passive Scan</h4>
+          <p>Scanner checks only what's exposed externally. Simulates what an attacker sees without credentials. Good for: external attack surface assessment, checking for exposed services. Limited: misses internal vulnerabilities only visible from inside. Use for: externally-facing systems, periodic external perspective check.</p>
+        </div>
+      </div>
+
+      <h3 class="h3-indigo">Vulnerability Prioritization — Beyond CVSS</h3>
+      <div class="code">
+<span class="cm"># CVSS score alone is insufficient for prioritization:</span>
+
+Problem: Nessus scan finds 847 vulnerabilities
+  Critical (9.0-10.0): 23
+  High (7.0-8.9): 147
+  Medium (4.0-6.9): 412
+  Low (0.1-3.9): 265
+Cannot patch all at once — where to start?
+
+<span class="cm"># Better prioritization using additional context:</span>
+
+<span class="cg">1. Asset criticality:</span>
+   Same CVE in dev server vs production payment server
+   → payment server gets patched FIRST
+
+<span class="cg">2. Exploitability in the wild (CISA KEV):</span>
+   CVSS 7.5 but actively exploited by ransomware groups
+   → patch before CVSS 9.0 that's theoretical only
+
+<span class="cg">3. EPSS (Exploit Prediction Scoring System):</span>
+   Probability of exploitation in next 30 days
+   High EPSS = patch regardless of CVSS score
+
+<span class="cg">4. Network exposure:</span>
+   Internet-facing vs internal-only
+   Internet-facing CVE 7.0 → higher priority than
+   internal CVE 9.0 with no external path
+
+<span class="cm"># Patching SLA (best practice):</span>
+Critical + internet-facing + KEV listed: <span class="cr">24-48 hours</span>
+Critical: <span class="cr">7-14 days</span>
+High:     <span class="co">30 days</span>
+Medium:   <span class="cy">90 days</span>
+Low:      <span class="cg">180 days or accept</span>
+      </div>
+
+      <div class="exam exam-indigo">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-indigo">Credentialed scan →</span><span>Logs into systems — finds 4-5× more vulns — industry standard for internal</span></div>
+        <div class="er"><span class="ek-indigo">Unauthenticated scan →</span><span>External perspective — what attacker sees — simulates no-credential access</span></div>
+        <div class="er"><span class="ek-indigo">CVSS →</span><span>Severity score 0-10 — useful but insufficient alone for prioritization</span></div>
+        <div class="er"><span class="ek-indigo">CISA KEV →</span><span>Known Exploited Vulnerabilities — actively exploited in wild — patch immediately</span></div>
+        <div class="er"><span class="ek-indigo">EPSS →</span><span>Exploit Prediction Scoring System — probability of exploitation in next 30 days</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- A7: SUMMARY A -->
+  <div class="sec" id="a7">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">A7</span><span class="card-title">Summary — Audits & Assessments</span><span class="bdg bdg-indigo">Exam Cheat Sheet</span></div>
+    <div class="card-bd">
+      <h3 class="h3-indigo">Comparison Table</h3>
+      <div style="overflow-x:auto;margin-bottom:1.5rem">
+      <table>
+        <tr><th>Activity</th><th>Purpose</th><th>Exploits?</th><th>Who Conducts</th><th>Output</th></tr>
+        <tr><td><span class="tag ti">Internal Audit</span></td><td>Verify compliance with policies</td><td><span class="tag tg">No</span></td><td>Internal audit dept (independent)</td><td>Findings report, compliance opinion</td></tr>
+        <tr><td><span class="tag to">External Audit</span></td><td>Independent compliance verification</td><td><span class="tag tg">No</span></td><td>CPA/QSA/CB/Regulator</td><td>SOC 2, AoC, certificate, findings</td></tr>
+        <tr><td><span class="tag ty">Vuln Assessment</span></td><td>Identify and catalog vulnerabilities</td><td><span class="tag tg">No</span></td><td>Security team / automated scanner</td><td>Prioritized vulnerability list</td></tr>
+        <tr><td><span class="tag tr">Pen Test</span></td><td>Prove exploitability — real impact</td><td><span class="tag tr">Yes</span></td><td>External ethical hackers</td><td>Exploited findings with evidence</td></tr>
+        <tr><td><span class="tag tp">Red Team</span></td><td>Simulate APT — test detection</td><td><span class="tag tr">Yes</span></td><td>Specialized red team</td><td>Attack narrative, detection gaps</td></tr>
+      </table>
+      </div>
+
+      <div class="exam exam-indigo" style="margin:0">
+        <h4>// Exam Scenarios → Answers (Topic A)</h4>
+        <div class="er"><span class="ek-indigo">"Formal signed declaration of compliance"</span><span>→ Attestation</span></div>
+        <div class="er"><span class="ek-indigo">"Organization declares its own compliance — no independent check"</span><span>→ Self-attestation</span></div>
+        <div class="er"><span class="ek-indigo">"Internal audit reports to whom?"</span><span>→ Audit Committee (board level) — NOT to CISO</span></div>
+        <div class="er"><span class="ek-indigo">"CPA firm audits SaaS vendor security controls over 6-12 months"</span><span>→ SOC 2 Type II audit</span></div>
+        <div class="er"><span class="ek-indigo">"PCI-DSS certified auditor"</span><span>→ QSA (Qualified Security Assessor)</span></div>
+        <div class="er"><span class="ek-indigo">"All controls operated effectively — clean audit"</span><span>→ Unqualified opinion</span></div>
+        <div class="er"><span class="ek-indigo">"Actively exploit vulnerabilities to prove impact"</span><span>→ Penetration test</span></div>
+        <div class="er"><span class="ek-indigo">"No prior knowledge — simulates external attacker"</span><span>→ Black box pen test</span></div>
+        <div class="er"><span class="ek-indigo">"Source code and full architecture provided to tester"</span><span>→ White box pen test</span></div>
+        <div class="er"><span class="ek-indigo">"Multi-week realistic APT simulation — blue team unaware"</span><span>→ Red team exercise</span></div>
+        <div class="er"><span class="ek-indigo">"Identifies vulnerabilities without exploiting them"</span><span>→ Vulnerability assessment</span></div>
+        <div class="er"><span class="ek-indigo">"Scanner logs into system — finds most vulnerabilities"</span><span>→ Credentialed/authenticated vulnerability scan</span></div>
+        <div class="er"><span class="ek-indigo">"CVE actively exploited in the wild — patch immediately"</span><span>→ CISA KEV (Known Exploited Vulnerabilities)</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end topicA -->
+
+<!-- ╔═══════════════════════════════════╗ -->
+<!-- ║  TOPIC B — SECURITY AWARENESS    ║ -->
+<!-- ╚═══════════════════════════════════╝ -->
+<div class="topic" id="topicB">
+  <div class="tabs coral">
+    <button class="tab active" onclick="goB('b1',this)">1. Overview</button>
+    <button class="tab" onclick="goB('b2',this)">2. Phishing Training</button>
+    <button class="tab" onclick="goB('b3',this)">3. Phishing Types</button>
+    <button class="tab" onclick="goB('b4',this)">4. Anomalous Behavior</button>
+    <button class="tab" onclick="goB('b5',this)">5. User Guidance</button>
+    <button class="tab" onclick="goB('b6',this)">6. Reporting</button>
+    <button class="tab" onclick="goB('b7',this)">7. Monitoring</button>
+    <button class="tab" onclick="goB('b8',this)">📊 Summary B</button>
+  </div>
+
+  <!-- B1: OVERVIEW -->
+  <div class="sec on" id="b1">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">B1</span><span class="card-title">Security Awareness Overview</span><span class="bdg bdg-coral">People · Process · Culture</span></div>
+    <div class="card-bd">
+      <p>Security awareness programs <strong style="color:var(--text)">educate employees to recognize and respond correctly to security threats</strong>. Technology can block most attacks — but humans remain the most exploited vector. A well-trained workforce is a critical security control.</p>
+
+      <h3 class="h3-coral">Why People Are the Primary Target</h3>
+      <div class="code">
+<span class="cm"># The human factor in breaches:</span>
+
+82% of breaches involve a human element (Verizon DBIR 2023)
+Phishing is the #1 initial access vector for most threat actors
+
+Why target humans instead of systems?
+  Technical defenses: firewalls, EDR, patching → improving
+  Human defenses:     awareness, training, behavior → lagging
+
+A targeted phishing email:
+  Firewall:  allows it through (legitimate-looking SMTP)
+  Email GW:  delivers it (no malware signature yet)
+  EDR:       does nothing (no malware — just a link)
+  Human:     clicks link → enters credentials
+  MFA:       bypassed by real-time phishing proxy
+  Result:    <span class="cr">full account compromise</span>
+
+<span class="cg">With trained employee:</span>
+  Same email arrives → employee recognizes indicators
+  Employee: does NOT click, reports to security
+  Security: blocks sender, warns others
+  Result:   <span class="cg">attack stopped by human ✓</span>
+      </div>
+
+      <h3 class="h3-coral">Components of an Effective Program</h3>
+      <div class="g3">
+        <div class="gc" style="border-color:#fdc5b8">
+          <h4 style="color:var(--coral)">Education</h4>
+          <p>Annual and ongoing security training. Policies communicated clearly. Role-specific training (finance = BEC, IT = admin attacks). Compliance training (HIPAA, PCI-DSS roles). New hire onboarding security module.</p>
+        </div>
+        <div class="gc" style="border-color:#fdba74">
+          <h4 style="color:var(--orange)">Simulation</h4>
+          <p>Phishing simulations test real behavior (not just knowledge). Social engineering tests. Results: baseline + track improvement. Immediate teachable moment when employee clicks. Regular cadence — monthly or quarterly.</p>
+        </div>
+        <div class="gc" style="border-color:#86efac">
+          <h4 style="color:var(--green)">Culture</h4>
+          <p>Security is everyone's job. Psychological safety to report mistakes. Management leads by example. Security team is approachable (not the "department of no"). Recognition for good security behaviors. Long-term behavior change — not just checkbox training.</p>
+        </div>
+      </div>
+
+      <div class="exam exam-coral">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-coral">Human element →</span><span>82% of breaches involve human — people are primary attack target</span></div>
+        <div class="er"><span class="ek-coral">Security awareness →</span><span>Educate employees to recognize and correctly respond to threats</span></div>
+        <div class="er"><span class="ek-coral">Security culture →</span><span>Psychological safety to report, management leads by example, approachable security team</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- B2: PHISHING TRAINING -->
+  <div class="sec" id="b2">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">B2</span><span class="card-title">Phishing Simulation Training</span><span class="bdg bdg-orange">Simulate · Measure · Educate</span></div>
+    <div class="card-bd">
+      <p>Phishing simulation programs <strong style="color:var(--text)">send controlled fake phishing emails to employees and measure their response</strong>. They identify vulnerable individuals, provide immediate teachable moments, and track improvement over time.</p>
+
+      <h3 class="h3-coral">Phishing Simulation Program Design</h3>
+
+      <div class="train-step">
+        <div class="train-num" style="background:#fff1ee;color:var(--coral)">1</div>
+        <div>
+          <div class="train-title" style="color:var(--coral)">Establish Baseline</div>
+          <div class="train-body">First simulation: no prior warning. Send moderately difficult phishing email to all staff. Measure: click rate, credential submission rate, report rate. This is your baseline — typical orgs see 20-30% initial click rate. Don't punish — data collection only. Communicate results org-wide.</div>
+        </div>
+      </div>
+
+      <div class="train-step">
+        <div class="train-num" style="background:#fff7ed;color:var(--orange)">2</div>
+        <div>
+          <div class="train-title" style="color:var(--orange)">Training Module on Click</div>
+          <div class="train-body">Employee clicks link → immediately redirected to training page. "You've just been phished! Here's what to look for..." Real-time learning — mistake is fresh. Short 3-5 minute module. Covers: what indicators they missed, how to report real phishing. NOT punitive — educational. This "just-in-time training" is most effective for behavior change.</div>
+        </div>
+      </div>
+
+      <div class="train-step">
+        <div class="train-num" style="background:#fffbeb;color:var(--yellow)">3</div>
+        <div>
+          <div class="train-title" style="color:var(--yellow)">Increase Difficulty Over Time</div>
+          <div class="train-body">Start simple → increase sophistication as employees improve. Simple: obvious phishing (Nigerian prince, spelling errors). Medium: branded email from known vendor, urgency. Hard: spear phish using employee's real manager name, relevant context. Monthly cadence with varied difficulty levels. Some employees get easier, some harder based on prior responses.</div>
+        </div>
+      </div>
+
+      <div class="train-step">
+        <div class="train-num" style="background:#f0fdf4;color:var(--green)">4</div>
+        <div>
+          <div class="train-title" style="color:var(--green)">Track Metrics and Improve</div>
+          <div class="train-body">Track: overall click rate (target &lt;5%), report rate (target &gt;70% of simulated phish reported), credential submission rate, department breakdown, repeat offenders. Monthly reporting to management. Annual board summary. Use data to: identify departments needing more training, adjust difficulty, identify high-risk individuals for additional intervention.</div>
+        </div>
+      </div>
+
+      <div class="train-step">
+        <div class="train-num" style="background:#eff6ff;color:var(--blue)">5</div>
+        <div>
+          <div class="train-title" style="color:var(--blue)">Address Repeat Clickers</div>
+          <div class="train-body">Employees who repeatedly click despite training: additional mandatory training, manager notification, supervisor coaching. For very high-risk roles (finance handling wire transfers): more frequent simulation, additional controls (dual approval). NOT termination for first offense — training failure, not employee failure. But persistent failure with training = HR involvement.</div>
+        </div>
+      </div>
+
+      <h3 class="h3-coral">Phishing Metrics — What to Measure</h3>
+      <div class="code">
+<span class="cm"># Key KPIs for phishing simulation program:</span>
+
+<span class="cr">Click Rate:</span>
+  % of recipients who click the phishing link
+  Baseline (untrained): 20-30%
+  After 1 year of training: target &lt;10%
+  Best-in-class: &lt;5%
+  
+<span class="co">Credential Submission Rate:</span>
+  % who enter credentials on fake login page
+  More dangerous than just clicking
+  Target: &lt;2% (after training)
+
+<span class="cg">Report Rate:</span>
+  % of simulated phish REPORTED to security
+  This is the real success metric
+  Goal: employees actively defending, not just avoiding
+  Target: &gt;70% of employees who receive it report it
+
+<span class="cb">Time to Report:</span>
+  How quickly employees report real suspicious emails
+  Faster reporting = faster containment of real attacks
+  Target: within 15 minutes of receiving suspicious email
+
+<span class="cm"># Reporting cadence:</span>
+Monthly:   department breakdown, trend lines
+Quarterly: executive summary with business risk context
+Annual:    board presentation with 12-month improvement story
+      </div>
+
+      <div class="scene">
+        <div class="scene-lbl">// Scenario — Phishing Program Catches Real Attack</div>
+        <div class="code">
+<span class="cm"># After 12 months of phishing simulation training:</span>
+
+Tuesday 10:23 AM — Employee in finance dept receives:
+  From: "Microsoft Security" &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c7b4a2a4b2b5aeb3be87aaaea4b5a8b4f7a1b3eaa6aba2b5b3e9a4a8aa">[email&#160;protected]</a>&gt;
+  Subject: "Urgent: Your Microsoft 365 account will be suspended"
+  Body: "Click here to verify your account..."
+
+<span class="co">18 months ago (pre-program): would have clicked</span>
+
+Now: Employee notices:
+  Domain: "micros0ft" — zero instead of O ← suspicious
+  Urgency language: "urgent" + "suspended" ← pressure tactic
+  Hover over link: goes to random IP address ← not Microsoft
+  
+Employee: clicks "Report Phishing" button in Outlook
+Security team: receives report at 10:24 AM
+  → Checks: is this just a simulation? No — real attack
+  → Pulls: email from all mailboxes organization-wide
+  → Finds: 47 employees received same email
+  → 3 clicked: immediately reset passwords + MFA tokens
+  → Block: sender domain on email gateway
+
+10:47 AM: attack fully contained
+<span class="cg">Training directly prevented a credential theft attack ✓</span>
+<span class="cg">Employee who reported: positive recognition from CISO ✓</span>
+        </div>
+      </div>
+
+      <div class="exam exam-coral">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-coral">Phishing simulation →</span><span>Controlled fake phishing emails — measure behavior — not punish</span></div>
+        <div class="er"><span class="ek-coral">Just-in-time training →</span><span>Training module appears immediately when employee clicks — most effective</span></div>
+        <div class="er"><span class="ek-coral">Click rate →</span><span>% who click — target &lt;5% — baseline typically 20-30%</span></div>
+        <div class="er"><span class="ek-coral">Report rate →</span><span>% who report — real success metric — target &gt;70%</span></div>
+        <div class="er"><span class="ek-coral">Increase difficulty →</span><span>Escalate sophistication as employees improve — keep ahead of real attackers</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- B3: PHISHING TYPES -->
+  <div class="sec" id="b3">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">B3</span><span class="card-title">Phishing Attack Types</span><span class="bdg bdg-red">Spear · Whaling · Vishing · Smishing</span></div>
+    <div class="card-bd">
+      <p>Employees need to recognize <strong style="color:var(--text)">all forms of social engineering attacks</strong> — not just email phishing. Training must cover every channel attackers use.</p>
+
+      <div class="phish-row">
+        <div class="phish-icon">🎣</div>
+        <div>
+          <div class="phish-title" style="color:var(--blue)">Phishing — Mass Email</div>
+          <div class="phish-body">Generic bulk email to many targets. "Your PayPal account has been suspended." No personalization. Low effort, high volume. Easy to spot with training. Still effective because volume ensures some clicks. Indicators: generic greeting, urgency, suspicious domain, mismatched links.</div>
+        </div>
+      </div>
+
+      <div class="phish-row">
+        <div class="phish-icon">🏹</div>
+        <div>
+          <div class="phish-title" style="color:var(--red)">Spear Phishing — Targeted Email</div>
+          <div class="phish-body">Personalized email targeting specific individual or organization. Researches target: LinkedIn, company website, social media. "Hi Sarah — regarding the project with [real client name] you worked on last week..." Much harder to detect — appears legitimate. Requires more effort from attacker. Higher success rate than generic phishing. APT groups use spear phishing almost exclusively.</div>
+          <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
+Spear phish example:
+  From: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="553134233c317b3f3a3d3b263a3b15363a3825343b2c78363a27257b3b3021">[email&#160;protected]</a> (not company.com)
+  Subject: "Re: Q4 forecast document Sarah"
+  "Hi Sarah, as discussed in yesterday's call,
+   can you review the updated forecast?
+   [Google Drive link]"
+  
+  Attacker researched: Sarah's name, her manager David,
+  they had a Q4 meeting, used Google Drive
+  → Very convincing
+          </div>
+        </div>
+      </div>
+
+      <div class="phish-row">
+        <div class="phish-icon">🐋</div>
+        <div>
+          <div class="phish-title" style="color:var(--purple)">Whaling — C-Suite Targeting</div>
+          <div class="phish-body">Spear phishing targeting senior executives (CEO, CFO, CISO). High value target — executive credentials provide access to everything. Business Email Compromise (BEC): impersonates CEO to request wire transfer from finance. "I'm in a meeting, I need you to wire $150,000 to this account urgently. Don't call me — handle it." FBI reports billions lost annually to BEC.</div>
+        </div>
+      </div>
+
+      <div class="phish-row">
+        <div class="phish-icon">📞</div>
+        <div>
+          <div class="phish-title" style="color:var(--orange)">Vishing — Voice Phishing</div>
+          <div class="phish-body">Social engineering via phone call. "IT Support calling — we detected a virus on your computer, I need your password to fix it." Caller ID spoofing makes it appear to come from legitimate number. AI voice cloning makes it sound like known person. Helpdesk impersonation most common. Defense: verbal authentication code, call back to known number, never give password over phone.</div>
+        </div>
+      </div>
+
+      <div class="phish-row">
+        <div class="phish-icon">📱</div>
+        <div>
+          <div class="phish-title" style="color:var(--teal)">Smishing — SMS Phishing</div>
+          <div class="phish-body">Phishing via text message. "USPS: Your package requires delivery confirmation. Click here:" or "Your bank account has been locked — verify now." Mobile users click links more readily than on desktop. Phone number spoofing makes it appear from known sender. Short URLs on mobile make destination hard to check. Growing attack vector as mobile use increases.</div>
+        </div>
+      </div>
+
+      <div class="phish-row">
+        <div class="phish-icon">💧</div>
+        <div>
+          <div class="phish-title" style="color:var(--green)">Watering Hole Attack</div>
+          <div class="phish-body">Compromise a website that the target regularly visits. Inject malicious code — all visitors get drive-by malware. Targets: industry news sites, vendor portals, forums used by target group. Harder to train against — legitimate website. Defense: web filtering, browser patching, EDR, network monitoring. Often used in APT campaigns targeting specific industries.</div>
+        </div>
+      </div>
+
+      <div class="phish-row">
+        <div class="phish-icon">💾</div>
+        <div>
+          <div class="phish-title" style="color:var(--lime)">USB Drop Attack</div>
+          <div class="phish-body">Leave malicious USB drives in parking lot or office. Label: "Q4 Salary Increases" or "Confidential." Employee finds it, plugs it in out of curiosity. USB auto-executes payload. Defense: policy prohibiting unknown USB devices, endpoint controls blocking unauthorized USB, security awareness training about USB attacks. Physical security control + user education required.</div>
+        </div>
+      </div>
+
+      <div class="exam exam-coral">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-coral">Phishing →</span><span>Generic mass email — low effort — still effective at volume</span></div>
+        <div class="er"><span class="ek-coral">Spear phishing →</span><span>Personalized targeted email — researched target — APT groups use this</span></div>
+        <div class="er"><span class="ek-coral">Whaling →</span><span>Targets C-suite executives — Business Email Compromise (BEC)</span></div>
+        <div class="er"><span class="ek-coral">Vishing →</span><span>Voice/phone social engineering — IT helpdesk impersonation — AI voice cloning</span></div>
+        <div class="er"><span class="ek-coral">Smishing →</span><span>SMS text phishing — USPS/bank lure — mobile users click more readily</span></div>
+        <div class="er"><span class="ek-coral">Watering hole →</span><span>Compromise website targets visit — drive-by malware — hard to detect</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- B4: ANOMALOUS BEHAVIOR -->
+  <div class="sec" id="b4">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">B4</span><span class="card-title">Anomalous Behavior Recognition</span><span class="bdg bdg-yellow">Insider · Account · System Signals</span></div>
+    <div class="card-bd">
+      <p>Security awareness training teaches employees to <strong style="color:var(--text)">recognize when something seems off</strong> — about their own systems, their colleagues' behavior, or organizational processes. Humans are excellent pattern matchers when taught what patterns to look for.</p>
+
+      <h3 class="h3-coral">Employee-Recognizable Warning Signs</h3>
+
+      <div class="sig-card">
+        <div class="sig-icon">💻</div>
+        <div style="flex:1">
+          <div class="sig-title" style="color:var(--red)">Own System Acting Strange</div>
+          <div class="sig-body">Unexplained slowness, programs opening themselves, mouse moving on its own, security tools disabled, new programs installed they didn't install, files changed or missing, disk constantly active. These are indicators of active compromise or malware. Employees must know to REPORT not just reboot and hope it goes away.</div>
+        </div>
+        <span class="sig-level" style="background:#fee2e2;color:#991b1b">Report Now</span>
+      </div>
+
+      <div class="sig-card">
+        <div class="sig-icon">🔐</div>
+        <div style="flex:1">
+          <div class="sig-title" style="color:var(--red)">Account/Login Issues</div>
+          <div class="sig-body">Can't log in — password changed without their doing it. Unexpected MFA prompts. Login notifications from unknown locations. "You've logged in from Moscow" — and they're in Toronto. Emails they didn't send appearing in Sent folder. These indicate account compromise in progress. Time-critical — report immediately.</div>
+        </div>
+        <span class="sig-level" style="background:#fee2e2;color:#991b1b">Report Now</span>
+      </div>
+
+      <div class="sig-card">
+        <div class="sig-icon">📧</div>
+        <div style="flex:1">
+          <div class="sig-title" style="color:var(--orange)">Unusual Requests</div>
+          <div class="sig-body">Request to bypass normal process ("don't use the ticket system — just do it"). Urgency combined with secrecy ("handle this before telling anyone"). Wire transfer request with unusual urgency (BEC). Request for credentials or access they shouldn't need. Gift card purchase request from "executive." If it feels weird — it probably is. Verify via separate channel before acting.</div>
+        </div>
+        <span class="sig-level" style="background:#ffedd5;color:#9a3412">Verify First</span>
+      </div>
+
+      <div class="sig-card">
+        <div class="sig-icon">👥</div>
+        <div style="flex:1">
+          <div class="sig-title" style="color:var(--orange)">Colleague Behavior Changes</div>
+          <div class="sig-body">Coworker downloading or copying large amounts of data. Accessing systems outside their normal role. Working very late accessing systems they don't normally use. Disgruntled employee who recently received bad news (layoff, demotion). Unexplained financial improvement. These may indicate insider threat activity. Not about surveillance — about recognizing patterns that suggest harm.</div>
+        </div>
+        <span class="sig-level" style="background:#ffedd5;color:#9a3412">Report Concern</span>
+      </div>
+
+      <div class="sig-card">
+        <div class="sig-icon">🏢</div>
+        <div style="flex:1">
+          <div class="sig-title" style="color:var(--yellow)">Physical/Environmental Anomalies</div>
+          <div class="sig-body">Unfamiliar person in secure area without escort. Someone shoulder-surfing passwords. Unknown device connected to network port. Equipment in server room that wasn't there before. Someone taking photos of screens. These are physical security and insider threat indicators. "If you see something, say something" applies here.</div>
+        </div>
+        <span class="sig-level" style="background:#fef9c3;color:#713f12">Report Observed</span>
+      </div>
+
+      <h3 class="h3-coral">Risky vs Policy-Violating Behaviors</h3>
+      <div class="code">
+<span class="cm"># Teach employees to recognize these common risky behaviors:</span>
+
+<span class="cr">High Risk — Report immediately:</span>
+  Password written on sticky note on monitor
+  Using work laptop on unsecured public WiFi for sensitive work
+  Plugging unknown USB device into work computer
+  Emailing sensitive work files to personal email "to work from home"
+  Installing unauthorized software (cracked, pirated, unknown)
+  Sharing account credentials with colleagues "for convenience"
+
+<span class="co">Policy violation — Redirect and report:</span>
+  Using personal cloud storage (Dropbox) for work files
+  Leaving laptop unlocked when away from desk
+  Discussing sensitive data in public places
+  Tailgating (holding door for unknown person)
+  Using same password for work and personal accounts
+
+<span class="cm"># Key training message:</span>
+"If you see something that doesn't look right — say something"
+"No punishment for reporting — only for knowingly ignoring"
+"You are our last line of defense — we need your help"
+      </div>
+
+      <div class="exam exam-coral">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-coral">Anomalous behavior →</span><span>Patterns deviating from normal — train employees to recognize and report</span></div>
+        <div class="er"><span class="ek-coral">Account compromise indicators →</span><span>Unexpected password changes, MFA prompts, login from unknown location — report NOW</span></div>
+        <div class="er"><span class="ek-coral">BEC indicators →</span><span>Urgency + unusual wire transfer request + bypass normal process = business email compromise</span></div>
+        <div class="er"><span class="ek-coral">Insider threat indicators →</span><span>Mass data download, off-hours system access, disgruntled + access = report concern</span></div>
+        <div class="er"><span class="ek-coral">Psychological safety →</span><span>Employees must feel safe reporting without fear of punishment — culture matters</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- B5: USER GUIDANCE -->
+  <div class="sec" id="b5">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">B5</span><span class="card-title">User Guidance & Secure Behaviors</span><span class="bdg bdg-green">Best Practices · Policies · Hygiene</span></div>
+    <div class="card-bd">
+      <p>Security awareness training teaches <strong style="color:var(--text)">specific behaviors that reduce risk</strong>. These are the concrete actions every employee should know and practice daily.</p>
+
+      <h3 class="h3-coral">Password and Authentication Guidance</h3>
+      <div class="code">
+<span class="cm"># What to teach employees about credentials:</span>
+
+DO:
+  <span class="cg">✓</span> Use unique password for every account
+  <span class="cg">✓</span> Use a password manager (1Password, Bitwarden)
+  <span class="cg">✓</span> Enable MFA on every account that supports it
+  <span class="cg">✓</span> Use long passphrases over complex short passwords
+    "correct-horse-battery-staple" > "P@$$w0rd!"
+  <span class="cg">✓</span> Report unexpected MFA push notifications immediately
+
+DON'T:
+  <span class="cr">✗</span> Reuse passwords across accounts
+  <span class="cr">✗</span> Share passwords with anyone (including IT helpdesk)
+  <span class="cr">✗</span> Write passwords on paper near computer
+  <span class="cr">✗</span> Use personal info (birthdate, pet name) in passwords
+  <span class="cr">✗</span> Approve MFA push you didn't initiate
+      </div>
+
+      <h3 class="h3-coral">Data Handling Guidance</h3>
+      <div class="g2">
+        <div class="gc">
+          <h4 style="color:var(--green)">Correct Behaviors</h4>
+          <ul>
+            <li>Classify data before sharing or storing</li>
+            <li>Use company-approved tools for work data (no personal Dropbox)</li>
+            <li>Encrypt sensitive data before emailing</li>
+            <li>Verify recipient before sending sensitive email</li>
+            <li>Lock screen when leaving desk (Win+L / Cmd+Ctrl+Q)</li>
+            <li>Use company VPN when working remotely</li>
+            <li>Clear desk policy — secure sensitive documents</li>
+          </ul>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--red)">Common Mistakes to Avoid</h4>
+          <ul>
+            <li>Emailing customer data to wrong recipient (verify twice)</li>
+            <li>Storing PII in personal cloud (Google Drive personal)</li>
+            <li>Printing sensitive data and leaving at printer</li>
+            <li>Disposing documents without shredding</li>
+            <li>Working with sensitive data in public (shoulder-surfing)</li>
+            <li>USB drives with unencrypted sensitive data</li>
+            <li>Taking photos of confidential screens</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="h3-coral">Remote Work Security Guidance</h3>
+      <div class="code">
+<span class="cm"># Home/remote work security basics for all employees:</span>
+
+Network:
+  <span class="cg">✓</span> Use company VPN for all work activity
+  <span class="cg">✓</span> Home WiFi: WPA3 or WPA2 + strong password
+  <span class="cr">✗</span> Do NOT use public WiFi for sensitive work
+  <span class="cr">✗</span> Do NOT use hotel "business center" computers
+
+Device:
+  <span class="cg">✓</span> Use company-issued device for work
+  <span class="cg">✓</span> Keep device updated and locked when not in use
+  <span class="cr">✗</span> Do NOT let family members use work device
+  <span class="cr">✗</span> Do NOT install personal apps on work device
+
+Physical:
+  <span class="cg">✓</span> Position screen away from windows / public view
+  <span class="cg">✓</span> Use privacy screen for sensitive work in public
+  <span class="cg">✓</span> Lock screen when stepping away (even at home)
+  <span class="cr">✗</span> Do NOT discuss sensitive calls in public spaces
+      </div>
+
+      <h3 class="h3-coral">Social Engineering Defense Checklist</h3>
+      <div class="info-row">
+        <div class="info-icon">🛡️</div>
+        <div>
+          <div class="info-title">The SLAM Method for Email</div>
+          <div class="info-desc"><strong>S</strong>ender — Does the email address match the claimed sender? Hover to verify domain. <strong>L</strong>inks — Hover over links before clicking. Does the URL match what's expected? <strong>A</strong>ttachments — Are you expecting this file? Is the extension suspicious (.exe, .zip, .doc with macros)? <strong>M</strong>essage — Does the message create urgency, threaten consequences, or request something unusual? If any answer is suspicious — REPORT, don't click.</div>
+        </div>
+      </div>
+
+      <div class="exam exam-coral">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-coral">Password manager →</span><span>Recommended tool for unique passwords per account — organization should provide/mandate</span></div>
+        <div class="er"><span class="ek-coral">SLAM method →</span><span>Sender, Links, Attachments, Message — email verification checklist</span></div>
+        <div class="er"><span class="ek-coral">Clear desk policy →</span><span>No sensitive documents left on desk — lock screen when away</span></div>
+        <div class="er"><span class="ek-coral">MFA push not initiated →</span><span>Deny and report immediately — someone has your password and is trying to log in</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- B6: REPORTING -->
+  <div class="sec" id="b6">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">B6</span><span class="card-title">Reporting Suspicious Activity</span><span class="bdg bdg-purple">How · Where · When</span></div>
+    <div class="card-bd">
+      <p>Reporting is the <strong style="color:var(--text)">human sensor layer of security monitoring</strong>. Employees who report suspicious activity are the most valuable early warning system. Organizations must make reporting easy, fast, and psychologically safe.</p>
+
+      <h3 class="h3-coral">Reporting Mechanisms</h3>
+      <div class="g3">
+        <div class="gc" style="border-color:#fdc5b8">
+          <h4 style="color:var(--coral)">Email / Button Reporting</h4>
+          <p>Phish Alert Button (KnowBe4), Report Phishing button in Outlook/Gmail. One-click reporting directly to security team. Email reports to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="82f1e7e1f7f0ebf6fbc2e1edeff2e3ecfbace1edef">[email&#160;protected]</a>. Makes reporting frictionless — more reports when it's easy. Automatic analysis of reported emails.</p>
+        </div>
+        <div class="gc" style="border-color:#fdba74">
+          <h4 style="color:var(--orange)">Anonymous Reporting</h4>
+          <p>Anonymous security concern hotline or web portal. Used for: insider threat concerns, witnessing policy violations, reporting colleague behavior. Employees less likely to report colleague concerns if not anonymous. Ethics hotlines handle security concerns too. Third-party hotline providers ensure anonymity.</p>
+        </div>
+        <div class="gc" style="border-color:#a5b4fc">
+          <h4 style="color:var(--indigo)">Direct Security Contact</h4>
+          <p>Clear security team contact info widely published. "If in doubt — call security immediately." Direct line / Slack channel for urgent concerns. Security team must be approachable and responsive. Bad response from security = employees stop reporting.</p>
+        </div>
+      </div>
+
+      <h3 class="h3-coral">What to Report</h3>
+      <div class="code">
+<span class="cm"># Employees must know to report ALL of these:</span>
+
+Suspicious emails:
+  Phishing attempts (even if they didn't click)
+  Emails requesting unusual actions
+  Emails from executives requesting transfers
+
+Account anomalies:
+  Unexpected MFA notifications
+  Password reset emails they didn't request
+  Login alerts from unfamiliar locations
+  Access to systems they can't remember accessing
+
+System anomalies:
+  System acting unusual (see Tab 4)
+  Unknown devices connected to their computer
+  Security software disabled or alerts appearing
+
+Physical:
+  Unknown persons in secure areas
+  Tailgating incidents
+  USB devices found in office areas
+  Missing equipment or devices
+
+Policy violations observed:
+  Colleague sending sensitive data to personal email
+  Someone taking photos of confidential documents
+  Shared login credentials being used
+
+<span class="cm"># Make reporting frictionless:</span>
+One-click email reporting button
+Security hotline number on every screen saver
+<span class="cg">"Report it and let us decide if it's nothing"</span>
+<span class="cg">"No report is too small — 10 false alarms worth 1 real catch"</span>
+      </div>
+
+      <h3 class="h3-coral">Psychological Safety — Making Reporting Work</h3>
+      <div class="code">
+<span class="cm"># Why employees DON'T report — and how to fix it:</span>
+
+<span class="cr">Fear of punishment:</span>
+  "If I admit I clicked, I'll get fired"
+  Fix: No blame culture — mistakes are learning opportunities
+       Policy: clicking ≠ disciplinary action
+       Training failure ≠ employee failure
+
+<span class="cr">Fear of being wrong:</span>
+  "What if it's nothing and I look foolish?"
+  Fix: Explicitly state: "False alarms are fine — we'd rather
+       investigate 10 false alarms than miss 1 real attack"
+       Positive reinforcement for reports — even false alarms
+
+<span class="cr">Not knowing what to report:</span>
+  "I'm not sure if this is security-relevant"
+  Fix: Clear examples in training — "these things = report"
+       Rule: "When in doubt — report"
+
+<span class="cr">Inconvenient reporting process:</span>
+  "I have to send an email to a random address?"
+  Fix: One-click Phish Alert Button in email
+       Security Slack channel for quick questions
+       Phone number on wallpaper/screensaver
+
+<span class="cg">When culture is right:</span>
+  Security team sees: suspicious email reported within 5 min
+  Can act: pull email from all mailboxes before others click
+  <span class="cg">Employees ARE the security detection system ✓</span>
+      </div>
+
+      <div class="exam exam-coral">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-coral">Phish Alert Button →</span><span>One-click email reporting — KnowBe4 / Outlook plugin — frictionless reporting</span></div>
+        <div class="er"><span class="ek-coral">Anonymous reporting →</span><span>Hotline for insider threat concerns — employees report colleagues safely</span></div>
+        <div class="er"><span class="ek-coral">Psychological safety →</span><span>No blame culture — clicking ≠ termination — false alarms welcome</span></div>
+        <div class="er"><span class="ek-coral">Report triggers →</span><span>Phishing, account anomalies, system behavior, physical, policy violations</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- B7: MONITORING -->
+  <div class="sec" id="b7">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">B7</span><span class="card-title">Security Awareness Monitoring</span><span class="bdg bdg-teal">Measure · Track · Improve</span></div>
+    <div class="card-bd">
+      <p>Monitoring the awareness program <strong style="color:var(--text)">measures whether it's actually changing behavior</strong> — not just completing checkboxes. Effective programs show measurable improvement in human security behaviors over time.</p>
+
+      <h3 class="h3-coral">Key Metrics to Track</h3>
+      <div style="overflow-x:auto;margin:1rem 0">
+      <table>
+        <tr><th>Metric</th><th>What It Measures</th><th>Target</th><th>Red Flag</th></tr>
+        <tr><td><span class="tag tc">Phishing click rate</span></td><td>% who click simulated phish</td><td>&lt;5%</td><td>&gt;20% after 6 months training</td></tr>
+        <tr><td><span class="tag tg">Phishing report rate</span></td><td>% who report simulated phish</td><td>&gt;70%</td><td>&lt;30% — low vigilance</td></tr>
+        <tr><td><span class="tag tb">Training completion</span></td><td>% completed annual training</td><td>100%</td><td>&lt;90% — compliance gap</td></tr>
+        <tr><td><span class="tag to">Time to report</span></td><td>Minutes from receiving to reporting</td><td>&lt;15 min</td><td>&gt;60 min — slow response</td></tr>
+        <tr><td><span class="tag ty">Policy acknowledgment</span></td><td>% who signed AUP</td><td>100%</td><td>Any missing — audit finding</td></tr>
+        <tr><td><span class="tag tp">Repeat clickers</span></td><td>Employees who click multiple times</td><td>0</td><td>Same employees repeatedly — more training</td></tr>
+        <tr><td><span class="tag tl">Reported real threats</span></td><td>Employee-reported real phishing caught</td><td>Trending up</td><td>Zero — program not working</td></tr>
+      </table>
+      </div>
+
+      <h3 class="h3-coral">Program Effectiveness Indicators</h3>
+      <div class="code">
+<span class="cm"># Is the program actually working? Look for:</span>
+
+<span class="cg">Green flags — program working:</span>
+  Phishing click rate: declining quarter over quarter
+  Report rate: increasing — employees are vigilant
+  Employees catching REAL phishing and reporting it
+  Security incidents from phishing: declining
+  Employees asking security team questions proactively
+  "Hey, this email looks suspicious — should I click it?"
+
+<span class="cr">Red flags — program not working:</span>
+  Same click rate after 12 months — training ineffective
+  Zero reports of real phishing — employees not vigilant
+  Employees clicking obviously fake phishing (too easy?)
+  Training completion at 70% — incomplete coverage
+  Security incidents via email still high
+
+<span class="cm"># Adjust program based on data:</span>
+High click rate in Finance? → Finance-specific training
+  → BEC scenarios, wire transfer verification procedures
+High click rate on mobile devices? → Mobile security training
+Technical team clicking? → Raise difficulty level for tech staff
+Low report rate? → Make reporting easier + reward reporters
+      </div>
+
+      <h3 class="h3-coral">Awareness Program Compliance Requirements</h3>
+      <div class="g3">
+        <div class="gc">
+          <h4 style="color:var(--teal)">HIPAA</h4>
+          <p>Security awareness training required for all workforce members. Training at hire + when policies change. Document: who was trained, when, what was covered. Common audit ask: show us training completion records. No specific frequency mandated but "periodic" required — most do annual.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--orange)">PCI-DSS</h4>
+          <p>Requirement 12.6: Security awareness education at hire + annually. Include: threats and vulnerabilities, end-user responsibilities. New materials annually reflecting current threats. Evidence: training records, completion certificates, sign-off acknowledgment.</p>
+        </div>
+        <div class="gc">
+          <h4 style="color:var(--blue)">ISO 27001</h4>
+          <p>Awareness of information security policy. Contribution to ISMS effectiveness. Implications of non-conformities. All personnel in scope must be aware. Evidence: training records, testing results, acknowledgments. Auditors ask employees directly: "Are you aware of the security policy?"</p>
+        </div>
+      </div>
+
+      <div class="scene">
+        <div class="scene-lbl">// Scenario — Measuring Program ROI for the Board</div>
+        <div class="code">
+<span class="cm"># CISO presents annual security awareness program results:</span>
+
+<span class="cb">Before program (Year 0):</span>
+  Phishing click rate: 28% (industry average)
+  Report rate: 3% (almost nobody reported)
+  Phishing-initiated incidents: 8 per year
+  Average incident cost: $45,000 each
+  Annual phishing incident cost: <span class="cr">$360,000</span>
+
+<span class="cg">After 18 months of program (Year 1.5):</span>
+  Phishing click rate: 4% (86% improvement)
+  Report rate: 71% (employees actively defending)
+  Phishing-initiated incidents: 1 per year
+  Annual phishing incident cost: <span class="cg">$45,000</span>
+
+Program cost: $25,000/year (platform + content + time)
+
+<span class="cg">Annual savings: $315,000</span>
+<span class="cg">ROI: 1,160% return on awareness investment</span>
+
+Additional value (unquantified):
+  HIPAA audit: training records = clean finding
+  Cyber insurance: premium reduced 15% for low click rate
+  Enterprise customer: security questionnaire improved
+  3 real phishing attacks caught by employees this year
+
+Board conclusion: <span class="cg">expand program + increase budget ✓</span>
+        </div>
+      </div>
+
+      <div class="exam exam-coral">
+        <h4>// Exam Keywords</h4>
+        <div class="er"><span class="ek-coral">Click rate target →</span><span>&lt;5% after training — measure program effectiveness</span></div>
+        <div class="er"><span class="ek-coral">Report rate target →</span><span>&gt;70% — employees actively reporting = real success metric</span></div>
+        <div class="er"><span class="ek-coral">PCI-DSS training →</span><span>Requirement 12.6 — annual + at hire — current threats + responsibilities</span></div>
+        <div class="er"><span class="ek-coral">Program ROI →</span><span>Awareness training has measurable financial return — present to board with numbers</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- B8: SUMMARY B -->
+  <div class="sec" id="b8">
+  <div class="card">
+    <div class="card-hd"><span class="card-num">B8</span><span class="card-title">Summary — Security Awareness</span><span class="bdg bdg-coral">Exam Cheat Sheet</span></div>
+    <div class="card-bd">
+
+      <h3 class="h3-coral">Phishing Types Quick Reference</h3>
+      <div style="overflow-x:auto;margin-bottom:1.5rem">
+      <table>
+        <tr><th>Type</th><th>Channel</th><th>Target</th><th>Example</th></tr>
+        <tr><td><span class="tag tb">Phishing</span></td><td>Mass email</td><td>Anyone</td><td>"Your PayPal account is suspended"</td></tr>
+        <tr><td><span class="tag tr">Spear phishing</span></td><td>Personalized email</td><td>Specific person/org</td><td>References real manager, real project</td></tr>
+        <tr><td><span class="tag tp">Whaling</span></td><td>Targeted email</td><td>C-suite executives</td><td>BEC — CEO wire transfer request</td></tr>
+        <tr><td><span class="tag to">Vishing</span></td><td>Voice call</td><td>Any employee</td><td>IT helpdesk impersonation — "need your password"</td></tr>
+        <tr><td><span class="tag tt">Smishing</span></td><td>SMS text</td><td>Mobile users</td><td>"USPS: confirm delivery at link"</td></tr>
+        <tr><td><span class="tag tg">Watering hole</span></td><td>Compromised website</td><td>Industry group</td><td>Inject malware on industry news site</td></tr>
+        <tr><td><span class="tag ty">USB drop</span></td><td>Physical USB</td><td>Curious employees</td><td>Labeled "Salary Info" left in parking lot</td></tr>
+      </table>
+      </div>
+
+      <div class="exam exam-coral" style="margin:0">
+        <h4>// Exam Scenarios → Answers (Topic B)</h4>
+        <div class="er"><span class="ek-coral">"82% of breaches involve this"</span><span>→ Human element — people are the primary attack target</span></div>
+        <div class="er"><span class="ek-coral">"Controlled fake phishing emails sent to employees"</span><span>→ Phishing simulation training</span></div>
+        <div class="er"><span class="ek-coral">"Training page appears immediately when employee clicks phish link"</span><span>→ Just-in-time training — most effective method</span></div>
+        <div class="er"><span class="ek-coral">"% of employees who click simulated phishing — target"</span><span>→ Click rate — target &lt;5%</span></div>
+        <div class="er"><span class="ek-coral">"% of employees who report simulated phishing — real success metric"</span><span>→ Report rate — target &gt;70%</span></div>
+        <div class="er"><span class="ek-coral">"Personalized email using target's real manager and project names"</span><span>→ Spear phishing</span></div>
+        <div class="er"><span class="ek-coral">"CEO impersonation requesting urgent wire transfer"</span><span>→ Whaling / Business Email Compromise (BEC)</span></div>
+        <div class="er"><span class="ek-coral">"IT helpdesk calls and asks for your password"</span><span>→ Vishing (voice phishing) — never give password over phone</span></div>
+        <div class="er"><span class="ek-coral">"Text message: USPS package needs delivery confirmation"</span><span>→ Smishing (SMS phishing)</span></div>
+        <div class="er"><span class="ek-coral">"Malware injected into legitimate website targets regularly visit"</span><span>→ Watering hole attack</span></div>
+        <div class="er"><span class="ek-coral">"USB labeled 'Q4 Salaries' left in company parking lot"</span><span>→ USB drop / baiting attack</span></div>
+        <div class="er"><span class="ek-coral">"Employee receives unexpected MFA push notification"</span><span>→ Deny and report immediately — someone has their password</span></div>
+        <div class="er"><span class="ek-coral">"Ensuring employees feel safe reporting mistakes"</span><span>→ Psychological safety / no blame culture</span></div>
+        <div class="er"><span class="ek-coral">"Sender, Links, Attachments, Message — email verification"</span><span>→ SLAM method</span></div>
+        <div class="er"><span class="ek-coral">"PCI-DSS security training requirement number"</span><span>→ Requirement 12.6 — annual + at hire</span></div>
+        <div class="er"><span class="ek-coral">"One-click email reporting to security team"</span><span>→ Phish Alert Button (KnowBe4 / email plugin)</span></div>
+        <div class="er"><span class="ek-coral">"Training that triggers when employee clicks phishing link"</span><span>→ Just-in-time / real-time awareness training</span></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- end topicB -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function switchTopic(t, btn) {
+  document.querySelectorAll('.topic').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.sw-btn').forEach(x=>{
+    x.classList.remove('on');
+  });
+  btn.classList.add('on');
+  document.getElementById('topic'+t).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+function goA(id, btn) {
+  document.querySelectorAll('#topicA .sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAl

@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change Management — Security+ Domain 1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#f0ede6;
+  --p:#faf8f3;
+  --s:#e8e4da;
+  --t:#ddd8cc;
+  --bd:#c8c2b2;
+  --tx:#1a1608;
+  --mu:#6e6850;
+  /* accent palette — industrial / process */
+  --a1:#c84800;   /* deep orange — primary */
+  --a2:#1a5ca8;   /* steel blue */
+  --a3:#2a7a38;   /* process green */
+  --a4:#7a1080;   /* violet */
+  --a5:#8a5e00;   /* amber */
+  --a6:#0a6870;   /* teal */
+  --red:#b81818;
+  --grn:#1a6a28;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:'Barlow',sans-serif;font-size:14px;line-height:1.65;padding:2rem 1.5rem;}
+
+/* ── MASTHEAD ── */
+.mast{
+  border:3px solid var(--tx);
+  margin-bottom:2.5rem;
+  display:grid;
+  grid-template-columns:auto 1fr;
+}
+@media(max-width:600px){.mast{grid-template-columns:1fr;}}
+.mast-vert{
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  background:var(--tx);color:var(--bg);
+  font-family:'Bebas Neue',sans-serif;font-size:0.85rem;
+  letter-spacing:0.25em;padding:1.2rem 0.7rem;
+  text-align:center;
+}
+.mast-main{padding:2rem 1.8rem 1.5rem;}
+.mast-eyebrow{
+  font-family:'Fira Code',monospace;font-size:0.6rem;
+  letter-spacing:0.16em;color:var(--mu);text-transform:uppercase;margin-bottom:0.5rem;
+}
+.mast-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:4.2rem;letter-spacing:0.04em;line-height:0.88;
+  color:var(--tx);margin-bottom:0.4rem;
+}
+.mast-title span{color:var(--a1);}
+.mast-rule{height:3px;background:var(--a1);margin:0.8rem 0;}
+.mast-deck{
+  font-family:'Barlow',sans-serif;font-weight:300;
+  font-size:0.82rem;color:var(--mu);letter-spacing:0.02em;
+  display:flex;flex-wrap:wrap;gap:0.3rem 1.2rem;
+}
+.mast-deck span{white-space:nowrap;}
+.mast-deck span::before{content:'→ ';}
+
+/* ── TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:2rem;}
+.tab{
+  padding:0.42rem 0.9rem;border-radius:0;
+  border:1.5px solid var(--bd);background:var(--p);
+  color:var(--mu);cursor:pointer;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:0.72rem;font-weight:600;
+  transition:all 0.13s;letter-spacing:0.04em;text-transform:uppercase;
+}
+.tab:hover{border-color:var(--a1);color:var(--a1);}
+.tab.active{background:var(--a1);color:#fff;border-color:var(--a1);}
+
+/* ── SECTIONS ── */
+.sec{display:none;}
+.sec.on{display:block;animation:up 0.18s ease;}
+@keyframes up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* ── CARD ── */
+.card{background:var(--p);border:1.5px solid var(--bd);margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.9rem 1.4rem;border-bottom:1.5px solid var(--bd);background:var(--s);
+}
+.card-num{
+  font-family:'Fira Code',monospace;font-size:0.58rem;
+  color:var(--mu);background:var(--t);
+  border:1px solid var(--bd);padding:0.1rem 0.35rem;
+}
+.card-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;}
+.bdg{margin-left:auto;font-family:'Fira Code',monospace;font-size:0.57rem;padding:0.14rem 0.52rem;white-space:nowrap;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;}
+.card-bd{padding:1.4rem;}
+p{color:var(--mu);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.75;}
+h3{
+  font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;
+  color:var(--tx);margin:1.3rem 0 0.55rem;
+  padding-left:0.75rem;border-left:4px solid var(--a1);
+  letter-spacing:0.05em;text-transform:uppercase;
+}
+
+/* ── CODE ── */
+.code{
+  background:var(--tx);color:#f0edd8;
+  padding:1rem 1.2rem;font-family:'Fira Code',monospace;
+  font-size:0.67rem;line-height:1.95;overflow-x:auto;margin:0.8rem 0;
+  border-left:4px solid var(--a1);
+}
+.cg{color:#7aff9a;}.cr{color:#ff8080;}.cb{color:#80c8ff;}.co{color:#ffd870;}.cp{color:#d8a0ff;}.cm{color:var(--mu);}.ct{color:#70ffe0;}.ci{color:#a8c8ff;}.cs{color:#ffb870;}
+
+/* ── SCENE ── */
+.scene{background:#fff8ec;border-left:4px solid var(--a5);padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'Fira Code',monospace;font-size:0.58rem;color:var(--a5);margin-bottom:0.4rem;letter-spacing:0.12em;font-weight:600;text-transform:uppercase;}
+
+/* ── EXAM ── */
+.exam{background:#f3f0ff;border:1.5px solid #c0b0f0;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'Fira Code',monospace;font-size:0.58rem;color:var(--a4);margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:600;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--a4);font-family:'Fira Code',monospace;font-size:0.65rem;flex-shrink:0;font-weight:600;}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.gc{background:var(--s);border:1.5px solid var(--bd);padding:1rem;}
+.gc h4{font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:0.04em;text-transform:uppercase;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1.1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--mu);margin-bottom:0.25rem;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s);padding:0.5rem 0.8rem;text-align:left;color:var(--mu);border-bottom:1.5px solid var(--bd);font-size:0.62rem;font-weight:700;font-family:'Fira Code',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--bd);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s);}
+
+.tag{display:inline-block;padding:0.1rem 0.48rem;font-size:0.6rem;font-family:'Fira Code',monospace;font-weight:600;}
+.tg{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.tr{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.tb{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.to{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.tp{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.tt{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.ty{background:#fef9c3;color:#713f12;border:1px solid #fde047;}
+.ts{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;}
+
+/* ── INFO ROW ── */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s);border:1.5px solid var(--bd);margin-bottom:0.5rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:0.12rem;letter-spacing:0.04em;text-transform:uppercase;}
+.info-desc{font-size:0.75rem;color:var(--mu);}
+
+/* ── PROCESS FLOW ── */
+.proc-flow{
+  display:flex;align-items:stretch;overflow-x:auto;
+  border:1.5px solid var(--bd);margin:1rem 0;
+}
+.proc-step{
+  flex:1;min-width:110px;
+  padding:1.1rem 0.8rem;
+  border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;
+  text-align:center;background:var(--p);
+  position:relative;
+}
+.proc-step:last-child{border-right:none;}
+.proc-step:hover{background:var(--s);}
+.proc-num{
+  font-family:'Bebas Neue',sans-serif;font-size:2rem;
+  line-height:1;opacity:0.12;margin-bottom:0.3rem;
+}
+.proc-name{font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.3rem;}
+.proc-desc{font-size:0.64rem;color:var(--mu);line-height:1.45;}
+.proc-arr{
+  position:absolute;right:-10px;top:50%;
+  transform:translateY(-50%);z-index:1;
+  font-size:1rem;color:var(--a1);
+}
+
+/* ── CHANGE TYPE CARDS ── */
+.ctype{
+  border:1.5px solid var(--bd);padding:1.1rem 1.2rem;
+  margin-bottom:0.7rem;display:flex;gap:1rem;align-items:flex-start;
+  border-left:5px solid;
+}
+.ctype-label{
+  font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;
+  font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+  min-width:90px;flex-shrink:0;margin-top:0.1rem;
+}
+.ctype-title{font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.2rem;}
+.ctype-body{font-size:0.78rem;color:var(--mu);}
+
+/* ── RISK METER ── */
+.risk-row{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.5rem 0.9rem;background:var(--s);
+  border:1px solid var(--bd);margin-bottom:0.35rem;
+}
+.risk-label{font-family:'Fira Code',monospace;font-size:0.68rem;font-weight:600;min-width:150px;flex-shrink:0;}
+.risk-bar{flex:1;height:12px;background:var(--t);position:relative;}
+.risk-fill{height:100%;transition:width 0.3s;}
+.risk-note{font-size:0.72rem;color:var(--mu);min-width:140px;flex-shrink:0;}
+
+/* ── DOC CARD ── */
+.doc-card{
+  border:1.5px solid var(--bd);padding:0.9rem 1.1rem;
+  margin-bottom:0.5rem;display:flex;gap:0.8rem;align-items:flex-start;
+}
+.doc-icon{font-size:1.1rem;flex-shrink:0;}
+.doc-title{font-family:'Barlow Condensed',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;margin-bottom:0.15rem;}
+.doc-body{font-size:0.75rem;color:var(--mu);}
+
+/* ── VERSION COMPARISON ── */
+.ver-compare{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;border:1.5px solid var(--bd);overflow:hidden;margin:1rem 0;
+}
+@media(max-width:580px){.ver-compare{grid-template-columns:1fr;}}
+.ver-side{padding:1.1rem;}
+.ver-side + .ver-side{border-left:1px solid var(--bd);}
+.ver-label{font-family:'Fira Code',monospace;font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem;}
+.ver-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:0.03em;margin-bottom:0.35rem;}
+.ver-body{font-size:0.77rem;color:var(--mu);line-height:1.6;}
+
+/* ── HIGHLIGHT BOX ── */
+.hbox{
+  padding:1rem 1.2rem;margin:1rem 0;
+  border:1.5px solid;
+}
+.hbox h4{font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.5rem;}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="mast">
+  <div class="mast-vert">Security+ · Domain 1</div>
+  <div class="mast-main">
+    <div class="mast-eyebrow">SY0-701 · General Security Concepts · 12%</div>
+    <div class="mast-title">Change<br><span>Management</span></div>
+    <div class="mast-rule"></div>
+    <div class="mast-deck">
+      <span>Business Processes</span>
+      <span>Technical Implications</span>
+      <span>Documentation</span>
+      <span>Version Control</span>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. Overview</button>
+  <button class="tab" onclick="go('s2',this)">2. Change Types</button>
+  <button class="tab" onclick="go('s3',this)">3. Business Process</button>
+  <button class="tab" onclick="go('s4',this)">4. Technical Implications</button>
+  <button class="tab" onclick="go('s5',this)">5. Allow/Deny Lists</button>
+  <button class="tab" onclick="go('s6',this)">6. Restricted Activities</button>
+  <button class="tab" onclick="go('s7',this)">7. Documentation</button>
+  <button class="tab" onclick="go('s8',this)">8. Version Control</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 1. OVERVIEW              -->
+<!-- ════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">What Is Change Management?</span><span class="bdg" style="background:#ffedd5;color:#9a3412;border:1px solid #fdba74">Process · Control · Security</span></div>
+  <div class="card-bd">
+    <p>Change management is the <strong style="color:var(--tx)">formal process for controlling modifications to IT systems, configurations, software, and infrastructure</strong>. Every unauthorized or uncontrolled change is a potential security vulnerability — a firewall rule accidentally opened, a patch that breaks MFA, a configuration drift that exposes sensitive data.</p>
+
+    <h3>Why Change Management Is a Security Control</h3>
+    <div class="code">
+<span class="cm"># Without change management — real consequences:</span>
+
+Scenario 1: Developer modifies firewall rule "temporarily"
+  Never documented → never reverted
+  Port 3389 (RDP) opened to internet
+  3 months later: ransomware via RDP brute force
+  Root cause: unauthorized firewall change
+
+Scenario 2: Admin applies patch without testing
+  Patch breaks authentication module
+  All users locked out of production for 6 hours
+  Root cause: no testing → no rollback plan
+
+Scenario 3: New feature deployed without change ticket
+  Feature introduces SQL injection vulnerability
+  Customer data exfiltrated
+  Auditor asks: "Was this change reviewed for security?"
+  Answer: No → compliance violation
+
+<span class="cg"># With change management:</span>
+  All changes: documented → reviewed → approved → tested
+  Security team: reviews every change for risk
+  Rollback plan: defined BEFORE implementation
+  Audit trail: complete record of who changed what when
+  Compliance: SOX, PCI-DSS, HIPAA all require change controls
+    </div>
+
+    <h3>The Security Connection</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#fdba74">
+        <h4 style="color:var(--a1)">Unauthorized Changes = Security Risk</h4>
+        <p>Every change can introduce vulnerabilities, break controls, or create configuration drift. Change management ensures every modification is reviewed for security impact before going live.</p>
+      </div>
+      <div class="gc" style="border-color:#93c5fd">
+        <h4 style="color:var(--a2)">Audit Trail = Compliance</h4>
+        <p>SOX requires: IT general controls including change management. PCI-DSS: all changes to cardholder data systems tracked. HIPAA: audit controls for systems holding PHI. Change records = evidence for auditors.</p>
+      </div>
+      <div class="gc" style="border-color:#86efac">
+        <h4 style="color:var(--a3)">Rollback = Resilience</h4>
+        <p>Every change must have a rollback plan. If the change breaks something → revert to known-good state. Without rollback: bad change → extended outage → availability failure.</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Change management →</span><span>Formal process controlling ALL modifications to IT systems — security AND compliance requirement</span></div>
+      <div class="er"><span class="ek">Unauthorized change →</span><span>Change made without going through process — major security and compliance violation</span></div>
+      <div class="er"><span class="ek">Change management security role →</span><span>Prevents unauthorized changes that introduce vulnerabilities or break security controls</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 2. CHANGE TYPES         -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">Types of Changes</span><span class="bdg" style="background:#dbeafe;color:#1e40af;border:1px solid #93c5fd">Standard · Normal · Emergency</span></div>
+  <div class="card-bd">
+    <p>Not all changes carry the same risk or require the same level of review. <strong style="color:var(--tx)">Change type determines the approval path and urgency of the process</strong>. Security+ expects you to know all three types and when each applies.</p>
+
+    <div class="ctype" style="border-left-color:var(--a3);background:#f4fdf5">
+      <div>
+        <div class="ctype-label" style="color:var(--a3)">🟢 Low Risk</div>
+      </div>
+      <div>
+        <div class="ctype-title" style="color:var(--a3)">Standard Change</div>
+        <div class="ctype-body">Pre-approved, routine changes that have been reviewed and approved in advance. The process and risk are well-understood. No need for individual change request review — the change type itself has been pre-authorized. Must be performed exactly as defined — any deviation requires a new change request. Examples: weekly patching cycle per approved patch policy, password resets for users, adding a user to a pre-approved role, routine scheduled maintenance, deploying from an approved standard configuration template.</div>
+        <div class="code" style="font-size:0.63rem;margin-top:0.6rem">
+Pre-approved: Change Advisory Board already approved this TYPE of change
+Process: documented procedure exists → follow exactly
+Deviation: ANY deviation → escalate to Normal change
+Risk: LOW — well-understood, tested, documented
+Audit: still logged — standard change ≠ untracked change
+Examples: weekly Windows patches, nightly backup jobs,
+          routine firewall rule template changes
+        </div>
+      </div>
+    </div>
+
+    <div class="ctype" style="border-left-color:var(--a2);background:#f0f4ff">
+      <div>
+        <div class="ctype-label" style="color:var(--a2)">🔵 Normal</div>
+      </div>
+      <div>
+        <div class="ctype-title" style="color:var(--a2)">Normal Change</div>
+        <div class="ctype-body">Any change that is not pre-approved or an emergency. Follows the full change management lifecycle: request → risk assessment → CAB review → approval → implementation → review. Most common change type in enterprise environments. Timeline: typically reviewed at weekly CAB meetings — plan changes in advance. Security team MUST review all normal changes affecting security controls, network topology, or access management.</div>
+        <div class="code" style="font-size:0.63rem;margin-top:0.6rem">
+Timeline: request → CAB review (typically weekly) → approved → scheduled
+Risk: MEDIUM — requires assessment and review
+CAB: Change Advisory Board reviews and approves
+Examples: new application deployment, network topology change,
+          new firewall rules, major OS upgrades,
+          new user access model, security tool deployment
+Security review: required for anything touching:
+  - Firewall / network security
+  - Authentication systems
+  - Access control modifications
+  - Security monitoring tools
+        </div>
+      </div>
+    </div>
+
+    <div class="ctype" style="border-left-color:var(--red);background:#fff5f5">
+      <div>
+        <div class="ctype-label" style="color:var(--red)">🔴 Urgent</div>
+      </div>
+      <div>
+        <div class="ctype-title" style="color:var(--red)">Emergency Change</div>
+        <div class="ctype-body">Changes required immediately to resolve a critical issue — a production outage, active security incident, or critical vulnerability being actively exploited. Expedited approval — Emergency CAB (ECAB) or designated approvers on call. MUST be documented and reviewed AFTER implementation (post-implementation review). Not an excuse to bypass all controls — still requires some authorization. Security patches for actively exploited CVEs (CISA KEV) qualify as emergency changes.</div>
+        <div class="code" style="font-size:0.63rem;margin-top:0.6rem">
+Triggers: active exploit, production down, critical security incident
+Process: get verbal/expedited approval → implement → document after
+ECAB: Emergency Change Advisory Board — subset of CAB
+      available 24/7 for emergency approvals
+      
+Post-implementation review: REQUIRED after emergency changes
+Documentation: retroactive but MUST be completed
+Risk: HIGH — less testing, expedited review, pressure to act fast
+
+Examples: hotfix for actively exploited zero-day,
+          blocking attacker IP during incident,
+          emergency password reset after compromise,
+          taking system offline during active attack
+          
+<span class="cr">Risk: emergency changes most likely to introduce new problems</span>
+<span class="cg">Mitigation: get at least verbal approval, document everything</span>
+        </div>
+      </div>
+    </div>
+
+    <h3>Change Risk Assessment</h3>
+    <div class="risk-row">
+      <span class="risk-label">Standard Change</span>
+      <div class="risk-bar"><div class="risk-fill" style="width:15%;background:var(--a3)"></div></div>
+      <span class="risk-note">Low — pre-approved, well-understood</span>
+    </div>
+    <div class="risk-row">
+      <span class="risk-label">Normal Change (low impact)</span>
+      <div class="risk-bar"><div class="risk-fill" style="width:35%;background:var(--a2)"></div></div>
+      <span class="risk-note">Medium-Low — reviewed by CAB</span>
+    </div>
+    <div class="risk-row">
+      <span class="risk-label">Normal Change (high impact)</span>
+      <div class="risk-bar"><div class="risk-fill" style="width:60%;background:var(--a5)"></div></div>
+      <span class="risk-note">Medium-High — full security review</span>
+    </div>
+    <div class="risk-row">
+      <span class="risk-label">Emergency Change</span>
+      <div class="risk-bar"><div class="risk-fill" style="width:85%;background:var(--red)"></div></div>
+      <span class="risk-note">High — expedited, less testing</span>
+    </div>
+    <div class="risk-row">
+      <span class="risk-label">Unauthorized Change</span>
+      <div class="risk-bar"><div class="risk-fill" style="width:100%;background:#800000"></div></div>
+      <span class="risk-note">CRITICAL — no review, no rollback</span>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Standard change →</span><span>Pre-approved routine changes — low risk — still logged — deviation requires normal change</span></div>
+      <div class="er"><span class="ek">Normal change →</span><span>Full CAB review — weekly schedule — most common type — security must review</span></div>
+      <div class="er"><span class="ek">Emergency change →</span><span>Active exploit/outage — expedited approval — document AFTER — post-implementation review required</span></div>
+      <div class="er"><span class="ek">CAB →</span><span>Change Advisory Board — reviews and approves Normal changes — weekly meetings</span></div>
+      <div class="er"><span class="ek">ECAB →</span><span>Emergency CAB — approves emergency changes — available 24/7</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 3. BUSINESS PROCESS     -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">Business Processes</span><span class="bdg" style="background:#dcfce7;color:#166534;border:1px solid #86efac">Request → Review → Approve → Implement → Close</span></div>
+  <div class="card-bd">
+    <p>The change management business process is a <strong style="color:var(--tx)">structured lifecycle ensuring every change is properly requested, reviewed, approved, implemented, and documented</strong> before reaching production systems.</p>
+
+    <h3>The Change Lifecycle</h3>
+    <div class="proc-flow">
+      <div class="proc-step">
+        <div class="proc-num" style="color:var(--a1)">1</div>
+        <div class="proc-name" style="color:var(--a1)">Request</div>
+        <div class="proc-desc">RFC submitted — describes change, reason, scope, affected systems</div>
+        <span class="proc-arr">›</span>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num" style="color:var(--a5)">2</div>
+        <div class="proc-name" style="color:var(--a5)">Assess</div>
+        <div class="proc-desc">Risk, impact, security review — dependencies, rollback plan defined</div>
+        <span class="proc-arr">›</span>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num" style="color:var(--a2)">3</div>
+        <div class="proc-name" style="color:var(--a2)">Approve</div>
+        <div class="proc-desc">CAB reviews — approved, rejected, or returned for more info</div>
+        <span class="proc-arr">›</span>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num" style="color:var(--a4)">4</div>
+        <div class="proc-name" style="color:var(--a4)">Test</div>
+        <div class="proc-desc">Implemented in test environment — security validation, peer review</div>
+        <span class="proc-arr">›</span>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num" style="color:var(--a6)">5</div>
+        <div class="proc-name" style="color:var(--a6)">Implement</div>
+        <div class="proc-desc">Deployed to production during approved change window</div>
+        <span class="proc-arr">›</span>
+      </div>
+      <div class="proc-step">
+        <div class="proc-num" style="color:var(--a3)">6</div>
+        <div class="proc-name" style="color:var(--a3)">Review</div>
+        <div class="proc-desc">Post-implementation review — did it work? any issues? lessons learned</div>
+      </div>
+    </div>
+
+    <h3>Key Process Components</h3>
+
+    <div class="info-row">
+      <div class="info-icon">📋</div>
+      <div>
+        <div class="info-title">Request for Change (RFC)</div>
+        <div class="info-desc">The formal document initiating a change. Contains: change description, business justification, scope (what systems affected), risk assessment, rollback plan, implementation steps, testing plan, who is responsible, proposed change window. Without an RFC, no change should be made to production. The RFC is the paper trail that satisfies auditors.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">👥</div>
+      <div>
+        <div class="info-title">Change Advisory Board (CAB)</div>
+        <div class="info-desc">Cross-functional committee that reviews and approves Normal changes. Membership: IT operations, security, application owners, business stakeholders, CISO representative. Meets: typically weekly — all changes requiring approval submitted before deadline. Security's role: review all changes for security impact. Any change touching security controls must have explicit security team sign-off. CAB can: approve, reject, request more information, or defer to next meeting.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🕐</div>
+      <div>
+        <div class="info-title">Change Window / Maintenance Window</div>
+        <div class="info-desc">Pre-approved time period when changes may be implemented. Usually: low-traffic hours (nights, weekends), when business impact is minimal. Defined in advance: users notified, support staff available. Emergency changes: may bypass standard window but still need approval. Blackout periods: certain times when NO changes allowed (quarter-end close, major product launches, audit periods). Change windows are agreed with business stakeholders — not unilaterally decided by IT.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🔄</div>
+      <div>
+        <div class="info-title">Rollback Plan — Critical Security Requirement</div>
+        <div class="info-desc">Every change must have a documented rollback procedure: how to revert to the previous state if the change fails or introduces problems. Without rollback: bad change → extended outage → availability failure. Security implication: a failed security control change without rollback could leave systems unprotected. Rollback must be tested too — a rollback that doesn't work is useless. ITIL standard: no change approved without defined rollback.</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🧪</div>
+      <div>
+        <div class="info-title">Testing Requirements</div>
+        <div class="info-desc">Changes must be tested in a non-production environment before production deployment. Test environment should mirror production as closely as possible. Security testing: does the change introduce new vulnerabilities? Does it break existing security controls? User acceptance testing (UAT): does it work as intended? Peer review: second set of eyes — especially for security-relevant changes. Testing evidence must be documented and attached to the RFC.</div>
+      </div>
+    </div>
+
+    <h3>Separation of Duties in Change Management</h3>
+    <div class="code">
+<span class="cm"># Who requests vs who approves vs who implements:</span>
+
+Requester:    The person/team proposing the change
+              Cannot approve their own change
+              
+Approver:     CAB or designated authority
+              Independent from the requester
+              Cannot be the same person as implementer for critical changes
+
+Implementer:  The technical person making the change
+              Works during change window
+              Has pre-approved steps to follow exactly
+
+Reviewer:     Post-implementation reviewer
+              Verifies change was successful
+              Documents lessons learned
+
+<span class="cm"># Why separation matters for security:</span>
+Developer submits RFC → security reviews → CAB approves
+Developer CANNOT: approve their own RFC
+Admin CANNOT: make a change and mark it approved
+This prevents: insider threat, accidental errors going unchecked
+              circumventing security review
+
+<span class="cm"># SOX requirement: separation of duties in change management</span>
+Developer writes code ≠ person who deploys to production
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — CAB Blocks a Risky Change</div>
+      <div class="code">
+<span class="cm"># Network team submits RFC for "temporary" firewall rule change:</span>
+
+RFC submitted:
+  Description: "Open port 8080 on external firewall to allow
+                new vendor tool access during testing"
+  Risk assessment: "Low — vendor testing only"
+  Rollback: "Remove rule when testing complete"
+  Change window: "Any time this week"
+
+CAB Review — Security raises concerns:
+  Port 8080: unencrypted HTTP → data exposure risk
+  "Any time this week": no defined end date → rule might stay forever
+  No MFA: vendor accessing internal systems without MFA?
+  No IP restriction: rule allows ANY source to reach port 8080?
+
+CAB Decision: REJECTED — returned for revision
+  Required changes:
+  1. Restrict source IP to vendor's known IP range
+  2. Define hard cutoff date: rule removed by Friday
+  3. Require HTTPS (8443) not HTTP (8080)
+  4. Confirm vendor uses MFA for their side
+
+Revised RFC: approved with conditions
+  Monitoring: IDS alert if unexpected sources use the rule
+  Automatic: firewall automation removes rule on Friday
+  
+<span class="cg">Result: change made securely with controls ✓</span>
+<span class="cg">Without CAB: insecure rule → potential breach vector ✗</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">RFC →</span><span>Request for Change — formal document initiating change — required before any production change</span></div>
+      <div class="er"><span class="ek">CAB →</span><span>Change Advisory Board — cross-functional review — approves/rejects/defers normal changes</span></div>
+      <div class="er"><span class="ek">Change window →</span><span>Pre-approved time for implementing changes — minimizes business impact — agreed with stakeholders</span></div>
+      <div class="er"><span class="ek">Rollback plan →</span><span>How to revert if change fails — required before approval — must be tested</span></div>
+      <div class="er"><span class="ek">Separation of duties →</span><span>Requester ≠ Approver ≠ Implementer — prevents unauthorized changes and insider threat</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 4. TECHNICAL IMPLICATIONS -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Technical Implications</span><span class="bdg" style="background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe">Impact · Dependencies · Downtime</span></div>
+  <div class="card-bd">
+    <p>Every change has technical implications that must be assessed before implementation. <strong style="color:var(--tx)">Security must evaluate: what does this change break, what new risks does it introduce, and what dependencies could be affected?</strong></p>
+
+    <h3>Allow Lists and Deny Lists Impact</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#86efac">
+        <h4 style="color:var(--a3)">Allow List Changes</h4>
+        <p>Adding to allow list (whitelist): explicitly permits new traffic, software, or access. Change implications: did we verify this is legitimate? Could attacker use this path? Scope: is it too broad? IP range vs single IP? Time-bound or permanent? Removing from allow list: may break legitimate functionality — test first. Example: adding a new vendor IP to firewall allow list → verify it's the right IP, restrict to needed ports only.</p>
+      </div>
+      <div class="gc" style="border-color:#fca5a5">
+        <h4 style="color:var(--red)">Deny List Changes</h4>
+        <p>Adding to deny list (blacklist): blocks new traffic, software, or access. Change implications: will this block legitimate users? False positive risk? Is the block specific enough? Removing from deny list: why was it blocked? Has the risk changed? Example: adding a malicious IP to firewall deny list → will this IP also be used by legitimate traffic? CDNs share IPs — blanket block could break things.</p>
+      </div>
+    </div>
+
+    <h3>Key Technical Considerations for Every Change</h3>
+    <div class="code">
+<span class="cm"># Technical assessment checklist for any change:</span>
+
+<span class="cb">1. Impact Assessment:</span>
+   What systems are directly affected?
+   What downstream systems depend on what's changing?
+   What is the blast radius if this change fails?
+   Business impact: revenue? compliance? safety?
+
+<span class="cb">2. Dependencies:</span>
+   What does this change depend on? (must be in place first)
+   What depends on what's changing? (will break after)
+   Dependency mapping: document the chain
+   
+   Example: changing AD password policy
+   Dependencies: all apps using AD auth affected
+                 some apps may not support longer passwords
+                 cached credentials on endpoints
+
+<span class="cb">3. Downtime Assessment:</span>
+   Will this change require service interruption?
+   How long? Planned maintenance window sufficient?
+   Can it be done without downtime? (rolling update?)
+   Notification: users + stakeholders informed in advance?
+
+<span class="cb">4. Security Impact:</span>
+   Does this change open new attack surface?
+   Does it affect authentication or authorization?
+   Does it change logging or monitoring coverage?
+   Does it affect data classification or protection?
+   Does it bypass any existing security controls?
+
+<span class="cb">5. Restart Requirements:</span>
+   Will services need to restart? (service interruption)
+   Will systems need to reboot? (longer downtime)
+   What is the restart order? (dependencies!)
+   Staged restart: can components be restarted individually?
+
+<span class="cb">6. Legacy System Considerations:</span>
+   Will this change affect legacy systems?
+   Legacy: may not support new protocols or configurations
+   Test thoroughly: legacy systems often undocumented
+   Compensating controls: if legacy can't adapt to the change
+    </div>
+
+    <h3>Configuration Changes — Security Specific</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--a2)">Firewall Rule Changes</h4>
+        <p>Every firewall rule change is a potential security vulnerability. Questions: Is the rule too permissive? Source IP restricted or any? Port specific or wide range? Protocol-specific? Time-limited or permanent? Who requested it — business justification? Will it be reviewed in 90 days? Firewall rules accumulate — periodic review required.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--a4)">Operating System Updates</h4>
+        <p>OS patches fix vulnerabilities but can break application compatibility. Test before production: especially for critical systems. Patch grouping: test batch before mass deployment. Rollback: OS patch rollback more complex than application. Timing: patch Tuesday for Windows — coordinate with change window. Zero-day patches: may require emergency change process.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--a3)">Application Updates</h4>
+        <p>New versions may change APIs, behavior, or security model. Test in staging: functional testing + security testing (DAST). Dependency check: does the new version require different libraries? Certificate changes: does the update require new cert infrastructure? Configuration migration: settings may not carry over automatically.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--a6)">Network Topology Changes</h4>
+        <p>Reconfiguring network segments, adding VLANs, changing routing. Security review: does this create unintended connectivity? ACL review: do existing ACLs still work correctly after topology change? Monitoring: will SIEM/IDS still capture traffic on new paths? Segmentation: does the change maintain or compromise network segmentation?</p>
+      </div>
+    </div>
+
+    <h3>Downtime Windows — Planning</h3>
+    <div class="code">
+<span class="cm"># Planning downtime for security changes:</span>
+
+Communicate early:
+  Users: advance notice (minimum 48-72 hours for planned)
+  Stakeholders: business impact communicated upfront
+  Customers: external notification for significant outages
+
+Timing strategy:
+  Business hours: never for production changes
+  Low traffic: typically 2am-5am local time
+  Low risk period: avoid quarter-end, major releases
+  Blackout periods: documented — no changes during these
+
+Maintenance window duration:
+  Include: implementation time + testing time + buffer
+  Example: "30-min patch → 2-hour window" (buffer for issues)
+  If not done in window: rollback and reschedule
+
+Communication plan:
+  Before: "Maintenance scheduled for Saturday 02:00-04:00"
+  During: status updates every 30 minutes if extended
+  After:  "Maintenance complete, all systems normal" OR
+          "Issue encountered, maintenance extended until X"
+  
+<span class="cm"># Emergency vs planned — different notification expectations</span>
+Emergency: notify as quickly as possible → start → update
+Planned:   notify well in advance → implement at agreed window
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Allow list →</span><span>Explicitly permits — adding requires security review — scope too broad = risk</span></div>
+      <div class="er"><span class="ek">Deny list →</span><span>Explicitly blocks — removing requires justification — shared IPs risk blocking legitimate traffic</span></div>
+      <div class="er"><span class="ek">Dependencies →</span><span>Map what the change affects and what depends on it — downstream systems</span></div>
+      <div class="er"><span class="ek">Restart requirements →</span><span>Service/system restart causes downtime — plan and communicate ahead</span></div>
+      <div class="er"><span class="ek">Legacy systems →</span><span>May not support new configurations — test separately — compensating controls if needed</span></div>
+      <div class="er"><span class="ek">Change window →</span><span>Off-hours, agreed with business, sufficient duration including buffer and rollback time</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 5. ALLOW / DENY LISTS   -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Allow Lists &amp; Deny Lists</span><span class="bdg" style="background:#dcfce7;color:#166534;border:1px solid #86efac">Whitelist · Blacklist · Application Control</span></div>
+  <div class="card-bd">
+    <p>Allow lists and deny lists are <strong style="color:var(--tx)">fundamental security control mechanisms that explicitly define what is permitted or prohibited</strong>. Any change to these lists must go through change management — adding or removing entries has direct security implications.</p>
+
+    <h3>Allow List (Whitelist) — Explicitly Permit</h3>
+    <div class="code">
+<span class="cm"># Allow list philosophy: DENY by default, permit explicitly</span>
+Default: DENY everything
+Allow list entry: "only this specific thing is permitted"
+
+Everything NOT on the list: automatically denied
+<span class="cg">Most secure posture</span> — attacker must get on the list to succeed
+
+Applications of allow lists in change management:
+  Application control: only approved apps may run (AppLocker/WDAC)
+  Firewall: only listed IPs/ports permitted
+  Email: only approved senders bypass spam filter
+  Software installation: only approved software may be installed
+  Script execution: only signed/approved scripts run (PowerShell)
+  Certificate authorities: only listed CAs are trusted
+
+<span class="cm"># Change implications for allow lists:</span>
+Adding entry: security review — is this legitimate? too broad?
+  "Allow ALL IPs to port 443" vs "Allow 203.0.113.0/24 to port 443"
+  More specific = more secure
+
+Removing entry: test first — will this break legitimate functionality?
+  "Remove vendor IP from allow list" — is vendor still in use?
+
+<span class="cm"># Allow list maintenance = change management:</span>
+Add vendor IP → RFC → security review → CAB → approved
+Remove expired rule → RFC → test impact → CAB → remove
+    </div>
+
+    <h3>Deny List (Blacklist) — Explicitly Block</h3>
+    <div class="code">
+<span class="cm"># Deny list philosophy: ALLOW by default, block explicitly</span>
+Default: PERMIT everything
+Deny list entry: "this specific thing is blocked"
+
+Everything NOT on the list: automatically allowed
+<span class="cr">Less secure posture</span> — attacker just needs to avoid listed items
+
+Applications of deny lists in change management:
+  Firewall: known malicious IPs blocked
+  Email gateway: known spam domains/IPs blocked
+  DNS filtering: malicious domains sinkholed
+  AV/EDR: known malware signatures blocked
+  Web proxy: known malicious URL categories blocked
+
+<span class="cm"># Change implications for deny lists:</span>
+Adding entry: is this specific enough? Shared CDN IPs?
+  "Block 192.168.0.0/16" — accidentally blocks internal subnets
+  "Block attacker.evil.com" → attacker just changes domain
+  
+Removing entry: why was it added? Has the threat passed?
+  Removing expired block → re-exposes to previous threat
+
+<span class="cm"># Deny list weakness:</span>
+Unknown threats not on list = bypass
+Attackers know what's on common deny lists and avoid it
+That's why allow list (default deny) is more secure
+    </div>
+
+    <h3>Allow List vs Deny List — Security Comparison</h3>
+    <div class="ver-compare">
+      <div class="ver-side" style="background:#f4fdf5">
+        <div class="ver-label" style="color:var(--a3)">Allow List (Whitelist)</div>
+        <div class="ver-title">Default: DENY</div>
+        <div class="ver-body">
+          <strong>Security:</strong> Highest — unknown = blocked<br>
+          <strong>Usability:</strong> Harder to manage — must approve everything<br>
+          <strong>Use when:</strong> High security needed — known set of approved items<br>
+          <strong>Failure mode:</strong> Legitimate item not on list = blocked (inconvenience)<br>
+          <strong>Attacker:</strong> Must get approved to succeed — much harder
+        </div>
+      </div>
+      <div class="ver-side" style="background:#fff5f5">
+        <div class="ver-label" style="color:var(--red)">Deny List (Blacklist)</div>
+        <div class="ver-title">Default: ALLOW</div>
+        <div class="ver-body">
+          <strong>Security:</strong> Lower — unknown = allowed<br>
+          <strong>Usability:</strong> Easier — only maintain blocked items<br>
+          <strong>Use when:</strong> Large unknown set — can't pre-approve everything<br>
+          <strong>Failure mode:</strong> New threat not yet listed = allowed through<br>
+          <strong>Attacker:</strong> Just needs to avoid listed items — easier
+        </div>
+      </div>
+    </div>
+
+    <h3>Application Allow Listing</h3>
+    <div class="info-row">
+      <div class="info-icon">🛡️</div>
+      <div>
+        <div class="info-title">Application Control — AppLocker / WDAC</div>
+        <div class="info-desc">Allow listing for applications — only approved, signed software may execute. Microsoft: AppLocker (Group Policy) and WDAC (Windows Defender Application Control). Any change to the approved application list = formal change request. Adding new software: RFC → security review (is it from trusted publisher? signed?) → test in non-prod → CAB approval → deploy policy update. Emergency software needed: ECAB approval → add to list → implement → document. Blocks: ransomware (unsigned), unknown malware, unauthorized tools.</div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Allow list →</span><span>Default deny — explicit permit — most secure — approved items only run/connect</span></div>
+      <div class="er"><span class="ek">Deny list →</span><span>Default allow — explicit block — less secure — only known bad blocked</span></div>
+      <div class="er"><span class="ek">Allow list vs deny list →</span><span>Allow list more secure (default deny) but harder to manage — deny list easier but misses unknowns</span></div>
+      <div class="er"><span class="ek">Application allow listing →</span><span>Only approved signed apps run — blocks ransomware/unknown malware — AppLocker/WDAC</span></div>
+      <div class="er"><span class="ek">List changes need CM →</span><span>Adding or removing from allow/deny list = change request — security must review</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 6. RESTRICTED ACTIVITIES -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Restricted Activities &amp; Downtime</span><span class="bdg" style="background:#fef9c3;color:#713f12;border:1px solid #fde047">Freeze · Blackout · Impact</span></div>
+  <div class="card-bd">
+    <p>Change management defines <strong style="color:var(--tx)">periods and circumstances where changes are prohibited or require elevated approval</strong>. Understanding these restrictions is critical for planning security changes appropriately.</p>
+
+    <h3>Change Freeze / Blackout Periods</h3>
+    <div class="code">
+<span class="cm"># Periods when NO production changes are permitted:</span>
+
+Financial blackout periods:
+  Quarter-end close: last 2 weeks of fiscal quarter
+  Year-end close: December 15 - January 5 (example)
+  Reason: financial systems must be stable for reporting
+  SOX implication: changes during close could affect financial integrity
+
+Product/business blackout periods:
+  Major product launches: 2 weeks before/after
+  Black Friday / peak shopping season: November
+  Tax season: February-April for financial services
+  Enrollment period: healthcare payers
+  Reason: any outage = massive revenue/reputation impact
+
+Security blackout scenarios:
+  Active security audit: no changes that could affect audit scope
+  PCI compliance assessment window: freeze scoped systems
+  Regulatory inspection period: systems locked down
+  
+<span class="cm"># During freeze: Emergency changes ONLY with:</span>
+  ECAB or CISO approval
+  Documented urgent business or security justification
+  Post-implementation review required
+  Notification to compliance/audit team
+
+<span class="cm"># Planning security work around freezes:</span>
+Security patches during freeze: only emergency/critical
+Log4Shell during Christmas freeze: emergency = patch it anyway
+Routine security updates: defer until after freeze period
+    </div>
+
+    <h3>Downtime Impact Analysis</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#fca5a5">
+        <h4 style="color:var(--red)">High-Availability Systems</h4>
+        <p>99.99% uptime requirement — 52 minutes downtime/year maximum. Even planned maintenance must be within SLA. Approach: rolling updates — one node at a time. Blue/green deployment: run two environments, switch traffic. Zero-downtime migration: database schema changes via expand-contract pattern. Change process: extensive testing, gradual rollout, instant rollback capability.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--a2)">Downtime Notification Requirements</h4>
+        <p>Internal users: email + ticket minimum 48-72 hours before. Customer-facing systems: public maintenance page, email notification, status page update. Regulatory systems (banking, healthcare): may require advance regulator notification for significant changes. SLA: customer agreements may specify advance notice periods — check contract before scheduling.</p>
+      </div>
+    </div>
+
+    <h3>Service Restarts and System Reboots</h3>
+    <div class="code">
+<span class="cm"># Restart vs Reboot — different implications:</span>
+
+Service restart:
+  Only the application service restarts
+  Typically: 30 seconds to 3 minutes downtime
+  Users: brief interruption, may auto-reconnect
+  Risk: service fails to restart → escalate
+  Example: restarting Apache after config change
+
+System reboot:
+  Entire server reboots — all services stop and start
+  Typically: 2-10 minutes downtime (longer for large servers)
+  Required: kernel patches, driver updates, BIOS changes
+  Risk: hardware failure during boot, service dependency order
+  Example: Windows Update requiring restart
+
+<span class="cm"># Restart order matters — dependency chain:</span>
+Database server → must be running before app servers start
+App servers → must be running before load balancer routes traffic
+Correct order: DB → App server 1 → App server 2 → LB health check
+
+Wrong order: start app servers before DB → errors → rollback
+
+<span class="cm"># Security implication of restarts:</span>
+Patch without reboot: patch may not be active until reboot
+              vulnerability still exploitable
+Reboot required: schedule appropriately, don't skip
+              "We'll reboot next quarter" → months of exposure
+    </div>
+
+    <h3>Restricted Changes — Elevated Approval</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Change Type</th><th>Why Restricted</th><th>Elevated Approver</th></tr>
+      <tr><td>Firewall rule allowing internet access</td><td>Opens attack surface — high risk</td><td>CISO + CAB</td></tr>
+      <tr><td>Privileged account creation</td><td>Admin accounts = high value target</td><td>IT Security + manager</td></tr>
+      <tr><td>Encryption key changes</td><td>Wrong change = data loss</td><td>CISO + key custodian</td></tr>
+      <tr><td>Security tool reconfiguration</td><td>Could blind monitoring</td><td>Security team lead + CISO</td></tr>
+      <tr><td>Production database schema</td><td>Data integrity, availability risk</td><td>DBA + app owner + CAB</td></tr>
+      <tr><td>Domain controller changes</td><td>AD compromise = total compromise</td><td>Security + AD admin + CAB</td></tr>
+      <tr><td>Changes in freeze period</td><td>Stability requirement</td><td>ECAB + executive</td></tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Change freeze →</span><span>Period when no changes allowed — quarter-end, audits, major business events</span></div>
+      <div class="er"><span class="ek">Blackout period →</span><span>Planned no-change windows — business or compliance driven</span></div>
+      <div class="er"><span class="ek">Service restart vs reboot →</span><span>Restart = app only (seconds) / Reboot = full system (minutes) — plan accordingly</span></div>
+      <div class="er"><span class="ek">Patch without reboot →</span><span>Many patches ineffective until system reboots — vulnerability remains active</span></div>
+      <div class="er"><span class="ek">High-availability changes →</span><span>Rolling updates, blue/green deployment — minimise downtime — instant rollback</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 7. DOCUMENTATION        -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Documentation Requirements</span><span class="bdg" style="background:#ccfbf1;color:#115e59;border:1px solid #5eead4">Diagrams · Policies · Procedures · Tickets</span></div>
+  <div class="card-bd">
+    <p>Change management generates and requires <strong style="color:var(--tx)">comprehensive documentation at every step</strong>. This documentation is the evidence that satisfies auditors, enables troubleshooting, ensures knowledge transfer, and supports rollback operations.</p>
+
+    <h3>Updating Documentation After Changes</h3>
+    <div class="hbox" style="background:#fff8ec;border-color:var(--a5)">
+      <h4 style="color:var(--a5)">⚠ Critical: Documentation Must Stay Current</h4>
+      <p style="margin:0;font-size:0.8rem;color:var(--mu)">Outdated documentation is almost as dangerous as no documentation. If a network diagram shows an old topology, incident responders make wrong decisions. If the firewall policy doc doesn't reflect current rules, security gaps go unnoticed. Every change that modifies a documented asset must update that documentation as part of the change itself — not "we'll do it later."</p>
+    </div>
+
+    <h3>Key Documentation Types</h3>
+
+    <div class="doc-card">
+      <div class="doc-icon">🗺️</div>
+      <div>
+        <div class="doc-title">Network Diagrams</div>
+        <div class="doc-body">Visual representation of network topology — switches, routers, firewalls, servers, VLANs, network zones, IP address ranges. Must be updated whenever: new devices added, network segments change, firewall placement changes, VPN tunnels added. Security use: incident responders use diagrams to understand attack paths. Auditors verify architecture against diagrams. Outdated diagram = wrong incident response decisions. Logical vs physical: both maintained. Stored: configuration management database (CMDB) or Visio/Lucidchart with version history.</div>
+      </div>
+    </div>
+
+    <div class="doc-card">
+      <div class="doc-icon">📋</div>
+      <div>
+        <div class="doc-title">Policies and Procedures</div>
+        <div class="doc-body">Security policies define requirements — must be updated when: regulations change, technology changes, incident analysis reveals gaps. Standard Operating Procedures (SOPs): step-by-step instructions for operational tasks — must match current system configuration. Change management itself has a policy — the policy defines the process. Version control: policies stored in document management system with version history, approval signatures, review dates. If a patch changes how authentication works, the authentication procedure must be updated.</div>
+      </div>
+    </div>
+
+    <div class="doc-card">
+      <div class="doc-icon">🎫</div>
+      <div>
+        <div class="doc-title">Change Records / Tickets</div>
+        <div class="doc-body">Every change generates a change record — the authoritative audit trail. Contains: RFC details, risk assessment, CAB decision with rationale, approver names and timestamps, implementation steps taken, testing results, post-implementation review, any issues encountered, rollback actions if needed, final change status (success/fail/partial). ServiceNow, Jira, BMC Remedy: ITSM platforms that manage change records. Must be retained: SOX requires 7 years, PCI-DSS requires 1 year minimum. Change records link to: incident records if change caused an outage, problem records if root cause analysis needed.</div>
+      </div>
+    </div>
+
+    <div class="doc-card">
+      <div class="doc-icon">⚙️</div>
+      <div>
+        <div class="doc-title">Configuration Documentation</div>
+        <div class="doc-body">Baseline configurations documented before changes — enables rollback and drift detection. Firewall rules: every rule documented with business justification and review date. Server builds: documented standard build configurations (hardening standards applied). CMDB: Configuration Management Database — authoritative record of all CIs (configuration items) and their relationships. Change: CMDB updated after every successful change. Drift: actual configuration diverges from documented baseline = unauthorized change or configuration drift detected by CSPM/SCAP tools.</div>
+      </div>
+    </div>
+
+    <div class="doc-card">
+      <div class="doc-icon">📑</div>
+      <div>
+        <div class="doc-title">Security Documentation Specific Requirements</div>
+        <div class="doc-body">Risk assessments: documented before change, updated after. Security exceptions: formal documentation of accepted risks (time-limited, approved by CISO). Compensating controls: documented when primary control can't be implemented. Audit trails: who approved what, when — immutable log. Test results: penetration test findings for changes to security-relevant systems. SLA documentation: security response times, monitoring coverage — updated when monitoring changes.</div>
+      </div>
+    </div>
+
+    <h3>Documentation in the Change Lifecycle</h3>
+    <div class="code">
+<span class="cm"># Documentation produced at each change stage:</span>
+
+<span class="cb">At Request:</span>
+  RFC document (change description, justification, scope)
+  Risk assessment (likelihood × impact rating)
+  Current state documentation (baseline before change)
+  Proposed new state documentation (what it will look like after)
+
+<span class="cb">At Review:</span>
+  CAB meeting minutes (who attended, discussion, decision)
+  Security review findings and approval/rejection
+  Stakeholder approval signatures
+
+<span class="cb">At Test:</span>
+  Test plan document
+  Test results (pass/fail for each test case)
+  Security scan results (before and after)
+  Peer review sign-off
+
+<span class="cb">At Implementation:</span>
+  Change log: exact steps taken, timestamps, who executed
+  Screenshots or output captures of key commands
+  Any deviations from plan documented immediately
+
+<span class="cb">After Implementation:</span>
+  Updated: network diagrams, runbooks, CMDB
+  Post-implementation review: did it work? any issues?
+  Lessons learned: what to do differently next time
+  Updated baseline: new documented configuration state
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Network diagrams →</span><span>Must be updated after every topology change — incident responders rely on them</span></div>
+      <div class="er"><span class="ek">Policies/procedures →</span><span>Must reflect current systems — outdated = security gap — version-controlled</span></div>
+      <div class="er"><span class="ek">Change record →</span><span>Authoritative audit trail — RFC + approvals + implementation + review — retained per compliance requirement</span></div>
+      <div class="er"><span class="ek">CMDB →</span><span>Configuration Management Database — authoritative CI inventory — updated after every change</span></div>
+      <div class="er"><span class="ek">Baseline →</span><span>Documented current state before change — enables rollback and drift detection</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 8. VERSION CONTROL      -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Version Control</span><span class="bdg" style="background:#dbeafe;color:#1e40af;border:1px solid #93c5fd">Git · Tracking · Rollback · History</span></div>
+  <div class="card-bd">
+    <p>Version control is the <strong style="color:var(--tx)">systematic tracking of changes to files and configurations over time</strong>. It provides complete history of who changed what and when, enables rollback to any previous state, and supports collaboration with conflict detection.</p>
+
+    <h3>Version Control Systems</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#93c5fd">
+        <h4 style="color:var(--a2)">Git</h4>
+        <p>Distributed VCS — most widely used. Every developer has full repository copy. Branching: work on features without affecting main. Platforms: GitHub, GitLab, Bitbucket, Azure DevOps. For security: stores firewall configs, IaC, security policies, scripts — everything as code with full history.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--a5)">ITSM Versioning</h4>
+        <p>ServiceNow, Jira: version control for change records and policy documents. Not code-level but document-level. Every edit to a policy: logged with who, when, what changed. Approval workflows: version must be approved before active. Audit trail: complete history for compliance.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--a4)">Configuration Version Control</h4>
+        <p>Ansible, Terraform, Puppet, Chef: infrastructure-as-code stored in Git. Every infrastructure change: committed with message and author. Rollback: revert commit to previous state. Drift detection: current config vs last committed version. GitOps: Git as single source of truth for infrastructure state.</p>
+      </div>
+    </div>
+
+    <h3>Version Control for Security Configurations</h3>
+    <div class="code">
+<span class="cm"># Treating security configs like code — benefits:</span>
+
+Firewall rules in Git:
+  <span class="cg">git log</span> shows every rule change with author and timestamp
+  <span class="cg">git diff</span> shows exactly what changed between versions
+  <span class="cg">git blame</span> shows who last modified each rule
+  <span class="cg">git revert</span> rolls back a bad change in seconds
+  Pull request: security team reviews rule changes before merge
+  
+Example workflow for firewall change:
+  1. Create branch: feature/add-vendor-access
+  2. Edit firewall config: add rule
+  3. Run automated tests: syntax check, security scan
+  4. Open pull request → security team reviews
+  5. Review approved → merge to main
+  6. CI/CD pipeline: automatically deploys to firewall
+  7. Post-deploy: automated verification test
+  8. History: complete trail in Git forever
+  
+<span class="cg">Result: every firewall change is reviewed, tested, auditable</span>
+<span class="cr">Without this: "who added this rule? nobody knows"</span>
+    </div>
+
+    <h3>Versioning Concepts</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#93c5fd">
+        <h4 style="color:var(--a2)">Semantic Versioning (SemVer)</h4>
+        <p>Standard versioning format: MAJOR.MINOR.PATCH (e.g., 2.4.1). MAJOR: breaking changes — incompatible with previous. MINOR: new features — backward compatible. PATCH: bug fixes only. Security implications: PATCH releases often contain security fixes — update quickly. MAJOR: may require config/code changes — test carefully. Version pinning: lock to specific version to prevent unexpected updates.</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.5rem">
+v2.4.1 → v2.4.2  = patch (bug fix — security patch)
+v2.4.1 → v2.5.0  = minor (new feature — test first)
+v2.4.1 → v3.0.0  = major (breaking — extensive testing)
+        </div>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--a3)">Change Rollback via Version Control</h4>
+        <p>Every commit is a rollback point. Bad change deployed → git revert commit → previous state restored. Rollback time: seconds to minutes (vs hours without version control). Test rollback: verify rollback works BEFORE implementing the change. Immutability: committed history cannot be rewritten (git rebase harmful — destroys audit trail).</p>
+        <div class="code" style="font-size:0.62rem;margin-top:0.5rem">
+# Bad firewall change deployed at 14:30:
+git log → identify commit hash abc1234
+git revert abc1234 → creates new commit undoing change
+git push → deploy rollback
+# Firewall back to previous state: 2 minutes ✓
+        </div>
+      </div>
+    </div>
+
+    <h3>Version Control Security Practices</h3>
+    <div class="code">
+<span class="cm"># Security requirements for version control systems:</span>
+
+Access control:
+  Not everyone can push to main branch
+  Branch protection: require pull request + approval to merge
+  Signed commits: GPG signatures verify committer identity
+  MFA: required on GitHub/GitLab accounts
+  
+Secrets management:
+  NEVER commit: passwords, API keys, certificates
+  .gitignore: exclude credential files
+  Pre-commit hooks: scan for secrets before commit
+  Secret scanning: GitHub advanced security detects secrets
+  <span class="cr">Committed secret = compromised — change it immediately</span>
+  
+Audit trail:
+  Git history is immutable (force push = audit trail destruction)
+  Disable force push on protected branches
+  All commits: authenticated — who made this change
+  
+Repository security:
+  Private repos: for internal configs and code
+  Code review: all changes reviewed before merge
+  Dependency scanning: check imported libraries for CVEs
+  SAST: static analysis in CI/CD pipeline
+
+<span class="cg"># Version control satisfies compliance requirements:</span>
+SOX: change management evidence — git log shows what changed when
+PCI-DSS: all changes to cardholder data systems tracked
+HIPAA: audit controls — version history shows who modified what
+    </div>
+
+    <h3>Version Control Lifecycle — Security Workflow</h3>
+    <div class="code">
+<span class="cm"># Complete secure development/config change workflow:</span>
+
+Plan → RFC submitted in ITSM system (ServiceNow)
+
+Develop:
+  Developer creates feature branch in Git
+  Makes changes → commits with descriptive message
+  Commit message: "CHG-1234: Add vendor firewall rule per RFC"
+  
+Review:
+  Pull request opened
+  Security team: code review → looks for vulnerabilities
+  Automated: SAST scan, secrets scan, dependency check
+  All checks pass → security approves pull request
+
+Test:
+  Merge to staging branch → CI/CD deploys to test environment
+  Automated tests run → functional + security tests
+  Manual testing if required → results documented
+
+Approve:
+  CAB reviews change + PR approval as evidence of testing
+  CAB approves → merge to production branch permitted
+
+Deploy:
+  Production merge → CI/CD auto-deploys during change window
+  Post-deploy verification → automated smoke tests
+  
+Document:
+  Git commit = automatic documentation (who, what, when)
+  ITSM ticket updated → link to Git commit hash
+  CMDB updated → new configuration baseline recorded
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Version control →</span><span>Tracks all changes over time — who changed what when — enables rollback to any point</span></div>
+      <div class="er"><span class="ek">Git →</span><span>Distributed VCS — branching, commits, pull requests — foundation of GitOps</span></div>
+      <div class="er"><span class="ek">Rollback →</span><span>Revert to previous version — git revert — must be tested before change implementation</span></div>
+      <div class="er"><span class="ek">Secrets in code →</span><span>NEVER commit credentials — if committed: compromised — rotate immediately</span></div>
+      <div class="er"><span class="ek">SemVer →</span><span>MAJOR.MINOR.PATCH — PATCH = quick update / MAJOR = test carefully for breaking changes</span></div>
+      <div class="er"><span class="ek">Branch protection →</span><span>Require PR + approval before merge to main — prevents unauthorized changes</span></div>
+      <div class="er"><span class="ek">Signed commits →</span><span>GPG signatures on commits — non-repudiation for code changes</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 9. SUMMARY              -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Exam Cheat Sheet</span><span class="bdg" style="background:#f3f0ff;color:#6b21a8;border:1px solid #c0b0f0">Domain 1 · Change Management</span></div>
+  <div class="card-bd">
+
+    <h3>Change Types Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Type</th><th>Risk</th><th>Approval Path</th><th>Timing</th><th>Key Rule</th></tr>
+      <tr>
+        <td><span class="tag tg">Standard</span></td>
+        <td>Low</td>
+        <td>Pre-approved by CAB (type level)</td>
+        <td>Anytime per defined schedule</td>
+        <td>Follow defined procedure exactly — deviation = Normal change</td>
+      </tr>
+      <tr>
+        <td><span class="tag tb">Normal</span></td>
+        <td>Medium</td>
+        <td>Full CAB review and approval</td>
+        <td>Weekly CAB meeting → approved window</td>
+        <td>RFC → risk assessment → CAB → test → implement → review</td>
+      </tr>
+      <tr>
+        <td><span class="tag tr">Emergency</span></td>
+        <td>High</td>
+        <td>ECAB expedited approval</td>
+        <td>Immediately when needed</td>
+        <td>Implement first if needed → document AFTER → post-review required</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3>Documentation Requirements Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Document</th><th>What It Contains</th><th>Updated When</th></tr>
+      <tr><td><span class="tag tb">RFC</span></td><td>Change description, justification, scope, risk, rollback, steps</td><td>Created at start of change process</td></tr>
+      <tr><td><span class="tag tg">Change Record</span></td><td>Full audit trail — request through closure, all approvals</td><td>Updated throughout lifecycle</td></tr>
+      <tr><td><span class="tag tt">Network Diagram</span></td><td>Current network topology, devices, IP ranges, zones</td><td>After every topology change</td></tr>
+      <tr><td><span class="tag tp">Policy/Procedure</span></td><td>Security requirements and operational steps</td><td>When process or system changes</td></tr>
+      <tr><td><span class="tag ty">CMDB</span></td><td>All CIs, configurations, and relationships</td><td>After every approved change</td></tr>
+      <tr><td><span class="tag ts">Baseline</span></td><td>Documented pre-change configuration state</td><td>Before each change, updated after</td></tr>
+    </table>
+    </div>
+
+    <h3>Version Control Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Concept</th><th>Purpose</th><th>Security Implication</th></tr>
+      <tr><td><span class="tag tb">Git commit</span></td><td>Snapshot of change with author + message</td><td>Audit trail — who changed what when</td></tr>
+      <tr><td><span class="tag tg">Branch</span></td><td>Isolated working copy — doesn't affect main</td><td>Changes reviewed before merging to production</td></tr>
+      <tr><td><span class="tag tp">Pull request</span></td><td>Request to merge branch into main</td><td>Code review checkpoint — security approval gate</td></tr>
+      <tr><td><span class="tag to">Revert</span></td><td>Undo a specific commit</td><td>Rollback mechanism — fast recovery from bad change</td></tr>
+      <tr><td><span class="tag tr">Secrets in code</span></td><td>Credentials accidentally committed</td><td>Immediately compromised — rotate credentials NOW</span></td></tr>
+      <tr><td><span class="tag ty">SemVer PATCH</span></td><td>Bug/security fix, backward compatible</td><td>Apply quickly — likely security patch</td></tr>
+    </table>
+    </div>
+
+    <h3>Exam Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// 35 Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Formal process controlling all modifications to IT systems"</span><span>→ Change management</span></div>
+      <div class="er"><span class="ek">"Change made without going through the approval process"</span><span>→ Unauthorized change — security and compliance violation</span></div>
+      <div class="er"><span class="ek">"Pre-approved, routine change — low risk — follows defined procedure"</span><span>→ Standard change</span></div>
+      <div class="er"><span class="ek">"Requires full CAB review — most common type"</span><span>→ Normal change</span></div>
+      <div class="er"><span class="ek">"Active exploit — implement first, document after"</span><span>→ Emergency change — expedited ECAB approval</span></div>
+      <div class="er"><span class="ek">"Cross-functional committee that reviews and approves changes"</span><span>→ Change Advisory Board (CAB)</span></div>
+      <div class="er"><span class="ek">"Available 24/7 for urgent change approvals"</span><span>→ Emergency CAB (ECAB)</span></div>
+      <div class="er"><span class="ek">"Formal document that initiates the change process"</span><span>→ Request for Change (RFC)</span></div>
+      <div class="er"><span class="ek">"Pre-approved time period for implementing changes"</span><span>→ Change/maintenance window</span></div>
+      <div class="er"><span class="ek">"How to undo the change if it fails — required for CAB approval"</span><span>→ Rollback plan</span></div>
+      <div class="er"><span class="ek">"No changes permitted during quarter-end close"</span><span>→ Change freeze / blackout period</span></div>
+      <div class="er"><span class="ek">"Developer cannot approve their own change request"</span><span>→ Separation of duties in change management</span></div>
+      <div class="er"><span class="ek">"Default: deny everything — only explicitly permitted items allowed"</span><span>→ Allow list (whitelist)</span></div>
+      <div class="er"><span class="ek">"Default: allow everything — only explicitly blocked items denied"</span><span>→ Deny list (blacklist)</span></div>
+      <div class="er"><span class="ek">"Only approved signed applications may execute"</span><span>→ Application allow listing — AppLocker/WDAC</span></div>
+      <div class="er"><span class="ek">"Which list type is more secure? Why?"</span><span>→ Allow list — default deny — unknown items blocked automatically</span></div>
+      <div class="er"><span class="ek">"Change breaks downstream system — what was not assessed?"</span><span>→ Dependencies — downstream systems that depend on what changed</span></div>
+      <div class="er"><span class="ek">"Patch applied but vulnerability still exploitable"</span><span>→ Reboot required — patch not active until system restarts</span></div>
+      <div class="er"><span class="ek">"Network topology changed — what must be updated immediately?"</span><span>→ Network diagrams — incident responders rely on current diagrams</span></div>
+      <div class="er"><span class="ek">"Authoritative record of all configuration items and relationships"</span><span>→ CMDB (Configuration Management Database)</span></div>
+      <div class="er"><span class="ek">"Complete audit trail from change request through closure"</span><span>→ Change record / change ticket</span></div>
+      <div class="er"><span class="ek">"Documented configuration state before a change is made"</span><span>→ Baseline — enables rollback and drift detection</span></div>
+      <div class="er"><span class="ek">"System configuration differs from documented baseline"</span><span>→ Configuration drift — detected by CSPM/SCAP tools</span></div>
+      <div class="er"><span class="ek">"Tracks all changes with author and timestamp — enables rollback"</span><span>→ Version control (Git)</span></div>
+      <div class="er"><span class="ek">"Who changed this file and when?"</span><span>→ git log / git blame — version control history</span></div>
+      <div class="er"><span class="ek">"Undo a specific commit in Git"</span><span>→ git revert — creates new commit undoing the change — preserves history</span></div>
+      <div class="er"><span class="ek">"Requires pull request approval before merging to main"</span><span>→ Branch protection — prevents unauthorized changes</span></div>
+      <div class="er"><span class="ek">"AWS API key accidentally committed to public repository"</span><span>→ Compromised credential — rotate immediately — treat as exposed</span></div>
+      <div class="er"><span class="ek">"MAJOR.MINOR.PATCH — 2.4.1 → 2.4.2"</span><span>→ Semantic versioning — PATCH version = apply quickly (security fix)</span></div>
+      <div class="er"><span class="ek">"Change from v2.4.1 to v3.0.0 — what is this?"</span><span>→ MAJOR version — breaking changes — requires extensive testing</span></div>
+      <div class="er"><span class="ek">"GPG signature on every commit — what does this provide?"</span><span>→ Non-repudiation for code changes — committer cannot deny</span></div>
+      <div class="er"><span class="ek">"Infrastructure defined in Git — Git is single source of truth"</span><span>→ GitOps / Infrastructure as Code with version control</span></div>
+      <div class="er"><span class="ek">"Change management required by SOX, PCI-DSS, HIPAA — why?"</span><span>→ Audit trail for IT general controls — who changed what on regulated systems</span></div>
+      <div class="er"><span class="ek">"Emergency patch applied without documentation — problem?"</span><span>→ Post-implementation review still required — must document after emergency changes</span></div>
+      <div class="er"><span class="ek">"Security team's role in CAB"</span><span>→ Review all changes for security impact — explicit sign-off on changes affecting security controls</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

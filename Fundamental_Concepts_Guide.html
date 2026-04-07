@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fundamental Concepts — Security+ Domain 1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap');
+
+:root{
+  --bg:#faf9f5;
+  --p:#ffffff;
+  --s:#f3f1ea;
+  --t:#eae8df;
+  --bd:#d9d6ca;
+  --tx:#16140a;
+  --mu:#706d5a;
+  /* CIA */
+  --c-conf:#1840c0;  /* deep blue */
+  --c-intg:#0c6838;  /* deep green */
+  --c-avail:#a83800; /* deep orange */
+  /* others */
+  --c-nrep:#6810b0;  /* purple */
+  --c-aaa:#0a6868;   /* teal */
+  --c-zt:#181818;    /* near-black */
+  --c-dec:#b0180c;   /* crimson */
+  --c-acc:#78540a;   /* gold */
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.65;padding:2rem 1.5rem;}
+
+/* ── HEADER ── */
+.hdr{
+  margin-bottom:2.5rem;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;border:2px solid var(--tx);
+}
+@media(max-width:600px){.hdr{grid-template-columns:1fr;}}
+.hdr-left{
+  padding:2rem 1.8rem;
+  border-right:2px solid var(--tx);
+}
+.hdr-right{
+  padding:2rem 1.8rem;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.eyebrow{
+  font-family:'DM Mono',monospace;font-size:0.58rem;
+  letter-spacing:0.2em;color:var(--mu);text-transform:uppercase;margin-bottom:0.7rem;
+}
+.hdr-title{
+  font-family:'DM Serif Display',serif;
+  font-size:3.2rem;line-height:0.92;
+  letter-spacing:-0.01em;margin-bottom:0.2rem;
+}
+.hdr-title em{font-style:italic;color:var(--c-conf);}
+.hdr-deck{
+  font-family:'DM Sans',sans-serif;
+  font-size:0.82rem;color:var(--mu);font-weight:300;
+  margin-top:0.5rem;line-height:1.6;
+}
+.hdr-topics{display:flex;flex-direction:column;gap:0.3rem;}
+.hdr-topic{
+  display:flex;align-items:center;gap:0.6rem;
+  font-family:'DM Mono',monospace;font-size:0.62rem;
+  color:var(--mu);
+}
+.hdr-topic-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ── TABS ── */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:2rem;}
+.tab{
+  padding:0.4rem 0.9rem;border-radius:4px;
+  border:1.5px solid var(--bd);background:var(--p);
+  color:var(--mu);cursor:pointer;
+  font-family:'DM Mono',monospace;font-size:0.62rem;
+  font-weight:500;transition:all 0.12s;letter-spacing:0.02em;
+}
+.tab:hover{border-color:var(--c-conf);color:var(--c-conf);}
+.tab.active{background:var(--tx);color:var(--bg);border-color:var(--tx);}
+
+/* ── SECTIONS ── */
+.sec{display:none;}
+.sec.on{display:block;animation:rise 0.18s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* ── CARD ── */
+.card{background:var(--p);border:1.5px solid var(--bd);border-radius:8px;margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:0.9rem 1.4rem;border-bottom:1.5px solid var(--bd);background:var(--s);}
+.card-num{font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--mu);background:var(--t);border:1px solid var(--bd);border-radius:2px;padding:0.1rem 0.35rem;}
+.card-title{font-family:'DM Serif Display',serif;font-size:1.15rem;letter-spacing:-0.01em;}
+.bdg{margin-left:auto;font-family:'DM Mono',monospace;font-size:0.57rem;padding:0.14rem 0.52rem;border-radius:2px;white-space:nowrap;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;}
+.card-bd{padding:1.4rem;}
+p{color:var(--mu);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.75;}
+h3{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--tx);margin:1.3rem 0 0.55rem;padding-left:0.75rem;border-left:3px solid;letter-spacing:-0.01em;}
+
+/* ── CODE ── */
+.code{background:var(--tx);color:#f0edd8;border-radius:5px;padding:1rem 1.2rem;font-family:'DM Mono',monospace;font-size:0.68rem;line-height:1.92;overflow-x:auto;margin:0.8rem 0;}
+.cg{color:#5effa0;}.cr{color:#ff7070;}.cb{color:#70b8ff;}.co{color:#ffd068;}.cp{color:#d08aff;}.cm{color:#706d5a;}.ct{color:#50e8d8;}.ci{color:#9ab8ff;}.cs{color:#ffb060;}
+
+/* ── SCENE ── */
+.scene{background:#fffcf0;border-left:4px solid var(--c-acc);border-radius:0 6px 6px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--c-acc);margin-bottom:0.4rem;letter-spacing:0.12em;font-weight:600;text-transform:uppercase;}
+
+/* ── EXAM ── */
+.exam{background:#f3efff;border:1.5px solid #c8b4f0;border-radius:6px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--c-nrep);margin-bottom:0.6rem;letter-spacing:0.12em;font-weight:600;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--c-nrep);font-family:'DM Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:600;}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+.gc{background:var(--s);border:1.5px solid var(--bd);border-radius:6px;padding:1rem;}
+.gc h4{font-family:'DM Serif Display',serif;font-size:0.92rem;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1.1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.76rem;color:var(--mu);margin-bottom:0.25rem;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s);padding:0.5rem 0.8rem;text-align:left;color:var(--mu);border-bottom:1.5px solid var(--bd);font-size:0.62rem;font-weight:600;font-family:'DM Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+td{padding:0.5rem 0.8rem;border-bottom:1px solid var(--bd);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s);}
+
+/* ── TAGS ── */
+.tag{display:inline-block;padding:0.1rem 0.48rem;border-radius:3px;font-size:0.6rem;font-family:'DM Mono',monospace;font-weight:600;}
+.tc{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd;}
+.tg{background:#dcfce7;color:#166534;border:1px solid #86efac;}
+.to{background:#ffedd5;color:#9a3412;border:1px solid #fdba74;}
+.tp{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe;}
+.tt{background:#ccfbf1;color:#115e59;border:1px solid #5eead4;}
+.tr{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;}
+.ty{background:#fef9c3;color:#713f12;border:1px solid #fde047;}
+.ts{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;}
+
+/* ── CIA TRIADS ── */
+.cia-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:1.5px solid var(--bd);border-radius:8px;overflow:hidden;margin:1rem 0;}
+@media(max-width:580px){.cia-trio{grid-template-columns:1fr;}}
+.cia-cell{background:var(--p);padding:1.4rem 1.2rem;text-align:center;}
+.cia-letter{font-family:'DM Serif Display',serif;font-size:3.5rem;line-height:1;margin-bottom:0.3rem;opacity:0.9;}
+.cia-word{font-family:'DM Serif Display',serif;font-size:0.95rem;margin-bottom:0.5rem;letter-spacing:-0.01em;}
+.cia-def{font-size:0.74rem;color:var(--mu);line-height:1.6;}
+
+/* ── BIG FEATURE CARD ── */
+.feat{
+  border:1.5px solid var(--bd);border-radius:8px;
+  padding:1.3rem 1.4rem;margin-bottom:1rem;
+  border-left:5px solid;position:relative;overflow:hidden;
+}
+.feat-icon{font-size:1.5rem;margin-bottom:0.4rem;}
+.feat-name{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:0.25rem;letter-spacing:-0.01em;}
+.feat-def{font-family:'DM Sans',sans-serif;font-style:italic;font-size:0.82rem;color:var(--mu);line-height:1.7;margin-bottom:0.7rem;}
+.feat-body{font-size:0.8rem;color:var(--mu);}
+
+/* ── AAA FLOW ── */
+.aaa-flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;border:1.5px solid var(--bd);border-radius:8px;overflow:hidden;margin:1rem 0;}
+.aaa-step{
+  flex:1;min-width:160px;
+  padding:1.2rem 1rem;border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;gap:0.4rem;
+}
+.aaa-step:last-child{border-right:none;}
+.aaa-num{font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--mu);}
+.aaa-letter{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1;}
+.aaa-word{font-family:'DM Serif Display',serif;font-size:0.88rem;letter-spacing:-0.01em;}
+.aaa-q{font-family:'DM Mono',monospace;font-size:0.63rem;color:var(--mu);margin-top:0.2rem;font-weight:500;}
+.aaa-desc{font-size:0.75rem;color:var(--mu);line-height:1.5;}
+.aaa-sep{display:flex;align-items:center;color:var(--mu);font-size:1.2rem;padding:0 0.1rem;align-self:center;}
+
+/* ── ZERO TRUST PILLARS ── */
+.zt-pillar{
+  background:var(--s);border:1.5px solid var(--bd);border-radius:6px;
+  padding:0.9rem 1rem;margin-bottom:0.45rem;
+  display:flex;gap:0.9rem;align-items:flex-start;
+}
+.zt-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.1rem;}
+.zt-title{font-family:'DM Serif Display',serif;font-size:0.9rem;margin-bottom:0.15rem;letter-spacing:-0.01em;}
+.zt-body{font-size:0.76rem;color:var(--mu);}
+
+/* ── DECEPTION TABLE ── */
+.dec-row{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:0.75rem 0;border-bottom:1px solid var(--bd);
+}
+.dec-row:last-child{border-bottom:none;}
+.dec-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.15rem;}
+.dec-title{font-family:'DM Serif Display',serif;font-size:0.9rem;margin-bottom:0.15rem;letter-spacing:-0.01em;}
+.dec-body{font-size:0.76rem;color:var(--mu);}
+.dec-tag{margin-left:auto;flex-shrink:0;margin-top:0.05rem;}
+
+/* ── INFO ROW ── */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s);border:1.5px solid var(--bd);border-radius:6px;margin-bottom:0.5rem;}
+.info-icon{font-size:1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'DM Serif Display',serif;font-size:0.9rem;margin-bottom:0.12rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--mu);}
+
+/* ── COMPARISON STRIP ── */
+.vs-strip{display:flex;gap:0;border:1.5px solid var(--bd);border-radius:7px;overflow:hidden;margin:1rem 0;}
+.vs-side{flex:1;padding:1rem 1.1rem;}
+.vs-side + .vs-side{border-left:1px solid var(--bd);}
+.vs-label{font-family:'DM Mono',monospace;font-size:0.6rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;}
+.vs-title{font-family:'DM Serif Display',serif;font-size:0.95rem;margin-bottom:0.35rem;}
+.vs-body{font-size:0.76rem;color:var(--mu);line-height:1.6;}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="eyebrow">Security+ SY0-701 · Domain 1 · General Security Concepts · 12%</div>
+    <div class="hdr-title"><em>Fundamental</em><br>Concepts</div>
+    <div class="hdr-deck">The core ideas every security professional must internalize — the "why" behind every control.</div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-topics">
+      <div class="hdr-topic"><div class="hdr-topic-dot" style="background:var(--c-conf)"></div>CIA Triad — Confidentiality · Integrity · Availability</div>
+      <div class="hdr-topic"><div class="hdr-topic-dot" style="background:var(--c-nrep)"></div>Non-Repudiation</div>
+      <div class="hdr-topic"><div class="hdr-topic-dot" style="background:var(--c-aaa)"></div>AAA — Authentication · Authorization · Accounting</div>
+      <div class="hdr-topic"><div class="hdr-topic-dot" style="background:var(--c-zt)"></div>Zero Trust Architecture</div>
+      <div class="hdr-topic"><div class="hdr-topic-dot" style="background:var(--c-dec)"></div>Deception &amp; Disruption Technology</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TABS ── -->
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. CIA Triad</button>
+  <button class="tab" onclick="go('s2',this)">2. Non-Repudiation</button>
+  <button class="tab" onclick="go('s3',this)">3. AAA Framework</button>
+  <button class="tab" onclick="go('s4',this)">4. Authentication</button>
+  <button class="tab" onclick="go('s5',this)">5. Authorization</button>
+  <button class="tab" onclick="go('s6',this)">6. Accounting</button>
+  <button class="tab" onclick="go('s7',this)">7. Zero Trust</button>
+  <button class="tab" onclick="go('s8',this)">8. Deception &amp; Disruption</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 1. CIA TRIAD            -->
+<!-- ════════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">The CIA Triad</span><span class="bdg" style="background:#dbeafe;color:#1e40af;border:1px solid #93c5fd">Confidentiality · Integrity · Availability</span></div>
+  <div class="card-bd">
+    <p>The CIA triad is the <strong style="color:var(--tx)">foundational model for information security</strong>. Every security control, policy, and risk decision maps back to protecting one or more of these three properties. It is the most important concept in Security+.</p>
+
+    <div class="cia-trio">
+      <div class="cia-cell">
+        <div class="cia-letter" style="color:var(--c-conf)">C</div>
+        <div class="cia-word" style="color:var(--c-conf)">Confidentiality</div>
+        <div class="cia-def">Ensuring data is accessible only to those who are authorized to access it. Keeping secrets secret.</div>
+      </div>
+      <div class="cia-cell">
+        <div class="cia-letter" style="color:var(--c-intg)">I</div>
+        <div class="cia-word" style="color:var(--c-intg)">Integrity</div>
+        <div class="cia-def">Ensuring data is accurate, complete, and has not been altered by unauthorized parties.</div>
+      </div>
+      <div class="cia-cell">
+        <div class="cia-letter" style="color:var(--c-avail)">A</div>
+        <div class="cia-word" style="color:var(--c-avail)">Availability</div>
+        <div class="cia-def">Ensuring systems and data are accessible when legitimate users need them.</div>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--c-conf)">Confidentiality — Keep Secrets Secret</h3>
+    <p>Confidentiality means only <strong style="color:var(--tx)">authorized parties can read or access sensitive information</strong>. The threat to confidentiality is unauthorized disclosure — someone who shouldn't see the data sees it.</p>
+    <div class="code">
+<span class="cm"># Threats to Confidentiality:</span>
+  Eavesdropping (sniffing network traffic)
+  Man-in-the-middle (MITM) attack
+  Unauthorized access (stolen credentials)
+  Shoulder surfing (looking at screen)
+  Dumpster diving (finding printed documents)
+  Data exfiltration (attacker steals data)
+  Social engineering (tricks someone into revealing)
+
+<span class="cm"># Controls that protect Confidentiality:</span>
+  <span class="cb">Encryption</span>:        renders data unreadable without key
+                   at rest: BitLocker, AES-256
+                   in transit: TLS 1.3, HTTPS, SSH
+  <span class="cb">Access Control</span>:   only authorized users see the data
+                   ACLs, RBAC, need-to-know principle
+  <span class="cb">MFA</span>:              blocks unauthorized account access
+  <span class="cb">Data masking</span>:     hides real values (CC: **** **** **** 4321)
+  <span class="cb">Steganography</span>:   hides data inside another file (covert channel)
+  <span class="cb">Physical security</span>: locks, screen shields, clear-desk policy
+  <span class="cb">DLP</span>:              prevents data from leaving the org
+    </div>
+
+    <h3 style="border-left-color:var(--c-intg)">Integrity — Ensure Data Accuracy</h3>
+    <p>Integrity means data has <strong style="color:var(--tx)">not been tampered with, corrupted, or altered without authorization</strong>. You can be confident the data you receive is exactly what was sent — and that it was sent by who you think sent it.</p>
+    <div class="code">
+<span class="cm"># Threats to Integrity:</span>
+  Man-in-the-middle (modifying data in transit)
+  SQL injection (modifying database records)
+  Insider threat (malicious data alteration)
+  Ransomware (encrypts/corrupts files)
+  Hardware failure (bit rot, storage corruption)
+  Accidental modification (human error)
+
+<span class="cm"># Controls that protect Integrity:</span>
+  <span class="cg">Hashing</span>:          creates a fingerprint of data
+                   MD5 (weak/broken), SHA-256, SHA-3
+                   if hash changes → data changed
+  <span class="cg">Digital signatures</span>: proves sender identity + data not modified
+                   private key signs → public key verifies
+  <span class="cg">HMAC</span>:             hash + secret key → proves source + integrity
+  <span class="cg">Checksums</span>:        simple integrity check for transmission
+  <span class="cg">Code signing</span>:     software hasn't been tampered since release
+  <span class="cg">Version control</span>:  tracks all changes with attribution
+  <span class="cg">FIM</span>:              File Integrity Monitoring — alerts on file changes
+  <span class="cg">Input validation</span>: reject malformed/malicious input
+
+<span class="cm"># Integrity ≠ Confidentiality:</span>
+  Encrypted file: <span class="cg">confidential</span> (can't read it) but integrity unknown
+  Hashed file:    <span class="cb">integrity checked</span> but still readable (not confidential)
+  Best: encrypt AND hash → both properties
+    </div>
+
+    <h3 style="border-left-color:var(--c-avail)">Availability — Systems Work When Needed</h3>
+    <p>Availability means <strong style="color:var(--tx)">authorized users can access systems and data when they need them</strong>. The threat to availability is denial — legitimate users cannot do their work.</p>
+    <div class="code">
+<span class="cm"># Threats to Availability:</span>
+  DDoS (Distributed Denial of Service) attack
+  Ransomware (encrypts files — no access)
+  Hardware failure (disk crash, power failure)
+  Natural disaster (flood, earthquake, fire)
+  Software bug causing system crash
+  Accidental deletion by user
+  Network outage (ISP failure, cable cut)
+
+<span class="cm"># Controls that protect Availability:</span>
+  <span class="cs">Redundancy</span>:        duplicate systems, no SPOF
+  <span class="cs">Backups</span>:           3-2-1 rule, tested restores
+  <span class="cs">Failover clustering</span>: automatic switchover on failure
+  <span class="cs">Load balancing</span>:    distribute across multiple servers
+  <span class="cs">UPS + generator</span>:   survive power failures
+  <span class="cs">DDoS mitigation</span>:   Cloudflare, Akamai, AWS Shield
+  <span class="cs">Patch management</span>:  prevents crashes from vulnerabilities
+  <span class="cs">DR site</span>:           Cold/Warm/Hot site for major outages
+
+<span class="cm"># Availability vs Security tension:</span>
+  More security controls → sometimes less convenient (availability ↓)
+  Less security → more available but more vulnerable
+  Goal: balance — security should not unnecessarily impair availability
+    </div>
+
+    <h3 style="border-left-color:var(--tx)">CIA Triad — Attacks vs Controls Summary</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Property</th><th>Threatened By</th><th>Protected By</th><th>Primary Goal</th></tr>
+      <tr>
+        <td><span class="tag tc">Confidentiality</span></td>
+        <td>Eavesdropping, data theft, unauthorized access</td>
+        <td>Encryption, MFA, access control, DLP</td>
+        <td>Data visible only to authorized parties</td>
+      </tr>
+      <tr>
+        <td><span class="tag tg">Integrity</span></td>
+        <td>Tampering, MITM, SQL injection, corruption</td>
+        <td>Hashing, digital signatures, FIM, input validation</td>
+        <td>Data accurate and unmodified</td>
+      </tr>
+      <tr>
+        <td><span class="tag to">Availability</span></td>
+        <td>DDoS, ransomware, hardware failure, disaster</td>
+        <td>Redundancy, backups, failover, DDoS mitigation</td>
+        <td>Systems accessible when needed</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--tx)">Extra Properties Beyond CIA</h3>
+    <div class="g3">
+      <div class="gc">
+        <h4 style="color:var(--c-nrep)">Non-Repudiation</h4>
+        <p>Ensuring a party cannot deny having performed an action. Digital signatures prove you sent a message. Audit logs prove you accessed a system. (Full coverage — Tab 2)</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--c-avail)">Authenticity</h4>
+        <p>Ensuring data or communications genuinely originate from the claimed source. Verified by digital signatures, certificates, and hash-based MACs. Closely related to integrity.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--c-aaa)">Privacy</h4>
+        <p>Individuals' rights to control their personal information. Extends confidentiality to legal/regulatory domain. GDPR, HIPAA, CCPA protect privacy. Overlaps with confidentiality but addresses rights, not just protection.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Real-World CIA Mapping</div>
+      <div class="code">
+<span class="cm"># Each incident breaks a specific CIA property:</span>
+
+Ransomware attack:
+  <span class="cs">Availability ↓</span>   Files encrypted — users cannot access them
+  <span class="cg">Integrity ↓</span>     Files have been modified (encrypted)
+  Often NOT confidentiality (attacker may not have read the data)
+
+Data breach (attacker steals customer SSNs):
+  <span class="cb">Confidentiality ↓</span>  Unauthorized party read the data
+  Integrity: maybe unchanged   Availability: maybe unaffected
+
+Man-in-the-middle attack (attacker modifies data in transit):
+  <span class="cg">Integrity ↓</span>     Data was altered between sender and receiver
+  <span class="cb">Confidentiality ↓</span>  Attacker also read the data
+  Availability: likely unaffected (data still arrives)
+
+DDoS attack:
+  <span class="cs">Availability ↓</span>   Service unreachable
+  Confidentiality: unchanged   Integrity: unchanged
+
+SQL injection deletes database records:
+  <span class="cg">Integrity ↓</span>     Data destroyed/modified without authorization
+  <span class="cs">Availability ↓</span>   Data no longer accessible
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Confidentiality →</span><span>Only authorized can read — threatened by eavesdropping/theft — protected by encryption/access control</span></div>
+      <div class="er"><span class="ek">Integrity →</span><span>Data not tampered — threatened by MITM/SQL injection — protected by hashing/digital signatures</span></div>
+      <div class="er"><span class="ek">Availability →</span><span>Systems accessible when needed — threatened by DDoS/ransomware — protected by redundancy/backups</span></div>
+      <div class="er"><span class="ek">Ransomware →</span><span>Primarily Availability attack (can't access files) + Integrity (files modified)</span></div>
+      <div class="er"><span class="ek">Data breach →</span><span>Confidentiality attack — unauthorized party accessed data</span></div>
+      <div class="er"><span class="ek">DDoS →</span><span>Availability attack — legitimate users denied service</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 2. NON-REPUDIATION      -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">Non-Repudiation</span><span class="bdg" style="background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe">Proof · Accountability · Cannot Deny</span></div>
+  <div class="card-bd">
+    <p>Non-repudiation means <strong style="color:var(--tx)">a person or system cannot deny having performed an action</strong> — there is irrefutable proof that the action occurred and who performed it. It's accountability enforced by cryptography and logging.</p>
+
+    <h3 style="border-left-color:var(--c-nrep)">Why Non-Repudiation Matters</h3>
+    <div class="code">
+<span class="cm"># Without non-repudiation:</span>
+Employee: "I never sent that email authorizing the $500K transfer"
+Admin:    "I never deleted those files"
+Vendor:   "We never signed that contract"
+User:     "Someone else must have accessed that account"
+
+<span class="cm"># With non-repudiation:</span>
+Email:    digital signature proves it came from their private key
+Files:    audit log + hash proves admin account deleted them at 14:32
+Contract: digital signature on PDF = legally binding
+Access:   certificate-based auth + log = irrefutable
+
+<span class="cm"># Non-repudiation serves TWO parties:</span>
+Sender:   "I can prove I sent this message"     (sender)
+Receiver: "They cannot deny having sent it"     (receiver)
+
+<span class="cm"># Legal importance:</span>
+Financial transactions:  cannot deny authorizing payment
+Contract signing:        cannot deny agreeing to terms
+Security incidents:      cannot deny accessing a system
+Data modifications:      cannot deny changing records
+    </div>
+
+    <h3 style="border-left-color:var(--c-nrep)">How Non-Repudiation Is Achieved</h3>
+
+    <div class="feat" style="border-left-color:var(--c-nrep);background:#faf8ff">
+      <div class="feat-icon">✍️</div>
+      <div class="feat-name" style="color:var(--c-nrep)">Digital Signatures — The Primary Mechanism</div>
+      <div class="feat-def">"A cryptographic mechanism that proves a message was created by a specific private key holder and has not been modified since signing."</div>
+      <div class="feat-body">
+        Process: <strong>1.</strong> Sender hashes the message → <strong>2.</strong> Encrypts hash with private key = signature → <strong>3.</strong> Sends message + signature → <strong>4.</strong> Receiver decrypts signature with sender's public key → <strong>5.</strong> Hashes received message → <strong>6.</strong> Compares: if hashes match → authenticated + integrity confirmed + non-repudiation achieved.<br><br>
+        Why non-repudiation: <em>Only the private key holder could have produced that signature.</em> Private key is secret to one person. Therefore that person cannot deny signing.
+      </div>
+      <div class="code" style="margin-top:0.8rem;font-size:0.64rem">
+<span class="cm"># Digital signature process:</span>
+Alice wants to sign a contract:
+  1. hash = SHA256(contract_text)          <span class="cm">// "fingerprint" of document</span>
+  2. signature = RSA_encrypt(hash, Alice_private_key)
+  3. sends: contract_text + signature
+
+Bob receives and verifies:
+  4. hash_received = SHA256(contract_text)  <span class="cm">// hash what arrived</span>
+  5. hash_from_sig = RSA_decrypt(signature, Alice_public_key)
+  6. if hash_received == hash_from_sig:
+       <span class="cg">✓ Integrity: document not modified</span>
+       <span class="cg">✓ Authentication: Alice's key was used</span>
+       <span class="cg">✓ Non-repudiation: Alice cannot deny signing</span>
+      </div>
+    </div>
+
+    <div class="feat" style="border-left-color:var(--c-intg);background:#f0fff8">
+      <div class="feat-icon">📋</div>
+      <div class="feat-name" style="color:var(--c-intg)">Audit Logs — Operational Non-Repudiation</div>
+      <div class="feat-def">"Tamper-evident records of who did what, when, on which system — providing an irrefutable trail of actions."</div>
+      <div class="feat-body">
+        For non-repudiation to hold, logs must be: <strong>tamper-evident</strong> (stored where subject can't modify), <strong>authenticated</strong> (tied to a specific identity — not shared accounts!), <strong>time-stamped</strong> with synchronized NTP, and <strong>retained</strong> long enough for legal/compliance purposes. Shared accounts destroy non-repudiation — "admin" could be anyone.
+      </div>
+    </div>
+
+    <div class="feat" style="border-left-color:var(--c-conf);background:#eff6ff">
+      <div class="feat-icon">📜</div>
+      <div class="feat-name" style="color:var(--c-conf)">Certificates (PKI) — Identity Foundation</div>
+      <div class="feat-def">"Digital certificates bind a public key to a verified identity — enabling trust in who you are communicating with."</div>
+      <div class="feat-body">
+        A certificate from a trusted CA says: "This public key belongs to this identity, and the CA has verified this." When someone signs with a private key and you verify with the certificate's public key, you're relying on the CA's verification of identity. The chain: Certificate Authority → verifies identity → issues cert → cert binds identity to public key → private key signs → non-repudiation achieved.
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--c-nrep)">Non-Repudiation vs Authentication</h3>
+    <div class="vs-strip">
+      <div class="vs-side">
+        <div class="vs-label" style="color:var(--c-conf)">Authentication</div>
+        <div class="vs-title">Proves WHO you are</div>
+        <div class="vs-body">Verifies identity at a point in time. "This is Alice logging in." Can use: passwords, MFA, certificates. Doesn't necessarily prove what you DID after authenticating.</div>
+      </div>
+      <div class="vs-side">
+        <div class="vs-label" style="color:var(--c-nrep)">Non-Repudiation</div>
+        <div class="vs-title">Proves what you DID</div>
+        <div class="vs-body">Proves a specific action was performed by a specific party — and they cannot deny it. "Alice signed this document with her private key at 14:32:07." Requires authentication + cryptographic proof of action.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Wire Transfer Dispute</div>
+      <div class="code">
+<span class="cm"># CFO disputes authorizing a $250,000 wire transfer:</span>
+
+Without non-repudiation:
+  CFO: "I never approved that transfer"
+  Attacker used CFO credentials (stolen via phishing)
+  System log: "CFO account authorized transfer"
+  Password-only auth: shared creds possible → <span class="cr">dispute valid</span>
+
+With non-repudiation controls:
+  Financial system requires: digital signature on all transfers
+  Transfer signed with CFO's private key (stored in smart card)
+  Smart card requires PIN + physical possession
+  Log: signature verified → CFO_cert → issued by Corporate CA
+  
+  CFO: "I never approved that transfer"
+  Evidence: signature only producible by CFO's private key
+             smart card was in CFO's possession (physical log)
+             CFO's PIN was required to access smart card
+  Result: <span class="cg">non-repudiation achieved → dispute resolved</span>
+
+<span class="co">Lesson: password alone ≠ non-repudiation</span>
+<span class="co">        digital signature with cert = non-repudiation</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Non-repudiation →</span><span>Cannot deny an action occurred — cryptographic proof — digital signatures are primary mechanism</span></div>
+      <div class="er"><span class="ek">Digital signature →</span><span>Private key signs (hash) → public key verifies — proves identity + integrity + non-repudiation</span></div>
+      <div class="er"><span class="ek">Shared accounts →</span><span>Destroy non-repudiation — "admin" could be anyone — always use named individual accounts</span></div>
+      <div class="er"><span class="ek">Audit logs →</span><span>Operational non-repudiation — must be tamper-evident + authenticated + timestamped</span></div>
+      <div class="er"><span class="ek">Password alone →</span><span>Does NOT provide non-repudiation — someone else could know your password</span></div>
+      <div class="er"><span class="ek">Private key →</span><span>Non-repudiation relies on private key secrecy — only key holder could have signed</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 3. AAA FRAMEWORK        -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">AAA Framework</span><span class="bdg" style="background:#ccfbf1;color:#115e59;border:1px solid #5eead4">Authentication · Authorization · Accounting</span></div>
+  <div class="card-bd">
+    <p>AAA is the framework that controls <strong style="color:var(--tx)">who can access what resources and provides a complete audit trail of that access</strong>. Every access decision flows through these three sequential steps.</p>
+
+    <div class="aaa-flow">
+      <div class="aaa-step" style="background:#eff6ff">
+        <div class="aaa-num">Step 1</div>
+        <div class="aaa-letter" style="color:var(--c-conf)">A</div>
+        <div class="aaa-word" style="color:var(--c-conf)">Authentication</div>
+        <div class="aaa-q">"Who are you?"</div>
+        <div class="aaa-desc">Verify the identity of the person or system requesting access. Prove you are who you claim to be.</div>
+      </div>
+      <div class="aaa-sep">→</div>
+      <div class="aaa-step" style="background:#f0fdf4">
+        <div class="aaa-num">Step 2</div>
+        <div class="aaa-letter" style="color:var(--c-intg)">A</div>
+        <div class="aaa-word" style="color:var(--c-intg)">Authorization</div>
+        <div class="aaa-q">"What can you do?"</div>
+        <div class="aaa-desc">Determine what the authenticated identity is permitted to access and what actions they may perform.</div>
+      </div>
+      <div class="aaa-sep">→</div>
+      <div class="aaa-step" style="background:#fffbeb">
+        <div class="aaa-num">Step 3</div>
+        <div class="aaa-letter" style="color:var(--c-avail)">A</div>
+        <div class="aaa-word" style="color:var(--c-avail)">Accounting</div>
+        <div class="aaa-q">"What did you do?"</div>
+        <div class="aaa-desc">Record all access and actions for auditing, billing, forensics, and compliance purposes.</div>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--c-aaa)">AAA in Practice</h3>
+    <div class="code">
+<span class="cm"># AAA applied to a VPN connection:</span>
+
+<span class="cb">Authentication (who are you?):</span>
+  User enters: username + password + MFA token
+  RADIUS server: queries Active Directory → valid? yes
+  Certificate: checks device certificate → trusted? yes
+  Result: identity VERIFIED → Alice on approved device
+
+<span class="cg">Authorization (what can you do?):</span>
+  RADIUS: checks Alice's group membership
+  Alice is in "Finance-VPN" group
+  Policy: Finance-VPN → allowed: Finance servers, Email
+           Finance-VPN → denied: HR systems, IT admin tools
+  Result: Alice granted access to Finance + Email only
+
+<span class="cs">Accounting (what did you do?):</span>
+  Log: Alice connected from 203.0.113.45 at 09:14:32
+  Log: Session duration: 6 hours 22 minutes
+  Log: Bytes transferred: 1.2 GB
+  Log: Resources accessed: fin-server01, mail.corp.com
+  Log: Disconnected at 15:36:44
+  Stored in SIEM for 12 months per policy
+
+<span class="cm"># AAA protocols:</span>
+RADIUS:   Remote Authentication Dial-In User Service
+          UDP 1812 (auth), UDP 1813 (accounting)
+          Most common — VPN, WiFi 802.1X
+TACACS+:  Terminal Access Controller Access Control System+
+          TCP 49 — Cisco proprietary — encrypts entire payload
+          Better for network device admin access
+DIAMETER: Evolved from RADIUS — mobile networks, EAP
+    </div>
+
+    <h3 style="border-left-color:var(--c-aaa)">RADIUS vs TACACS+</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Feature</th><th>RADIUS</th><th>TACACS+</th></tr>
+      <tr><td>Protocol</td><td><span class="tag tc">UDP</span> 1812/1813</td><td><span class="tag tg">TCP</span> 49</td></tr>
+      <tr><td>Encryption</td><td>Only password encrypted</td><td>Entire payload encrypted</td></tr>
+      <tr><td>AAA separation</td><td>Combines Auth + Author</td><td>Separates each (granular)</td></tr>
+      <tr><td>Primary use</td><td>Network access (VPN, WiFi)</td><td>Device admin (routers, switches)</td></tr>
+      <tr><td>Vendor</td><td>Open standard</td><td>Cisco proprietary</td></tr>
+      <tr><td>Command authorization</td><td>Limited</td><td>Per-command authorization</td></tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Authentication →</span><span>"Who are you?" — verify identity — comes BEFORE authorization</span></div>
+      <div class="er"><span class="ek">Authorization →</span><span>"What can you do?" — permissions AFTER identity verified</span></div>
+      <div class="er"><span class="ek">Accounting →</span><span>"What did you do?" — logging all access and actions — non-repudiation + audit</span></div>
+      <div class="er"><span class="ek">RADIUS →</span><span>UDP 1812/1813 — encrypts password only — VPN and WiFi 802.1X</span></div>
+      <div class="er"><span class="ek">TACACS+ →</span><span>TCP 49 — encrypts all — separates AAA — network device admin — Cisco</span></div>
+      <div class="er"><span class="ek">Order matters →</span><span>Authentication THEN Authorization THEN Accounting — cannot authorize without authenticating</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 4. AUTHENTICATION        -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Authentication — Deep Dive</span><span class="bdg" style="background:#dbeafe;color:#1e40af;border:1px solid #93c5fd">Who Are You? · Factors · Methods</span></div>
+  <div class="card-bd">
+    <p>Authentication answers <strong style="color:var(--tx)">"Who are you?" by verifying claimed identity</strong>. Strong authentication requires multiple independent factors — reducing the probability that a compromised single factor grants access.</p>
+
+    <h3 style="border-left-color:var(--c-conf)">Three Authentication Factors</h3>
+    <div class="g3">
+      <div class="gc" style="border-color:#bfdbfe">
+        <h4 style="color:var(--c-conf)">Something You Know</h4>
+        <p>Knowledge factor. Based on a secret only you know. Easy to use, easy to forget, can be shared or stolen.</p>
+        <ul>
+          <li>Password / passphrase</li>
+          <li>PIN number</li>
+          <li>Security questions</li>
+          <li>Cognitive password (mother's maiden name)</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#bbf7d0">
+        <h4 style="color:var(--c-intg)">Something You Have</h4>
+        <p>Possession factor. Based on a physical object you possess. Harder to steal remotely, but can be lost or physically taken.</p>
+        <ul>
+          <li>TOTP app (Google Authenticator)</li>
+          <li>Hardware token (RSA SecurID)</li>
+          <li>Smart card / PIV card</li>
+          <li>FIDO2 security key (YubiKey)</li>
+          <li>Mobile phone (SMS OTP)</li>
+        </ul>
+      </div>
+      <div class="gc" style="border-color:#fed7aa">
+        <h4 style="color:var(--c-avail)">Something You Are</h4>
+        <p>Inherence factor. Based on a physical characteristic of you — biometrics. Hard to steal remotely but can have false acceptance/rejection issues.</p>
+        <ul>
+          <li>Fingerprint</li>
+          <li>Facial recognition</li>
+          <li>Iris / retinal scan</li>
+          <li>Voice recognition</li>
+          <li>Keystroke dynamics</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--c-conf)">Additional Context Factors</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--c-nrep)">Somewhere You Are</h4>
+        <p>Location factor. Geolocation — IP-based or GPS. "Only allow login from within the US." Conditional access policies check location. Zero Trust uses location as one signal. Not a standalone factor — used to strengthen others.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--c-dec)">Something You Do</h4>
+        <p>Behavioral factor. Behavioral biometrics — typing rhythm, mouse movement, gait analysis. Continuous authentication — verifies throughout session, not just at login. Risk-adaptive auth — unusual behavior triggers re-authentication.</p>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--c-conf)">Multi-Factor Authentication (MFA)</h3>
+    <div class="code">
+<span class="cm"># MFA = two or more DIFFERENT factor TYPES:</span>
+
+Valid MFA:
+  Password (know) + TOTP code (have)         ← <span class="cg">✓ MFA</span>
+  PIN (know) + fingerprint (are)             ← <span class="cg">✓ MFA</span>
+  Smart card (have) + PIN (know)             ← <span class="cg">✓ MFA</span>
+  Password (know) + YubiKey (have)           ← <span class="cg">✓ MFA</span>
+
+NOT valid MFA (same factor type twice):
+  Password + security question               ← <span class="cr">✗ both = "know"</span>
+  Two passwords                              ← <span class="cr">✗ both = "know"</span>
+  Fingerprint + iris scan                    ← <span class="cr">✗ both = "are" (though more secure)</span>
+
+<span class="cm"># MFA strength comparison:</span>
+Weakest:  SMS OTP (SIM swapping attack possible)
+Better:   TOTP app (authenticator) — harder to intercept
+Strong:   FIDO2 / WebAuthn (hardware key or passkey)
+          phishing-resistant — bound to specific site
+Strongest:PIV / Smart card with PIN (government standard)
+
+<span class="cm"># Why MFA matters:</span>
+Microsoft: MFA blocks 99.9% of automated account attacks
+Even if password stolen → attacker still needs second factor
+    </div>
+
+    <h3 style="border-left-color:var(--c-conf)">Authentication Methods</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--c-conf)">Password-Based Auth</h4>
+        <p>Most common but weakest alone. Vulnerabilities: phishing, credential stuffing, brute force, dictionary attacks, password spraying. Best practices (NIST 800-63B): long passphrases &gt;14 chars, no forced rotation, check against breach databases, no complexity theater.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--c-intg)">Certificate-Based Auth</h4>
+        <p>PKI certificates instead of passwords. User presents certificate → server validates against trusted CA. Most secure — no secret transmitted. Used in: government (PIV/CAC cards), enterprise SSO, mutual TLS (mTLS). Provides non-repudiation — private key uniquely identifies person.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--c-nrep)">SSO — Single Sign-On</h4>
+        <p>Authenticate once → access many systems without re-authenticating. Protocols: SAML 2.0 (XML-based, enterprise), OIDC (OAuth 2.0 extension, web/mobile), Kerberos (on-premises AD). SSO reduces password fatigue but creates single point of failure — SSO compromise = all apps compromised.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--c-avail)">Biometric Considerations</h4>
+        <p>FAR (False Acceptance Rate): unauthorized person accepted — security concern. FRR (False Rejection Rate): authorized person rejected — availability concern. CER (Crossover Error Rate): where FAR=FRR — overall accuracy metric. Lower CER = better biometric system. Cannot be changed if compromised (unlike password).</p>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Something you know →</span><span>Knowledge factor — password, PIN, security question</span></div>
+      <div class="er"><span class="ek">Something you have →</span><span>Possession factor — TOTP, smart card, YubiKey, phone</span></div>
+      <div class="er"><span class="ek">Something you are →</span><span>Inherence/biometric factor — fingerprint, facial, iris</span></div>
+      <div class="er"><span class="ek">MFA →</span><span>TWO OR MORE DIFFERENT factor types — password + security question is NOT MFA (both knowledge)</span></div>
+      <div class="er"><span class="ek">FAR →</span><span>False Acceptance Rate — wrong person admitted — security risk</span></div>
+      <div class="er"><span class="ek">FRR →</span><span>False Rejection Rate — right person denied — availability risk</span></div>
+      <div class="er"><span class="ek">FIDO2 →</span><span>Phishing-resistant MFA — hardware security key — bound to specific website</span></div>
+      <div class="er"><span class="ek">SAML →</span><span>SSO protocol — XML-based — enterprise federation — IdP to SP</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 5. AUTHORIZATION         -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Authorization — Deep Dive</span><span class="bdg" style="background:#dcfce7;color:#166534;border:1px solid #86efac">What Can You Do? · Access Models</span></div>
+  <div class="card-bd">
+    <p>After authentication establishes identity, authorization determines <strong style="color:var(--tx)">what that identity is permitted to access and what actions they may perform</strong>. The authorization model defines the rules used to make these decisions.</p>
+
+    <h3 style="border-left-color:var(--c-intg)">Core Authorization Models</h3>
+
+    <div class="feat" style="border-left-color:var(--c-conf);background:#eff6ff">
+      <div class="feat-name" style="color:var(--c-conf)">DAC — Discretionary Access Control</div>
+      <div class="feat-def">"Resource owners decide who can access their resources — access is at the owner's discretion."</div>
+      <div class="feat-body">
+        The resource owner sets permissions — not a central authority. Example: Windows NTFS permissions — the file creator can share with others. Most flexible but least secure — resource owners may set overly permissive access. Data leakage risk: owner might grant access inappropriately. Common in: Windows file systems, most consumer operating systems.
+      </div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.6rem">
+Alice creates a document → Alice is the owner
+Alice gives: Bob (read), Carol (read/write), Dave (full control)
+Alice's discretion → Alice decides → not centrally controlled
+Risk: Alice could accidentally share with everyone
+      </div>
+    </div>
+
+    <div class="feat" style="border-left-color:var(--c-nrep);background:#faf5ff">
+      <div class="feat-name" style="color:var(--c-nrep)">MAC — Mandatory Access Control</div>
+      <div class="feat-def">"Access is based on classification labels assigned by a central authority — neither owner nor user can override."</div>
+      <div class="feat-body">
+        Government/military model. Every subject (user/process) has a clearance level. Every object (file/resource) has a classification label. Access: subject clearance ≥ object classification → access allowed. No-write-down rule (Bell-LaPadula): prevents leaking classified data to lower levels. Most secure but least flexible. No individual can override the policy.
+      </div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.6rem">
+Labels: Top Secret > Secret > Confidential > Unclassified
+Alice has: Secret clearance
+File A has: Confidential label → Alice CAN access
+File B has: Top Secret label → Alice CANNOT access
+Alice cannot: grant access to File A to anyone else
+Central authority: controls ALL access decisions
+      </div>
+    </div>
+
+    <div class="feat" style="border-left-color:var(--c-intg);background:#f0fdf4">
+      <div class="feat-name" style="color:var(--c-intg)">RBAC — Role-Based Access Control</div>
+      <div class="feat-def">"Access is based on a user's role within the organization — users inherit permissions from their assigned role."</div>
+      <div class="feat-body">
+        Most common enterprise model. Assign users to roles → roles have permissions → users inherit permissions. Easy to manage at scale — change a role, affect all role members. Principle of least privilege: each role has only the permissions needed for that job. Examples: "Finance-User" role, "IT-Admin" role, "HR-Manager" role. Role explosion: too many granular roles → management burden.
+      </div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.6rem">
+Roles defined:  Finance-User, IT-Admin, HR-Manager, Developer
+Alice is in:    Finance-User → gets: accounting apps, read-only reports
+Bob is in:      IT-Admin → gets: server access, AD, monitoring
+Carol moves:    HR → Finance → remove HR-Manager, add Finance-User
+                One change → all permissions update instantly
+      </div>
+    </div>
+
+    <div class="feat" style="border-left-color:var(--c-avail);background:#fffbeb">
+      <div class="feat-name" style="color:var(--c-avail)">ABAC — Attribute-Based Access Control</div>
+      <div class="feat-def">"Access decisions based on multiple attributes of the user, resource, and environment — the most flexible and granular model."</div>
+      <div class="feat-body">
+        Combines: who you are (identity attributes), what you're accessing (resource attributes), and context (environmental attributes). "Finance-User in the UK, during business hours, on a managed device, can access EU financial reports." Very granular — can implement complex policies. Foundation of Zero Trust — every request evaluated against multiple attributes. More complex to manage than RBAC.
+      </div>
+      <div class="code" style="font-size:0.63rem;margin-top:0.6rem">
+Policy: "Allow access IF:
+  user.department = Finance     AND
+  user.clearance >= Confidential AND
+  resource.classification <= Confidential AND
+  environment.time = business_hours AND
+  device.compliant = true AND
+  location.country != high_risk"
+
+This single policy replaces dozens of individual RBAC rules
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--c-intg)">Authorization Models Comparison</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Model</th><th>Who Decides?</th><th>Based On</th><th>Flexibility</th><th>Used In</th></tr>
+      <tr><td><span class="tag tc">DAC</span></td><td>Resource owner</td><td>Owner's discretion</td><td>High (least secure)</td><td>Windows NTFS, Linux chmod</td></tr>
+      <tr><td><span class="tag tp">MAC</span></td><td>Central authority</td><td>Classification labels</td><td>Low (most secure)</td><td>Government, military, SELinux</td></tr>
+      <tr><td><span class="tag tg">RBAC</span></td><td>IT/Security admin</td><td>Job role</td><td>Medium</td><td>Enterprise AD, most SaaS apps</td></tr>
+      <tr><td><span class="tag to">ABAC</span></td><td>Policy engine</td><td>Multiple attributes</td><td>Very high</td><td>Zero Trust, cloud IAM, XACML</td></tr>
+    </table>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">DAC →</span><span>Owner controls access — most flexible — least secure — Windows NTFS</span></div>
+      <div class="er"><span class="ek">MAC →</span><span>Central authority — classification labels — government/military — most secure — no override</span></div>
+      <div class="er"><span class="ek">RBAC →</span><span>Job role determines access — most common enterprise — easy to manage at scale</span></div>
+      <div class="er"><span class="ek">ABAC →</span><span>Multiple attributes (user + resource + environment) — most granular — Zero Trust foundation</span></div>
+      <div class="er"><span class="ek">Least privilege →</span><span>Authorization model principle — only the minimum access needed for the role</span></div>
+      <div class="er"><span class="ek">Need-to-know →</span><span>Even with clearance — only access data relevant to your current task — MAC principle</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 6. ACCOUNTING            -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Accounting — Deep Dive</span><span class="bdg" style="background:#fef9c3;color:#713f12;border:1px solid #fde047">What Did You Do? · Logging · Auditing</span></div>
+  <div class="card-bd">
+    <p>Accounting records <strong style="color:var(--tx)">what authenticated, authorized users actually do</strong> — providing an audit trail for forensics, compliance, billing, and non-repudiation. Without accounting, authentication and authorization alone are insufficient.</p>
+
+    <h3 style="border-left-color:var(--c-acc)">What Accounting Captures</h3>
+    <div class="code">
+<span class="cm"># Accounting answers: "What happened? Who did it? When? Where?"</span>
+
+Per session:
+  <span class="cg">Identity</span>:      who authenticated (username + auth method)
+  <span class="cg">Source</span>:        where from (IP address, device, location)
+  <span class="cg">Time</span>:          when session started and ended
+  <span class="cg">Duration</span>:      how long the session lasted
+  <span class="cg">Resources</span>:     what was accessed (files, systems, data)
+  <span class="cg">Actions</span>:       what was done (read, write, delete, exec)
+  <span class="cg">Data volume</span>:   bytes transferred (useful for exfil detection)
+  <span class="cg">Outcome</span>:       success or failure (auth failures are important!)
+
+<span class="cm"># Why accounting matters:</span>
+Forensics:    reconstruct what happened during an incident
+Compliance:   HIPAA/PCI/SOX require specific log retention
+Non-repudiation: "you WERE in that system at that time"
+Billing:      ISPs/cloud charge per usage
+Anomaly det.: unusual patterns → alerts (SIEM)
+Insider threat: mass download before resignation
+    </div>
+
+    <h3 style="border-left-color:var(--c-acc)">Logging Requirements</h3>
+    <div class="g2">
+      <div class="gc" style="border-color:#fde047">
+        <h4 style="color:var(--c-acc)">What to Log</h4>
+        <ul>
+          <li>All authentication events (success AND failure)</li>
+          <li>Privilege use (admin actions, sudo, runas)</li>
+          <li>Object access (file open, read, write, delete)</li>
+          <li>Policy changes (firewall rules, user accounts)</li>
+          <li>Process creation (new executable launched)</li>
+          <li>Network connections (source, dest, port, protocol)</li>
+          <li>System events (boot, shutdown, service start/stop)</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--c-aaa)">Log Integrity Requirements</h4>
+        <ul>
+          <li>Tamper-evident: logs on separate, write-protected system</li>
+          <li>Time sync: NTP — all devices synchronized for correlation</li>
+          <li>Retention: HIPAA (6 yr), PCI (1 yr online + 1 yr archived), SOX (7 yr)</li>
+          <li>Centralized: SIEM collects all — single pane of glass</li>
+          <li>Protected from deletion: WORM storage or SIEM-controlled</li>
+          <li>Reviewed: logs only have value if someone reads them</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--c-acc)">Syslog — Centralized Log Collection</h3>
+    <div class="code">
+<span class="cm"># Syslog: standard protocol for sending log data</span>
+
+Syslog (legacy): UDP 514 — plaintext — no reliability guarantee
+Syslog-TLS:      TCP 6514 — encrypted — reliable delivery
+                 Use this — never plaintext logs over network
+
+Syslog severity levels (0 = most critical):
+  0: Emergency — system unusable
+  1: Alert — immediate action needed
+  2: Critical — critical condition
+  3: Error — error condition
+  4: Warning — warning condition
+  5: Notice — normal but significant
+  6: Informational — informational
+  7: Debug — debug messages (very verbose — usually not sent to SIEM)
+
+<span class="cm"># SIEM — Security Information and Event Management:</span>
+Aggregates logs from: firewall, AD, EDR, servers, cloud
+Normalizes: different formats → single schema
+Correlates: "failed login from 5 IPs = brute force?"
+Alerts: rule-based + behavioral analytics
+Stores: long-term retention for compliance
+      </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Accounting Solves an Insider Theft</div>
+      <div class="code">
+<span class="cm"># Employee suspected of stealing customer data before resignation:</span>
+
+Accounting records show:
+  Monday 17:42: jsmith authenticated to CRM system
+  Monday 17:43-18:15: accessed 45,000 customer records
+  Monday 18:14: exported CSV file "customers_all.csv" (234 MB)
+  Monday 18:17: connected to personal Dropbox (DLP alert triggered)
+  Monday 18:18: uploaded 234 MB to dropbox.com
+  Monday 18:21: deleted "customers_all.csv" from workstation
+  Monday 18:22: session ended
+
+Forensics:
+  SIEM alert: mass data export → DLP → triggered at 18:14
+  DLP log: Dropbox upload blocked? → policy misconfigured → allowed
+  EDR: file deletion logged + deleted file recovered from MFT
+  
+Result: <span class="cg">jsmith cannot deny any action — accounting provides proof</span>
+        <span class="cg">Each action timestamped, logged, correlated in SIEM</span>
+<span class="co">Lesson: accounting is the record of what actually happened</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Accounting →</span><span>Logs what authenticated users do — audit trail — forensics + compliance + non-repudiation</span></div>
+      <div class="er"><span class="ek">Syslog →</span><span>Log forwarding protocol — UDP 514 (legacy) / TCP 6514 with TLS (secure)</span></div>
+      <div class="er"><span class="ek">SIEM →</span><span>Aggregates, correlates, alerts on logs — Splunk, Sentinel, QRadar</span></div>
+      <div class="er"><span class="ek">Log integrity →</span><span>Tamper-evident + time-synced (NTP) + separate system + retained per policy</span></div>
+      <div class="er"><span class="ek">Log retention →</span><span>PCI = 1 yr / HIPAA = 6 yr / SOX = 7 yr — varies by regulation</span></div>
+      <div class="er"><span class="ek">Auth failures →</span><span>Must be logged — pattern of failures = brute force detection</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 7. ZERO TRUST            -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Zero Trust</span><span class="bdg" style="background:#f1f5f9;color:#334155;border:1px solid #cbd5e1">Never Trust · Always Verify · Assume Breach</span></div>
+  <div class="card-bd">
+    <p>Zero Trust is a <strong style="color:var(--tx)">security philosophy and architecture where no user, device, or network location is trusted by default</strong> — every access request must be verified, regardless of whether it originates inside or outside the corporate network.</p>
+
+    <h3 style="border-left-color:var(--c-zt)">The Problem Zero Trust Solves</h3>
+    <div class="code">
+<span class="cm"># Traditional "castle and moat" security model:</span>
+  OUTSIDE network:  untrusted → blocked by firewall
+  INSIDE network:   trusted → free to communicate
+
+Problem: this model fails when:
+  Remote work: employees work from home, coffee shops → "inside" doesn't mean anything
+  Cloud:       apps are in AWS/Azure → no "inside" perimeter to protect
+  Lateral movement: attacker breaches perimeter → inside = trusted → moves freely
+  Supply chain: SolarWinds → vendor is "trusted" → compromised
+
+<span class="cm"># Real impact of flat trusted-inside networks:</span>
+Target 2013: HVAC vendor → inside network → POS systems
+SolarWinds:  trusted vendor update → inside → all systems
+Colonial:    VPN cred stolen → inside → operational systems
+
+<span class="cm"># Zero Trust answer:</span>
+NEVER trust based on network location — inside OR outside
+ALWAYS verify: identity + device + context before every request
+ASSUME breach: act as if attacker is already inside
+    </div>
+
+    <h3 style="border-left-color:var(--c-zt)">Zero Trust Core Principles</h3>
+
+    <div class="zt-pillar">
+      <div class="zt-icon">🔐</div>
+      <div>
+        <div class="zt-title">1. Verify Explicitly</div>
+        <div class="zt-body">Always authenticate and authorize based on ALL available data points: identity, location, device health, service/workload, data classification, anomalies. Strong identity verification — MFA required. Certificate-based device identity. Never assume prior authentication is still valid indefinitely.</div>
+      </div>
+    </div>
+
+    <div class="zt-pillar">
+      <div class="zt-icon">🎯</div>
+      <div>
+        <div class="zt-title">2. Use Least Privilege Access</div>
+        <div class="zt-body">Limit user access with just-in-time (JIT) and just-enough-access (JEA). Risk-based adaptive policies. Protect both data and productivity — not just block everything. ABAC enables granular access decisions. Privileged Access Management (PAM) for admin accounts. No persistent admin access — request, use, revoke.</div>
+      </div>
+    </div>
+
+    <div class="zt-pillar">
+      <div class="zt-icon">💥</div>
+      <div>
+        <div class="zt-title">3. Assume Breach</div>
+        <div class="zt-body">Design as if the attacker is already inside. Minimize blast radius: micro-segmentation, network isolation. Encrypt all internal traffic — not just external. Comprehensive logging and analytics: detect lateral movement. End-to-end encryption even on internal network — east-west traffic encrypted too.</div>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--c-zt)">Zero Trust Architecture Components</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--c-zt)">Policy Engine + Policy Administrator</h4>
+        <p>The "brain" of Zero Trust. Policy engine evaluates every access request against all signals (identity, device, threat intel, behavior). Policy administrator sends the access decision. Grant, deny, or revoke access in real time. Continuously re-evaluates — not just at login time.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--c-conf)">Identity as the Control Plane</h4>
+        <p>In Zero Trust, identity replaces the network perimeter. Who you are (verified identity + MFA) is more important than where you are (network location). Strong identity + device health = access. Weak identity + corporate network = still denied. Azure AD, Okta, Ping are identity providers (IdPs).</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--c-intg)">Device Health / Posture</h4>
+        <p>Is the device allowed to access resources? Check: OS version, patch status, EDR installed and active, disk encryption enabled, compliance with security policies. Unhealthy device = reduced or denied access even if identity is valid. MDM/MAM: enforce device compliance before granting access.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--c-avail)">Micro-Segmentation</h4>
+        <p>Divide network into tiny zones — workload-level isolation. East-west traffic controlled between every workload. Even if attacker reaches one workload, cannot freely reach others. VMware NSX, Illumio, Guardicore. Replace VPN with ZTNA — app-level access not network-level. Zero lateral movement path.</p>
+      </div>
+    </div>
+
+    <h3 style="border-left-color:var(--c-zt)">Zero Trust vs Traditional Perimeter Security</h3>
+    <div class="vs-strip">
+      <div class="vs-side" style="background:#fff7f0">
+        <div class="vs-label" style="color:var(--c-avail)">Traditional Perimeter</div>
+        <div class="vs-title">Castle and Moat</div>
+        <div class="vs-body">
+          • Trust based on network location<br>
+          • Inside = trusted, outside = untrusted<br>
+          • Perimeter firewall as primary control<br>
+          • VPN to "join" the trusted network<br>
+          • Lateral movement possible once inside<br>
+          • Fails for cloud, remote work, BYOD
+        </div>
+      </div>
+      <div class="vs-side" style="background:#f8f8f0">
+        <div class="vs-label" style="color:var(--c-zt)">Zero Trust</div>
+        <div class="vs-title">Never Trust Always Verify</div>
+        <div class="vs-body">
+          • No implicit trust anywhere<br>
+          • Identity + device + context = access decision<br>
+          • Micro-segmentation throughout<br>
+          • ZTNA replaces VPN — app-level access<br>
+          • Assume attacker is already inside<br>
+          • Works for cloud, remote, BYOD, hybrid
+        </div>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Zero Trust principle →</span><span>Never trust, always verify — no implicit trust from network location</span></div>
+      <div class="er"><span class="ek">Assume breach →</span><span>Design as if attacker is already inside — micro-segmentation — encrypt east-west</span></div>
+      <div class="er"><span class="ek">Identity as perimeter →</span><span>Who you are replaces where you are as the access control boundary</span></div>
+      <div class="er"><span class="ek">ZTNA →</span><span>Zero Trust Network Access — replaces VPN — app-level not network-level access</span></div>
+      <div class="er"><span class="ek">Least privilege + JIT →</span><span>Just-in-time access — request, use, revoke — no persistent privilege</span></div>
+      <div class="er"><span class="ek">Micro-segmentation →</span><span>Workload-level isolation — limits lateral movement — east-west control</span></div>
+      <div class="er"><span class="ek">Device posture →</span><span>Device health check — patch status, EDR, encryption — required before access</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 8. DECEPTION & DISRUPTION -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">Deception &amp; Disruption Technology</span><span class="bdg" style="background:#fee2e2;color:#991b1b;border:1px solid #fca5a5">Honeypots · Honeynets · Honeytokens</span></div>
+  <div class="card-bd">
+    <p>Deception technologies <strong style="color:var(--tx)">lure attackers into interacting with fake assets, revealing their presence, tactics, and tools</strong> while disrupting their operations and gathering threat intelligence. Any interaction with a deception resource is itself evidence of malicious intent.</p>
+
+    <h3 style="border-left-color:var(--c-dec)">Core Principle of Deception</h3>
+    <div class="code">
+<span class="cm"># Why deception works:</span>
+
+Legitimate users: NEVER interact with fake/unlisted resources
+  "Why would an employee access a server that's not in their workflow?"
+
+Attackers: interact with everything they find during reconnaissance
+  Attacker scans network → finds "interesting" unlisted server
+  Attacker accesses it → IMMEDIATE alert — no false positives
+
+Zero false positives:
+  No legitimate user should EVER touch a honeypot
+  Any access = attacker activity = high-confidence alert
+  Contrast with IDS: legitimate traffic triggers false alarms
+  Honeypot: if you see traffic → it's malicious
+
+<span class="cm"># Deception answers: "Is there an attacker in my network?"</span>
+Traditional detection: "I see suspicious traffic — is it an attacker?"
+Deception: "Someone touched the honeypot — it IS an attacker"
+    </div>
+
+    <h3 style="border-left-color:var(--c-dec)">Deception Technology Types</h3>
+
+    <div class="dec-row">
+      <div class="dec-icon">🍯</div>
+      <div>
+        <div class="dec-title" style="color:var(--c-dec)">Honeypot</div>
+        <div class="dec-body">A single decoy system intentionally configured to appear as a valuable target — but is not a real production system. Any access to a honeypot is immediately suspicious. Low-interaction honeypot: simulates services (fake SSH, fake HTTP) — safer, easier to deploy. High-interaction honeypot: full real OS — more realistic, captures more attacker behavior — but riskier if attacker uses it as pivot. Purpose: detect intruders, study attack techniques, delay attackers wasting time on fake asset.</div>
+      </div>
+      <div class="dec-tag"><span class="tag tr">Single decoy</span></div>
+    </div>
+
+    <div class="dec-row">
+      <div class="dec-icon">🌐</div>
+      <div>
+        <div class="dec-title" style="color:var(--c-dec)">Honeynet</div>
+        <div class="dec-body">A network of honeypots — multiple fake systems forming a fake network segment. More realistic than a single honeypot — appears to be a full network environment. Captures: network-level attack patterns, lateral movement, attacker tool sets, C2 communications. Used by: security researchers, large enterprises, threat intelligence teams. Requires careful isolation — real risk of attacker using honeynet resources to attack others.</div>
+      </div>
+      <div class="dec-tag"><span class="tag tr">Network of decoys</span></div>
+    </div>
+
+    <div class="dec-row">
+      <div class="dec-icon">🔑</div>
+      <div>
+        <div class="dec-title" style="color:var(--c-dec)">Honeytoken</div>
+        <div class="dec-body">Fake data embedded in real systems — not a fake server, but a fake data item. When an attacker steals and uses a honeytoken, it triggers an alert. Examples: fake AWS API key planted in code repo — when used, immediate alert; fake database record with a unique email address — if that email receives spam, the database was stolen; fake credential in password manager — if used for login, credential theft detected. Can be planted anywhere real data exists.</div>
+      </div>
+      <div class="dec-tag"><span class="tag ty">Fake data item</span></div>
+    </div>
+
+    <div class="dec-row">
+      <div class="dec-icon">🗄️</div>
+      <div>
+        <div class="dec-title" style="color:var(--c-dec)">Honeyfile</div>
+        <div class="dec-body">A decoy file placed in a likely exfiltration path. Named to attract attention: "salaries_2024.xlsx", "passwords.txt", "executive_contracts.pdf". Appears valuable — actually fake. Any access or exfiltration of the honeyfile triggers an alert. Commonly deployed in: file servers with sensitive-sounding directories, SharePoint, S3 buckets. Variant of honeytoken — focused on file systems.</div>
+      </div>
+      <div class="dec-tag"><span class="tag ty">Decoy file</span></div>
+    </div>
+
+    <div class="dec-row">
+      <div class="dec-icon">🌿</div>
+      <div>
+        <div class="dec-title" style="color:var(--c-dec)">Fake Telemetry / DNS Sinkhole</div>
+        <div class="dec-body">DNS Sinkhole: redirect malicious domain lookups to a controlled server instead of the real C2. Malware calls home → DNS returns sinkhole IP → security team's server instead of attacker's. Effect: malware can't communicate with C2, attacker's infected hosts are identified (they're contacting sinkhole). Also used to block known malicious domains for all users. Disrupts attacker C2 infrastructure without malware removal.</div>
+      </div>
+      <div class="dec-tag"><span class="tag tt">Disruption</span></div>
+    </div>
+
+    <div class="dec-row">
+      <div class="dec-icon">🚪</div>
+      <div>
+        <div class="dec-title" style="color:var(--c-dec)">Fake Network Services / Ports</div>
+        <div class="dec-body">Open fake ports that appear as running services — but are actually traps. Port 22 (SSH) responds with a convincing banner but logs all attempts. Any connection attempt = reconnaissance detected. Fake services: fake web server, fake database, fake admin portal. Attacker wastes time on fake services → delayed, detected, profiled. Also known as "tarpits" — slow connections down to waste attacker's time.</div>
+      </div>
+      <div class="dec-tag"><span class="tag tp">Trap services</span></div>
+    </div>
+
+    <h3 style="border-left-color:var(--c-dec)">Deception in the Threat Intelligence Cycle</h3>
+    <div class="code">
+<span class="cm"># What deception technology tells you:</span>
+
+Honeypot interactions reveal:
+  Attack techniques: which exploits are being tried
+  Attacker tools: what scanners, malware, frameworks used
+  Attack timing: when attacks occur (business hours? weekends?)
+  Attacker patience: quick automated scan vs targeted slow attack
+  Internal vs external: internal IP accessing honeypot = insider or lateral
+
+Honeytoken use reveals:
+  Which data was stolen: specific honeytoken tied to specific asset
+  When it was stolen: honeytoken creation date vs first use
+  Where it's being used: IP of honeytoken use → attacker infrastructure
+
+<span class="cm"># Deception delays the attacker:</span>
+Attacker finds 20 servers → 18 are honeypots → wastes hours
+High-interaction honeypot → attacker thinks they have access
+Meanwhile: security team has been alerted → response begins
+<span class="cg">Detection + Delay = time for defenders to respond</span>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Honeytoken Catches Data Theft in the Cloud</div>
+      <div class="code">
+<span class="cm"># S3 bucket misconfiguration exposes customer database:</span>
+
+Security team had planted honeytokens:
+  Fake AWS IAM key in bucket: AKIAIOSFODNN7EXAMPLE
+  This key: has NO real permissions — it's a trap
+  If used: CloudTrail + canary service triggers alert
+
+Tuesday 03:17 AM:
+  Alert fires: fake IAM key AKIAIOSFODNN7EXAMPLE used
+  Source IP: 185.220.xx.xx (Tor exit node)
+  Action: attempted sts:GetCallerIdentity (enumeration)
+  
+Security team response:
+  03:17: alert received
+  03:20: S3 bucket locked, access revoked
+  03:25: forensic investigation started
+  03:30: scope: 2,400 customer records potentially accessed
+  
+Without honeytoken:
+  Theft may not have been detected for months
+  No alert on reading real data from misconfigured bucket
+  
+<span class="cg">Honeytoken provided: near-real-time detection ✓</span>
+<span class="cg">Source IP: identified attacker infrastructure ✓</span>
+<span class="cg">Timing: enabled precise incident scoping ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Honeypot →</span><span>Single decoy system — any access = malicious — no false positives — detect + study attackers</span></div>
+      <div class="er"><span class="ek">Honeynet →</span><span>Network of honeypots — more realistic — captures lateral movement — threat intelligence</span></div>
+      <div class="er"><span class="ek">Honeytoken →</span><span>Fake data item in real systems — fake API key, fake credential — use triggers alert</span></div>
+      <div class="er"><span class="ek">Honeyfile →</span><span>Decoy file named to attract attackers — "salaries.xlsx" — access triggers alert</span></div>
+      <div class="er"><span class="ek">DNS sinkhole →</span><span>Redirect malicious domain to controlled server — identifies infected hosts — disrupts C2</span></div>
+      <div class="er"><span class="ek">Zero false positives →</span><span>Legitimate users NEVER access honeypots — any interaction = confirmed malicious activity</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 9. SUMMARY               -->
+<!-- ════════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Exam Cheat Sheet</span><span class="bdg" style="background:#f3efff;color:#6b21a8;border:1px solid #c8b4f0">Domain 1 · Fundamental Concepts</span></div>
+  <div class="card-bd">
+
+    <h3 style="border-left-color:var(--c-conf)">CIA Triad Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Property</th><th>Means</th><th>Threatened By</th><th>Protected By</th></tr>
+      <tr><td><span class="tag tc">Confidentiality</span></td><td>Only authorized can read</td><td>Eavesdropping, theft, MITM, phishing</td><td>Encryption, MFA, ACL, DLP</td></tr>
+      <tr><td><span class="tag tg">Integrity</span></td><td>Data not tampered</td><td>MITM modification, SQL injection, corruption</td><td>Hashing, digital signatures, FIM</td></tr>
+      <tr><td><span class="tag to">Availability</span></td><td>Accessible when needed</td><td>DDoS, ransomware, hardware failure</td><td>Redundancy, backups, DDoS mitigation</td></tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--c-aaa)">AAA Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Step</th><th>Question</th><th>How</th><th>Protocol</th></tr>
+      <tr><td><span class="tag tc">Authentication</span></td><td>"Who are you?"</td><td>Password, MFA, certificate, biometric</td><td>RADIUS (UDP 1812), TACACS+ (TCP 49)</td></tr>
+      <tr><td><span class="tag tg">Authorization</span></td><td>"What can you do?"</td><td>RBAC, ABAC, MAC, DAC</td><td>RADIUS, policy engine, XACML</td></tr>
+      <tr><td><span class="tag ty">Accounting</span></td><td>"What did you do?"</td><td>Audit logs, SIEM, Syslog</td><td>RADIUS accounting, Syslog (UDP 514 / TCP 6514)</td></tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--c-intg)">Authorization Models Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Model</th><th>Who Controls Access</th><th>Based On</th><th>Security Level</th></tr>
+      <tr><td><span class="tag tc">DAC</span></td><td>Resource owner</td><td>Owner's discretion</td><td>Low (most flexible)</td></tr>
+      <tr><td><span class="tag tp">MAC</span></td><td>Central authority</td><td>Classification labels (Top Secret/Secret)</td><td>High (most secure, least flexible)</td></tr>
+      <tr><td><span class="tag tg">RBAC</span></td><td>IT/Security admin</td><td>Job role/function</td><td>Medium (most common enterprise)</td></tr>
+      <tr><td><span class="tag to">ABAC</span></td><td>Policy engine</td><td>Multiple attributes (user+resource+env)</td><td>Very granular (Zero Trust foundation)</td></tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--c-dec)">Deception Technologies Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Technology</th><th>What It Is</th><th>Detects</th><th>Key Point</th></tr>
+      <tr><td><span class="tag tr">Honeypot</span></td><td>Single decoy system</td><td>Attackers accessing fake server</td><td>No legitimate user should touch it</td></tr>
+      <tr><td><span class="tag tr">Honeynet</span></td><td>Network of decoy systems</td><td>Lateral movement, attack chains</td><td>More realistic — threat intelligence</td></tr>
+      <tr><td><span class="tag ty">Honeytoken</span></td><td>Fake data item (key, credential)</td><td>Data theft and credential use</td><td>Fake AWS key use = alert</td></tr>
+      <tr><td><span class="tag ty">Honeyfile</span></td><td>Decoy file in file system</td><td>File access and exfiltration</td><td>"salaries.xlsx" that triggers alert</td></tr>
+      <tr><td><span class="tag tt">DNS Sinkhole</span></td><td>Redirect malicious domains</td><td>Malware C2 communications</td><td>Identifies infected hosts + disrupts C2</td></tr>
+    </table>
+    </div>
+
+    <h3 style="border-left-color:var(--c-nrep)">Master Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Data only accessible to authorized users"</span><span>→ Confidentiality — protect with encryption + access control</span></div>
+      <div class="er"><span class="ek">"Data hasn't been altered without authorization"</span><span>→ Integrity — protect with hashing, digital signatures, FIM</span></div>
+      <div class="er"><span class="ek">"Legitimate users can access the system when needed"</span><span>→ Availability — protect with redundancy, backups, DDoS mitigation</span></div>
+      <div class="er"><span class="ek">"Ransomware attack — which CIA property primarily affected?"</span><span>→ Availability (can't access files) AND Integrity (files modified)</span></div>
+      <div class="er"><span class="ek">"Attacker steals customer data — which CIA property?"</span><span>→ Confidentiality — unauthorized party read the data</span></div>
+      <div class="er"><span class="ek">"DDoS takes the website offline — which CIA property?"</span><span>→ Availability — legitimate users denied access</span></div>
+      <div class="er"><span class="ek">"Attacker modifies financial records in transit — which CIA?"</span><span>→ Integrity — data altered without authorization</span></div>
+      <div class="er"><span class="ek">"Party cannot deny having sent a document"</span><span>→ Non-repudiation — digital signature provides proof</span></div>
+      <div class="er"><span class="ek">"What provides non-repudiation for email?"</span><span>→ Digital signature — private key used to sign = only that person could have</span></div>
+      <div class="er"><span class="ek">"Shared admin account problem"</span><span>→ Destroys non-repudiation — "admin" could be anyone — use named accounts</span></div>
+      <div class="er"><span class="ek">"Verify who you are"</span><span>→ Authentication — first step of AAA</span></div>
+      <div class="er"><span class="ek">"Determine what you can access"</span><span>→ Authorization — second step of AAA — comes AFTER authentication</span></div>
+      <div class="er"><span class="ek">"Record what actions were performed"</span><span>→ Accounting — third step of AAA — audit trail</span></div>
+      <div class="er"><span class="ek">"AAA protocol for VPN and WiFi — UDP"</span><span>→ RADIUS (UDP 1812/1813) — encrypts password only</span></div>
+      <div class="er"><span class="ek">"AAA protocol for network devices — TCP — encrypts all"</span><span>→ TACACS+ (TCP 49) — Cisco — separates AAA functions</span></div>
+      <div class="er"><span class="ek">"Password + security question — is this MFA?"</span><span>→ NO — both are "something you know" — same factor type</span></div>
+      <div class="er"><span class="ek">"Password + TOTP code — is this MFA?"</span><span>→ YES — know + have — two different factor types</span></div>
+      <div class="er"><span class="ek">"Strongest phishing-resistant MFA"</span><span>→ FIDO2 / WebAuthn / hardware security key — bound to specific site</span></div>
+      <div class="er"><span class="ek">"False Acceptance Rate — security concern"</span><span>→ FAR — wrong person admitted — biometrics — lower is better</span></div>
+      <div class="er"><span class="ek">"False Rejection Rate — usability concern"</span><span>→ FRR — right person denied — availability impact — lower is better</span></div>
+      <div class="er"><span class="ek">"Owner decides who accesses their files"</span><span>→ DAC — Discretionary Access Control — Windows NTFS</span></div>
+      <div class="er"><span class="ek">"Classification labels — Top Secret, Secret, Confidential"</span><span>→ MAC — Mandatory Access Control — government/military</span></div>
+      <div class="er"><span class="ek">"Job role determines permissions — most common enterprise"</span><span>→ RBAC — Role-Based Access Control</span></div>
+      <div class="er"><span class="ek">"Access based on user, resource, AND environmental attributes"</span><span>→ ABAC — Attribute-Based Access Control — Zero Trust foundation</span></div>
+      <div class="er"><span class="ek">"Trust based on network location is a security problem"</span><span>→ Zero Trust addresses this — never trust, always verify</span></div>
+      <div class="er"><span class="ek">"Never trust, always verify — design as if breach occurred"</span><span>→ Zero Trust architecture</span></div>
+      <div class="er"><span class="ek">"Replace VPN with app-level access"</span><span>→ ZTNA — Zero Trust Network Access</span></div>
+      <div class="er"><span class="ek">"Workload-level network isolation"</span><span>→ Micro-segmentation — Zero Trust component</span></div>
+      <div class="er"><span class="ek">"Decoy system — any access = confirmed attacker"</span><span>→ Honeypot — no legitimate user should access it</span></div>
+      <div class="er"><span class="ek">"Network of decoy systems for threat intelligence"</span><span>→ Honeynet</span></div>
+      <div class="er"><span class="ek">"Fake AWS API key planted in code repository"</span><span>→ Honeytoken — use triggers alert and identifies attacker</span></div>
+      <div class="er"><span class="ek">"File named 'salaries.xlsx' that alerts if accessed"</span><span>→ Honeyfile — variant of honeytoken for file systems</span></div>
+      <div class="er"><span class="ek">"Malware calls home but connects to security team server"</span><span>→ DNS Sinkhole — redirects malicious domains — disrupts C2</span></div>
+      <div class="er"><span class="ek">"Log forwarding protocol — UDP 514 vs TCP 6514"</span><span>→ Syslog — UDP 514 (plain/legacy) / TCP 6514 (with TLS, use this)</span></div>
+      <div class="er"><span class="ek">"Aggregates, correlates, and alerts on logs from all sources"</span><span>→ SIEM — Security Information and Event Management</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

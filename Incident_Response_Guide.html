@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incident Response — Security+ Domain 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg:#060810;
+  --s1:#0c0e18;
+  --s2:#131525;
+  --s3:#1a1d30;
+  --border:#252840;
+  --text:#dce0f8;
+  --muted:#6870a8;
+  --blue:#4d9eff;
+  --green:#3ddc97;
+  --red:#ff5252;
+  --orange:#ff9f40;
+  --purple:#c67fff;
+  --teal:#26d4c8;
+  --yellow:#ffd560;
+  --pink:#ff6eb4;
+  --indigo:#818cff;
+  --cyan:#44e3ff;
+  --lime:#b8e840;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  line-height:1.65;
+  padding:2rem 1.5rem;
+}
+
+/* HEADER */
+.hdr{text-align:center;margin-bottom:2.5rem;position:relative;}
+.hdr::before{
+  content:'';
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(255,82,82,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hdr-eye{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.62rem;
+  letter-spacing:0.25em;
+  color:var(--muted);
+  text-transform:uppercase;
+  margin-bottom:0.6rem;
+}
+.hdr-title{
+  font-family:'Unbounded',sans-serif;
+  font-size:2.4rem;
+  font-weight:900;
+  line-height:1;
+  margin-bottom:0.4rem;
+  letter-spacing:-0.02em;
+}
+.hdr-title .r{color:var(--red);}
+.hdr-title .w{color:var(--text);}
+.hdr-sub{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.65rem;
+  color:var(--muted);
+  letter-spacing:0.04em;
+}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;margin-bottom:2rem;}
+.tab{
+  padding:0.4rem 0.85rem;
+  border-radius:6px;
+  border:1px solid var(--border);
+  background:var(--s1);
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.63rem;
+  font-weight:500;
+  transition:all 0.14s;
+  letter-spacing:0.02em;
+}
+.tab:hover{border-color:var(--red);color:var(--red);}
+.tab.active{background:var(--red);color:#fff;border-color:var(--red);}
+
+/* SECTIONS */
+.sec{display:none;}
+.sec.on{display:block;animation:up 0.2s ease;}
+@keyframes up{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+
+/* CARD */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:12px;margin-bottom:1.5rem;overflow:hidden;}
+.card-hd{display:flex;align-items:center;gap:0.8rem;padding:1rem 1.4rem;border-bottom:1px solid var(--border);}
+.card-num{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:4px;padding:0.12rem 0.38rem;}
+.card-title{font-family:'Unbounded',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:-0.02em;}
+.bdg{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:0.58rem;padding:0.16rem 0.55rem;border-radius:999px;white-space:nowrap;font-weight:500;}
+.bdg-blue{background:#0d243d;color:var(--blue);border:1px solid #1a3d6b;}
+.bdg-green{background:#0a2418;color:var(--green);border:1px solid #143828;}
+.bdg-orange{background:#291600;color:var(--orange);border:1px solid #422200;}
+.bdg-red{background:#240808;color:var(--red);border:1px solid #3d1010;}
+.bdg-purple{background:#1a0830;color:var(--purple);border:1px solid #2d1050;}
+.bdg-teal{background:#062220;color:var(--teal);border:1px solid #0e3835;}
+.bdg-indigo{background:#101840;color:var(--indigo);border:1px solid #1a2870;}
+.bdg-yellow{background:#221900;color:var(--yellow);border:1px solid #382800;}
+.bdg-cyan{background:#061828;color:var(--cyan);border:1px solid #0e3048;}
+.bdg-lime{background:#152000;color:var(--lime);border:1px solid #243300;}
+
+.card-bd{padding:1.4rem;}
+p{color:var(--muted);font-size:0.85rem;margin-bottom:0.8rem;line-height:1.7;}
+h3{
+  font-family:'Unbounded',sans-serif;
+  font-size:0.82rem;
+  font-weight:700;
+  color:var(--text);
+  margin:1.3rem 0 0.6rem;
+  padding-left:0.7rem;
+  border-left:3px solid var(--red);
+  letter-spacing:-0.01em;
+}
+
+/* CODE */
+.code{
+  background:#030408;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:1rem 1.2rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.68rem;
+  line-height:1.9;
+  color:var(--text);
+  overflow-x:auto;
+  margin:0.8rem 0;
+}
+.cg{color:var(--green);} .cr{color:var(--red);} .cb{color:var(--blue);}
+.co{color:var(--orange);} .cp{color:var(--purple);} .cm{color:var(--muted);}
+.ct{color:var(--teal);} .ci{color:var(--indigo);} .cy{color:var(--yellow);}
+.cl{color:var(--lime);} .cpk{color:var(--pink);} .cc{color:var(--cyan);}
+
+/* SCENE */
+.scene{background:#160c00;border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.scene-lbl{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--orange);margin-bottom:0.4rem;letter-spacing:0.1em;font-weight:600;text-transform:uppercase;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:0.8rem 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.8rem 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0;}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.gc{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:1rem;}
+.gc h4{font-family:'Unbounded',sans-serif;font-size:0.78rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+.gc p{font-size:0.77rem;margin:0;}
+.gc ul{padding-left:1rem;margin-top:0.3rem;}
+.gc ul li{font-size:0.75rem;color:var(--muted);margin-bottom:0.25rem;}
+
+/* EXAM */
+.exam{background:#100c28;border:1px solid #2d1a5a;border-radius:8px;padding:1rem 1.2rem;margin-top:1rem;}
+.exam h4{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--purple);margin-bottom:0.6rem;letter-spacing:0.1em;font-weight:600;text-transform:uppercase;}
+.er{display:flex;gap:0.5rem;margin-bottom:0.38rem;font-size:0.79rem;align-items:flex-start;}
+.ek{color:var(--purple);font-family:'JetBrains Mono',monospace;font-size:0.65rem;flex-shrink:0;font-weight:600;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+th{background:var(--s2);padding:0.52rem 0.8rem;text-align:left;color:var(--muted);border-bottom:1px solid var(--border);font-size:0.65rem;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;text-transform:uppercase;}
+td{padding:0.52rem 0.8rem;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--s2);}
+
+.tag{display:inline-block;padding:0.08rem 0.42rem;border-radius:4px;font-size:0.6rem;font-family:'JetBrains Mono',monospace;font-weight:600;}
+.tg{background:#0a2418;color:var(--green);}
+.tr{background:#240808;color:var(--red);}
+.tb{background:#0d243d;color:var(--blue);}
+.to{background:#291600;color:var(--orange);}
+.tp{background:#1a0830;color:var(--purple);}
+.tt{background:#062220;color:var(--teal);}
+.ti{background:#101840;color:var(--indigo);}
+.ty{background:#221900;color:var(--yellow);}
+.tl{background:#152000;color:var(--lime);}
+.tc{background:#061828;color:var(--cyan);}
+
+/* INFO ROW */
+.info-row{display:flex;align-items:flex-start;gap:0.8rem;padding:0.8rem 1rem;background:var(--s2);border:1px solid var(--border);border-radius:8px;margin-bottom:0.5rem;}
+.info-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.1rem;}
+.info-title{font-family:'Unbounded',sans-serif;font-size:0.8rem;font-weight:700;margin-bottom:0.15rem;letter-spacing:-0.01em;}
+.info-desc{font-size:0.75rem;color:var(--muted);}
+
+/* PHASES */
+.phase-wrap{display:flex;flex-wrap:wrap;gap:0.5rem;margin:1rem 0;}
+.phase{
+  flex:1;min-width:130px;
+  border-radius:8px;
+  padding:1rem 0.8rem;
+  text-align:center;
+  border:1px solid;
+  position:relative;
+}
+.phase-num{
+  font-family:'Unbounded',sans-serif;
+  font-size:1.6rem;
+  font-weight:900;
+  opacity:0.15;
+  position:absolute;
+  top:0.3rem;right:0.6rem;
+  line-height:1;
+}
+.phase-title{font-family:'Unbounded',sans-serif;font-size:0.75rem;font-weight:700;margin-bottom:0.3rem;letter-spacing:-0.01em;}
+.phase-desc{font-size:0.7rem;color:var(--muted);line-height:1.4;}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:1.8rem;margin:1rem 0;}
+.tl::before{content:'';position:absolute;left:0.5rem;top:0;bottom:0;width:2px;background:var(--border);}
+.tl-item{position:relative;margin-bottom:1.2rem;}
+.tl-dot{position:absolute;left:-1.4rem;top:0.3rem;width:10px;height:10px;border-radius:50%;border:2px solid;background:var(--bg);}
+.tl-title{font-family:'Unbounded',sans-serif;font-size:0.78rem;font-weight:700;margin-bottom:0.2rem;letter-spacing:-0.01em;}
+.tl-desc{font-size:0.77rem;color:var(--muted);}
+
+/* FORENSICS CARDS */
+.for-card{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:1.1rem;margin-bottom:0.6rem;}
+.for-hd{display:flex;align-items:center;gap:0.7rem;margin-bottom:0.5rem;}
+.for-icon{font-size:1.2rem;}
+.for-name{font-family:'Unbounded',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:-0.01em;}
+.for-type{font-family:'JetBrains Mono',monospace;font-size:0.58rem;color:var(--muted);background:var(--s3);padding:0.12rem 0.4rem;border-radius:4px;margin-left:auto;}
+
+/* CHAIN OF CUSTODY */
+.coc-row{display:flex;align-items:center;gap:0.8rem;padding:0.55rem 0.9rem;background:var(--s2);border:1px solid var(--border);border-radius:6px;margin-bottom:0.35rem;}
+.coc-num{font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:700;color:var(--red);min-width:25px;}
+.coc-action{font-size:0.8rem;font-weight:600;min-width:160px;}
+.coc-detail{font-size:0.74rem;color:var(--muted);}
+
+/* THREAT HUNT */
+.hunt-card{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:1rem;margin-bottom:0.6rem;border-left:3px solid;}
+
+/* FLOW */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;margin:1rem 0;}
+.flow-box{border-radius:6px;padding:0.5rem 0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.65rem;font-weight:600;border:1px solid;text-align:center;min-width:80px;}
+.flow-arr{color:var(--muted);font-size:0.9rem;}
+
+/* RCA METHODS */
+.rca-card{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:1.1rem;margin-bottom:0.7rem;}
+.rca-title{font-family:'Unbounded',sans-serif;font-size:0.82rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-eye">CompTIA Security+ SY0-701 — Domain 4 / Security Operations</div>
+  <div class="hdr-title">
+    <span class="r">Incident</span><br>
+    <span class="w">Response</span>
+  </div>
+  <div class="hdr-sub">// Process · Training · Testing · Root Cause · Threat Hunting · Digital Forensics</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="go('s1',this)">1. IR Process</button>
+  <button class="tab" onclick="go('s2',this)">2. Phases Deep Dive</button>
+  <button class="tab" onclick="go('s3',this)">3. Training & Testing</button>
+  <button class="tab" onclick="go('s4',this)">4. Root Cause Analysis</button>
+  <button class="tab" onclick="go('s5',this)">5. Threat Hunting</button>
+  <button class="tab" onclick="go('s6',this)">6. Digital Forensics</button>
+  <button class="tab" onclick="go('s7',this)">7. Evidence & Chain</button>
+  <button class="tab" onclick="go('s8',this)">8. Communication</button>
+  <button class="tab" onclick="go('s9',this)">📊 Summary</button>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 1. IR PROCESS           -->
+<!-- ═══════════════════════ -->
+<div class="sec on" id="s1">
+<div class="card">
+  <div class="card-hd"><span class="card-num">01</span><span class="card-title">Incident Response Process</span><span class="bdg bdg-red">NIST · PICERL · Lifecycle</span></div>
+  <div class="card-bd">
+    <p>Incident response is the <strong style="color:var(--text)">organized approach to handling security breaches or cyberattacks</strong>. Without a documented process, responses are chaotic, slow, and inconsistent. A well-rehearsed IR plan limits damage, reduces recovery time, and preserves evidence for legal action.</p>
+
+    <h3>What Is a Security Incident?</h3>
+    <div class="code">
+<span class="cm"># Event vs Incident — key distinction:</span>
+
+EVENT:    Any observable occurrence in a system
+          "User logged in" — "File was accessed" — "Scan detected"
+          Millions per day — most are normal
+
+INCIDENT: Event that actually or potentially VIOLATES security policy
+          "Unauthorized access" — "Malware detected" — "Data breach"
+          Requires formal response
+
+<span class="cm"># Security incident examples:</span>
+<span class="cr">✗</span> Ransomware encrypting files
+<span class="cr">✗</span> Unauthorized access to customer database
+<span class="cr">✗</span> Phishing attack resulting in credential theft
+<span class="cr">✗</span> Insider threat exfiltrating IP
+<span class="cr">✗</span> DDoS attack against public-facing service
+<span class="cr">✗</span> Business email compromise (BEC)
+<span class="cr">✗</span> Supply chain compromise
+
+<span class="cm"># Precursor vs Indicator:</span>
+Precursor:  sign that incident MAY occur in future
+            (port scan = reconnaissance phase)
+Indicator:  sign that incident IS occurring or HAS occurred
+            (antivirus alert = active malware)
+    </div>
+
+    <h3>NIST SP 800-61 — The Four-Phase Model</h3>
+    <div class="phase-wrap">
+      <div class="phase" style="background:#0d1520;border-color:#1a3d6b">
+        <span class="phase-num" style="color:var(--blue)">1</span>
+        <div class="phase-title" style="color:var(--blue)">Preparation</div>
+        <div class="phase-desc">Build the team, write the plan, get the tools, run the drills. Before any incident.</div>
+      </div>
+      <div class="phase" style="background:#1a1000;border-color:#422200">
+        <span class="phase-num" style="color:var(--orange)">2</span>
+        <div class="phase-title" style="color:var(--orange)">Detection &amp; Analysis</div>
+        <div class="phase-desc">Identify that incident is occurring. Determine scope, severity, and nature.</div>
+      </div>
+      <div class="phase" style="background:#1a0808;border-color:#3d1010">
+        <span class="phase-num" style="color:var(--red)">3</span>
+        <div class="phase-title" style="color:var(--red)">Containment, Eradication &amp; Recovery</div>
+        <div class="phase-desc">Stop the bleeding, remove the threat, restore services.</div>
+      </div>
+      <div class="phase" style="background:#0a1a10;border-color:#143828">
+        <span class="phase-num" style="color:var(--green)">4</span>
+        <div class="phase-title" style="color:var(--green)">Post-Incident Activity</div>
+        <div class="phase-desc">Lessons learned, prevent recurrence, update defenses.</div>
+      </div>
+    </div>
+
+    <h3>PICERL — The Six-Phase Mnemonic</h3>
+    <p style="margin-bottom:0.5rem">Many security professionals use PICERL — a more detailed breakdown of the incident lifecycle:</p>
+    <div style="overflow-x:auto">
+    <table>
+      <tr><th>Phase</th><th>Full Name</th><th>Key Activities</th><th>Done When</th></tr>
+      <tr>
+        <td><span class="tag tb">P</span></td>
+        <td><strong>Preparation</strong></td>
+        <td>Write IRP, build CIRT, get tools, train staff, establish comms plan</td>
+        <td>Ongoing — before incidents</td>
+      </tr>
+      <tr>
+        <td><span class="tag to">I</span></td>
+        <td><strong>Identification</strong></td>
+        <td>Detect incident, verify it's real, categorize and prioritize, scope</td>
+        <td>Incident suspected</td>
+      </tr>
+      <tr>
+        <td><span class="tag tr">C</span></td>
+        <td><strong>Containment</strong></td>
+        <td>Stop spread — isolate systems, block IOCs, disable accounts</td>
+        <td>Incident confirmed</td>
+      </tr>
+      <tr>
+        <td><span class="tag tp">E</span></td>
+        <td><strong>Eradication</strong></td>
+        <td>Remove malware, close vulnerabilities, audit all systems</td>
+        <td>Threat contained</td>
+      </tr>
+      <tr>
+        <td><span class="tag tg">R</span></td>
+        <td><strong>Recovery</strong></td>
+        <td>Restore systems, verify clean, monitor closely, return to normal ops</td>
+        <td>Threat eradicated</td>
+      </tr>
+      <tr>
+        <td><span class="tag ti">L</span></td>
+        <td><strong>Lessons Learned</strong></td>
+        <td>Post-incident review, RCA, update plan, improve defenses</td>
+        <td>After recovery</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3>Incident Response Plan (IRP) — What It Contains</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Roles and Responsibilities</h4>
+        <p>Who is on the CIRT (Computer Incident Response Team)? Incident Commander, technical leads, legal, PR, executive sponsor. Who makes decisions? Who has authority to isolate production systems? Who approves regulatory notifications?</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">Communication Plan</h4>
+        <p>Who gets notified at what severity level? Internal chain: SOC → CISO → CTO → CEO → Board. External: customers, regulators, law enforcement, cyber insurance. Out-of-band communications if email is compromised — use phone/Signal.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Incident Classification</h4>
+        <p>Severity levels P1-P4 with definitions. P1: active ransomware, ongoing breach. P4: phishing email blocked. Each level: different response team, different escalation, different SLA for containment.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Playbooks per Scenario</h4>
+        <p>Specific procedures for: ransomware, phishing, data breach, insider threat, DDoS, supply chain attack. Step-by-step actions — no need to improvise under pressure. Pre-approved response actions.</p>
+      </div>
+    </div>
+
+    <h3>Incident Severity Classification</h3>
+    <div class="code">
+<span class="cr">P1 — CRITICAL (immediate response, 24/7):</span>
+  Active ransomware spreading
+  Confirmed data breach in progress
+  Full system compromise (Domain Admin)
+  Life-safety systems compromised
+  Response SLA: <span class="cr">15 minutes</span>
+
+<span class="co">P2 — HIGH (urgent, business hours + on-call):</span>
+  Malware detected and contained
+  Suspected insider threat
+  DDoS impacting services
+  Business email compromise
+  Response SLA: <span class="co">1 hour</span>
+
+<span class="cy">P3 — MEDIUM (business hours):</span>
+  Phishing email opened (no payload executed)
+  Suspicious but unconfirmed activity
+  Policy violation
+  Response SLA: <span class="cy">4 hours</span>
+
+<span class="cb">P4 — LOW (best effort):</span>
+  Phishing email blocked (never reached user)
+  Automated blocked threat (no execution)
+  Routine security event requiring review
+  Response SLA: <span class="cb">next business day</span>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Ransomware Hits Friday 5PM</div>
+      <div class="code">
+<span class="cm"># Without an IRP — chaos:</span>
+17:02 — EDR alert fires
+17:04 — Analyst: "is this real? who do I call?"
+17:15 — Finally reaches someone
+17:20 — "should we isolate? will it break production?"
+17:45 — Decision made — already spread to 40 servers
+18:00 — Who notifies the CEO? Customers? Nobody knows
+18:30 — "Where are the backups?" nobody knows
+Total: <span class="cr">1.5 hours of paralysis — spread everywhere</span>
+
+<span class="cg"># With IRP — coordinated response:</span>
+17:02 — EDR alert → SOAR triggers playbook
+17:02 — Incident Commander: paged immediately
+17:03 — Playbook: isolate affected hosts (automated)
+17:04 — CIRT bridge call: auto-started (phone tree)
+17:05 — Scope assessment: 3 hosts affected (isolated)
+17:06 — Backup integrity verified: OK
+17:08 — Legal and CISO notified (per IRP)
+17:15 — Recovery plan: initiated
+18:30 — Systems restored from backup
+Total: <span class="cg">1.5 hours to recovery vs 1.5 hours of chaos</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Event vs Incident →</span><span>Event = any occurrence / Incident = violates security policy — requires response</span></div>
+      <div class="er"><span class="ek">NIST 4 phases →</span><span>Preparation → Detection/Analysis → Containment/Eradication/Recovery → Post-Incident</span></div>
+      <div class="er"><span class="ek">PICERL →</span><span>Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned</span></div>
+      <div class="er"><span class="ek">IRP →</span><span>Incident Response Plan — roles, comms, classification, playbooks — exists before incidents</span></div>
+      <div class="er"><span class="ek">Precursor →</span><span>Sign incident MAY happen — port scan, phishing probe</span></div>
+      <div class="er"><span class="ek">Indicator →</span><span>Sign incident IS or HAS occurred — AV alert, failed login spike</span></div>
+      <div class="er"><span class="ek">CIRT →</span><span>Computer Incident Response Team — the people who execute the IRP</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 2. PHASES DEEP DIVE    -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s2">
+<div class="card">
+  <div class="card-hd"><span class="card-num">02</span><span class="card-title">IR Phases — Deep Dive</span><span class="bdg bdg-orange">Contain · Eradicate · Recover</span></div>
+  <div class="card-bd">
+    <p>Each phase of incident response has <strong style="color:var(--text)">specific actions, decisions, and considerations</strong>. Understanding what happens in each phase — and in what order — is critical for the exam and for real-world IR execution.</p>
+
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--blue);border-color:var(--blue)"></div>
+        <div class="tl-title" style="color:var(--blue)">Phase 1 — Preparation (Before the Incident)</div>
+        <div class="tl-desc">Everything you do before the fire starts. This is where investment matters most — reactive spending during an incident costs 3-5x more than proactive preparation.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+Key preparation activities:
+  Write and maintain Incident Response Plan (IRP)
+  Establish Computer Incident Response Team (CIRT)
+  Deploy detection tools: SIEM, EDR, IDS
+  Set up communication channels (out-of-band!)
+  Establish relationships with: law enforcement, legal, PR
+  Obtain cyber insurance — know coverage and contacts
+  Pre-approve IR retainer with external IR firm
+  Secure and test backups (3-2-1 rule)
+  Run tabletop exercises and simulations
+  Establish forensics toolkit — hardware write blockers,
+    forensics software, clean media
+  Arrange out-of-band comms: Signal, phone bridge
+  Create evidence collection procedures
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--orange);border-color:var(--orange)"></div>
+        <div class="tl-title" style="color:var(--orange)">Phase 2 — Detection and Analysis</div>
+        <div class="tl-desc">Determine that an incident is occurring and understand its nature. This phase is the most cognitively demanding — you're piecing together a picture under time pressure.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+Detection sources:
+  SIEM alerts, EDR detections, IDS/IPS alerts
+  User reports ("my files have .locked extension!")
+  Helpdesk calls ("I can't log in")
+  Business partner notification
+  Third-party security researcher
+  Dark web monitoring (your data for sale)
+
+Analysis questions — what you need to determine:
+  WHAT type of incident? (ransomware vs APT vs insider)
+  WHO is affected? (users, systems, data)
+  WHERE did it start? (patient zero)
+  HOW did attacker get in? (initial access vector)
+  WHEN did it start? (may be weeks ago — dwell time)
+  HOW FAR has it spread? (lateral movement scope)
+  WHAT data was accessed/stolen/encrypted?
+
+Scope vs impact assessment:
+  Scope:  how many systems/users/data affected
+  Impact: business damage — financial, operational, reputational
+  Both drive: severity level and response resources
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--red);border-color:var(--red)"></div>
+        <div class="tl-title" style="color:var(--red)">Phase 3a — Containment</div>
+        <div class="tl-desc">Stop the bleeding. Prevent the incident from spreading further. Containment must happen BEFORE eradication — trying to clean while attacker is still active is pointless.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+Short-term containment (immediate — minutes to hours):
+  Isolate affected systems from network
+  Block malicious IPs/domains at firewall + DNS
+  Disable compromised user accounts
+  Preserve evidence BEFORE making changes
+  Capture volatile data: RAM, running processes, netstat
+
+Long-term containment (hours to days):
+  Rebuild affected systems from clean images
+  Apply emergency patches (virtual patching)
+  Change all potentially compromised credentials
+  Implement additional monitoring on remaining systems
+  Isolate attacker while investigation continues
+
+<span class="cr">Critical: PRESERVE EVIDENCE during containment</span>
+  Before isolating: capture memory dump
+  Before reimaging: forensic disk image
+  Before changing passwords: document current state
+  <span class="cr">Evidence destroyed during containment = case lost</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--purple);border-color:var(--purple)"></div>
+        <div class="tl-title" style="color:var(--purple)">Phase 3b — Eradication</div>
+        <div class="tl-desc">Remove the threat completely from the environment. Eradication without complete understanding of scope risks missing persistence mechanisms.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+Eradication activities:
+  Identify ALL compromised systems (not just obvious ones)
+  Remove malware from every affected system
+  Delete attacker accounts and SSH keys
+  Close initial access vulnerability (patch or config fix)
+  Remove all persistence mechanisms:
+    Scheduled tasks, registry run keys
+    New admin accounts, backdoors
+    Web shells on servers
+    Modified legitimate files
+  Rebuild systems that can't be fully cleaned
+  Verify: scan all systems — confirm malware absent
+  Update security controls to detect this attack in future
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--green);border-color:var(--green)"></div>
+        <div class="tl-title" style="color:var(--green)">Phase 3c — Recovery</div>
+        <div class="tl-desc">Restore systems to normal operation — carefully. Recovery is not just "turn it back on" — it requires validation that systems are truly clean before returning to production.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+Recovery sequence:
+  Restore from CLEAN backups (verify backup integrity first!)
+  Apply all security patches before bringing online
+  Reset ALL credentials (not just compromised ones)
+  Test thoroughly in isolated environment before production
+  Phased return: low-criticality systems first
+  Intensive monitoring: watch for recurrence
+  Validation testing: confirm no persistence remains
+
+Recovery criteria — when is it safe?
+  All malware removed (confirmed by clean scans)
+  Vulnerability patched (confirmed by rescan)
+  All credentials rotated
+  Monitoring shows no suspicious activity for 24-48 hours
+  Management authorized return to production
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--teal);border-color:var(--teal)"></div>
+        <div class="tl-title" style="color:var(--teal)">Phase 4 — Post-Incident Activity (Lessons Learned)</div>
+        <div class="tl-desc">The most valuable — and most skipped — phase. Organizations that skip lessons learned repeat incidents. This phase turns painful experience into lasting improvement.</div>
+        <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+Post-incident review meeting (within 2 weeks):
+  Who attends: CIRT + affected business owners + management
+  Duration: 2-4 hours (for significant incidents)
+  
+  Questions asked:
+  What happened? (timeline reconstruction)
+  How did attacker get in? (initial access vector)
+  How long undetected? (dwell time — was it weeks?)
+  What went well? (keep doing these things)
+  What didn't go well? (what needs to improve)
+  What would have stopped this? (controls to add)
+  What would have detected this faster?
+  
+  Outputs:
+  Written lessons learned report
+  Updated IRP and playbooks
+  Action items with owners and deadlines
+  New security controls to implement
+  Training gaps identified
+        </div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Containment Order Matters</div>
+      <div class="code">
+<span class="cm"># Why you must preserve evidence BEFORE containment:</span>
+
+<span class="cr">Wrong order (seen in real incidents):</span>
+  Malware detected on server
+  IT: "let me just reimage this server quickly"
+  Server reimaged → malware gone → evidence gone
+  Forensic investigator arrives:
+    Cannot determine: how attacker got in
+    Cannot determine: what data was accessed
+    Cannot determine: if other systems compromised
+    Cannot determine: was it ransomware or APT?
+  Result: <span class="cr">no root cause, no legal case, same attack next week</span>
+
+<span class="cg">Correct order:</span>
+  Malware detected on server
+  Step 1: capture memory dump → evidence preserved
+  Step 2: forensic disk image → full evidence preserved
+  Step 3: isolate from network → stop spread
+  Step 4: investigate → determine scope and vector
+  Step 5: eradicate from all systems
+  Step 6: recover from clean backups
+  Result: <span class="cg">root cause found, vulnerability fixed, legal case intact ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Containment before eradication →</span><span>Stop spread first — then remove — don't clean while attacker is still active</span></div>
+      <div class="er"><span class="ek">Preserve evidence →</span><span>Capture memory dump and disk image BEFORE isolating or reimaging</span></div>
+      <div class="er"><span class="ek">Short-term containment →</span><span>Immediate isolation and blocking — minutes to hours</span></div>
+      <div class="er"><span class="ek">Long-term containment →</span><span>Rebuild, patch, credential rotation — hours to days</span></div>
+      <div class="er"><span class="ek">Recovery criteria →</span><span>Clean scans + patch confirmed + credentials rotated + clean monitoring period</span></div>
+      <div class="er"><span class="ek">Lessons learned →</span><span>Most skipped phase — turns incident into improvement — within 2 weeks</span></div>
+      <div class="er"><span class="ek">Dwell time →</span><span>How long attacker was in before detection — often weeks or months</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 3. TRAINING & TESTING  -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s3">
+<div class="card">
+  <div class="card-hd"><span class="card-num">03</span><span class="card-title">IR Training and Testing</span><span class="bdg bdg-yellow">Tabletop · Simulation · Red Team</span></div>
+  <div class="card-bd">
+    <p>An untested IR plan is just a document. <strong style="color:var(--text)">Training and testing validate that the plan works</strong>, people know their roles, and gaps are found before a real incident exposes them. The more realistic the test, the more valuable the outcome.</p>
+
+    <h3>Training Types</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">Security Awareness Training</h4>
+        <p>All employees — not just security team. Phishing recognition, incident reporting procedures, what to do if laptop is stolen. Empowers employees as the first line of detection. "If you see something, say something."</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--green)">CIRT Technical Training</h4>
+        <p>Hands-on skills for IR team members. Forensics tools, malware analysis, log analysis. Platform-specific response (Windows, Linux, cloud). Regular practice on realistic environments (ranges).</p>
+      </div>
+    </div>
+
+    <h3>Testing Types — From Least to Most Realistic</h3>
+
+    <div class="for-card">
+      <div class="for-hd">
+        <span class="for-icon">💬</span>
+        <span class="for-name" style="color:var(--blue)">Tabletop Exercise</span>
+        <span class="for-type">Discussion only — zero risk</span>
+      </div>
+      <p style="font-size:0.8rem;margin-bottom:0.6rem">Team sits in a conference room. Facilitator presents a scenario ("It's Monday morning — you've just found out you have ransomware on 50 servers"). Team talks through their response. No systems touched. Finds: gaps in plan, communication issues, decision-making uncertainties. Cheapest and most accessible test.</p>
+      <div class="code" style="font-size:0.64rem">
+What gets tested: knowledge, decision-making, communication
+What gets found: "Who has authority to take production down?"
+                 "We don't have the CISO's personal phone number"
+                 "Our IRP doesn't cover cloud environments"
+Time: 2-4 hours | Cost: $ | Risk: None | Frequency: Quarterly
+      </div>
+    </div>
+
+    <div class="for-card">
+      <div class="for-hd">
+        <span class="for-icon">🎭</span>
+        <span class="for-name" style="color:var(--green)">Simulation Exercise</span>
+        <span class="for-type">Partial system involvement</span>
+      </div>
+      <p style="font-size:0.8rem;margin-bottom:0.6rem">Inject realistic but fake alerts into actual security tools. Team responds as if real — follows procedures, makes containment decisions, escalates. Tests: actual procedures, tools, communication. Systems touched but no real threat introduced. More realistic than tabletop.</p>
+      <div class="code" style="font-size:0.64rem">
+What gets tested: actual procedures, tools usage, escalation
+What gets found: "Our SOAR playbook doesn't fire correctly"
+                 "We can't isolate hosts via EDR API — wrong config"
+                 "Response SLA: 4 hours — actual time: 8 hours"
+Time: Half-day | Cost: $$ | Risk: Low | Frequency: Semi-annual
+      </div>
+    </div>
+
+    <div class="for-card">
+      <div class="for-hd">
+        <span class="for-icon">🔴</span>
+        <span class="for-name" style="color:var(--orange)">Red Team Exercise</span>
+        <span class="for-type">Real attack by authorized team</span>
+      </div>
+      <p style="font-size:var(--text);margin-bottom:0.6rem">Authorized attackers (red team) attempt to compromise the environment using real techniques. Blue team (defenders) responds without knowing when/how attacks come. Tests: detection capabilities, response speed, tool effectiveness. Most realistic — closest to real incident.</p>
+      <div class="code" style="font-size:0.64rem">
+What gets tested: real detection + response capability
+What gets found: "Red team had domain admin for 3 weeks — undetected"
+                 "Our EDR was bypassed with AMSI bypass technique"
+                 "Log retention was too short — couldn't reconstruct"
+Time: Weeks | Cost: $$$$ | Risk: Med | Frequency: Annual
+      </div>
+    </div>
+
+    <div class="for-card">
+      <div class="for-hd">
+        <span class="for-icon">🟣</span>
+        <span class="for-name" style="color:var(--purple)">Purple Team Exercise</span>
+        <span class="for-type">Collaborative red + blue</span>
+      </div>
+      <p style="font-size:0.8rem;margin-bottom:0.6rem">Red and blue teams work TOGETHER — red team executes techniques, blue team watches and learns to detect them in real time. Highly efficient learning. Every attack technique demonstrated → blue team creates detection rule. Best for rapidly improving detection capabilities.</p>
+      <div class="code" style="font-size:0.64rem">
+Purple team session example:
+  Red: executes Pass-the-Hash technique
+  Blue: "we can't see it — what does it look like in logs?"
+  Red: shows the log artifacts → Blue: creates SIEM rule
+  Test rule: Red executes again → Blue: "we see it now!"
+  
+Repeat for 20 techniques in one day
+Result: <span class="cg">20 new detection rules — immediate improvement ✓</span>
+      </div>
+    </div>
+
+    <div class="for-card">
+      <div class="for-hd">
+        <span class="for-icon">⚠️</span>
+        <span class="for-name" style="color:var(--red)">Full Interruption Test (DR component)</span>
+        <span class="for-type">Highest realism — highest risk</span>
+      </div>
+      <p style="font-size:0.8rem;margin-bottom:0.6rem">Actually invoke DR procedures — take production systems offline and recover from backup. Tests end-to-end recovery. Highest realism. Highest risk. Usually done once per year during a planned maintenance window with management approval.</p>
+    </div>
+
+    <h3>Cyber Range Training</h3>
+    <div class="info-row">
+      <div class="info-icon">🎯</div>
+      <div>
+        <div class="info-title">What Is a Cyber Range?</div>
+        <div class="info-desc">An isolated virtual environment that replicates real infrastructure — including vulnerable systems, monitoring tools, and realistic traffic. Security teams practice attack and defense skills without risk to production. Can simulate: ransomware outbreaks, APT campaigns, insider threats. Examples: SANS NetWars, Cyber Polygon, vendor-provided ranges, internal lab environments.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Tabletop Finds Critical Gap</div>
+      <div class="code">
+<span class="cm"># Hospital tabletop exercise — ransomware scenario:</span>
+
+Facilitator: "It's Tuesday 10am. Your EHR system just displayed
+  a ransom note. All patient records encrypted. Radiology,
+  pharmacy, OR scheduling — all down. What do you do?"
+
+<span class="co">Gap discovered #1:</span>
+  Team: "Who has authority to pay or refuse the ransom?"
+  Response: silence — nobody knows
+  IRP: <span class="cr">doesn't address ransom decisions</span>
+  Fix: add decision tree to IRP — pre-approved decision matrix
+
+<span class="co">Gap discovered #2:</span>
+  Team: "How do we contact staff if email is down?"
+  Response: "We email them?"
+  IRP: <span class="cr">primary comms = email (compromised!)</span>
+  Fix: establish Signal group, printed emergency phone tree
+
+<span class="co">Gap discovered #3:</span>
+  Team: "Do we notify patients? When? How?"
+  Response: "HIPAA says we have 60 days..."
+  Legal counsel: "For PHI breach — potentially 60 days"
+  IRP: <span class="cr">no HIPAA breach notification procedure</span>
+  Fix: add breach notification procedure with legal
+
+<span class="cg">Three critical gaps found in a 3-hour tabletop</span>
+<span class="cg">Cost to find: $500 in staff time</span>
+<span class="cg">Cost if found during real incident: $500,000+</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Tabletop →</span><span>Discussion only — zero systems — cheapest — finds plan gaps</span></div>
+      <div class="er"><span class="ek">Simulation →</span><span>Fake alerts in real tools — tests procedures — no real threat</span></div>
+      <div class="er"><span class="ek">Red team →</span><span>Authorized attackers — real techniques — tests detection and response</span></div>
+      <div class="er"><span class="ek">Purple team →</span><span>Red + Blue together — teaches blue to detect what red does — collaborative</span></div>
+      <div class="er"><span class="ek">Cyber range →</span><span>Isolated virtual environment for realistic security practice</span></div>
+      <div class="er"><span class="ek">Training frequency →</span><span>Tabletop quarterly, simulation semi-annual, red team annual</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 4. ROOT CAUSE ANALYSIS -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s4">
+<div class="card">
+  <div class="card-hd"><span class="card-num">04</span><span class="card-title">Root Cause Analysis</span><span class="bdg bdg-teal">5 Whys · Fishbone · Timeline</span></div>
+  <div class="card-bd">
+    <p>Root cause analysis (RCA) answers <strong style="color:var(--text)">"why did this incident happen?"</strong> not just "what happened?" Without finding the true root cause, organizations patch symptoms and experience the same incident repeatedly. RCA is the bridge between incident response and lasting improvement.</p>
+
+    <h3>Why RCA Matters</h3>
+    <div class="code">
+<span class="cm"># Surface cause vs root cause — the difference matters:</span>
+
+Incident: Ransomware encrypted 200 servers
+
+<span class="cr">Surface cause (symptom):</span>
+  "Phishing email delivered ransomware"
+  Fix: block that email sender
+  Result: <span class="cr">same attack via different email next month</span>
+
+<span class="co">Intermediate cause:</span>
+  "Employee clicked link in phishing email"
+  Fix: send employee for phishing training
+  Result: <span class="co">better, but still exposed</span>
+
+<span class="cg">Root causes (multiple):</span>
+  1. Email gateway didn't catch it (misconfigured rules)
+  2. No sandbox for attachment analysis
+  3. Employee had admin rights unnecessarily
+  4. EDR not deployed on affected servers
+  5. No MFA on admin accounts — allowed lateral movement
+  6. Backup monitoring not alerting on backup failures
+  
+  Fix: address ALL six root causes
+  Result: <span class="cg">ransomware can't replicate this attack pattern ✓</span>
+    </div>
+
+    <h3>RCA Methods</h3>
+
+    <div class="rca-card">
+      <div class="rca-title" style="color:var(--teal)">Method 1 — The "5 Whys" Technique</div>
+      <p style="font-size:0.8rem">Keep asking "why?" until you reach the fundamental root cause. Simple but powerful. Works for well-defined single-cause incidents.</p>
+      <div class="code" style="font-size:0.64rem">
+Incident: Attacker accessed customer database
+
+Why 1: Why could attacker access the database?
+  Because they had valid admin credentials
+
+Why 2: Why did they have valid admin credentials?
+  Because they compromised the DBA's account
+
+Why 3: Why was the DBA's account compromised?
+  Because DBA reused a password leaked in a breach
+
+Why 4: Why was password reuse not caught?
+  Because no password manager policy enforced
+
+Why 5: Why was there no password manager policy?
+  <span class="cg">Because security policy hasn't been updated in 3 years</span>
+  ← ROOT CAUSE: Outdated security policy + no enforcement
+
+Fix: Update security policy + mandate password manager +
+     enforce with technical controls (Azure AD password protection)
+      </div>
+    </div>
+
+    <div class="rca-card">
+      <div class="rca-title" style="color:var(--blue)">Method 2 — Timeline Reconstruction</div>
+      <p style="font-size:0.8rem">Build a precise chronological timeline of all events. Reveals: how long attacker was present, what they did, which detection opportunities were missed, where controls failed.</p>
+      <div class="code" style="font-size:0.64rem">
+Timeline reconstruction from logs:
+
+<span class="cm">DAY -47 (6 weeks before detection):</span>
+  09:14 — Phishing email received (Email GW: <span class="cr">ALLOWED</span>)
+  09:17 — Employee clicked link (Proxy log: recorded)
+  09:18 — Malware downloaded (EDR: <span class="cr">NOT deployed on this host</span>)
+  09:19 — Initial C2 connection established
+
+<span class="cm">DAY -35:</span>
+  14:22 — Lateral movement: PsExec to file server
+  14:25 — Credential harvest: Mimikatz executed (SIEM: <span class="cr">no alert</span>)
+
+<span class="cm">DAY -14:</span>
+  02:11 — Domain Admin credentials obtained
+  02:15 — 200 servers enumerated
+
+<span class="cm">DAY 0 (discovery):</span>
+  07:45 — Ransomware deployed to all 200 servers
+  07:47 — EDR (on workstations): <span class="cg">finally detected</span>
+
+Dwell time: <span class="cr">47 days undetected</span>
+RCA: EDR gap + SIEM rule gap + email gateway gap
+      </div>
+    </div>
+
+    <div class="rca-card">
+      <div class="rca-title" style="color:var(--orange)">Method 3 — Fishbone (Ishikawa) Diagram</div>
+      <p style="font-size:0.8rem">Visual cause-and-effect analysis. The "head" is the problem. "Bones" represent cause categories. Good for complex incidents with multiple contributing factors across different domains.</p>
+      <div class="code" style="font-size:0.64rem">
+              PEOPLE          PROCESS         TECHNOLOGY
+                │                │                 │
+  No security ─┤   No patch ─────┤  EDR gap ───────┤
+  awareness    │   process       │                 │
+               │                 │  No MFA ────────┤
+  Shared admin─┤   No change ────┤                 │
+  passwords    │   management    │  Flat network───┤
+               │                 │                 │
+               └─────────────────┴─────────────────┘
+                              │
+                    RANSOMWARE INCIDENT
+      </div>
+    </div>
+
+    <h3>RCA Report — What It Contains</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--green)">Report Contents</h4>
+        <ul>
+          <li>Executive summary (1 page — no jargon)</li>
+          <li>Full incident timeline</li>
+          <li>Technical details of attack chain</li>
+          <li>Root cause(s) identified</li>
+          <li>Contributing factors</li>
+          <li>Detection failures and gaps</li>
+          <li>Response analysis (what worked/didn't)</li>
+          <li>Remediation actions — specific, owned, dated</li>
+          <li>Recommendations to prevent recurrence</li>
+        </ul>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Common RCA Findings</h4>
+        <ul>
+          <li>Missing security controls (EDR not deployed)</li>
+          <li>Misconfigured controls (email gateway rules)</li>
+          <li>Unpatched vulnerabilities (known CVE exploited)</li>
+          <li>Excessive privileges (least privilege not applied)</li>
+          <li>Missing MFA on critical accounts</li>
+          <li>Inadequate logging (couldn't reconstruct timeline)</li>
+          <li>Outdated/untested backups</li>
+          <li>Lack of network segmentation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">RCA →</span><span>Find WHY incident happened — not just what — prevent recurrence</span></div>
+      <div class="er"><span class="ek">5 Whys →</span><span>Keep asking why — works for single-cause incidents — simple and effective</span></div>
+      <div class="er"><span class="ek">Timeline reconstruction →</span><span>Build precise log-based chronology — reveals dwell time and missed detections</span></div>
+      <div class="er"><span class="ek">Fishbone diagram →</span><span>Visual cause-effect — multiple cause categories — complex incidents</span></div>
+      <div class="er"><span class="ek">Dwell time →</span><span>How long attacker present before detection — average 207 days industry stat</span></div>
+      <div class="er"><span class="ek">Surface vs root cause →</span><span>Don't just patch symptom — find and fix what enabled the attack</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 5. THREAT HUNTING      -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s5">
+<div class="card">
+  <div class="card-hd"><span class="card-num">05</span><span class="card-title">Threat Hunting</span><span class="bdg bdg-purple">Proactive · Hypothesis · IOC</span></div>
+  <div class="card-bd">
+    <p>Threat hunting is <strong style="color:var(--text)">proactive — humans actively searching for threats that have evaded automated detection</strong>. It's the antidote to long dwell times. Rather than waiting for alerts, hunters assume attackers are already inside and go looking for them.</p>
+
+    <h3>Reactive vs Proactive Security</h3>
+    <div class="code">
+<span class="cm"># Reactive security (alert-driven):</span>
+  Wait for SIEM/EDR to alert
+  Investigate the alert
+  Respond to confirmed threat
+  Problem: alerts only fire for KNOWN attack patterns
+           Advanced attackers evade detection intentionally
+           Average dwell time: <span class="cr">207 days before alert fires</span>
+
+<span class="cg"># Proactive threat hunting:</span>
+  Assume: "Attacker is already inside — where are they?"
+  Form hypothesis: "What would living-off-the-land look like?"
+  Hunt: search data for evidence of that technique
+  Find: threats that evaded all automated tools
+  Result: <span class="cg">attacker found in hours/days vs months</span>
+
+Key principle: "Assume breach" mentality
+    </div>
+
+    <h3>Threat Hunting Process</h3>
+
+    <div class="hunt-card" style="border-color:var(--blue)">
+      <div style="font-family:'Unbounded',sans-serif;font-size:0.78rem;font-weight:700;color:var(--blue);margin-bottom:0.4rem;">Step 1 — Form a Hypothesis</div>
+      <p style="font-size:0.78rem;margin:0">Based on: threat intelligence (new TTPs reported), industry alerts (CISA advisories), gut feeling from experienced hunters, previous incident patterns. "I think an attacker might be using [specific technique]. Let me look for evidence of it."</p>
+      <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+Hypothesis examples:
+  "An attacker is using WMI for lateral movement"
+  "Malware is using DNS tunneling for C2"
+  "Credentials are being harvested via LSASS dumping"
+  "An insider is staging data for exfiltration"
+  "An APT is using living-off-the-land techniques"
+      </div>
+    </div>
+
+    <div class="hunt-card" style="border-color:var(--orange)">
+      <div style="font-family:'Unbounded',sans-serif;font-size:0.78rem;font-weight:700;color:var(--orange);margin-bottom:0.4rem;">Step 2 — Collect and Analyze Data</div>
+      <p style="font-size:0.78rem;margin:0">Query SIEM, EDR, and network data for evidence related to hypothesis. Look for: anomalies from baseline, patterns matching the hypothesized technique, artifacts in logs.</p>
+      <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+<span class="cm"># Hunting for WMI-based lateral movement:</span>
+Splunk query:
+  index=endpoint source_type=win:edr
+  process_name="wmiprvse.exe"
+  | where parent_process_name NOT IN ("svchost.exe","services.exe")
+  | stats count by host, user, cmdline
+
+<span class="cm"># Results: wmiprvse.exe spawned by powershell.exe</span>
+<span class="cm"># on 3 servers — suspicious! investigate further</span>
+      </div>
+    </div>
+
+    <div class="hunt-card" style="border-color:var(--green)">
+      <div style="font-family:'Unbounded',sans-serif;font-size:0.78rem;font-weight:700;color:var(--green);margin-bottom:0.4rem;">Step 3 — Investigate Leads</div>
+      <p style="font-size:0.78rem;margin:0">Dig into anomalies found. Correlate with other data sources. Timeline the activity. Determine if benign or malicious. Context matters — same technique can be admin or attacker.</p>
+    </div>
+
+    <div class="hunt-card" style="border-color:var(--purple)">
+      <div style="font-family:'Unbounded',sans-serif;font-size:0.78rem;font-weight:700;color:var(--purple);margin-bottom:0.4rem;">Step 4 — Act on Findings</div>
+      <p style="font-size:0.78rem;margin:0">If threat confirmed: initiate incident response. Either way: document findings, create detection rules based on the hunt, share IOCs with threat intel platform. Every hunt improves future detection capabilities.</p>
+      <div class="code" style="font-size:0.64rem;margin-top:0.5rem">
+Hunt outcome 1 — Threat found:
+  Attacker discovered using WMI lateral movement
+  IR triggered: <span class="cr">active incident</span>
+  Attacker found BEFORE ransomware deployed ✓
+
+Hunt outcome 2 — No threat found:
+  No evidence of WMI lateral movement
+  Document: baseline established
+  Create: detection rule for future
+  Result: <span class="cg">improved detection coverage ✓</span>
+      </div>
+    </div>
+
+    <h3>IOCs vs TTPs — What Hunters Use</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--blue)">IOCs — Indicators of Compromise</h4>
+        <p>Specific artifacts of known attacks. Easy to detect but easy for attackers to change. Short shelf life — attackers rotate IPs, domains, hashes constantly.</p>
+        <ul>
+          <li>IP addresses of C2 servers</li>
+          <li>Malware file hashes (MD5/SHA256)</li>
+          <li>Malicious domain names</li>
+          <li>Registry keys created by malware</li>
+          <li>File paths of dropped malware</li>
+          <li>Specific strings in network traffic</li>
+        </ul>
+        <p style="margin-top:0.4rem;font-size:0.72rem;color:var(--muted)">IOC hunting = looking for yesterday's attack</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">TTPs — Tactics, Techniques, Procedures</h4>
+        <p>HOW attackers behave — harder to change than IOCs. Even if attacker changes tools, TTPs remain consistent. MITRE ATT&CK framework catalogs TTPs. TTP hunting finds advanced attackers who rotate IOCs.</p>
+        <ul>
+          <li>Spearphishing with Office macro (T1566)</li>
+          <li>LSASS credential dumping (T1003)</li>
+          <li>Living-off-the-land binaries (T1218)</li>
+          <li>Kerberoasting (T1558.003)</li>
+          <li>Scheduled task persistence (T1053)</li>
+          <li>C2 over DNS (T1071.004)</li>
+        </ul>
+        <p style="margin-top:0.4rem;font-size:0.72rem;color:var(--muted)">TTP hunting = finding today's attack regardless of tools</p>
+      </div>
+    </div>
+
+    <h3>MITRE ATT&CK Framework</h3>
+    <div class="code">
+<span class="cm"># MITRE ATT&CK — organized catalog of attacker TTPs</span>
+
+14 Tactics (high-level goals):
+  Initial Access → Execution → Persistence →
+  Privilege Escalation → Defense Evasion →
+  Credential Access → Discovery → Lateral Movement →
+  Collection → C2 → Exfiltration → Impact
+
+Each Tactic has Techniques:
+  Credential Access:
+    T1003 — OS Credential Dumping
+      T1003.001 — LSASS Memory
+      T1003.002 — SAM
+      T1003.004 — LSA Secrets
+
+<span class="cm"># Threat hunters use ATT&CK to:</span>
+1. Identify which techniques to hunt for
+2. Map existing detections to ATT&CK → find gaps
+3. After incident: map attack chain to techniques
+4. Prioritize detection development
+5. Communicate with other defenders ("T1059.001")
+
+Example hunt hypothesis from ATT&CK:
+  "Hunt for T1003.001 — LSASS dumping"
+  Known artifacts:
+    procdump.exe targeting lsass.exe
+    Mimikatz process or strings
+    comsvcs.dll MiniDump
+    Task Manager creating lsass.dmp
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Threat Hunt Finds APT</div>
+      <div class="code">
+<span class="cm"># Threat hunter hypothesis: "Is any process beaconing to C2?"</span>
+<span class="cm"># Beaconing = regular connection intervals = malware C2</span>
+
+Hunter queries NetFlow data:
+  Find: outbound connections with regular intervals
+  
+Results after analysis:
+  Host: 10.1.4.22 (WORKSTATION-47)
+  Destination: 185.220.101.89
+  Pattern: connection every 5 minutes ±30 seconds
+  Started: <span class="cr">43 days ago</span>
+  
+This looks like beaconing! Investigate further:
+  VirusTotal: 185.220.101.89 → <span class="cr">known APT C2</span>
+  EDR: process making connections = svchost.exe
+       BUT: running from C:\Users\user\AppData (unusual path)
+  Memory: injected shellcode in svchost
+
+<span class="cr">APT discovered — 43-day dwell time</span>
+<span class="cr">Never triggered any automated alert</span>
+
+Response:
+  IR initiated immediately
+  Forensic image captured
+  Host isolated
+  Full scope investigation: <span class="co">12 other hosts also infected</span>
+  All cleaned before attacker achieved their final objective
+
+<span class="cg">Threat hunt: found what 43 days of automated detection missed ✓</span>
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Threat hunting →</span><span>Proactive — assume breach — search for threats that evaded automated detection</span></div>
+      <div class="er"><span class="ek">Hypothesis-driven →</span><span>Form hypothesis → collect data → investigate → act — structured process</span></div>
+      <div class="er"><span class="ek">IOCs →</span><span>Specific artifacts — IP, hash, domain — easy to detect but easy to change</span></div>
+      <div class="er"><span class="ek">TTPs →</span><span>Behavioral patterns — harder to change — MITRE ATT&CK catalogs them</span></div>
+      <div class="er"><span class="ek">MITRE ATT&CK →</span><span>Framework of attacker tactics and techniques — used for hunting and detection</span></div>
+      <div class="er"><span class="ek">Beaconing →</span><span>Regular connection intervals = C2 malware calling home — detectable by pattern</span></div>
+      <div class="er"><span class="ek">Hunting vs monitoring →</span><span>Monitoring = wait for alerts / Hunting = actively search regardless of alerts</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 6. DIGITAL FORENSICS   -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s6">
+<div class="card">
+  <div class="card-hd"><span class="card-num">06</span><span class="card-title">Digital Forensics</span><span class="bdg bdg-cyan">Acquire · Preserve · Analyze</span></div>
+  <div class="card-bd">
+    <p>Digital forensics is the <strong style="color:var(--text)">science of collecting, preserving, and analyzing digital evidence</strong> in a way that maintains its integrity for legal proceedings. Done incorrectly, evidence is inadmissible in court and legally worthless.</p>
+
+    <h3>Forensics Fundamentals</h3>
+    <div class="code">
+<span class="cm"># Core forensics principles:</span>
+
+<span class="cb">1. Preserve first, analyze second:</span>
+   Create forensic copy (image) BEFORE anything else
+   Analyze the COPY — never the original
+   Original evidence: untouched, chain of custody maintained
+
+<span class="cb">2. Maintain chain of custody:</span>
+   Document: who had evidence, when, what they did
+   Gaps in chain = evidence inadmissible
+   Form signed at every transfer
+
+<span class="cb">3. Document everything:</span>
+   Hash before and after — prove nothing changed
+   Photograph the scene before touching anything
+   Notes: time, date, location, conditions, who present
+
+<span class="cb">4. Order of volatility:</span>
+   Collect most volatile evidence FIRST
+   Most volatile → least volatile:
+     CPU registers, cache → RAM → swap/page file →
+     Running processes → network connections →
+     File system → magnetic media → optical media
+
+<span class="cb">5. Don't contaminate:</span>
+   Use write blockers — prevent any writes to original media
+   Clean media for storage — verified empty
+   Forensic workstation — no internet, clean OS
+    </div>
+
+    <h3>Order of Volatility — Critical for Exam</h3>
+    <div class="code">
+<span class="cm"># Collect in this order — most volatile first:</span>
+
+<span class="cr">1. CPU registers and cache</span>       (lost when process ends)
+<span class="cr">2. RAM / system memory</span>           (lost when power off)
+<span class="co">3. Swap file / page file</span>          (may be overwritten)
+<span class="co">4. Running processes</span>              (end when system reboots)
+<span class="co">5. Network connections</span>            (close when system reboots)
+<span class="co">6. Network routing tables, ARP</span>   (lost on reboot)
+<span class="cy">7. File system / disk</span>             (persists — but files can be deleted)
+<span class="cb">8. Removable media</span>               (persists — unless destroyed)
+<span class="cb">9. Remote logging / SIEM</span>         (most persistent — log retention policy)
+<span class="cb">10. Printed records</span>              (physical — most permanent)
+
+<span class="cm"># Why order matters:</span>
+If you reboot first: lose RAM, processes, connections
+If you image disk first: RAM already changing — process using memory
+<span class="cg">Collect RAM → then network state → then disk image</span>
+    </div>
+
+    <h3>Types of Forensic Evidence</h3>
+
+    <div class="for-card">
+      <div class="for-hd">
+        <span class="for-icon">💾</span>
+        <span class="for-name" style="color:var(--blue)">Disk Forensics</span>
+        <span class="for-type">Most Common</span>
+      </div>
+      <p style="font-size:0.78rem;margin-bottom:0.5rem">Forensic image of entire disk (bit-for-bit copy). Includes deleted files, slack space, unallocated clusters. Tools: FTK Imager, dd (Linux), Autopsy. Analyze: file system artifacts, browser history, registry, event logs, deleted files, file metadata (timestamps).</p>
+      <div class="code" style="font-size:0.64rem">
+<span class="cm"># Create forensic image with write blocker:</span>
+Write blocker → evidence drive → forensic workstation
+FTK Imager: File → Create Disk Image
+  Source: physical drive (via write blocker)
+  Destination: forensic image (.E01 format)
+  Hash: SHA-256 calculated during acquisition
+  
+Result: exact copy — SHA-256 hash documented
+Original: untouched — goes into evidence bag
+Analysis: performed on copy only
+      </div>
+    </div>
+
+    <div class="for-card">
+      <div class="for-hd">
+        <span class="for-icon">🧠</span>
+        <span class="for-name" style="color:var(--orange)">Memory Forensics</span>
+        <span class="for-type">Catches Fileless Malware</span>
+      </div>
+      <p style="font-size:0.78rem;margin-bottom:0.5rem">Analyze RAM contents. Finds: running processes, network connections, encryption keys, fileless malware, injected code, decrypted data that was encrypted on disk. Tool: Volatility (open source, most widely used). Must capture BEFORE powering off.</p>
+      <div class="code" style="font-size:0.64rem">
+<span class="cm"># Volatility memory analysis commands:</span>
+vol.py -f memory.dmp imageinfo           <span class="cm"># identify OS</span>
+vol.py -f memory.dmp pslist              <span class="cm"># running processes</span>
+vol.py -f memory.dmp netscan             <span class="cm"># network connections</span>
+vol.py -f memory.dmp cmdline             <span class="cm"># process command lines</span>
+vol.py -f memory.dmp malfind             <span class="cm"># injected code</span>
+vol.py -f memory.dmp dumpfiles -r evil   <span class="cm"># extract files</span>
+
+<span class="cm"># Memory finds what disk analysis misses:</span>
+Fileless malware: <span class="cg">visible in RAM ✓</span>
+Encryption keys: <span class="cg">decrypted in RAM ✓</span>
+Packed malware: <span class="cg">unpacked in RAM ✓</span>
+      </div>
+    </div>
+
+    <div class="for-card">
+      <div class="for-hd">
+        <span class="for-icon">📡</span>
+        <span class="for-name" style="color:var(--green)">Network Forensics</span>
+        <span class="for-type">Traffic Analysis</span>
+      </div>
+      <p style="font-size:0.78rem;margin-bottom:0.5rem">Analyze captured network traffic (PCAP). Reconstruct: what data was exfiltrated, C2 communications, lateral movement, initial access method. Tools: Wireshark, NetworkMiner, tcpdump, Zeek/Bro.</p>
+      <div class="code" style="font-size:0.64rem">
+<span class="cm"># Wireshark filters for incident investigation:</span>
+ip.addr == 185.220.101.34    <span class="cm"># filter C2 IP</span>
+http.request.method == "POST" <span class="cm"># data being sent out</span>
+dns.qry.name contains "evil" <span class="cm"># suspicious DNS</span>
+tcp.flags.syn == 1           <span class="cm"># new connections</span>
+frame.len > 1000 and tcp.dstport == 53  <span class="cm"># DNS tunneling?</span>
+      </div>
+    </div>
+
+    <div class="for-card">
+      <div class="for-hd">
+        <span class="for-icon">📱</span>
+        <span class="for-name" style="color:var(--purple)">Mobile Device Forensics</span>
+        <span class="for-type">iOS / Android</span>
+      </div>
+      <p style="font-size:0.78rem;margin-bottom:0.5rem">Specialized area — mobile devices have different acquisition methods. Logical extraction (like backup), filesystem extraction, physical extraction. Challenges: encryption, MDM management, biometric locks. Tools: Cellebrite, Oxygen Forensics.</p>
+    </div>
+
+    <div class="for-card">
+      <div class="for-hd">
+        <span class="for-icon">☁️</span>
+        <span class="for-name" style="color:var(--teal)">Cloud Forensics</span>
+        <span class="for-type">Emerging Area</span>
+      </div>
+      <p style="font-size:0.78rem;margin-bottom:0.5rem">Traditional forensics methods don't directly apply to cloud. Evidence: API logs (CloudTrail), object storage logs, IAM activity logs, VPC flow logs. Challenge: shared infrastructure, limited access, data in multiple jurisdictions, provider cooperation needed.</p>
+      <div class="code" style="font-size:0.64rem">
+<span class="cm"># AWS forensic evidence sources:</span>
+CloudTrail:    all API calls — who did what
+VPC Flow Logs: network traffic metadata
+S3 access logs: object-level access
+GuardDuty:     threat detection findings
+Config:        configuration change history
+CloudWatch:    application and system logs
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Order of volatility →</span><span>RAM first → processes → network → disk → removable → printed — most volatile first</span></div>
+      <div class="er"><span class="ek">Write blocker →</span><span>Hardware device — prevents writes to evidence drive during imaging</span></div>
+      <div class="er"><span class="ek">Forensic image →</span><span>Bit-for-bit copy — analyze copy, never original — hash to verify integrity</span></div>
+      <div class="er"><span class="ek">Volatility →</span><span>Most widely used memory forensics tool — open source — pslist, malfind, netscan</span></div>
+      <div class="er"><span class="ek">Memory forensics →</span><span>Finds fileless malware, encryption keys, injected code — lost on power off</span></div>
+      <div class="er"><span class="ek">Wireshark →</span><span>Network traffic analysis — PCAP files — reconstruct communications</span></div>
+      <div class="er"><span class="ek">FTK Imager →</span><span>Forensic disk imaging tool — creates E01 images — calculates hash</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 7. EVIDENCE & CHAIN    -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s7">
+<div class="card">
+  <div class="card-hd"><span class="card-num">07</span><span class="card-title">Evidence Handling & Chain of Custody</span><span class="bdg bdg-lime">Legal · Integrity · Admissibility</span></div>
+  <div class="card-bd">
+    <p>Evidence that is improperly collected, handled, or documented <strong style="color:var(--text)">cannot be used in court</strong>. Chain of custody is the documented record that proves evidence was not tampered with between collection and courtroom.</p>
+
+    <h3>Chain of Custody</h3>
+    <div class="code">
+<span class="cm"># Chain of custody = who had evidence, when, what they did</span>
+
+Every transfer documented:
+  Collected by: Jane Smith, Forensic Analyst
+  Date/Time: 2024-03-15 14:32:17 UTC
+  Location: Server Room B, Server: DB-PROD-01
+  Evidence: 2x 4TB Samsung SSDs
+  Hash (SHA-256): 
+    Disk1: a3f8b2c9d1e4...
+    Disk2: 7k2m9p4q8r1...
+  Sealed: Tamper-evident bag #FE-2024-0847
+  
+Transferred to: Mark Johnson, Lead Investigator
+  Date/Time: 2024-03-15 16:15:00 UTC
+  Reason: forensic analysis
+  Seal intact: YES ✓
+  Signature: M. Johnson
+
+In evidence storage:
+  Storage: Locked cabinet, Evidence Room
+  Access log: maintained
+  
+Transferred to: Lab for analysis
+  Date/Time: 2024-03-16 09:00:00 UTC
+  Seal verified intact before opening: YES ✓
+<span class="cg">Unbroken chain — evidence admissible ✓</span>
+    </div>
+
+    <h3>Hashing for Evidence Integrity</h3>
+    <div class="code">
+<span class="cm"># Hash proves evidence wasn't modified — mathematical fingerprint</span>
+
+Step 1 — Hash at collection:
+  sha256sum evidence_drive_001.img
+  Output: a3f8b2c9d1e4f5a6b7c8d9e0f1a2b3c4 evidence_drive_001.img
+  Document: write on evidence form, photograph
+
+Step 2 — Hash before analysis:
+  sha256sum evidence_drive_001.img
+  Output: a3f8b2c9d1e4f5a6b7c8d9e0f1a2b3c4 ← <span class="cg">MATCHES ✓</span>
+  If changed: <span class="cr">evidence tampered — inadmissible</span>
+
+Step 3 — Hash after analysis:
+  sha256sum evidence_drive_001.img
+  Output: a3f8b2c9d1e4f5a6b7c8d9e0f1a2b3c4 ← <span class="cg">MATCHES ✓</span>
+  Analysis did not modify evidence: confirmed
+
+<span class="cm"># Hash algorithm choice:</span>
+MD5:    128-bit — fast — collision vulnerabilities found
+        Still used for integrity (not cryptographic purposes)
+SHA-1:  160-bit — deprecated — collisions possible
+SHA-256: 256-bit — current standard — use this
+SHA-3:  newest — highest security — slowly adopted
+    </div>
+
+    <h3>Evidence Collection Best Practices</h3>
+    <div class="coc-row">
+      <span class="coc-num">01</span>
+      <span class="coc-action" style="color:var(--blue)">Photograph the scene</span>
+      <span class="coc-detail">Before touching anything — document original state of every connected cable, screen state, visible files. Time-stamped photos from multiple angles.</span>
+    </div>
+    <div class="coc-row">
+      <span class="coc-num">02</span>
+      <span class="coc-action" style="color:var(--green)">Capture volatile data first</span>
+      <span class="coc-detail">Memory dump, running processes, network connections — before any other action. WinPmem, DumpIt, or LiME for Linux RAM capture.</span>
+    </div>
+    <div class="coc-row">
+      <span class="coc-num">03</span>
+      <span class="coc-action" style="color:var(--orange)">Use write blockers</span>
+      <span class="coc-detail">Hardware write blocker between evidence drive and forensic workstation. Prevents any writes to original. Every forensic lab has these. Never image without one.</span>
+    </div>
+    <div class="coc-row">
+      <span class="coc-num">04</span>
+      <span class="coc-action" style="color:var(--purple)">Hash everything</span>
+      <span class="coc-detail">Calculate SHA-256 of every piece of evidence at collection and at every step. Document hashes on chain of custody form.</span>
+    </div>
+    <div class="coc-row">
+      <span class="coc-num">05</span>
+      <span class="coc-action" style="color:var(--teal)">Seal in tamper-evident packaging</span>
+      <span class="coc-detail">Tamper-evident bags with unique serial numbers. Any breach visible. Maintain in locked, access-controlled evidence storage.</span>
+    </div>
+    <div class="coc-row">
+      <span class="coc-num">06</span>
+      <span class="coc-action" style="color:var(--yellow)">Label everything</span>
+      <span class="coc-detail">Every item: case number, date, time, collector name, description, location found. Labels that can't be removed or altered.</span>
+    </div>
+    <div class="coc-row">
+      <span class="coc-num">07</span>
+      <span class="coc-action" style="color:var(--red)">Analyze copy — never original</span>
+      <span class="coc-detail">Original evidence: stays sealed and untouched. All analysis on forensic copy. If copy corrupted or lost — can make another from original.</span>
+    </div>
+
+    <h3>Legal Holds and e-Discovery</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--orange)">Legal Hold</h4>
+        <p>When litigation is anticipated, normal retention policies are SUSPENDED. All relevant data must be preserved exactly as-is. Deleting data under legal hold = obstruction of justice. IT must immediately halt: auto-delete policies, log rotation, email purging for relevant accounts.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">e-Discovery</h4>
+        <p>Electronic discovery — process of identifying, collecting, and producing electronically stored information (ESI) for legal proceedings. Forensic tools used to search, collect, and produce evidence. Tools: Relativity, Nuix, Cellebrite. Must preserve metadata — modification timestamps are evidence.</p>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-lbl">// Scenario — Evidence Mishandled, Case Dismissed</div>
+      <div class="code">
+<span class="cm"># Company sues former employee for IP theft:</span>
+
+<span class="cr">Evidence handling failure:</span>
+  IT analyst discovers suspicious USB activity
+  IT: "Let me just quickly look at his laptop"
+  IT boots laptop from original drive — <span class="cr">modifies timestamps</span>
+  IT copies files to personal USB — <span class="cr">no hash, no documentation</span>
+  IT emails screenshots to manager — <span class="cr">no chain of custody</span>
+
+Defense attorney at trial:
+  "Can you prove these screenshots weren't created by your IT staff?"
+  IT analyst: "Well, I..."
+  "Can you prove you didn't modify the files?"
+  IT analyst: "I didn't, but..."
+  "What's the SHA-256 hash of the original drive?"
+  IT analyst: "I don't know what that is"
+  
+Judge: <span class="cr">evidence ruled inadmissible — no chain of custody</span>
+Case: <span class="cr">dismissed</span>
+
+<span class="cg">Correct approach:</span>
+  Call external forensic firm immediately
+  Do not touch the laptop
+  Forensic imaging with write blocker + hash
+  Chain of custody form from minute one
+  Evidence: admissible — case wins ✓
+      </div>
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Chain of custody →</span><span>Documented record of who had evidence, when, what they did — proves integrity</span></div>
+      <div class="er"><span class="ek">Write blocker →</span><span>Prevents writes to evidence during imaging — hardware device</span></div>
+      <div class="er"><span class="ek">Hash verification →</span><span>SHA-256 before and after — prove evidence unchanged — matches = intact</span></div>
+      <div class="er"><span class="ek">Legal hold →</span><span>Suspend deletion — preserve everything — litigation anticipated</span></div>
+      <div class="er"><span class="ek">Analyze copy →</span><span>Never analyze original — forensic copy for analysis — original stays sealed</span></div>
+      <div class="er"><span class="ek">Admissibility →</span><span>Improperly handled evidence = inadmissible in court = case lost</span></div>
+      <div class="er"><span class="ek">e-Discovery →</span><span>Electronic evidence collection for legal proceedings — preserve metadata</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 8. COMMUNICATION       -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s8">
+<div class="card">
+  <div class="card-hd"><span class="card-num">08</span><span class="card-title">IR Communication & Notification</span><span class="bdg bdg-indigo">Internal · External · Legal</span></div>
+  <div class="card-bd">
+    <p>Communication during an incident can <strong style="color:var(--text)">make or break the response</strong>. Poor communication leads to: stakeholder panic, regulatory penalties, legal liability, media disasters, and loss of customer trust. Planned communication — drafted before the incident — is essential.</p>
+
+    <h3>Out-of-Band Communications</h3>
+    <div class="code">
+<span class="cm"># Critical: what if your communication tools are compromised?</span>
+
+Ransomware encrypts: email server, Slack, Teams, phone system
+Now: how do you communicate with IR team?
+    How do you notify management?
+    How do you coordinate response?
+
+<span class="cg">Out-of-band communication plan (established BEFORE incident):</span>
+  Primary: <span class="cg">Signal group chat (end-to-end encrypted)</span>
+  Secondary: <span class="cg">Conference bridge number (physical phone)</span>
+  Emergency: <span class="cg">Personal cell phones (printed list kept offsite)</span>
+  Management: <span class="cg">Personal cell phones of executives</span>
+
+<span class="cm"># The phone tree lives on paper — not in email</span>
+<span class="cm"># Updated quarterly — people change phones</span>
+    </div>
+
+    <h3>Internal Notification — Who Gets Told What</h3>
+    <div style="overflow-x:auto;margin:1rem 0">
+    <table>
+      <tr><th>Audience</th><th>What They Need to Know</th><th>When</th><th>Who Tells Them</th></tr>
+      <tr><td>SOC / CIRT</td><td>Full technical details — everything</td><td>Immediately</td><td>Monitoring tool / analyst</td></tr>
+      <tr><td>CISO</td><td>Severity, scope, business impact</td><td>P1: immediate / P2: 1 hour</td><td>Incident Commander</td></tr>
+      <tr><td>CTO / CIO</td><td>Technical summary, resource needs</td><td>P1: immediate / P2: 1 hour</td><td>CISO</td></tr>
+      <tr><td>CEO</td><td>Business impact, regulatory exposure</td><td>P1: within 1 hour</td><td>CISO</td></tr>
+      <tr><td>Legal / Counsel</td><td>Full picture — privilege applies</td><td>P1: immediately</td><td>CISO</td></tr>
+      <tr><td>Board</td><td>High-level — strategic impact</td><td>P1: within 24 hours</td><td>CEO/CISO</td></tr>
+      <tr><td>Affected employees</td><td>What they need to do</td><td>After containment</td><td>HR + IT</td></tr>
+      <tr><td>All employees</td><td>Need-to-know only</td><td>After management briefed</td><td>CEO / comms team</td></tr>
+    </table>
+    </div>
+
+    <h3>External Notification Requirements</h3>
+    <div class="g2">
+      <div class="gc">
+        <h4 style="color:var(--red)">Regulatory Notifications</h4>
+        <p>Many regulations require breach notification within specific time windows:</p>
+        <ul>
+          <li><strong style="color:var(--text)">GDPR:</strong> 72 hours to supervisory authority</li>
+          <li><strong style="color:var(--text)">HIPAA:</strong> 60 days to HHS; < 60 days to patients</li>
+          <li><strong style="color:var(--text)">PCI-DSS:</strong> Immediately to card brands and acquirer</li>
+          <li><strong style="color:var(--text)">SEC (public co):</strong> 4 business days (material)</li>
+          <li><strong style="color:var(--text)">State laws:</strong> Vary — some as quick as 30 days</li>
+        </ul>
+        <p style="margin-top:0.4rem;font-size:0.72rem;color:var(--muted)">Missing notification deadlines = additional regulatory fines</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--orange)">Customer Notification</h4>
+        <p>If customer data compromised: legal obligation to notify. Notification must include: what data was exposed, when, what you're doing about it, what customers should do. Tone: factual, clear, apologetic without admitting legal liability. Legal review required before sending.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--blue)">Law Enforcement</h4>
+        <p>When to involve: financial loss, potential for prosecution, nation-state involvement. FBI (US) — IC3 for cybercrime. CISA for critical infrastructure attacks. Pros: access to threat intel, legal authority. Cons: loss of control over investigation timeline.</p>
+      </div>
+      <div class="gc">
+        <h4 style="color:var(--purple)">Cyber Insurance</h4>
+        <p>Notify insurer IMMEDIATELY — most policies require prompt notification. Failure to notify = claim denied. Insurer: provides IR resources, legal counsel, PR firm. Read policy before incident — understand coverage and requirements.</p>
+      </div>
+    </div>
+
+    <h3>Media and PR During an Incident</h3>
+    <div class="code">
+<span class="cm"># How NOT to communicate (real examples):</span>
+
+<span class="cr">Bad: Uber 2016 breach disclosure:</span>
+  Breach discovered: October 2016
+  Paid attackers $100k to delete data + stay quiet
+  Disclosed to public: November 2017 (14 months later!)
+  Result: $148M settlement + criminal charges for CSO
+  
+<span class="cr">Bad: Equifax 2017:</span>
+  Executives sold stock between breach and disclosure
+  Disclosure delayed for 6 weeks
+  Website set up to check status had vulnerabilities
+  Result: congressional hearings + massive fine
+
+<span class="cg">Best practices for public communication:</span>
+  Be transparent — disclose what you know, when you know it
+  Don't speculate — only confirmed facts in statements
+  One spokesperson — no conflicting messages from multiple execs
+  Pre-approved statement templates — ready BEFORE incident
+  "We are investigating and will provide updates" is fine initially
+  Update regularly — silence breeds rumor
+  Never say "unhackable" — you'll regret it
+  Legal reviews all external statements
+    </div>
+
+    <div class="exam">
+      <h4>// Exam Keywords</h4>
+      <div class="er"><span class="ek">Out-of-band comms →</span><span>Signal/phone/in-person when corporate comms compromised — planned ahead</span></div>
+      <div class="er"><span class="ek">GDPR notification →</span><span>72 hours to supervisory authority — fastest regulatory deadline</span></div>
+      <div class="er"><span class="ek">HIPAA notification →</span><span>60 days to HHS + patients for PHI breach</span></div>
+      <div class="er"><span class="ek">Cyber insurance →</span><span>Notify immediately — late notification = claim denied</span></div>
+      <div class="er"><span class="ek">Legal hold comms →</span><span>Communications with legal counsel may be privileged</span></div>
+      <div class="er"><span class="ek">Communication principle →</span><span>Transparent, factual, one spokesperson, legal reviewed</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════ -->
+<!-- 9. SUMMARY             -->
+<!-- ═══════════════════════ -->
+<div class="sec" id="s9">
+<div class="card">
+  <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-red">All Topics</span></div>
+  <div class="card-bd">
+
+    <h3>IR Frameworks Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Framework</th><th>Phases</th><th>Source</th><th>Key Detail</th></tr>
+      <tr><td><span class="tag tb">NIST</span></td><td>Preparation → Detection/Analysis → Containment/Eradication/Recovery → Post-Incident</td><td>NIST SP 800-61</td><td>4 phases — government standard</td></tr>
+      <tr><td><span class="tag tg">PICERL</span></td><td>Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned</td><td>Industry mnemonic</td><td>6 phases — common exam reference</td></tr>
+      <tr><td><span class="tag to">SANS</span></td><td>Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned</td><td>SANS Institute</td><td>Same as PICERL effectively</td></tr>
+    </table>
+    </div>
+
+    <h3>Forensics Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Concept</th><th>What It Is</th><th>Key Tool</th><th>Exam Note</th></tr>
+      <tr><td><span class="tag tc">Order of Volatility</span></td><td>Collect most volatile first</td><td>—</td><td>RAM → processes → network → disk → paper</td></tr>
+      <tr><td><span class="tag tb">Write Blocker</span></td><td>Prevent writes to evidence</td><td>Hardware device</td><td>Required before imaging any evidence drive</td></tr>
+      <tr><td><span class="tag tg">Forensic Image</span></td><td>Bit-for-bit copy</td><td>FTK Imager, dd</td><td>Hash before + after — analyze copy not original</td></tr>
+      <tr><td><span class="tag to">Memory Forensics</span></td><td>Analyze RAM</td><td>Volatility</td><td>Finds fileless malware — must capture before reboot</td></tr>
+      <tr><td><span class="tag tp">Chain of Custody</span></td><td>Evidence handling record</td><td>Form + tamper bag</td><td>Gap = inadmissible in court</td></tr>
+      <tr><td><span class="tag tg">Hash Verification</span></td><td>Prove evidence integrity</td><td>SHA-256</td><td>Hash matches = evidence unchanged</td></tr>
+      <tr><td><span class="tag tl">Legal Hold</span></td><td>Suspend deletion policies</td><td>e-Discovery tools</td><td>Litigation anticipated — preserve everything</td></tr>
+    </table>
+    </div>
+
+    <h3>Testing Types Quick Reference</h3>
+    <div style="overflow-x:auto;margin-bottom:1.5rem">
+    <table>
+      <tr><th>Test Type</th><th>Systems Involved</th><th>Risk</th><th>Cost</th><th>Best For</th></tr>
+      <tr><td><span class="tag tb">Tabletop</span></td><td>None</td><td><span class="tag tg">None</span></td><td><span class="tag tg">$</span></td><td>Finding plan gaps, communication issues</td></tr>
+      <tr><td><span class="tag tg">Simulation</span></td><td>Partial (fake alerts)</td><td><span class="tag tg">Low</span></td><td><span class="tag ty">$$</span></td><td>Testing procedures and tools</td></tr>
+      <tr><td><span class="tag to">Red Team</span></td><td>Production (authorized)</td><td><span class="tag to">Medium</span></td><td><span class="tag tr">$$$$</span></td><td>Testing real detection capability</td></tr>
+      <tr><td><span class="tag tp">Purple Team</span></td><td>Lab/production</td><td><span class="tag ty">Low-Med</span></td><td><span class="tag to">$$$</span></td><td>Rapidly building detection rules</td></tr>
+    </table>
+    </div>
+
+    <h3>Scenario → Answer Cheat Sheet</h3>
+    <div class="exam" style="margin:0">
+      <h4>// Exam Scenarios → Answers</h4>
+      <div class="er"><span class="ek">"Documented procedure for responding to security incidents"</span><span>→ Incident Response Plan (IRP)</span></div>
+      <div class="er"><span class="ek">"NIST 4-phase IR framework"</span><span>→ Preparation → Detection/Analysis → Containment/Eradication/Recovery → Post-Incident</span></div>
+      <div class="er"><span class="ek">"6-phase IR mnemonic"</span><span>→ PICERL — Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned</span></div>
+      <div class="er"><span class="ek">"Sign that incident MAY occur in future"</span><span>→ Precursor (port scan, phishing probe)</span></div>
+      <div class="er"><span class="ek">"Sign that incident IS occurring"</span><span>→ Indicator (AV alert, ransom note)</span></div>
+      <div class="er"><span class="ek">"Stop spread — don't remove yet"</span><span>→ Containment phase</span></div>
+      <div class="er"><span class="ek">"Remove all malware and close vulnerabilities"</span><span>→ Eradication phase</span></div>
+      <div class="er"><span class="ek">"Find WHY incident happened — prevent recurrence"</span><span>→ Root cause analysis (RCA) — lessons learned phase</span></div>
+      <div class="er"><span class="ek">"How long attacker was present before detection"</span><span>→ Dwell time — average 207 days industry stat</span></div>
+      <div class="er"><span class="ek">"Discussion-only exercise — no systems touched"</span><span>→ Tabletop exercise</span></div>
+      <div class="er"><span class="ek">"Authorized attackers test real detection capability"</span><span>→ Red team exercise</span></div>
+      <div class="er"><span class="ek">"Red and blue teams work together — teach detection"</span><span>→ Purple team exercise</span></div>
+      <div class="er"><span class="ek">"Keep asking why until root cause found"</span><span>→ 5 Whys technique</span></div>
+      <div class="er"><span class="ek">"Proactively search for threats evading automated detection"</span><span>→ Threat hunting — assume breach</span></div>
+      <div class="er"><span class="ek">"Behavioral attack patterns — harder to change than IOCs"</span><span>→ TTPs (Tactics, Techniques, Procedures)</span></div>
+      <div class="er"><span class="ek">"Specific artifacts — IP, hash, domain"</span><span>→ IOCs (Indicators of Compromise)</span></div>
+      <div class="er"><span class="ek">"Framework cataloging attacker TTPs by tactic"</span><span>→ MITRE ATT&CK</span></div>
+      <div class="er"><span class="ek">"Collect in what order for forensics?"</span><span>→ Order of volatility — RAM first, disk last</span></div>
+      <div class="er"><span class="ek">"Prevent writes to evidence drive during imaging"</span><span>→ Write blocker (hardware device)</span></div>
+      <div class="er"><span class="ek">"Bit-for-bit copy — analyze this not original"</span><span>→ Forensic image (FTK Imager, dd)</span></div>
+      <div class="er"><span class="ek">"Find fileless malware living in RAM"</span><span>→ Memory forensics with Volatility</span></div>
+      <div class="er"><span class="ek">"Documented proof evidence wasn't tampered with"</span><span>→ Chain of custody + hash verification</span></div>
+      <div class="er"><span class="ek">"Suspend auto-deletion — litigation expected"</span><span>→ Legal hold</span></div>
+      <div class="er"><span class="ek">"GDPR breach notification deadline"</span><span>→ 72 hours to supervisory authority</span></div>
+      <div class="er"><span class="ek">"HIPAA breach notification deadline"</span><span>→ 60 days to HHS and affected patients</span></div>
+      <div class="er"><span class="ek">"Why out-of-band comms needed during IR?"</span><span>→ Primary comms (email/Slack) may be compromised — use Signal/phone</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

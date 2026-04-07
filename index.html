@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security+ SY0-701 — Study Hub</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root{
+  --bg:#0a0b0f;
+  --s1:#0f1018;
+  --s2:#14151f;
+  --s3:#1a1b27;
+  --bd:#22243a;
+  --tx:#dde1ff;
+  --mu:#4a4f80;
+  /* domain colours */
+  --d1:#f5a623;   /* domain 1 - amber */
+  --d2:#e8365d;   /* domain 2 - red */
+  --d3:#22c5a0;   /* domain 3 - teal */
+  --d4:#4e8ef7;   /* domain 4 - blue */
+  --d5:#b06ef8;   /* domain 5 - purple */
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--tx);
+  font-family:'Syne',sans-serif;
+  font-size:14px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:3rem 2rem 2rem;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 50%, rgba(245,166,35,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(78,142,247,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 50% 20%, rgba(176,110,248,0.04) 0%, transparent 60%);
+  pointer-events:none;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+}
+.hero-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.62rem;letter-spacing:0.22em;
+  color:var(--mu);text-transform:uppercase;
+  margin-bottom:1.2rem;
+  background:var(--s2);border:1px solid var(--bd);
+  padding:0.3rem 0.8rem;border-radius:999px;
+  display:inline-block;
+}
+.hero-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(2.8rem, 8vw, 5.5rem);
+  font-weight:800;
+  letter-spacing:-0.04em;
+  line-height:0.88;
+  margin-bottom:0.5rem;
+}
+.hero-title .line1{color:var(--tx);}
+.hero-title .line2{
+  background:linear-gradient(135deg,var(--d1),var(--d2),var(--d3),var(--d4),var(--d5));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-family:'Lora',serif;font-style:italic;
+  font-size:1rem;color:var(--mu);
+  margin:1rem 0 2.5rem;max-width:520px;
+  line-height:1.65;
+}
+/* domain score pills */
+.score-row{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;
+  margin-bottom:3rem;
+}
+.spill{
+  display:flex;align-items:center;gap:0.5rem;
+  background:var(--s2);border:1px solid var(--bd);
+  padding:0.4rem 0.85rem;border-radius:999px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.62rem;font-weight:600;
+  cursor:pointer;transition:all 0.14s;
+  text-decoration:none;color:inherit;
+}
+.spill:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+.spill-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.spill-pct{opacity:0.55;}
+/* scroll arrow */
+.scroll-hint{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  font-family:'JetBrains Mono',monospace;font-size:0.58rem;
+  color:var(--mu);letter-spacing:0.12em;text-transform:uppercase;
+  display:flex;flex-direction:column;align-items:center;gap:0.4rem;
+  animation:bob 2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
+.scroll-hint svg{opacity:0.4;}
+
+/* ── STATS BAR ── */
+.stats{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);
+  background:var(--s1);
+}
+@media(max-width:700px){.stats{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr);}}
+.stat{
+  padding:1.2rem 1rem;text-align:center;
+  border-right:1px solid var(--bd);
+}
+.stat:last-child{border-right:none;}
+.stat-val{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;line-height:1;margin-bottom:0.2rem;}
+.stat-lbl{font-family:'JetBrains Mono',monospace;font-size:0.57rem;color:var(--mu);letter-spacing:0.1em;text-transform:uppercase;}
+
+/* ── DOMAIN SECTIONS ── */
+.domains{padding:0 1.5rem 4rem;}
+.domain{max-width:1100px;margin:0 auto 4rem;}
+.domain-header{
+  display:flex;align-items:flex-start;gap:1.2rem;
+  padding:1.5rem 0 1.2rem;
+  border-bottom:1px solid var(--bd);
+  margin-bottom:1.5rem;
+}
+.domain-num{
+  font-family:'Syne',sans-serif;
+  font-size:3.5rem;font-weight:800;
+  line-height:1;opacity:0.15;
+  flex-shrink:0;letter-spacing:-0.04em;
+}
+.domain-info{flex:1;}
+.domain-name{
+  font-family:'Syne',sans-serif;
+  font-size:1.4rem;font-weight:800;
+  letter-spacing:-0.02em;margin-bottom:0.2rem;
+}
+.domain-weight{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.6rem;font-weight:600;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.18rem 0.6rem;border-radius:2px;
+  display:inline-flex;align-items:center;gap:0.4rem;
+}
+.domain-dot{width:6px;height:6px;border-radius:50%;}
+
+/* ── TOPIC CARDS ── */
+.topics{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:0.8rem;
+}
+.topic-card{
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:10px;overflow:hidden;
+  text-decoration:none;color:inherit;
+  transition:all 0.15s;
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.topic-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  opacity:0;transition:opacity 0.15s;
+}
+.topic-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 30px rgba(0,0,0,0.25);
+  border-color:rgba(255,255,255,0.1);
+}
+.topic-card:hover::before{opacity:1;}
+.tc-body{padding:1.1rem 1.2rem;flex:1;}
+.tc-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.56rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:0.45rem;opacity:0.7;
+}
+.tc-title{
+  font-family:'Syne',sans-serif;
+  font-size:0.95rem;font-weight:700;
+  letter-spacing:-0.01em;
+  line-height:1.3;
+  margin-bottom:0.5rem;
+}
+.tc-desc{
+  font-family:'Lora',serif;
+  font-size:0.75rem;color:var(--mu);
+  line-height:1.65;font-style:italic;
+}
+.tc-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.65rem 1.2rem;
+  border-top:1px solid var(--bd);
+  background:var(--s2);
+}
+.tc-tags{display:flex;flex-wrap:wrap;gap:0.25rem;}
+.tc-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.53rem;font-weight:600;
+  padding:0.08rem 0.38rem;border-radius:2px;
+  opacity:0.75;
+}
+.tc-arrow{
+  font-size:0.8rem;color:var(--mu);
+  transition:transform 0.15s,color 0.15s;
+}
+.topic-card:hover .tc-arrow{transform:translateX(3px);color:var(--tx);}
+
+/* ── FOOTER ── */
+.footer{
+  border-top:1px solid var(--bd);
+  padding:2rem 1.5rem;
+  text-align:center;
+  background:var(--s1);
+}
+.footer-text{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.6rem;color:var(--mu);letter-spacing:0.1em;
+  text-transform:uppercase;line-height:2;
+}
+
+/* ── PROGRESS BAR ── */
+.prog-bar{
+  position:fixed;top:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--d1),var(--d2),var(--d3),var(--d4),var(--d5));
+  z-index:100;transition:width 0.1s;
+  width:0%;
+}
+
+/* ── BACK TO TOP ── */
+.btt{
+  position:fixed;bottom:1.5rem;right:1.5rem;
+  width:36px;height:36px;
+  background:var(--s2);border:1px solid var(--bd);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  font-size:0.8rem;color:var(--mu);
+  transition:all 0.15s;
+  opacity:0;pointer-events:none;
+  z-index:99;
+}
+.btt.show{opacity:1;pointer-events:all;}
+.btt:hover{background:var(--s3);color:var(--tx);transform:translateY(-2px);}
+
+@media(max-width:600px){
+  .domain-header{flex-direction:column;gap:0.5rem;}
+  .domain-num{font-size:2.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="prog-bar" id="prog"></div>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-tag">CompTIA · SY0-701 · Complete Study Hub</div>
+  <div class="hero-title">
+    <div class="line1">Security+</div>
+    <div class="line2">Study Guides</div>
+  </div>
+  <p class="hero-sub">Every topic from the official SY0-701 exam objectives — covered, organised by domain, and linked below.</p>
+
+  <div class="score-row">
+    <a href="#d1" class="spill" style="border-color:rgba(245,166,35,0.4)">
+      <div class="spill-dot" style="background:var(--d1)"></div>
+      Domain 1 — General Security <span class="spill-pct">12%</span>
+    </a>
+    <a href="#d2" class="spill" style="border-color:rgba(232,54,93,0.4)">
+      <div class="spill-dot" style="background:var(--d2)"></div>
+      Domain 2 — Threats &amp; Vulns <span class="spill-pct">22%</span>
+    </a>
+    <a href="#d3" class="spill" style="border-color:rgba(34,197,160,0.4)">
+      <div class="spill-dot" style="background:var(--d3)"></div>
+      Domain 3 — Architecture <span class="spill-pct">18%</span>
+    </a>
+    <a href="#d4" class="spill" style="border-color:rgba(78,142,247,0.4)">
+      <div class="spill-dot" style="background:var(--d4)"></div>
+      Domain 4 — Operations <span class="spill-pct">28%</span>
+    </a>
+    <a href="#d5" class="spill" style="border-color:rgba(176,110,248,0.4)">
+      <div class="spill-dot" style="background:var(--d5)"></div>
+      Domain 5 — Governance <span class="spill-pct">20%</span>
+    </a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Explore</span>
+    <svg width="14" height="18" viewBox="0 0 14 18" fill="none"><path d="M7 1v16M1 11l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</div>
+
+<!-- ── STATS ── -->
+<div class="stats">
+  <div class="stat"><div class="stat-val" style="color:var(--d1)">5</div><div class="stat-lbl">Domains</div></div>
+  <div class="stat"><div class="stat-val" style="color:var(--d3)">22</div><div class="stat-lbl">Topics</div></div>
+  <div class="stat"><div class="stat-val" style="color:var(--d4)">22</div><div class="stat-lbl">Study Guides</div></div>
+  <div class="stat"><div class="stat-val" style="color:var(--d2)">90</div><div class="stat-lbl">Exam Questions</div></div>
+  <div class="stat"><div class="stat-val" style="color:var(--d5)">SY0-701</div><div class="stat-lbl">Exam Code</div></div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- DOMAINS                                    -->
+<!-- ══════════════════════════════════════════ -->
+<div class="domains">
+
+  <!-- ── DOMAIN 1 ── -->
+  <div class="domain" id="d1">
+    <div class="domain-header">
+      <div class="domain-num" style="color:var(--d1)">01</div>
+      <div class="domain-info">
+        <div class="domain-name">General Security Concepts</div>
+        <div class="domain-weight" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.3)">
+          <div class="domain-dot" style="background:var(--d1)"></div>
+          12% of Exam · 4 Topics
+        </div>
+      </div>
+    </div>
+
+    <div class="topics">
+
+      <a class="topic-card" href="Security_Controls_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d1)">Domain 1 · Topic 1</div>
+          <div class="tc-title">Security Controls</div>
+          <div class="tc-desc">Technical, managerial, operational, physical categories compared against preventive, detective, corrective, deterrent, compensating, and directive functions.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">Technical</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">Preventive</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">Detective</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">4×6 Matrix</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--d1);opacity:0;transition:opacity 0.15s;" class="hover-bar"></div>
+      </a>
+
+      <a class="topic-card" href="Fundamental_Concepts_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d1)">Domain 1 · Topic 2</div>
+          <div class="tc-title">Fundamental Concepts</div>
+          <div class="tc-desc">CIA triad, non-repudiation, AAA framework (authentication, authorization, accounting), zero trust architecture, and deception &amp; disruption technology.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">CIA Triad</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">AAA</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">Zero Trust</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">Honeypot</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Change_Management_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d1)">Domain 1 · Topic 3</div>
+          <div class="tc-title">Change Management</div>
+          <div class="tc-desc">Business processes, RFC, CAB, technical implications, allow/deny lists, restricted activities, documentation, and version control with Git &amp; SemVer.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">CAB</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">RFC</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">Version Control</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">Documentation</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Cryptographic_Solutions_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d1)">Domain 1 · Topic 4</div>
+          <div class="tc-title">Cryptographic Solutions</div>
+          <div class="tc-desc">PKI and certificate hierarchy, symmetric &amp; asymmetric encryption, obfuscation techniques, hashing algorithms, digital signatures, and blockchain.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">PKI</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">AES / RSA</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">Hashing</span>
+            <span class="tc-tag" style="background:rgba(245,166,35,0.1);color:var(--d1);border:1px solid rgba(245,166,35,0.25)">Blockchain</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div><!-- /d1 -->
+
+  <!-- ── DOMAIN 2 ── -->
+  <div class="domain" id="d2">
+    <div class="domain-header">
+      <div class="domain-num" style="color:var(--d2)">02</div>
+      <div class="domain-info">
+        <div class="domain-name">Threats, Vulnerabilities &amp; Mitigations</div>
+        <div class="domain-weight" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.3)">
+          <div class="domain-dot" style="background:var(--d2)"></div>
+          22% of Exam · 5 Topics
+        </div>
+      </div>
+    </div>
+
+    <div class="topics">
+
+      <a class="topic-card" href="Threat_Actors_Motivations_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d2)">Domain 2 · Topic 1</div>
+          <div class="tc-title">Threat Actors &amp; Motivations</div>
+          <div class="tc-desc">Nation-states, organized crime, hacktivists, insider threats, unskilled attackers, and shadow IT — compared by sophistication, resources, and motivations like espionage and financial gain.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">APT</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Insider Threat</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">RaaS</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Shadow IT</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Threat_Vectors_Attack_Surfaces_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d2)">Domain 2 · Topic 2</div>
+          <div class="tc-title">Threat Vectors &amp; Attack Surfaces</div>
+          <div class="tc-desc">Message-based, unsecure networks, social engineering, file-based, voice call, supply chain, and vulnerable software vectors with defenses for each.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Phishing</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Social Eng.</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Supply Chain</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">SLAM</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Vulnerabilities_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d2)">Domain 2 · Topic 3</div>
+          <div class="tc-title">Vulnerabilities</div>
+          <div class="tc-desc">Application, hardware, mobile, virtualization, OS, cloud-specific, web-based, and supply chain vulnerabilities — with exploitation paths and defenses across all 8 categories.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">SQLi / XSS</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">VM Escape</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">IMDS</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">OWASP</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Malicious_Activity_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d2)">Domain 2 · Topic 4</div>
+          <div class="tc-title">Malicious Activity</div>
+          <div class="tc-desc">Malware attacks (virus, worm, ransomware, rootkit, fileless), password attacks (spraying, PtH, Kerberoasting), application, physical, network, and cryptographic attacks.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Ransomware</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Kerberoasting</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">DDoS</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Birthday Attack</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Mitigation_Techniques_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d2)">Domain 2 · Topic 5</div>
+          <div class="tc-title">Mitigation Techniques</div>
+          <div class="tc-desc">Segmentation (VLANs, DMZ, micro-seg), access control (least privilege, PAM, MFA), configuration enforcement, hardening, isolation (air gap, sandbox), and patch management.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Segmentation</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Hardening</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">CISA KEV</span>
+            <span class="tc-tag" style="background:rgba(232,54,93,0.1);color:var(--d2);border:1px solid rgba(232,54,93,0.25)">Air Gap</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div><!-- /d2 -->
+
+  <!-- ── DOMAIN 3 ── -->
+  <div class="domain" id="d3">
+    <div class="domain-header">
+      <div class="domain-num" style="color:var(--d3)">03</div>
+      <div class="domain-info">
+        <div class="domain-name">Security Architecture</div>
+        <div class="domain-weight" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.3)">
+          <div class="domain-dot" style="background:var(--d3)"></div>
+          18% of Exam · 4 Topics
+        </div>
+      </div>
+    </div>
+
+    <div class="topics">
+
+      <a class="topic-card" href="Architecture_Models_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d3)">Domain 3 · Topic 1</div>
+          <div class="tc-title">Architecture Models</div>
+          <div class="tc-desc">On-premises, cloud (IaaS/PaaS/SaaS), virtualization, IoT/ICS/SCADA, and infrastructure as code compared — security implications of each deployment model.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">Cloud</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">IoT</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">ICS/SCADA</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">IaC</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Enterprise_Infrastructure_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d3)">Domain 3 · Topic 2</div>
+          <div class="tc-title">Enterprise Infrastructure</div>
+          <div class="tc-desc">Security principles applied to infrastructure — defense in depth, least privilege, network segmentation, control selection, secure protocols, remote access, and resilience.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">Defense in Depth</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">TLS / IPsec</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">ZTNA</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">WPA3</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Data_Protection_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d3)">Domain 3 · Topic 3</div>
+          <div class="tc-title">Data Protection</div>
+          <div class="tc-desc">Data types and states (at rest, in transit, in use), securing methods (encryption, tokenization, masking, DLP), data classification, and regulatory considerations.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">Classification</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">DLP</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">Tokenization</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">PII / PHI</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Resilience_Recovery_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d3)">Domain 3 · Topic 4</div>
+          <div class="tc-title">Resilience &amp; Recovery</div>
+          <div class="tc-desc">High availability, DR site types (hot/warm/cold), backup strategies (3-2-1), power redundancy, platform diversity, testing (tabletop, failover), and continuity of operations.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">RTO / RPO</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">3-2-1 Backup</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">Hot Site</span>
+            <span class="tc-tag" style="background:rgba(34,197,160,0.1);color:var(--d3);border:1px solid rgba(34,197,160,0.25)">MTTR / MTBF</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div><!-- /d3 -->
+
+  <!-- ── DOMAIN 4 ── -->
+  <div class="domain" id="d4">
+    <div class="domain-header">
+      <div class="domain-num" style="color:var(--d4)">04</div>
+      <div class="domain-info">
+        <div class="domain-name">Security Operations</div>
+        <div class="domain-weight" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.3)">
+          <div class="domain-dot" style="background:var(--d4)"></div>
+          28% of Exam · 9 Topics — Largest Domain
+        </div>
+      </div>
+    </div>
+
+    <div class="topics">
+
+      <a class="topic-card" href="Computing_Resources_Security_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d4)">Domain 4 · Topic 1</div>
+          <div class="tc-title">Computing Resources</div>
+          <div class="tc-desc">Secure baselines, mobile solutions (MDM/MAM), endpoint hardening, wireless security (WPA3, 802.1X), application security, sandboxing, and resource monitoring.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">MDM</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">WPA3</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Baselines</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Sandboxing</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Asset_Management_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d4)">Domain 4 · Topic 2</div>
+          <div class="tc-title">Asset Management</div>
+          <div class="tc-desc">Acquisition, assignment, monitoring/tracking, and secure disposal of hardware, software, and data assets — CMDB, media sanitization (NIST 800-88), and lifecycle management.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">CMDB</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">NIST 800-88</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Lifecycle</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Disposal</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Vulnerability_Management_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d4)">Domain 4 · Topic 3</div>
+          <div class="tc-title">Vulnerability Management</div>
+          <div class="tc-desc">Identify, analyze, remediate, validate, and report vulnerabilities — CVSS scoring, CISA KEV, scanning methods, false positives vs negatives, and remediation SLAs.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">CVSS</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">CISA KEV</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Scanning</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Remediation</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Alerting_Monitoring_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d4)">Domain 4 · Topic 4</div>
+          <div class="tc-title">Alerting &amp; Monitoring</div>
+          <div class="tc-desc">SIEM, SOAR, NetFlow analysis, log management, UBA/UEBA, monitoring tools — how to detect threats through log correlation and behavioral analytics.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">SIEM</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">SOAR</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">UBA</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">NetFlow</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Enterprise_Security_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d4)">Domain 4 · Topic 5</div>
+          <div class="tc-title">Enterprise Security</div>
+          <div class="tc-desc">Firewalls (stateful, NGFW, WAF), IDS/IPS, DNS filtering, DLP, NAC (network access control), EDR/XDR — configuring and managing enterprise security tools.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">NGFW / WAF</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">IDS / IPS</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">DLP</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">EDR / XDR</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="IAM_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d4)">Domain 4 · Topic 6</div>
+          <div class="tc-title">Identity &amp; Access Management</div>
+          <div class="tc-desc">Provisioning and deprovisioning, SSO (SAML, OIDC, Kerberos), MFA implementation, password managers, PAM, and privileged access tools in enterprise environments.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">SSO</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">MFA</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">PAM</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Provisioning</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Automation_Orchestration_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d4)">Domain 4 · Topic 7</div>
+          <div class="tc-title">Automation &amp; Orchestration</div>
+          <div class="tc-desc">Security automation use cases, SOAR playbooks, scripting benefits (Python, PowerShell, Bash), considerations for automated systems, and CI/CD security integration.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">SOAR</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Scripting</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">CI/CD</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Orchestration</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Incident_Response_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d4)">Domain 4 · Topic 8</div>
+          <div class="tc-title">Incident Response</div>
+          <div class="tc-desc">IR lifecycle (Prepare → Identify → Contain → Eradicate → Recover → Lessons), tabletop exercises, threat hunting, digital forensics, and chain of custody.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">IR Lifecycle</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Forensics</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Threat Hunt</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">CoC</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Data_Sources_Investigation_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d4)">Domain 4 · Topic 9</div>
+          <div class="tc-title">Data Sources</div>
+          <div class="tc-desc">Log data (Syslog, Windows Event Log, application logs), network captures, vulnerability scan data, and other data sources used to support incident investigations.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Syslog</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Event Logs</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">PCAP</span>
+            <span class="tc-tag" style="background:rgba(78,142,247,0.1);color:var(--d4);border:1px solid rgba(78,142,247,0.25)">Log Analysis</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div><!-- /d4 -->
+
+  <!-- ── DOMAIN 5 ── -->
+  <div class="domain" id="d5">
+    <div class="domain-header">
+      <div class="domain-num" style="color:var(--d5)">05</div>
+      <div class="domain-info">
+        <div class="domain-name">Security Program Management &amp; Oversight</div>
+        <div class="domain-weight" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.3)">
+          <div class="domain-dot" style="background:var(--d5)"></div>
+          20% of Exam · 6 Topics
+        </div>
+      </div>
+    </div>
+
+    <div class="topics">
+
+      <a class="topic-card" href="Security_Governance_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d5)">Domain 5 · Topic 1</div>
+          <div class="tc-title">Security Governance</div>
+          <div class="tc-desc">Guidelines, policies, standards, procedures, external regulations (GDPR, HIPAA, PCI-DSS), monitoring, governance frameworks (NIST CSF, ISO 27001), and roles &amp; responsibilities.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">NIST CSF</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">ISO 27001</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">Policies</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">CISO Role</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Risk_Management_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d5)">Domain 5 · Topic 2</div>
+          <div class="tc-title">Risk Management</div>
+          <div class="tc-desc">Risk identification, qualitative vs quantitative analysis (SLE, ALE, ARO), risk register, risk appetite vs tolerance, risk strategies (avoid/transfer/mitigate/accept), and BIA.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">SLE / ALE</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">Risk Register</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">BIA</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">Risk Appetite</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Third_Party_Risk_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d5)">Domain 5 · Topic 3</div>
+          <div class="tc-title">Third-Party Risk</div>
+          <div class="tc-desc">Vendor assessment and selection, SLA/MSA/NDA/BAA agreements, third-party monitoring, SIG/CAIQ questionnaires, supply chain risk, and rules of engagement.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">TPRM</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">SLA / BAA</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">SOC 2</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">Supply Chain</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Security_Compliance_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d5)">Domain 5 · Topic 4</div>
+          <div class="tc-title">Security Compliance</div>
+          <div class="tc-desc">GDPR, HIPAA, PCI-DSS, SOX — compliance reporting, consequences of non-compliance, monitoring activities, and privacy concepts (PII, PHI, data subject rights).</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">GDPR</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">HIPAA</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">PCI-DSS</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">SOX</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="topic-card" href="Audits_Assessments_Security_Awareness_Guide.html" target="_blank">
+        <div class="tc-body">
+          <div class="tc-label" style="color:var(--d5)">Domain 5 · Topic 5</div>
+          <div class="tc-title">Audits, Assessments &amp; Awareness</div>
+          <div class="tc-desc">Attestation types, internal vs external audits, penetration testing (black/grey/white box), and security awareness — phishing simulations, behavior recognition, and reporting.</div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-tags">
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">Pen Test</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">SOC 2</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">Phishing Sim</span>
+            <span class="tc-tag" style="background:rgba(176,110,248,0.1);color:var(--d5);border:1px solid rgba(176,110,248,0.25)">Awareness</span>
+          </div>
+          <span class="tc-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div><!-- /d5 -->
+
+</div><!-- /domains -->
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+  <div class="footer-text">
+    CompTIA Security+ SY0-701 · Complete Study Hub · 5 Domains · 22 Topics<br>
+    All guides are interactive HTML — open them in your browser alongside this hub
+  </div>
+</div>
+
+<!-- Back to top -->
+<div class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+// Progress bar
+window.addEventListener('scroll',function(){
+  var h=document.documentElement;
+  var pct=(h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
+  document.getElementById('prog').style.width=pct+'%';
+  var btt=document.getElementById('btt');
+  if(h.scrollTop>300){btt.classList.add('show');}else{btt.classList.remove('show');}
+});
+
+// Add top colour bar to each card on hover
+document.querySelectorAll('.topic-card').forEach(function(card){
+  var label=card.querySelector('.tc-label');
+  if(!label)return;
+  var style=label.style.color;
+  var bar=document.createElement('div');
+  bar.style.cssText='position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity 0.15s;';
+  bar.style.background=style;
+  card.appendChild(bar);
+  card.addEventListener('mouseenter',function(){bar.style.opacity='1';});
+  card.addEventListener('mouseleave',function(){bar.style.opacity='0';});
+});
+</script>
+</body>
+</html>
