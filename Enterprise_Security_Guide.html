@@ -1238,7 +1238,7 @@ Agent monitors:
 Policy: block SSN in outbound email
 Exception:
   If recipient: @deloitte.com
-  AND sender: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7b1d12151a15181e3b1814160b1a150255181416">[email&#160;protected]</a>
+  AND sender: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8ceae5e2ede2efe9ccefe3e1fcede2f5a2efe3e1">[email&#160;protected]</a>
   AND approved: true
   → ALLOW with encryption + logging
         </div>
@@ -1255,7 +1255,7 @@ Exception:
 <span class="cm"># Employee resignation — last week before departure:</span>
 
 <span class="cr">DLP Alert 1 — Tuesday 9:14 PM:</span>
-  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0a60247967637e624a6965677a6b647324696567">[email&#160;protected]</a>
+  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b5df9bc6d8dcc1ddf5d6dad8c5d4dbcc9bd6dad8">[email&#160;protected]</a>
   Action: Email to personal Gmail
   Attachment: customer-database-export.csv
   DLP detection: 45,847 records with PII
@@ -1263,17 +1263,17 @@ Exception:
   Alert: Security team notified
 
 <span class="cr">DLP Alert 2 — Wednesday 11:32 AM:</span>
-  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="076d29746a6e736f4764686a7766697e2964686a">[email&#160;protected]</a>
+  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="214b0f524c48554961424e4c51404f580f424e4c">[email&#160;protected]</a>
   Action: USB write
   Files: source_code_v3.zip, designs_2024.zip
   DLP detection: Source code + proprietary designs
   Action: <span class="cr">BLOCKED — encryption key not available</span>
 
 <span class="cr">DLP Alert 3 — Thursday 2:17 PM:</span>
-  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d7bdf9a4babea3bf97b4b8baa7b6b9aef9b4b8ba">[email&#160;protected]</a>
+  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="89e3a7fae4e0fde1c9eae6e4f9e8e7f0a7eae6e4">[email&#160;protected]</a>
   Action: SharePoint external share
   File: Q4_Strategy_Presentation.pptx
-  Share to: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6903471a04001d01290e04080005470a0604">[email&#160;protected]</a>
+  Share to: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c7ade9b4aaaeb3af87a0aaa6aeabe9a4a8aa">[email&#160;protected]</a>
   DLP detection: CONFIDENTIAL label
   Action: <span class="cr">BLOCKED</span>
 
@@ -1380,7 +1380,7 @@ Identity: jsmith — member of Finance-AD-Group
 Device: compliant
 Result: Finance VLAN (VLAN 20) assigned
 
-Identity: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="92f1fdfce6e0f3f1e6fde0d2e4f7fcf6fde0bcf1fdff">[email&#160;protected]</a>
+Identity: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5635393822243735223924162033383239247835393b">[email&#160;protected]</a>
 Device: unmanaged
 Result: Contractor VLAN (VLAN 50) assigned
 <span class="cm"># Can reach: vendor-specific servers only</span>
@@ -1916,18 +1916,7 @@ Same IP appearing in firewall + DNS + EDR alerts?
     <h3>Modification Principles — All Controls</h3>
     <div class="matrix">
       <div class="m-cell" style="background:#eff6ff;border-color:#bfdbfe">
-        <strong style="color:var(--blue)">Change Management</strong>
-        All changes go through formal process. Emergency process for incidents. Document everything.
-      </div>
-      <div class="m-cell" style="background:#f0fdf4;border-color:#bbf7d0">
-        <strong style="color:var(--green)">Test Before Prod</strong>
-        Staging environment first. Validate: blocks what it should, allows what it should.
-      </div>
-      <div class="m-cell" style="background:#f3e8ff;border-color:#e9d5ff">
-        <strong style="color:var(--purple)">Detect Before Block</strong>
-        New rules start in detect/audit mode. Validate FP rate. Then promote to block/protect.
-      </div>
-      <div class="m-cell" style="background:#ffedd5;border-color:#fed7aa">
+        <strong style="color>
         <strong style="color:var(--orange)">Tune Continuously</strong>
         Regular review of FP rates. Remove unused rules. Update signatures. Tighten over time.
       </div>
@@ -1965,4 +1954,23 @@ Same IP appearing in firewall + DNS + EDR alerts?
       <div class="er"><span class="ek">"Per-device credentials for Wi-Fi — not shared password"</span><span>→ WPA2/WPA3 Enterprise + NAC 802.1X</span></div>
       <div class="er"><span class="ek">"Endpoint detects by behavior not signatures"</span><span>→ EDR behavioral detection — catches zero-days</span></div>
       <div class="er"><span class="ek">"EDR can reverse ransomware file encryption"</span><span>→ EDR rollback — SentinelOne — uses VSS shadow copies</span></div>
-      <div class="er"><span class="ek">"Unified detection: email + endpoint + cloud"</span><sp
+      <div class="er"><span class="ek">"Unified detection: email + endpoint + cloud"</span><span>→ XDR (Extended Detection and Response)</span></div>
+      <div class="er"><span class="ek">"Windows tools used as attack weapons"</span><span>→ LOLBins (living off the land) — custom EDR rules detect</span></div>
+      <div class="er"><span class="ek">"SCCM deployment tool triggering EDR false positive"</span><span>→ Add SCCM path to EDR exclusion list</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

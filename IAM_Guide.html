@@ -400,7 +400,7 @@ Monitor ALL access continuously
 HR creates record: Sarah Chen, Finance Analyst, Start: 2024-03-01
 
 <span class="cg">Automated provisioning (Day 0 — before she arrives):</span>
-  AD account created:       <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a3d0c2d1c2cb8dc0cbc6cde3c0ccced3c2cdda8dc0ccce">[email&#160;protected]</a>
+  AD account created:       <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f2819380939adc919a979cb2919d9f82939c8bdc919d9f">[email&#160;protected]</a>
   Email mailbox:            provisioned
   Role assigned:            Finance-Analyst-Group
   Permissions via RBAC:
@@ -415,7 +415,7 @@ HR creates record: Sarah Chen, Finance Analyst, Start: 2024-03-01
     Admin consoles:         ✗ (not IT admin)
     Executive reports:      ✗ (not authorized)
 
-  MFA enrollment email sent: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8cbd9cad9d096dbd0ddd6f8c8ddcacbd7d6d9d496dbd7d5">[email&#160;protected]</a>
+  MFA enrollment email sent: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f98a988b9891d79a919c97b9899c8b8a96979895d79a9694">[email&#160;protected]</a>
   Welcome package: IT contacts, setup instructions
   Manager notified: account ready for Day 1
 
@@ -594,7 +594,7 @@ Financial system: username + password G
 
 <span class="cg"># With SSO:</span>
 Employee logs in ONCE to IdP (Okta/Azure AD):
-  Username: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f2819380939adc919a979cb2919d9f82939c8bdc919d9f">[email&#160;protected]</a>
+  Username: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8bf8eaf9eae3a5e8e3eee5cbe8e4e6fbeae5f2a5e8e4e6">[email&#160;protected]</a>
   Password: [strong password] + MFA token
 
 SSO session established → access ALL connected apps:
@@ -621,7 +621,7 @@ SSO session established → access ALL connected apps:
 3. Browser redirected to Okta (IdP) login page
 4. User authenticates to Okta (password + MFA)
 5. Okta creates SAML Assertion (XML):
-   "I confirm user <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dcafbdaebdb4f2bfb4b9b29cbfb3b1acbdb2a5f2bfb3b1">[email&#160;protected]</a>
+   "I confirm user <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="47342635262f69242f22290724282a3726293e6924282a">[email&#160;protected]</a>
     She is in roles: [Finance, Manager, Salesforce-User]
     Valid for: 8 hours
     Signed with Okta private key"
@@ -649,7 +649,7 @@ SSO session established → access ALL connected apps:
    id_token:      JWT with user identity claims
    refresh_token: get new access_token when expired
 5. App reads id_token:
-   {"sub":"12345","email":"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="43302231222b03202c2e33222d3a6d202c2e">[email&#160;protected]</a>",
+   {"sub":"12345","email":"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c3b0a2b1a2ab83a0acaeb3a2adbaeda0acae">[email&#160;protected]</a>",
     "name":"Sarah Chen","groups":["finance"]}
 6. User: logged in — JWT verified ✓
 
@@ -1015,13 +1015,13 @@ Impossible travel (two countries 30 minutes apart):
 <span class="cm"># Tests against company login portal:</span>
 
 09:14:00 — Automated login attempts begin
-09:14:01 — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8cede8e1e5e2ccefe3e1fcede2f5a2efe3e1">[email&#160;protected]</a> + Password123 → <span class="cr">WRONG PASSWORD</span>
-09:14:02 — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6903060107471a04001d01290a060419080710470a0604">[email&#160;protected]</a> + Fluffy2019 → <span class="co">CORRECT PASSWORD!</span>
+09:14:01 — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f8999c959196b89b979588999681d69b9795">[email&#160;protected]</a> + Password123 → <span class="cr">WRONG PASSWORD</span>
+09:14:02 — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7913161117570a14100d11391a161409181700571a1614">[email&#160;protected]</a> + Fluffy2019 → <span class="co">CORRECT PASSWORD!</span>
             MFA required: push notification sent to John's phone
             John: asleep (3am) → does NOT approve
             Attacker: <span class="cg">BLOCKED — MFA stops access ✓</span>
 
-09:14:03 — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1e6d7f6c7f76307d767b705e7d71736e7f7067307d7173">[email&#160;protected]</a> + Summer2023 → <span class="co">CORRECT PASSWORD!</span>
+09:14:03 — <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="780b190a1910561b101d16381b171508191601561b1715">[email&#160;protected]</a> + Summer2023 → <span class="co">CORRECT PASSWORD!</span>
             MFA required: TOTP code needed
             Attacker: doesn't have Sarah's phone
             Attacker: <span class="cg">BLOCKED — MFA stops access ✓</span>
@@ -1134,7 +1134,7 @@ JWT structure:
 
 Payload decoded:
 {"sub":"sarah.chen",
- "email":"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b2c1d3c0d3daf2d1dddfc2d3dccb9cd1dddf">[email&#160;protected]</a>",
+ "email":"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="04776576656c44676b6974656a7d2a676b69">[email&#160;protected]</a>",
  "roles":["Finance"],
  "exp":1704067200}
         </div>
@@ -1833,19 +1833,7 @@ Conditions evaluated:
       <tr><td><span class="tag tr">MAC</span></td><td>Labels + clearances control access</td><td>Most restrictive — government</td><td>Bell-LaPadula — read down, write up</td></tr>
       <tr><td><span class="tag tg">RBAC</span></td><td>Role determines access</td><td>Most common enterprise model</td><td>Role change = permissions auto-update</td></tr>
       <tr><td><span class="tag to">ABAC</span></td><td>Multiple attributes control access</td><td>User + resource + environment</td><td>Most granular — Zero Trust / cloud</td></tr>
-      <tr><td><span class="tag tp">Zero Trust</span></td><td>Never trust, always verify</td><td>NIST SP 800-207</td><td>No implicit trust — verify everything</td></tr>
-      <tr><td><span class="tag tp">ZTNA</span></td><td>App-level access vs network access</td><td>Replaces VPN</td><td>Access specific app — not whole network</td></tr>
-    </table>
-    </div>
-
-    <h3>Scenario → Answer Cheat Sheet</h3>
-    <div class="exam" style="margin:0">
-      <h4>// Exam Scenarios → Answers</h4>
-      <div class="er"><span class="ek">"Authenticate, then determine what they can do, then log"</span><span>→ AAA — Authentication + Authorization + Accounting</span></div>
-      <div class="er"><span class="ek">"Employee account still active 6 months after leaving"</span><span>→ Orphaned account — deprovisioning failure — major risk</span></div>
-      <div class="er"><span class="ek">"User accumulated excess permissions after 3 role changes"</span><span>→ Access creep — solution: remove old role before adding new</span></div>
-      <div class="er"><span class="ek">"Periodic review of who has access to what"</span><span>→ Access recertification / user access review</span></div>
-      <div class="er"><span class="ek">"Automatically push user accounts to Salesforce when created in AD"</span><span>→ SCIM provisioning protocol</span></div>
+      <tr><td><span class="tag tp">Zero Trust</span></td><td>Never trust, always verify</td><td>NIST SP 800-207</td><td>No implicit tratically push user accounts to Salesforce when created in AD"</span><span>→ SCIM provisioning protocol</span></div>
       <div class="er"><span class="ek">"Login once — access all company applications"</span><span>→ Single Sign-On (SSO)</span></div>
       <div class="er"><span class="ek">"XML assertion from identity provider to service provider"</span><span>→ SAML 2.0</span></div>
       <div class="er"><span class="ek">"Modern SSO for mobile apps — JSON tokens"</span><span>→ OIDC (OpenID Connect) — built on OAuth 2.0</span></div>
@@ -1863,4 +1851,25 @@ Conditions evaluated:
       <div class="er"><span class="ek">"Unique random local admin password per machine"</span><span>→ LAPS — prevents lateral movement via shared local admin</span></div>
       <div class="er"><span class="ek">"File owner decides who can access their file"</span><span>→ DAC (Discretionary Access Control)</span></div>
       <div class="er"><span class="ek">"Military clearance level determines data access"</span><span>→ MAC (Mandatory Access Control)</span></div>
-      <div class="er"><span class="ek">
+      <div class="er"><span class="ek">"Job title/department determines system access"</span><span>→ RBAC (Role-Based Access Control)</span></div>
+      <div class="er"><span class="ek">"Access depends on: user dept + device type + time of day"</span><span>→ ABAC (Attribute-Based Access Control)</span></div>
+      <div class="er"><span class="ek">"No single person can both create and approve a payment"</span><span>→ Separation of Duties</span></div>
+      <div class="er"><span class="ek">"Never trust, always verify — no implicit trust from network location"</span><span>→ Zero Trust — NIST SP 800-207</span></div>
+      <div class="er"><span class="ek">"Access specific app — not the whole network — replaces VPN"</span><span>→ ZTNA (Zero Trust Network Access)</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

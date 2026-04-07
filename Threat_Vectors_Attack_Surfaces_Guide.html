@@ -349,7 +349,7 @@ Familiar: looks exactly like a real email from the real service
       <div class="phish-sample">
         <div class="phish-header">
           <div style="font-size:0.62rem;color:var(--mu);margin-bottom:0.4rem">SIMULATED PHISHING EMAIL — TRAINING ONLY</div>
-          <div class="phish-field"><span class="phish-label">From:</span><span class="phish-val">Microsoft Security &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4437212731362d303d04292d27362b372b2222306925282136306a272b29">[email&#160;protected]</a>&gt; <span class="phish-anno">← typosquatting: double-f</span></span></div>
+          <div class="phish-field"><span class="phish-label">From:</span><span class="phish-val">Microsoft Security &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ea998f899f98839e93aa878389988599858c8c9ec78b868f989ec4898587">[email&#160;protected]</a>&gt; <span class="phish-anno">← typosquatting: double-f</span></span></div>
           <div class="phish-field"><span class="phish-label">To:</span><span class="phish-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f3809281929bdd999c9b9d809c9db3909c9e83929d8add909c9e">[email&#160;protected]</a></span></div>
           <div class="phish-field"><span class="phish-label">Subject:</span><span class="phish-val">URGENT: Unusual sign-in activity detected — account at risk <span class="phish-anno">← artificial urgency</span></span></div>
           <div class="phish-field"><span class="phish-label">Date:</span><span class="phish-val">Monday 03:14 AM <span class="phish-anno">← unusual time</span></span></div>
@@ -398,7 +398,7 @@ Familiar: looks exactly like a real email from the real service
         </div>
         <div class="gc">
           <h4 style="color:var(--vce)">Email Header Spoofing</h4>
-          <p>Send email with forged From: header appearing to be from legitimate domain. Basic spoofing: email "from" <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ee8d8b81ae8d81839e8f8097c08d8183">[email&#160;protected]</a> when actually from attacker. Technical defenses: SPF (specifies authorized sending servers), DKIM (cryptographically signs email), DMARC (policy for failing SPF/DKIM). Without these: easy to spoof any domain. With all three: spoofing much harder.</p>
+          <p>Send email with forged From: header appearing to be from legitimate domain. Basic spoofing: email "from" <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7211171d32111d1f02131c0b5c111d1f">[email&#160;protected]</a> when actually from attacker. Technical defenses: SPF (specifies authorized sending servers), DKIM (cryptographically signs email), DMARC (policy for failing SPF/DKIM). Without these: easy to spoof any domain. With all three: spoofing much harder.</p>
         </div>
       </div>
       <div class="exam">
@@ -1201,9 +1201,7 @@ Exploit brokers: Zerodium pays up to $2.5M for iOS zero-day
       <div class="er"><span class="ek">"Personalized email using OSINT — references real manager name"</span><span>→ Spear phishing</span></div>
       <div class="er"><span class="ek">"CEO impersonation requesting urgent wire transfer"</span><span>→ BEC (Business Email Compromise) + whaling</span></div>
       <div class="er"><span class="ek">"Prevent email spoofing — specify authorized senders"</span><span>→ SPF (Sender Policy Framework)</span></div>
-      <div class="er"><span class="ek">"Cryptographic email signature — verify not modified"</span><span>→ DKIM</span></div>
-      <div class="er"><span class="ek">"Policy for failing SPF/DKIM — reject/quarantine"</span><span>→ DMARC</span></div>
-      <div class="er"><span class="ek">"Detonate attachments in isolated env before delivery"</span><span>→ Email sandbox</span></div>
+      <div cl
       <div class="er"><span class="ek">"Check URLs at click-time not delivery-time"</span><span>→ Safe Links / URL rewriting</span></div>
       <div class="er"><span class="ek">"SMS phishing — USPS delivery notification"</span><span>→ Smishing</span></div>
       <div class="er"><span class="ek">"QR code in email — payload assembled after gateway scans"</span><span>→ Quishing (QR phishing)</span></div>
@@ -1242,7 +1240,7 @@ Exploit brokers: Zerodium pays up to $2.5M for iOS zero-day
 </div>
 </div><!-- end sum -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const VC={msg:'var(--msg)',net:'var(--net)',soc:'var(--soc)',fil:'var(--fil)',vce:'var(--vce)',sup:'var(--sup)',sw:'var(--sw)',sum:'var(--mu)'};
 
 function showVec(id,el){
@@ -1269,4 +1267,19 @@ function goTab(vec,secId,btn){
   if(!m||!tabs)return;
   m.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
   tabs.querySelectorAll('.tab').forEach(t=>{
-    t.classList.remove('active');t.style.background='';t.st
+    t.classList.remove('active');t.style.background='';t.style.borderColor='';t.style.color='';
+  });
+  document.getElementById(secId).classList.add('on');
+  btn.classList.add('active');
+  const c=VC[vec];
+  btn.style.background=c;btn.style.borderColor=c;btn.style.color='#08090e';
+  window.scrollTo(0,0);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const a=document.querySelector('#t-msg .tab.active');
+  if(a){a.style.background='var(--msg)';a.style.borderColor='var(--msg)';a.style.color='#08090e';}
+});
+</script>
+</body>
+</html>

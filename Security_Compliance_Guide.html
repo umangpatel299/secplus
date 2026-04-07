@@ -1227,8 +1227,8 @@ GDPR still applies: key holder can re-identify → still personal data
       </div>
       <div class="pt-body">Replaces sensitive data with realistic but fake data. Unlike pseudonymization — no key to reverse it. Static masking: one-time transformation for non-production environments. Dynamic masking: mask data in real-time based on user role (support agent sees XXX-XXX-1234, billing sees full number). Ideal for: developer testing with realistic data, non-production copies of databases, support portals.</div>
       <div class="code" style="font-size:0.62rem;margin-top:0.5rem">
-Production:    John Smith | <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="81ebeee9efaff2ece8f5e9c1e2eeecf1e0eff8afe2eeec">[email&#160;protected]</a> | CC: 4532-9812-3456-7890
-Dev/Test:      Bob Jones  | <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ee8c818cc08481808b9dae8b968f839e828bc08d8183">[email&#160;protected]</a>  | CC: 4532-0000-0000-0001
+Production:    John Smith | <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cea4a1a6a0e0bda3a7baa68eada1a3beafa0b7e0ada1a3">[email&#160;protected]</a> | CC: 4532-9812-3456-7890
+Dev/Test:      Bob Jones  | <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2e4c414c004441404b5d6e4b564f435e424b004d4143">[email&#160;protected]</a>  | CC: 4532-0000-0000-0001
 
 Data structure preserved — application tests work
 Real customer data: never in non-production environments
@@ -1414,8 +1414,7 @@ DPIA output:
       <div class="er"><span class="ek">"GDPR mandatory privacy role — independent — cannot be fired"</span><span>→ DPO (Data Protection Officer)</span></div>
       <div class="er"><span class="ek">"Irreversible identity removal — GDPR no longer applies"</span><span>→ Anonymization</span></div>
       <div class="er"><span class="ek">"Replace identifiers with tokens — reversible — GDPR still applies"</span><span>→ Pseudonymization</span></div>
-      <div class="er"><span class="ek">"Realistic fake data for dev/test — no key to reverse"</span><span>→ Data masking</span></div>
-      <div class="er"><span class="ek">"Assessment of privacy impact before implementing new processing"</span><span>→ DPIA (Data Protection Impact Assessment) — GDPR mandatory for high-risk</span></div>
+      <div class="er"><span class="ek">"Realistic fake data fondatory for high-risk</span></div>
       <div class="er"><span class="ek">"Encrypted breach may not require individual notification"</span><span>→ Encryption safe harbor — GDPR Article 34 / HIPAA</span></div>
     </div>
 
@@ -1423,4 +1422,14 @@ DPIA output:
 </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudfl
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

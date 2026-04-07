@@ -643,7 +643,7 @@ $staleAccounts | ForEach-Object {
 }
 
 <span class="cm"># Email security team the report</span>
-Send-MailMessage -To "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5320363026213a272a13303c3e23323d2a7d303c3e">[email&#160;protected]</a>" `
+Send-MailMessage -To "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6a190f091f18031e132a0905071a0b041344090507">[email&#160;protected]</a>" `
     -Subject "Stale Account Remediation Report" `
     -Body ($staleAccounts | Out-String)
         </div>
@@ -1573,14 +1573,21 @@ All coordinated by SOAR → complete response in seconds
       <div class="er"><span class="ek">"Automated system doing same harmful thing 10,000 times"</span><span>→ Complexity/cascade risk — automation amplifies both good and bad actions</span></div>
       <div class="er"><span class="ek">"Which decisions should NOT be automated?"</span><span>→ High-impact irreversible decisions — regulatory notifications, ransom payment, evidence deletion</span></div>
       <div class="er"><span class="ek">"How to prevent automation from becoming a security risk itself"</span><span>→ Secure the automation: MFA on SOAR, least privilege API keys, audit logs, isolated network</span></div>
-      <div class="er"><span class="ek">"Automatically create accounts when HR adds employee"</span><span>→ Provisioning automation — SCIM protocol</span></div>
-      <div class="er"><span class="ek">"Certificate auto-renewed before it expires"</span><span>→ ACME protocol (Let's Encrypt) — automated certificate management</span></div>
+      <div class="er"><span class="ek">"Automatically create accounts when HR ">"Certificate auto-renewed before it expires"</span><span>→ ACME protocol (Let's Encrypt) — automated certificate management</span></div>
     </div>
 
   </div>
 </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 function go(id,btn){
-  document.querySelectorAll('.sec').forEach(s=>s.classL
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

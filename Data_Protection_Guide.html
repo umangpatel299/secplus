@@ -861,7 +861,7 @@ TPM refuses to release key → drive stays locked
 <span class="cm"># Hospital DLP system catches multiple violations:</span>
 
 <span class="cr">Attempt 1: Nurse emails patient list home</span>
-Email to: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d1bfa4a3a2b4ffa1b4a3a2bebfb0bd91b6bcb0b8bdffb2bebc">[email&#160;protected]</a>
+Email to: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e08e95929385ce908592938f8e818ca0878d81898cce838f8d">[email&#160;protected]</a>
 Attachment: patient-list.xlsx
 DLP scans: <span class="co">487 patient names + DOBs detected</span>
 DLP action: <span class="cr">BLOCKED ✗</span> — HIPAA violation prevented
@@ -875,7 +875,7 @@ DLP action: <span class="cr">BLOCKED ✗</span>
             USB port write access denied
 
 <span class="co">Attempt 3: Accidental — doctor drafts email with chart</span>
-Email to: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0c68636f78637e226f636060696d6b79694c64637f7c65786d60226f6361">[email&#160;protected]</a>
+Email to: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="771318140318055914181b1b1216100212371f1804071e03161b5914181a">[email&#160;protected]</a>
 Attachment: patient-chart.pdf (INTERNAL recipient)
 DLP scans: PHI detected but recipient is internal
 DLP action: <span class="cg">ALLOWED ✓</span> — internal healthcare recipient
@@ -1208,16 +1208,7 @@ Even if forwarded to wrong person:
       <tr>
         <td><span class="tag tag-g">In Use</span></td>
         <td>RAM, CPU, cache, application memory</td>
-        <td>Memory scraping, cold boot</td>
-        <td>Secure enclaves (SGX), memory encryption</td>
-      </tr>
-    </table>
-    </div>
-
-    <h3>Protection Methods — Quick Reference</h3>
-    <div style="overflow-x:auto;margin-bottom:1.5rem">
-    <table>
-      <tr><th>Method</th><th>Purpose</th><th>Exam Scenario</th></tr>
+        <td>Memory scrapith>Purpose</th><th>Exam Scenario</th></tr>
       <tr>
         <td><span class="tag tag-p">Encryption</span></td>
         <td>Make data unreadable without key</td>
@@ -1281,4 +1272,14 @@ Even if forwarded to wrong person:
 </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

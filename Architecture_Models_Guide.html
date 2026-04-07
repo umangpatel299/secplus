@@ -1365,7 +1365,7 @@ resource "aws_security_group" "web" {
 <span class="cgd">1. Version control for infrastructure:</span>
   All infra changes tracked in Git
   "Who opened port 22 to the internet?"
-  → git blame shows: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="abcfceddebc8c4c6dbcac5d285c8c4c6">[email&#160;protected]</a>, March 15 14:32
+  → git blame shows: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ed89889bad8e82809d8c8394c38e8280">[email&#160;protected]</a>, March 15 14:32
   Rollback: revert to previous known-good config instantly
   Pull request: security reviews every infrastructure change
 
@@ -1495,7 +1495,7 @@ resource "aws_security_group" "web" {
         <div class="er"><span class="ek" style="color:var(--vrt)">"Runs on top of host OS — VirtualBox"</span><span>→ Type 2 hypervisor (hosted)</span></div>
         <div class="er"><span class="ek" style="color:var(--vrt)">"Guest VM breaks isolation — accesses host or other VMs"</span><span>→ VM escape — critical vulnerability</span></div>
         <div class="er"><span class="ek" style="color:var(--vrt)">"Uncontrolled proliferation of VMs — many unpatched"</span><span>→ VM sprawl</span></div>
-        <div class="er"><span class="ek" style="color:var(--vrt)">"Containers vs VMs — which has weaker isolation?"</span><span>→ Containers — share host OS kernel — weaker than VMs</span></div>
+        <div class="er"><span class="ek" style="color:var(--vrt)">"CoMs</span></div>
         <div class="er"><span class="ek" style="color:var(--vrt)">"Timing-based memory leak across VM boundaries"</span><span>→ Side-channel attack — Spectre/Meltdown</span></div>
         <div class="er"><span class="ek" style="color:var(--iot)">"Millions of connected devices — default credentials — botnet"</span><span>→ IoT — Mirai botnet</span></div>
         <div class="er"><span class="ek" style="color:var(--iot)">"Search engine for internet-exposed devices"</span><span>→ Shodan</span></div>
@@ -1515,7 +1515,7 @@ resource "aws_security_group" "web" {
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // Model switcher
 function showModel(id, el) {
   document.querySelectorAll('.model').forEach(m => m.classList.remove('on'));
@@ -1562,4 +1562,11 @@ function goTab(model, secId, btn) {
 }
 
 // Init tab colors for first model
-document.addEventListener('DOM
+document.addEventListener('DOMContentLoaded', ()=>{
+  const c = 'var(--onp)';
+  const btn = document.querySelector('#tabs-onp .tab.active');
+  if(btn){btn.style.background=c;btn.style.borderColor=c;btn.style.color='#07080c';}
+});
+</script>
+</body>
+</html>

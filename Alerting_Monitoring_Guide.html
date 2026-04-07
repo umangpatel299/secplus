@@ -1551,7 +1551,7 @@ Analyst time saved: 32+ minutes for complex work
 <span class="cm"># UEBA uses ML to detect anomalies from individual baselines:</span>
 
 <span class="cb">Building user baseline (30-day learning period):</span>
-  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="305a5f585e1e435d59445870535f5d40515e491e535f5d">[email&#160;protected]</a>
+  User: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="660c090e0848150b0f120e2605090b1607081f4805090b">[email&#160;protected]</a>
   Normal login times: Mon-Fri 8am-6pm
   Normal location: New York (office), New Jersey (home)
   Normal data access: Finance drive, shared documents
@@ -1713,4 +1713,12 @@ Hunter searches SIEM/EDR for:
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 function go(id,btn){
-  document.querySelectorAll('.sec').forEach(s=>s.clas
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

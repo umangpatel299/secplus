@@ -849,11 +849,11 @@ Decrypted payload reveals:
       <div class="log-body">Records all web requests made through the corporate proxy — URL, user, timestamp, bytes, category, action. Even for HTTPS — proxy sees the URL (SNI) even if not decrypting. Catches: malware callbacks, data upload to cloud services, policy violations, credential theft via phishing site visits.</div>
       <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
 <span class="cm"># Proxy log — Squid/Zscaler/Bluecoat format:</span>
-2024-03-15 14:23:47 ALLOWED <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a1d2c0d3c0c98fc2c9c4cfe1c2ceccd1c0cfd88fc2cecc">[email&#160;protected]</a>
+2024-03-15 14:23:47 ALLOWED <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0d7e6c7f6c65236e6568634d6e62607d6c6374236e6260">[email&#160;protected]</a>
   GET https://mail.google.com/  — 200 OK — 47KB
   Category: Web-based Email
 
-2024-03-15 14:24:12 BLOCKED <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="07746675666f29646f62694764686a7766697e2964686a">[email&#160;protected]</a>
+2024-03-15 14:24:12 BLOCKED <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4e3d2f3c2f26602d262b200e2d21233e2f2037602d2123">[email&#160;protected]</a>
   GET https://credential-harvester.evil.com/login
   Category: Phishing — Action: BLOCKED
   <span class="cr">User attempted to visit known phishing site</span>
@@ -979,22 +979,22 @@ Decrypted payload reveals:
       <div class="log-body">Email gateway and server logs record every message — sender, recipients, subject, attachments, routing, actions taken. Essential for: tracing phishing campaigns, investigating BEC fraud, finding data exfiltration via email, identifying compromised accounts sending spam/phishing internally.</div>
       <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
 <span class="cm"># Exchange/O365 Message Tracking Log:</span>
-2024-03-15 14:23:47 | MessageId: &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="452427267477760520332c296b262a28">[email&#160;protected]</a>&gt;
-  Sender: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="83e1ecf0f0c3f0f3ecece5e6e7aee0eceef3e2edfaade0ecee">[email&#160;protected]</a>
-  Recipients: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="02646b6c636c616742616d6f72636c7b2c616d6f">[email&#160;protected]</a>
+2024-03-15 14:23:47 | MessageId: &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1b7a79782a29285b7e6d727735787476">[email&#160;protected]</a>&gt;
+  Sender: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cba9a4b8b88bb8bba4a4adaeafe6a8a4a6bbaaa5b2e5a8a4a6">[email&#160;protected]</a>
+  Recipients: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2f4946414e414c4a6f4c40425f4e4156014c4042">[email&#160;protected]</a>
   Subject: "Urgent Wire Transfer Request"
   Attachment: Invoice_March.zip (contains macro)
   Action: DELIVERED  ← <span class="cr">should have been blocked</span>
 
 <span class="cm"># Compromised account sending phishing:</span>
-2024-03-15 22:47:01 | Sender: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b0c3d1c2d1d89ed3d8d5def0d3dfddc0d1dec99ed3dfdd">[email&#160;protected]</a>
-  Recipients: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e5f5252134d4a5f58587e5d51534e5f5047105d5153">[email&#160;protected]</a> (500 recipients!)
+2024-03-15 22:47:01 | Sender: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2e5d4f5c4f46004d464b406e4d41435e4f4057004d4143">[email&#160;protected]</a>
+  Recipients: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3c5d5050114f485d5a5a7c5f53514c5d5245125f5351">[email&#160;protected]</a> (500 recipients!)
   Subject: "Check this out"
   Attachment: malware.exe
   IP: 185.220.101.34  ← <span class="cr">NOT Sarah's normal IP = compromised</span>
 
 <span class="cm"># Mass email forwarding (insider threat / BEC):</span>
-Forwarding rule: ALL MAIL → <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e5f4a4a5f5d555b4c7e59535f5752105d5153">[email&#160;protected]</a>
+Forwarding rule: ALL MAIL → <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5c3d28283d3f37392e1c3b313d3530723f3331">[email&#160;protected]</a>
   Created: 2024-03-10 (5 days ago — missed)
       </div>
     </div>
@@ -1033,13 +1033,13 @@ user:sarah.chen normally: Mon-Fri 8am-6pm EST
       <div class="log-body">Identity provider logs — Okta, Azure AD, Active Directory — record every authentication event across all connected applications. One stop for: all login events, MFA outcomes, SSO token issuance, suspicious sign-in patterns, conditional access policy outcomes.</div>
       <div class="code" style="font-size:0.63rem;margin-top:0.5rem">
 <span class="cm"># Azure AD / Okta sign-in log:</span>
-2024-03-15 02:14:33 | user:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddaebcafbcb5f3beb5b8b39dbeb2b0adbcb3a4f3beb2b0">[email&#160;protected]</a>
+2024-03-15 02:14:33 | user:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="42312330232a6c212a272c02212d2f32232c3b6c212d2f">[email&#160;protected]</a>
   app: Microsoft 365 | ip:185.220.101.34
   location: Netherlands (new) | device: unknown
   MFA: required — <span class="cr">FAILED (user denied push)</span>
   risk_level: HIGH | result: BLOCKED
 
-2024-03-15 02:17:12 | user:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="25564457444d0b464d404b65464a4855444b5c0b464a48">[email&#160;protected]</a>
+2024-03-15 02:17:12 | user:<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7c0f1d0e1d14521f1419123c1f13110c1d1205521f1311">[email&#160;protected]</a>
   app: Microsoft 365 | ip:185.220.101.34
   MFA: required — <span class="cr">APPROVED ← MFA fatigue — user approved!</span>
   result: SUCCESS | <span class="cr">account compromised</span>
@@ -1404,10 +1404,10 @@ Received: from mail.spoofed-domain.com (185.220.101.34)
   2024-03-15 14:23:47 UTC
 
 <span class="cm"># Each "Received:" hop adds network path — trace the route</span>
-From: "CEO Name" &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3f5c5a507f5c50524f5e5146115c5052">[email&#160;protected]</a>&gt;
+From: "CEO Name" &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="472422280724282a3726293e6924282a">[email&#160;protected]</a>&gt;
   ACTUAL sender: forged — check Return-Path and DKIM
 
-Return-Path: &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f9988d8d989a929c8bb99c8f9095d79a9694">[email&#160;protected]</a>&gt;  ← <span class="cr">actual return address</span>
+Return-Path: &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8beaffffeae8e0eef9cbeefde2e7a5e8e4e6">[email&#160;protected]</a>&gt;  ← <span class="cr">actual return address</span>
 X-Originating-IP: 185.220.101.34  ← <span class="cr">sender's real IP</span>
 
 Authentication:
@@ -1619,7 +1619,7 @@ Pivot 3: What user is on 10.0.3.55?
 <span class="cm"># Finance received fake CEO email — $2M wire requested</span>
 
 <span class="cb">Step 1 — Email gateway logs:</span>
-  Message-ID: &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="28494a4b191a1b684b474558494651054b4d4706464d5c">[email&#160;protected]</a>&gt; (NOT company.com!)
+  Message-ID: &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0b6a69683a39384b6864667b6a657226686e6425656e7f">[email&#160;protected]</a>&gt; (NOT company.com!)
   SPF: FAIL | DKIM: FAIL | DMARC: policy=reject → <span class="cr">should have been blocked!</span>
   Gateway: <span class="cr">delivered anyway (misconfigured DMARC!)</span>
   Sender IP: 185.220.x.x
@@ -1627,7 +1627,7 @@ Pivot 3: What user is on 10.0.3.55?
 <span class="cb">Step 2 — Email header analysis:</span>
   Received: from mail.company-ceo.net (not company.com)
   X-Originating-IP: 91.108.4.x (Bulgaria)
-  Reply-To: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="167573794966776f7b7378626556717b777f7a3875797b">[email&#160;protected]</a> ← <span class="cr">Gmail for payments? Red flag</span>
+  Reply-To: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="086b6d6757786971656d667c7b486f65696164266b6765">[email&#160;protected]</a> ← <span class="cr">Gmail for payments? Red flag</span>
 
 <span class="cb">Step 3 — IAM/SSO logs:</span>
   Did attacker access CEO's real email account?
@@ -1673,19 +1673,7 @@ Pivot 3: What user is on 10.0.3.55?
   <div class="card-hd"><span class="card-num">09</span><span class="card-title">Complete Summary — Exam Cheat Sheet</span><span class="bdg bdg-indigo">All Data Sources</span></div>
   <div class="card-bd">
 
-    <h3>Data Sources Quick Reference</h3>
-    <div style="overflow-x:auto;margin-bottom:1.5rem">
-    <table>
-      <tr><th>Source</th><th>What It Contains</th><th>Key Investigation Use</th><th>Tool/Location</th></tr>
-      <tr><td><span class="tag tb">Windows Event Log</span></td><td>Auth, process, policy changes</td><td>Login investigation, privilege escalation</td><td>Event Viewer, Splunk, SIEM</td></tr>
-      <tr><td><span class="tag tg">Sysmon</span></td><td>Process trees, network, registry</td><td>Malware analysis, fileless attacks</td><td>Free Sysinternals tool</td></tr>
-      <tr><td><span class="tag tt">Linux Syslog</span></td><td>Auth, sudo, system messages</td><td>SSH intrusion, privilege escalation</td><td>/var/log/auth.log, secure</td></tr>
-      <tr><td><span class="tag tg">Firewall Logs</span></td><td>Allow/deny connection records</td><td>C2 detection, data exfiltration volume</td><td>Palo Alto, Fortinet, pfSense</td></tr>
-      <tr><td><span class="tag tt">NetFlow/IPFIX</span></td><td>Traffic metadata — no content</td><td>Exfil by volume, beaconing, lateral mvmt</td><td>SolarWinds NTA, ntopng</td></tr>
-      <tr><td><span class="tag to">DNS Logs</span></td><td>Domain resolution records</td><td>C2 domains, DGA, DNS tunneling</td><td>DNS server, Umbrella</td></tr>
-      <tr><td><span class="tag tp">PCAP</span></td><td>Full packet content</td><td>Reconstruct attack, see data exfiltrated</td><td>Wireshark, tcpdump</td></tr>
-      <tr><td><span class="tag tg">DHCP Logs</span></td><td>IP→hostname→MAC mapping</td><td>Identify which device had an IP at time X</td><td>DHCP server logs</td></tr>
-      <tr><td><span class="tag ts">Proxy Logs</span></td><td>Web requests by user</td><td>Malware downloads, policy violations</td><td>Zscaler, Bluecoat, Squid</td></tr>
+    <h3>Data Sources Quick Rlations</td><td>Zscaler, Bluecoat, Squid</td></tr>
       <tr><td><span class="tag to">Web Server Logs</span></td><td>HTTP request records</td><td>Web attacks, web shells, SQLi</td><td>Apache, Nginx, IIS</td></tr>
       <tr><td><span class="tag tr">Database Logs</span></td><td>Query audit records</td><td>SQL injection, bulk export, xp_cmdshell</td><td>SQL Server audit, MySQL general log</td></tr>
       <tr><td><span class="tag tp">Email Logs</span></td><td>Message tracking records</td><td>Phishing, BEC, exfil via email</td><td>Exchange, O365 UAL</td></tr>
@@ -1732,4 +1720,28 @@ Pivot 3: What user is on 10.0.3.55?
       <div class="er"><span class="ek">"Free tool adding process trees and network events to Windows"</span><span>→ Sysmon (Sysinternals) — Event 1 = process, Event 3 = network</span></div>
       <div class="er"><span class="ek">"LSASS access for credential dumping detection"</span><span>→ Sysmon Event 10 — process access targeting lsass.exe</span></div>
       <div class="er"><span class="ek">"Every AWS API call logged — who did what"</span><span>→ AWS CloudTrail</span></div>
-      <div class="er"><span class="ek">"CloudTrail disabled by attacker"</span><s
+      <div class="er"><span class="ek">"CloudTrail disabled by attacker"</span><span>→ StopLogging event in CloudTrail — evidence destruction — CRITICAL</span></div>
+      <div class="er"><span class="ek">"Email claims to be from CEO — is it legitimate?"</span><span>→ Check email headers — SPF/DKIM/DMARC results — originating IP</span></div>
+      <div class="er"><span class="ek">"Image metadata reveals location of photographer"</span><span>→ EXIF metadata — GPS coordinates embedded in photo</span></div>
+      <div class="er"><span class="ek">"File timestamps manipulated to hide malware age"</span><span>→ Timestomping — check Born (B) timestamp and MFT discrepancy</span></div>
+      <div class="er"><span class="ek">"Log timestamps don't align across systems"</span><span>→ Time synchronization issue — NTP (UDP 123) must be configured</span></div>
+      <div class="er"><span class="ek">"Impossible travel — same user logged in two countries simultaneously"</span><span>→ VPN logs or IAM logs — account compromise indicator</span></div>
+      <div class="er"><span class="ek">"SQL injection reached database — evidence in which log?"</span><span>→ Database audit log — query log showing the malicious query</span></div>
+      <div class="er"><span class="ek">"Web shell accessed on server — which log shows it?"</span><span>→ Web server access log — POST requests to uploaded file paths</span></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+function go(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

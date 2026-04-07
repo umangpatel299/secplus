@@ -1082,7 +1082,7 @@ Annual:    board presentation with 12-month improvement story
 <span class="cm"># After 12 months of phishing simulation training:</span>
 
 Tuesday 10:23 AM — Employee in finance dept receives:
-  From: "Microsoft Security" &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c7b4a2a4b2b5aeb3be87aaaea4b5a8b4f7a1b3eaa6aba2b5b3e9a4a8aa">[email&#160;protected]</a>&gt;
+  From: "Microsoft Security" &lt;<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e4d5b5d4b4c574a477e53575d4c514d0e584a135f525b4c4a105d5153">[email&#160;protected]</a>&gt;
   Subject: "Urgent: Your Microsoft 365 account will be suspended"
   Body: "Click here to verify your account..."
 
@@ -1141,7 +1141,7 @@ Security team: receives report at 10:24 AM
           <div class="phish-body">Personalized email targeting specific individual or organization. Researches target: LinkedIn, company website, social media. "Hi Sarah — regarding the project with [real client name] you worked on last week..." Much harder to detect — appears legitimate. Requires more effort from attacker. Higher success rate than generic phishing. APT groups use spear phishing almost exclusively.</div>
           <div class="code" style="font-size:0.62rem;margin-top:0.4rem">
 Spear phish example:
-  From: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="553134233c317b3f3a3d3b263a3b15363a3825343b2c78363a27257b3b3021">[email&#160;protected]</a> (not company.com)
+  From: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6b0f0a1d020f45010403051804052b0804061b0a0512460804191b45050e1f">[email&#160;protected]</a> (not company.com)
   Subject: "Re: Q4 forecast document Sarah"
   "Hi Sarah, as discussed in yesterday's call,
    can you review the updated forecast?
@@ -1407,7 +1407,7 @@ Physical:
       <div class="g3">
         <div class="gc" style="border-color:#fdc5b8">
           <h4 style="color:var(--coral)">Email / Button Reporting</h4>
-          <p>Phish Alert Button (KnowBe4), Report Phishing button in Outlook/Gmail. One-click reporting directly to security team. Email reports to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="82f1e7e1f7f0ebf6fbc2e1edeff2e3ecfbace1edef">[email&#160;protected]</a>. Makes reporting frictionless — more reports when it's easy. Automatic analysis of reported emails.</p>
+          <p>Phish Alert Button (KnowBe4), Report Phishing button in Outlook/Gmail. One-click reporting directly to security team. Email reports to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d4a7b1b7a1a6bda0ad94b7bbb9a4b5baadfab7bbb9">[email&#160;protected]</a>. Makes reporting frictionless — more reports when it's easy. Automatic analysis of reported emails.</p>
         </div>
         <div class="gc" style="border-color:#fdba74">
           <h4 style="color:var(--orange)">Anonymous Reporting</h4>
@@ -1642,10 +1642,7 @@ Board conclusion: <span class="cg">expand program + increase budget ✓</span>
         <div class="er"><span class="ek-coral">"Text message: USPS package needs delivery confirmation"</span><span>→ Smishing (SMS phishing)</span></div>
         <div class="er"><span class="ek-coral">"Malware injected into legitimate website targets regularly visit"</span><span>→ Watering hole attack</span></div>
         <div class="er"><span class="ek-coral">"USB labeled 'Q4 Salaries' left in company parking lot"</span><span>→ USB drop / baiting attack</span></div>
-        <div class="er"><span class="ek-coral">"Employee receives unexpected MFA push notification"</span><span>→ Deny and report immediately — someone has their password</span></div>
-        <div class="er"><span class="ek-coral">"Ensuring employees feel safe reporting mistakes"</span><span>→ Psychological safety / no blame culture</span></div>
-        <div class="er"><span class="ek-coral">"Sender, Links, Attachments, Message — email verification"</span><span>→ SLAM method</span></div>
-        <div class="er"><span class="ek-coral">"PCI-DSS security training requirement number"</span><span>→ Requirement 12.6 — annual + at hire</span></div>
+        <div class="er"><span class="ek-coral">"Employee receives unexpected MFA push notification"</span><span>→ Deny and report immediately — someone has their password</span></div>ng requirement number"</span><span>→ Requirement 12.6 — annual + at hire</span></div>
         <div class="er"><span class="ek-coral">"One-click email reporting to security team"</span><span>→ Phish Alert Button (KnowBe4 / email plugin)</span></div>
         <div class="er"><span class="ek-coral">"Training that triggers when employee clicks phishing link"</span><span>→ Just-in-time / real-time awareness training</span></div>
       </div>
@@ -1654,7 +1651,7 @@ Board conclusion: <span class="cg">expand program + increase budget ✓</span>
   </div>
 </div><!-- end topicB -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 function switchTopic(t, btn) {
   document.querySelectorAll('.topic').forEach(x=>x.classList.remove('on'));
   document.querySelectorAll('.sw-btn').forEach(x=>{
@@ -1667,4 +1664,19 @@ function switchTopic(t, btn) {
 
 function goA(id, btn) {
   document.querySelectorAll('#topicA .sec').forEach(s=>s.classList.remove('on'));
-  document.querySelectorAl
+  document.querySelectorAll('#topicA .tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goB(id, btn) {
+  document.querySelectorAll('#topicB .sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('#topicB .tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

@@ -1416,7 +1416,7 @@ Finance: "any invoices?"
 Regulator finds missed data → <span class="cr">€150,000 fine</span>
 
 <span class="cg">Company WITH data asset management (Microsoft Purview):</span>
-Run data subject request query: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="aecddbdddac1c3cbdceecbc3cfc7c280cdc1c3">[email&#160;protected]</a>
+Run data subject request query: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2645535552494b435466434b474f4a0845494b">[email&#160;protected]</a>
 Purview searches ALL registered data locations:
   → CRM: 2 records found ✓
   → Email: 47 emails found ✓
@@ -1855,8 +1855,7 @@ Documentation: linked in CMDB record
     <h3>Data Sanitization Methods — Critical Table</h3>
     <div style="overflow-x:auto;margin-bottom:1.5rem">
     <table>
-      <tr><th>Method</th><th>How</th><th>When to Use</th><th>Works on SSD?</th></tr>
-      <tr><td><span class="tag tb">Clearing</span></td><td>Overwrite with zeros/ones/random</td><td>Reuse within same org</td><td><span class="tag to">Risky</span></td></tr>
+      <tr><th>Method</th><th>How</th><th>When to Use</th><th>Works on within same org</td><td><span class="tag to">Risky</span></td></tr>
       <tr><td><span class="tag to">Purging (Degauss)</span></td><td>Magnetic field destroys data</td><td>HDD/tape going outside org</td><td><span class="tag tr">No — not magnetic</span></td></tr>
       <tr><td><span class="tag tg">Purging (Crypto Erase)</span></td><td>Destroy encryption key</td><td>Encrypted drives — fastest</td><td><span class="tag tg">Yes</span></td></tr>
       <tr><td><span class="tag tr">Destroying</span></td><td>Shred/incinerate/disintegrate</td><td>Classified/highly sensitive</td><td><span class="tag tg">Yes</span></td></tr>
@@ -1892,6 +1891,14 @@ Documentation: linked in CMDB record
 </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 function go(id, btn) {
-  document.querySelectorAll('.sec').forEach(s => s.classList.r
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
